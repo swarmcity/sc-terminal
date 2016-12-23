@@ -1,0 +1,611 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="ac-helpers.html">
+<link rel="import" href="ac-sizeview.html">
+<link rel="import" href="ac-whisperer.html">
+<link rel="import" href="ac-config.html">
+<link rel="import" href="ac-web3.html">
+<link rel="import" href="ac-log.html">
+<link rel="import" href="ac-wallet.html">
+<link rel="import" href="ac-tokensend.html">
+<link rel="import" href="ac-tokenreceive.html">
+
+<dom-module id="ac-tokentransfer">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+        box-sizing: border-box;
+        background-color: transparent;;
+        --balance-h1: 40px;
+        --balance-lineheight: 52px;
+        --coin-margins: 0px 0px 7px 6px;
+        --code-h2: 32px;
+        --code-lineheight: 36px;
+        --code-small: 10px;
+        --btn-width: 200px;
+        width: 100%;
+
+      }
+
+      h1 {
+        @apply(--ac-font-h1);
+        text-align: center;
+        font-size: var(--balance-h1);
+        line-height: var(--balance-lineheight);
+      }
+
+
+      h2 {
+        @apply(--ac-font-h2);
+        @apply(--opensans-semibold);
+        font-size: var(--code-h2);
+        line-height: var(--code-lineheight);
+      }
+
+      p {
+        @apply(--ac-font-body1);
+      }
+
+      small {
+        @apply(--ac-font-small);
+        @apply(--opensans-semibold);
+        font-size: var(--code-small);
+      }
+
+
+      .total {
+        width: 100%;
+
+        @apply(--layout-vertical);
+      }
+
+      .sendcoiners {
+        width: 100%;
+        max-width: 500px;
+        box-sizing: border-box;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+      }
+
+
+      .flex {
+        @apply(--layout-horizontal);
+        @apply(--layout-flex);
+      }
+
+
+     #sendcoins {
+      width: 100%;
+
+      box-sizing: border-box;
+     }
+
+     #receivecoins {
+      width: 100%;
+      max-width: 500px;
+      box-sizing: border-box;
+      @apply(--layout-horizontal);
+      @apply(--layout-center-center);
+     }
+
+
+     .whitespace {
+      width: 100%;
+      height: 20px;
+     }
+
+     .code {
+      margin: 0px 0px 0px 0px;
+     }
+
+     .code h2 {
+      padding: 10px;
+      box-sizing: border-box;
+      color: var(--ac-yellow);
+      @apply(--montserrat-reg);
+
+     }
+
+
+
+     .announce {
+      width: 100%;
+      max-width: 500px;
+      box-sizing: border-box;
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+     }
+
+     .announce p {
+      color: var(--ac-yellow);
+     }
+
+     .marginbtm {
+      margin-left: 15px;
+      margin: var(--coin-margins);
+     }
+
+
+      .initbtns {
+/*        @apply(--layout-vertical);
+        @apply(--layout-center-center);*/
+
+      }
+
+      .initbtns ac-button {
+        width: var(--btn-width);
+        @apply(--base-shadow-and-inset);
+      }
+
+      ac-shortcode {
+        width: var(--btn-width);
+      }
+
+      .initbtns p {
+        color: var(--ac-yellow);
+        @apply(--montserrat-semibold);
+        margin-top:10px;
+        border-bottom: 1px dashed var(--ac-yellow);
+        font-size: 16px;
+      }
+
+      .confirmbtns {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-end-justified);
+        margin-top: 15px;
+      }
+
+      .confirmbtnsmobile {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        margin-top: 15px;
+      }
+
+        .confirmbtn {
+          margin: 0px 2px 0px 2px;
+        }
+
+        .sender {
+          margin: var(--margin-btns);
+        }
+
+      .verticcenter {
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+      }
+
+      .verticstart {
+        @apply(--layout-vertical);
+        @apply(--layout-start);
+        @apply(--layout-center-justified);
+      }
+      .horizontcenter {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+      .horizontend {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+        @apply(--layout-end);
+      }
+
+      .horizontcenterwrap {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-center-center);
+      }
+      .horizontstartwrap {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-start-justified);
+      }
+
+      .sendinput {
+        width: 100%;
+        overflow: hidden;
+      }
+
+    </style>
+
+    <ac-helpers id="helpers"></ac-helpers>
+    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+    <ac-config
+      id="config"
+      web3host="{{web3host}}"
+      ipfs="{{ipfs}}"
+      etherscanroot="{{etherscanroot}}"
+      tokencontractaddress="{{tokencontractaddress}}"
+      ></ac-config>
+
+    <ac-web3
+      host="{{web3host}}"
+      web3="{{web3}}"></ac-web3>
+
+    <ac-whisperer
+      web3="{{web3}}"
+      topic="{{topic}}"
+      progress="{{progress}}"
+      listeninterval="{{listeninterval}}"
+      decimals="5"
+      on-message-received="handlewhispermessage"
+      id="whisper"></ac-whisperer>
+
+    <div class="total">
+        <div class$="initbtns {{align}}">
+          <ac-tokensend on-activated="hideReceivebutton" on-deactivated="showReceivebutton"></ac-tokensend>
+        <template is="dom-if" if="{{sendcollsclosed}}">
+          <ac-tokenreceive></ac-tokenreceive> 
+        </template>
+    </div>
+    
+
+  <template is="dom-repeat" items="{{history}}">
+    <div class="avatar" id="avatar">
+      <img src="{{item.avatar}}"></div>
+    <p>
+      <span>{{item.receiver}}</span>
+      &Delta;
+      <span>{{item.amount}}</span>
+    </p>
+    <!-- <p class="temp">
+    &Delta;
+    <span>{{item.amount}}</span>
+    <span>{{item.receiver}}</span>
+  </p>
+  -->
+</template>
+
+<!--     <div>
+<h1>
+  E
+  <span>{{ethbalance}}</span>
+</h1>
+<h1>
+  L
+  <span>{{arcbalance}}</span>
+</h1>
+<p on-tap="getLocalbalance">Refresh</p>
+<h1>Send funds to another locals user</h1>
+<p>enter the # of the other user</p>
+<ac-input autofocus bind-value="{{pincode}}" label="Pincode" center></ac-input>
+<locals-confirm on-confirm="toWaiting" type="next"></locals-confirm>
+-->
+<!-- Hier hebben we dan de key van de partner -->
+<!-- <p>
+TO:
+<span>{{partnerpubkey}}</span>
+</p>
+<ac-button text on-tap="transfer">verstuur</locals-button>
+-->
+<div class="whitespace"></div>
+<div class="whitespace"></div>
+
+<ac-log></ac-log>
+</div>
+</template>
+<script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'ac-tokentransfer',
+
+      properties: {
+        foo: {
+          type: String,
+          value: 'ac-tokentransfer',
+          notify: true
+        },
+
+        sizeview: {
+          type: String,
+          observer: '_sizeview'
+        },
+
+        account: {
+          type:String,
+        },
+
+        web3: {
+          type: Object
+        },
+
+        sendcoinstate: {
+          type: String,
+          value: 'first',
+          observer: '_sendcoinstate'
+        },
+
+        // balanceloaded: {
+        //   type: Boolean,
+        //   value: false
+        // },
+
+        topic: {
+          type: Number,
+        },
+
+        collsclosed: {
+          type: Boolean,
+          value: true
+        },
+
+        sendcollsclosed: {
+          type: Boolean,
+          value: true
+        },
+
+        receivecollsclosed: {
+          type: Boolean,
+          value: true
+        },
+
+        history: {
+          type: Array,
+          value: []
+        },
+
+        // contractaddr: {
+        //   type: String,
+        //   //value: '0xe94a4e5615E5d1BAfbDBc8a221D9b0995f67A752'
+        // },
+        // arcbalance: {
+        //   type: Number,
+        //   notify: true
+        // },
+        // ethbalance: {
+        //   type: Number
+        // },
+
+        align: {
+          type: String,
+        },
+
+      },
+
+      _pincode: function() {
+        console.log(this.pincode);
+      },
+
+      hideReceivebutton: function(){
+        this.sendcollsclosed = true;
+      },
+
+      showReceivebutton: function(){
+        this.sendcollsclosed = false;
+      },
+
+
+      ready: function(){
+//        this._getARCbalance();
+        var self = this;
+
+        // window.setInterval(function(){
+        //   self._getARCbalance();
+        // }, 5000);
+
+
+        this.sendcoinstate = 'first';
+        this.password = sessionStorage.getItem('ac-password');
+      },
+
+      activatereceivecoins: function(){
+        this.listeninterval = 60;
+      },
+
+      deactivatereceivecoins: function(){
+        this.listeninterval = 0;
+      },
+
+      attached: function(){
+//        var self=this;
+        console.log('ac-tokentransfer attached');
+        console.log('my account',this.account);
+      },
+
+      // receiving side
+      handlewhispermessage: function(m) {
+        var self = this;
+        var message = JSON.parse(m.detail.message);
+        console.log('incoming tokentransfer msg: ', message);
+        switch (message.command) {
+          case 'requestpubkeyforlocalstransfer':
+            self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
+              'command': 'sendpubkey',
+              'pubkey': self.account
+            }));
+            break;
+          case 'sendpubkey':
+            var transferamount = this.amount * 1e18;
+            console.log('Send ARC to ', message.pubkey);
+            this.transfer(transferamount, this.$.helpers.fixaddress(message.pubkey), function(err, result) {
+              console.log('Transfer started. Sending confirmation to ',m.detail.from);
+              self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
+                'command': 'confirmtransfer',
+                'amount': transferamount,
+              }));
+            });
+            //var username = //self._getUsername(message.pubkey,function(username, avatarurl){
+
+            break;
+          case 'confirmtransfer':
+            // TODO : show transfer in history...
+            console.log('transfer confirmed...', message.amount, 'received');
+
+            break;
+          default:
+            console.log('unknown message', message);
+        }
+      },
+
+
+
+      toWaiting: function(){
+        var self = this;
+        //debugger;
+        //this.handler = document.querySelector('locals-verification-validator');
+        //console.log('wallet: ',this.$.whisper.topic, ' pin: ', this.pincode);
+        //debugger;
+        this.$.whisper.whisperpost(this.pincode, JSON.stringify({
+                'command': 'requestpubkeyforlocalstransfer',
+              }));
+        this.state = 'waiting';
+        this.sendcoinstate = 'second';
+      },
+
+      clearInputs: function(){
+        this.pincode = '';
+        this.amount = '';
+//        console.log("Cleared inputs!!!!!! PINCODE=",this.pincode,' & AMOUNT=',this.amount);
+      },
+
+      // refreshBalance:function() {
+      //   this.spinclass = 'spinonce';
+      //   //this._getARCbalance();
+      //   var self = this;
+      //   setTimeout(function(){
+      //       self.spinclass = '';
+      //   },500)
+      // },
+
+      // _getARCbalance: function() {
+      //   if(!this.web3) return;
+      //   //console.log('ac-tokentransfer ', Date.now());
+      //   this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
+
+      //   var self = this;
+
+      //   this.importHref(this.contracturl, function(e) {
+      //     var contractjson = JSON.parse(e.target.import.body.innerText);
+      //     var tokenContract = self.web3.eth.contract(contractjson.abi);
+      //     var tokenContractInstance = tokenContract.at(self.$.config.tokencontractaddress);
+      //     var account = self.$.helpers.fixaddress(self.account);
+      //     self.arcbalance = tokenContractInstance.balanceOf(account) / 1e18;
+      //     self.balanceloaded = true;
+      //     self.fire('balance-loaded');
+      //     self.fire('map-update');
+      //   });
+
+      // },
+
+      transfer: function(amount,pubkey,cb){
+
+        var self = this;
+
+        this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
+        this.importHref(this.contracturl, function(e) {
+          this.contractjson = JSON.parse(e.target.import.body.innerText);
+             self.web3.eth.getGasPrice(function(err, result){
+            var gasPrice = result.toNumber(10);
+          console.log('gasprice: ', gasPrice);
+
+          var MyContract = self.web3.eth.contract(self.contractjson.abi);
+          var myContractInstance = MyContract.at(self.$.config.tokencontractaddress);
+            console.log('doing transfer of ',amount,' LC to: ', pubkey, 'from: ', self.account);
+            myContractInstance.transfer.sendTransaction(pubkey, amount, {
+              from: self.$.helpers.fixaddress(self.account),
+              gasPrice: gasPrice,
+              gasLimit: 3000000,
+              gas: 2000000
+            }, function(err, result){
+              console.log(err, result);
+              var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(self.account));
+                self.arcbalance = coinbalance;
+                if (cb){
+                  cb(err,result);
+                }
+            });
+
+          });
+        });
+
+        this.clearInputs();
+        var sendcoins = self.$.sendcoins;
+        sendcoins.toggle();
+        this.collsclosed=!this.collsclosed;
+        this.sendcoinstate = 'first';
+      },
+
+    toHome: function() {
+      this.fire('to-home');
+    },
+
+
+    _is: function(a, b) {
+      if (b === undefined){
+        b = true;
+      }
+      return a === b;
+    },
+
+      togglesendcoins: function() {
+        var sendcoins = this.$.sendcoins;
+        sendcoins.toggle();
+        this.sendcollsclosed=!this.sendcollsclosed;
+        this.sendcoinstate = 'first';
+      },
+
+      togglereceivecoins: function() {
+        // this.whisper = this.$.whisper;
+        // this.topic = this.whisper.topic;
+        // console.log("******** topic in wallet: ****",this.topic)
+        //var receivecoins = this.$.receivecoins;
+        //receivecoins.toggle();
+        //this.receivecollsclosed=!this.receivecollsclosed;
+        //this.$.whisper.openchannel();
+      },
+
+
+      _sendcoinstate: function(){
+        // console.log('********************* !!!! SENCOINSTATE', this.sendcoinstate);
+      },
+
+
+    _sizeview: function(){
+      switch(this.sizeview) {
+          case 'phone':
+              this.customStyle['--btn-width'] = '200px';
+              this.customStyle['--margin-btns'] = '0px 0px 5px 0px';
+              this.align = 'verticcenter';
+              this.updateStyles();
+              break;
+          case 'desktop':
+              this.customStyle['--btn-width'] = '150px';
+              this.customStyle['--margin-btns'] = '0px 5px 0px 5px';
+              this.align = 'horizontstartwrap';
+              this.updateStyles();
+              break;
+          case 'xlarge':
+              this.customStyle['--btn-width'] = '150px';
+              this.customStyle['--margin-btns'] = '0px 5px 0px 5px';
+              this.align = 'horizontstartwrap';
+              this.updateStyles();
+              break;
+          default:
+          console.log("!!! ** Niks");
+      }
+    },
+
+
+
+
+    });
+  })();
+  </script>
+</dom-module>

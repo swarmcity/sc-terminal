@@ -1,0 +1,270 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<!-- <link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html"> -->
+<!-- <script src="../bower_components/page/page.js"></script> -->
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+<!-- <link rel="import" href="../bower_components/ac-button/ac-button.html"> -->
+
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+
+<!-- <link rel="import" href="ac-transactionlog.html"> -->
+<link rel="import" href="ac-sizeview.html">
+<link rel="import" href="ac-avatar.html">
+<link rel="import" href="ac-balance.html">
+<!-- <link rel="import" href="ac-wallet.html"> -->
+<link rel="import" href="ac-vault.html">
+<link rel="import" href="ac-config.html">
+<link rel="import" href="ac-web3.html">
+<link rel="import" href="ac-profile.html">
+<link rel="import" href="ac-preferences.html">
+<link rel="import" href="ac-walletview.html">
+
+<!-- <link rel="import" href="ac-tokentransfer.html"> -->
+<link rel="import" href="ac-intro.html">
+<link rel="import" href="ac-home.html">
+
+<dom-module id="ac-app">
+  <template>
+    <style>
+  :host {
+    display: block;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100vh;
+
+
+  }
+
+
+  .white {
+    color: white;
+  }
+
+  neon-animated-pages {
+    height: 100%;
+  }
+
+
+
+  ac-createwallet {
+    width: 100%;
+    height: 100vh;
+  }
+
+  .games {
+    width: 100%;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    box-sizing: border-box;
+    padding: 0px 10vw 0px 10vw;
+  }
+
+  .games ac-button {
+    margin-top: 5px;
+    width: 100%;
+    /*background-color: rgba(255,255,255,0.015);*/
+    background-color: #251C4A;
+    @apply(--base-shadow-and-inset);
+  }
+
+  .square {
+    height: 80vw;
+  }
+
+  ac-vault {
+    width: 100vw;
+    height: 100vh;
+  }
+
+
+  ac-walletview {
+    width: 100vw;
+    height: 100vh;
+  }
+
+
+  </style>
+<!-- <div class$="{{sizeview}}"> -->
+    <!-- app-location binds with the URL and produces a route for
+    app-route elements to consume. -->
+    <app-location route="{{route}}" use-hash-as-path></app-location>
+    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+
+    <!-- app-routes parse route paths based on the their `pattern`.
+    Parameters are extracted into the `data` object. The rest of the path that
+    comes after the `pattern` is put into the `tail` object, which can be
+    passed to the `route` property of downstream app-routes. -->
+    <app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{pageTail}}"></app-route>
+<!--     <app-route route="{{route}}" pattern="/vault" data="{{data}}" tail="{{vaultTail}}"></app-route>
+ -->    <!--     <app-route route="{{route}}" pattern="/video" tail="{{videoTail}}" active="{{videoPageActive}}"></app-route>
+  -->
+
+  <ac-config web3host="{{web3host}}"></ac-config>
+
+  <ac-web3 host="{{web3host}}" web3="{{web3}}"></ac-web3>
+
+  <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[data.page]]">
+
+    <ac-intro
+      data-page="intro"
+      on-newvault="createNewVault"
+      on-importfile="toimportfile"
+      on-importpk="toimportpk"
+      on-externalpk="toexternalpk"
+      route="[[pageTail]]"
+      sizeview="{{sizeview}}"
+      >
+    </ac-intro>
+
+    <ac-vault
+      id="thevault"
+      data-page="vault"
+      route="[[pageTail]]"
+      currentkeystore="{{keystore}}"
+      currentidentity="{{identity}}"
+      currentaccount="{{account}}"
+      on-unlocked="vaultUnlocked"
+      on-locked="vaultLocked"
+      on-novault="noVault"
+      sizeview="{{sizeview}}"
+      on-exit="reset"
+      >
+
+    </ac-vault>
+
+    <ac-home
+      data-page="home"
+      keystore="[[keystore]]"
+      identity="[[identity]]"
+      pubkey="[[account]]"
+      on-to-profile="toProfile"
+      on-to-walletview="toWalletview"
+      sizeview="{{sizeview}}">
+    </ac-home>
+
+
+    <ac-profile
+      data-page="profile"
+      id="profile"
+      identity="[[identity]]"
+      pubkey="[[account]]"
+      on-exit="toHome"
+      on-identity-update="saveIdentity"
+      on-backup="toBackup"
+      sizeview="{{sizeview}}">
+    </ac-profile>
+
+    <ac-walletview
+      data-page="walletview"
+      id="walletview"
+      keystore="[[keystore]]"
+      identity="[[identity]]"
+      account="[[account]]"
+      on-exit="toHome"
+      sizeview="{{sizeview}}">
+    </ac-walletview>
+
+
+</neon-animated-pages>
+</template>
+
+<script>
+    Polymer({
+      is: 'ac-app',
+
+      properties: {
+
+        sizeview: {
+          type: String
+         },
+      },
+
+      observers: [
+        '_onRoutePathChanged(route.path)'
+      ],
+
+      _onRoutePathChanged: function(path) {
+         console.log('ac-app -> _onRoutePathChanged',this.route,this.pageTail);
+      },
+
+      reset: function(){
+        this.transitionto('/intro/welcome');
+      },
+
+      vaultUnlocked: function(){
+        this.transitionto('/home');
+      },
+
+      vaultLocked: function(){
+        this.transitionto('/vault/unlock');
+      },
+
+      noVault: function(){
+        this.transitionto('/intro/welcome');
+      },
+
+      createNewVault: function(){
+        this.transitionto('/vault/createnew');
+      },
+
+      toimportpk: function(){
+        this.transitionto('/vault/importpk');
+      },
+
+      toexternalpk: function(){
+        this.transitionto('/vault/externalpk');
+      },
+
+
+      toimportfile: function(){
+        this.transitionto('/vault/importfile');
+      },
+
+      transitionto: function(target){
+        console.log('ac-app -> transitionTo',target);
+        this.set('route.path',target);
+      },
+
+      ready: function() {
+
+      },
+
+      attached: function() {
+          this.$.thevault.activate();
+          console.log("OP APP...............",this.sizeview);
+      },
+
+      toWallet: function() {
+        this.transitionto('/wallet');
+      },
+
+      toHome: function() {
+        this.transitionto('/home');
+      },
+
+      toBackup: function() {
+        this.transitionto('/vault/backup');
+      },
+
+
+      toProfile: function() {
+        this.$.profile.init(function(){
+        this.transitionto('/profile');
+        }.bind(this));
+      },
+
+      toWalletview: function() {
+        this.transitionto('/walletview');
+      },
+
+      saveIdentity: function(e) {
+        //debugger;
+        this.identity = e.detail;
+        this.$.thevault.saveVault();
+      },
+
+    });
+  </script>
+
+</dom-module>

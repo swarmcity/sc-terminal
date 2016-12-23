@@ -1,0 +1,653 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="ac-helpers.html">
+<link rel="import" href="ac-sizeview.html">
+<link rel="import" href="ac-whisperer.html">
+<link rel="import" href="ac-config.html">
+<link rel="import" href="ac-web3.html">
+<link rel="import" href="ac-log.html">
+<link rel="import" href="ac-wallet.html">
+<link rel="import" href="ac-ipfs.html">
+
+<dom-module id="ac-tokensend">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+        box-sizing: border-box;
+        --balance-h1: 40px;
+        --balance-lineheight: 52px;
+        --coin-margins: 0px 0px 7px 6px;
+        --code-h2: 32px;
+        --code-lineheight: 36px;
+        --code-small: 10px;
+        width: 100%;
+
+      }
+
+      h1 {
+        @apply(--ac-font-h1);
+        text-align: center;
+        font-size: var(--balance-h1);
+        line-height: var(--balance-lineheight);
+      }
+
+
+      h2 {
+        @apply(--ac-font-h2);
+        @apply(--opensans-semibold);
+        font-size: var(--code-h2);
+        line-height: var(--code-lineheight);
+      }
+
+      p {
+        @apply(--ac-font-body1);
+      }
+
+      small {
+        @apply(--ac-font-small);
+        @apply(--opensans-semibold);
+        font-size: var(--code-small);
+      }
+
+      .red {
+        color: var(--ac-red);
+      }
+
+      .blue {
+        color: var(--ac-blue);
+      }
+      .yellow {
+        color: var(--ac-yellow);
+      }
+
+      .total {
+        width: 100%;
+
+        @apply(--layout-vertical);
+      }
+
+      .sendcoiners {
+        width: 100%;
+        box-sizing: border-box;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+      }
+
+
+
+
+      .flex {
+        @apply(--layout-horizontal);
+        @apply(--layout-flex);
+      }
+
+
+     #sendcoins {
+      width: 100%;
+
+      box-sizing: border-box;
+     }
+
+     #receivecoins {
+      width: 100%;
+      max-width: 500px;
+      box-sizing: border-box;
+      @apply(--layout-horizontal);
+      @apply(--layout-center-center);
+     }
+
+
+     .whitespace {
+      width: 100%;
+      height: 20px;
+     }
+
+     .code {
+      margin: 0px 0px 0px 0px;
+     }
+
+     .code h2 {
+      padding: 10px;
+      box-sizing: border-box;
+      color: var(--ac-yellow);
+      @apply(--montserrat-reg);
+
+     }
+
+
+
+     .announce {
+      width: 100%;
+      max-width: 500px;
+      min-height: 220px;
+      box-sizing: border-box;
+      @apply(--layout-horizontal);
+      @apply(--layout-center-center);
+      @apply(--layout-wrap);
+
+     }
+
+    .announce ac-button {
+      margin-left: 10px;
+    }
+
+     .marginbtm {
+      margin-left: 15px;
+      margin: var(--coin-margins);
+     }
+
+
+      .initbtns {
+/*        @apply(--layout-vertical);
+        @apply(--layout-center-center);*/
+
+      }
+
+      .initbtns ac-button {
+        width: 200px;
+        @apply(--base-shadow-and-inset);
+      }
+
+      ac-shortcode {
+        width: 200px;
+      }
+
+      .initbtns p {
+        color: var(--ac-yellow);
+        @apply(--montserrat-semibold);
+        margin-top:10px;
+        border-bottom: 1px dashed var(--ac-yellow);
+        font-size: 16px;
+      }
+
+      .confirmbtns {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-end-justified);
+        margin-top: 15px;
+      }
+
+      .confirmbtnsmobile {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        margin-top: 15px;
+      }
+
+        .confirmbtn {
+          margin: 0px 2px 0px 2px;
+        }
+
+        .sender {
+          margin: 0px 0px 5px 0px;
+        }
+
+      .verticcenter {
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+      }
+
+      .verticstart {
+        @apply(--layout-vertical);
+        @apply(--layout-start);
+        @apply(--layout-center-justified);
+      }
+      .horizontcenter {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+      .horizontend {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+        @apply(--layout-end);
+      }
+
+      .horizontcenterwrap {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-center-center);
+      }
+      .horizontstartwrap {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-start-justified);
+      }
+
+
+
+      .amount {
+        width: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-end-justified);
+        @apply(--layout-end);
+      }
+      .amount ac-input {
+        width: 80%;
+
+      }
+
+      .amount p {
+        @apply(--montserrat-bold);
+        font-size: 11px;
+        padding:0px 10px;
+      }
+
+      .sendinputter {
+        width: 250px;
+        overflow: hidden;
+      }
+
+
+      .item {
+        width: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+        /*@apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-center-justified);
+        @apply(--layout-end);*/
+        text-align: center;
+        box-sizing: border-box;
+        padding: 2vh 0px 2vh 0px;
+
+        border-top: 2px dotted rgba(255,255,255,0.05);
+        border-bottom: 2px dotted rgba(255,255,255,0.05);
+      }
+
+
+
+      .receiver {
+        display: inline-block;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        margin: 2vh 0px 2vh 0px;
+
+      }
+
+      .receiveravatar {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .receiveravatar img {
+        width: 100%;
+        height: 100%;
+      }
+
+      .receiverusername {
+        @apply(--layout-vertical);
+        @apply(--layout-start);
+        @apply(--layout-center-justified);
+        max-width: 80%;
+        margin-left: 10px;
+      }
+
+      .pubkey {
+        opacity: 0.5;
+        font-size: 12px;
+        line-height: 14px;
+      }
+
+
+
+    </style>
+    <ac-ipfs id="ipfs"></ac-ipfs>
+    <ac-helpers id="helpers"></ac-helpers>
+    <ac-config
+      id="config"
+      web3host="{{web3host}}"
+      ipfs="{{ipfs}}"
+      etherscanroot="{{etherscanroot}}"
+      tokencontractaddress="{{tokencontractaddress}}"
+      ></ac-config>
+
+    <ac-web3
+      host="{{web3host}}"
+      web3="{{web3}}"></ac-web3>
+
+    <ac-whisperer
+      web3="{{web3}}"
+      topic="{{topic}}"
+      progress="{{progress}}"
+      listeninterval="{{listeninterval}}"
+      decimals="5"
+      on-message-received="handlewhispermessage"
+      id="whisper"></ac-whisperer>
+
+    <div class="total verticcenter">
+      <template is="dom-if" if="{{_is(sendcoinstate,'init')}}">
+        <div class="initbtns verticcenter">
+          <ac-button txtbtn txtcolor="red" bg="btncolor" on-tap="tosendform" class="sender">send ARC</ac-button>
+
+        </div>
+      </template>
+      <div class="sendcoiners">
+
+          <template is="dom-if" if="{{_is(sendcoinstate,'sendform')}}">
+            <div class="sendinputter ">
+              <div class="amount">
+              <ac-input color="red" class="sendinput" autofocus type="number" inputvalue="{{amount}}" bind-value="{{amount}}" label="Amount"></ac-input>
+              <p class="red">ARC</p>
+            </div>
+            </div>
+            <ac-input color="red" class="sendinputter" type="number" inputvalue="{{pincode}}" bind-value="{{pincode}}" label="Shortcode receiver"></ac-input>
+            <div class="whitespace"></div>
+            <div class="confirmbtnsmobile">
+              <ac-button icon="ac-decline" on-tap="togglesendcoins" small class="confirmbtn" bg="base" txtcolor="red"></ac-button>
+              <ac-button on-tap="tosearchingforpeer" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
+            </div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+          </template>
+
+          <template is="dom-if" if="{{_is(sendcoinstate,'balancelow')}}">
+            <div class="announce">
+              <p>Your balance is too low for this transaction.</p>
+              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+            </div>
+          </template>
+
+          <template is="dom-if" if="{{_is(sendcoinstate,'notvalidcode')}}">
+            <div class="announce">
+              <p>The givven shortcode is not valid.</p>
+              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+            </div>
+          </template>
+
+          <template is="dom-if" if="{{_is(sendcoinstate,'searchingforpeer')}}">
+            <div class="announce">
+              <ac-loader small color="blue">Searching for your peer</ac-loader>
+              <ac-button verysmall bg="btncolor" txtcolor="blue" icon="ac-decline" confirmsmall on-tap="cancelsend" class="closebtn"></ac-button>
+            </div>
+          </template>
+
+          <template is="dom-if" if="{{_is(sendcoinstate,'nopeer')}}">
+            <div class="announce">
+              <p>We can not find your peer.</p>
+              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+            </div>
+          </template>
+
+          <template is="dom-if" if="{{_is(sendcoinstate,'confirmtx')}}">
+            <div class="announce">
+              <div class="item red">
+                <p>You're sending</p>
+                <p>
+                  <span class="amount">{{amount}} ARC</span>
+                  to
+                </p>
+                <div class="receiver">
+                  <div class="receiveravatar">
+                    <img src="{{receiver.avatarurl}}"></div>
+                  <div class="receiverusername">
+                    <p>{{receiver.username}}</p>
+                    <p class="pubkey">{{receiver.account}}</p>
+                  </div>
+                </div>
+                <div class="confirmbtnsmobile">
+                  <ac-button verysmall bg="btncolor" txtcolor="red" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+                  <ac-button on-tap="tosendcoins" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
+                </div>
+            <div class="whitespace"></div>    
+            </div>
+            <div class="whitespace"></div>
+
+            </div>
+          </template>
+
+          <template is="dom-if" if="{{_is(sendcoinstate,'sendcoins')}}">
+            <div class="announce">
+              <p>Your transaction is being executed.</p>
+              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+            </div>
+          </template>
+
+
+
+      </div>
+
+      <template is="dom-repeat" items="{{history}}">
+        <div class="avatar" id="avatar">
+          <img src="{{item.avatar}}"></div>
+        <p>
+          <span>{{item.receiver}}</span>
+          &Delta;
+          <span>{{item.amount}}</span>
+        </p>
+
+      </template>
+
+    </div>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'ac-tokensend',
+
+      properties: {
+        identity: {
+          type: Object,
+        },
+
+        account: {
+          type:String,
+        },
+
+        sendcoinstate: {
+          type: String,
+        },
+
+        topic: {
+          type: Number,
+        },
+
+        collsclosed: {
+          type: Boolean,
+          value: true
+        },
+
+        sendcollsclosed: {
+          type: Boolean,
+          value: true
+        },
+
+        receivecollsclosed: {
+          type: Boolean,
+          value: true
+        },
+
+        history: {
+          type: Array,
+          value: []
+        },
+
+
+      },
+
+      _pincode: function() {
+        // console.log(this.pincode);
+      },
+
+      ready: function(){
+//        this._getARCbalance();
+        var self = this;
+
+        // window.setInterval(function(){
+        //   self._getARCbalance();
+        // }, 5000);
+
+
+        this.sendcoinstate = 'init';
+        this.password = sessionStorage.getItem('ac-password');
+      },
+
+
+      tosendform: function(){
+        this.sendcoinstate = 'confirmtx';
+      },
+
+      // activatereceivecoins: function(){
+      //   this.listeninterval = 60;
+      // },
+
+      // deactivatereceivecoins: function(){
+      //   this.listeninterval = 0;
+      // },
+
+      attached: function(){
+//        var self=this;
+        // console.log('ac-tokensend attached');
+        // console.log('my account',this.account);
+      },
+
+      cancelsend: function(){
+        this.sendcoinstate = 'init';
+        this.reset();
+      },
+
+      reset: function(){
+        this.amount = '';
+        this.pincode = '';
+        this.receiver = null;
+      },
+
+      tosendcoins: function() {
+        var self = this;
+        this.sendcoinstate = 'sendcoins';
+        this.transfer(this.amount, this.$.helpers.fixaddress(self.receiver.account), function(err, result) {
+          self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
+            'command': 'confirmtransfer',
+            'amount': self.amount,
+            'avatarhash': self.identity.avatarhash,
+            'username': self.identity.username,
+            'txhash': result
+          }));
+
+        });
+      },
+
+      // receiving side
+      handlewhispermessage: function(m) {
+        var self = this;
+        var message = JSON.parse(m.detail.message);
+        console.log('incoming tokentransfer msg: ', message);
+        switch (message.command) {
+          case 'userinfo':
+//            var transferamount = this.amount;
+
+            this.receiver = message;
+            this.receiver.avatarurl = this.$.ipfs.geturl(this.receiver.avatarhash);
+            this.receiver.from = m.detail.from;
+            this.sendcoinstate = 'confirmtx';
+            // this.transfer(transferamount, this.$.helpers.fixaddress(message.pubkey), function(err, result) {
+            //   console.log('Transfer started. Sending confirmation to ',m.detail.from);
+            //   self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
+            //     'command': 'confirmtransfer',
+            //     'amount': transferamount,
+            //   }));
+            // });
+
+            break;
+          case 'confirmtransfer':
+            // TODO : show transfer in history...
+            console.log('transfer confirmed...', message.amount, 'received');
+
+            break;
+          default:
+            console.log('unknown message', message);
+        }
+      },
+
+
+
+      tosearchingforpeer: function(){
+        var self = this;
+        this.$.whisper.whisperpost(this.pincode, JSON.stringify({
+                'command': 'requestuserinfo',
+              }));
+        this.sendcoinstate = 'searchingforpeer';
+      },
+
+      clearInputs: function(){
+        this.pincode = '';
+        this.amount = '';
+      },
+
+
+
+    _is: function(a, b) {
+      if (b === undefined){
+        b = true;
+      }
+      return a === b;
+    },
+
+    togglesendcoins: function() {
+        this.sendcoinstate= 'init';
+    },
+
+
+      transfer: function(amount,pubkey,cb){
+
+        var self = this;
+
+        this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
+        this.importHref(this.contracturl, function(e) {
+          this.contractjson = JSON.parse(e.target.import.body.innerText);
+             self.web3.eth.getGasPrice(function(err, result){
+            var gasPrice = result.toNumber(10);
+          console.log('gasprice: ', gasPrice);
+
+          var MyContract = self.web3.eth.contract(self.contractjson.abi);
+          var myContractInstance = MyContract.at(self.$.config.tokencontractaddress);
+            console.log('doing transfer of ',amount,' LC to: ', pubkey, 'from: ', self.account);
+            myContractInstance.transfer.sendTransaction(pubkey, amount, {
+              from: self.$.helpers.fixaddress(self.account),
+              gasPrice: gasPrice,
+              gasLimit: 3000000,
+              gas: 2000000
+            }, function(err, result){
+              console.log(err, result);
+              var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(self.account));
+                self.arcbalance = coinbalance;
+                if (cb){
+                  cb(err,result);
+                }
+            });
+
+          });
+        });
+
+        this.clearInputs();
+        var sendcoins = self.$.sendcoins;
+        sendcoins.toggle();
+        this.collsclosed=!this.collsclosed;
+        this.sendcoinstate = 'first';
+      },
+
+
+
+    });
+  })();
+  </script>
+</dom-module>

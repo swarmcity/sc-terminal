@@ -1,0 +1,791 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html">
+
+<link rel="import" href="ac-sizeview.html">
+<link rel="import" href="ac-avatar.html">
+<link rel="import" href="ac-ipfs.html">
+<link rel="import" href="ac-shortcode.html">
+<link rel="import" href="ac-spinner.html">
+<link rel="import" href="ac-preferences.html">
+
+<link rel="stylesheet" href="../bower_components/Croppie/croppie.css" />
+<script src="../bower_components/Croppie/croppie.js"></script>
+
+<dom-module id="ac-profile">
+  <!-- Defines the element's style and local DOM -->
+  <template>
+    <style>
+  :host {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  h1 {
+    @apply(--ac-font-h1);
+  }
+
+  h2 {
+    @apply(--ac-font-h2);
+  }
+
+  h3 {
+    @apply(--ac-font-h3);
+  }
+
+  h4 {
+    @apply(--ac-font-h4);
+    margin: 0px;
+  }
+  p {
+    @apply(--ac-font-body1);
+  }
+
+  .total {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: var(--ac-base);
+    overflow-y: scroll;
+  }
+
+  .flex {
+    width: 100%;
+    @apply(--layout-flex);
+  }
+
+  .whitespace {
+    width: 100%;
+    height: 20px;
+  }
+
+  .profilepic {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5vh 0px 2vh 0px;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
+  }
+
+  .profilepicinner {
+    @apply(--layout-vertical);
+    @apply(--layout-start-justified);
+    @apply(--layout-end);
+  }
+
+  .profilepicinner ac-button {
+    z-index: 12;
+    margin-top: -20px;
+    @apply(--base-structure-and-inset);
+  }
+
+  .uploadbtn {
+
+  }
+
+  .profilecontent {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0vh 0px 0px 0px;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
+  }
+
+  .profileusername {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 0px 7vh 0px;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
+  }
+
+
+  .profileusername ac-input {
+    width: 60%;
+    max-width: 260px;
+    overflow: hidden;
+  }
+
+  .profileusername p {
+    color: white;
+  }
+
+  .scrollcontainer {
+    width: 100%;
+    background-color: var(--ac-base);
+  }
+
+  .confirmbtns {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px;
+    @apply(--layout-horizontal);
+    @apply(--layout-center-center);
+  }
+
+  .confirmbtns ac-button {
+    margin: 2px;
+  }
+
+  .confirmbtns ac-icon {
+    margin-right: 4px;
+  }
+
+  .topback {
+    width: 100%;
+    background-color: var(--ac-base);
+    @apply(--layout-horizontal);
+    @apply(--layout-center-center);
+    box-sizing: border-box;
+    padding: 5vw 5vw 0px 5vw;
+    height: 10vh;
+  }
+
+  .topback ac-icon {
+    opacity: 0.5;
+  }
+  .topback ac-button {
+    @apply(--base-shadow);
+    opacity: 0.85;
+  }
+
+
+  .profilepart {
+    width: 100%;
+    border-bottom: 2px dotted rgba(255,255,255,0.05);
+    box-sizing: border-box;
+    padding: 1vh 0px 1vh 0px;
+  }
+
+  .topdots {
+    border-top: 2px dotted rgba(255,255,255,0.05);
+  }
+
+  .collapserz {
+    width: 100%;
+    margin: 20px 0px 20px 0px;
+  }
+
+
+  .verticcenter {
+    width: 100%;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    box-sizing: border-box;
+    padding: 5vh 0px 5vh 0px;
+  }
+
+
+  .pubkey {
+    margin-top: 6px;
+    @apply(--layout-horizontal);
+    @apply(--layout-center-center);
+  }
+  .pubkey p {
+    font-size: 13px;
+    line-height: 15px;
+    @apply(--montserrat-reg);
+    color: var(--ac-white);
+    opacity: 0.25;
+    text-align: center;
+  }
+
+
+
+  .pubhidden {
+    width: 60px;
+  }
+  .pubhidden p {
+    @apply(--ac-font-nowrap);
+  }
+  .pubshown {
+    width: 70%;
+  }
+  .pubshown p {
+    word-break: break-all;
+  }
+  .logout ac-button {
+    @apply(--base-shadow);
+  }
+
+  .avataredit {
+    height: 100vh;
+  }
+  .hidden {
+    display:none;
+  }
+
+  neon-animated-pages {
+    height: 90vh;
+  }
+
+  .yellow {
+    color: var(--ac-yellow);
+  }
+  .red {
+    color: var(--ac-red);
+  }
+  .blue {
+    color: var(--ac-blue);
+  }
+  .white {
+    color: var(--ac-white);
+  }
+
+  .centertxt {
+    text-align: center;
+  }
+
+
+  .avatarloading {
+    width: 120px;
+    height: 120px;
+    min-width: 120px;
+    min-height: 120px;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0.75);
+    position: fixed;
+    z-index: 10;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+  }
+
+
+
+  .opacity {
+    opacity: 0.25;
+  }
+
+  .coll {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2vh 10vw 2vh 10vw;
+    transition: all 0.15s linear;
+  }
+  .coll h2 {
+    color: var(--ac-blue);
+    text-align: center;
+    @apply(--montserrat-light);
+    opacity: 1;
+    font-size: 14px;
+    line-height: 16px;
+    transition: all 0.15s linear;
+    margin: 0px;
+  }
+
+
+  .openedcoll {
+    padding: 3vh 10vw 3vh 10vw;
+
+  }
+
+  .openedcoll h2 {
+    opacity: 0.1;
+  }
+
+  .loggerout {
+    margin: 3vh 0px 0px 0px;
+
+    @apply(--layout-horizontal);
+    @apply(--layout-center-center);
+
+  }
+
+  .loggerout ac-button {
+        font-size: 14px;
+    @apply(--layout-horizontal);
+    @apply(--layout-center-center);
+    opacity: 0.25;
+  }
+
+  </style>
+
+    <ac-ipfs id="ipfs"></ac-ipfs>
+
+    <div class="total">
+      <div class="topback">
+        <span class="flex"></span>
+        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+  <!--       <ac-button icon="ac-logout2" bg="btncolor" txtcolor="blue" on-tap="logout" small>back</ac-button> -->
+      </div>
+
+      <neon-animated-pages selected="{{datastate}}" attr-for-selected="data-state" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
+
+        <neon-animatable data-state="view">
+          <div class="profilepic">
+            <div class="profilepicinner" on-tap="uploadfile">
+
+            <template is="dom-if" if="{{avatarloading}}">
+            <div class="avatarloading">
+              <ac-spinner color="yellow" small></ac-spinner>
+            </div>
+            </template>
+
+              <ac-avatar
+            id="currentavatar"
+            identity="{{identity}}"
+            pubkey="{{account}}"
+            mode="imgonly"
+            size="big"
+            ></ac-avatar>
+
+              <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
+              <ac-button icon="ac-upload" small bg="btncolor" txtcolor="yellow" id="uploadbtn"></ac-button>
+            </div>
+          </div>
+
+          <div class="profilecontent" id="profilecontent">
+
+            <div class="profileusername">
+              <ac-input color="white" label="username" type="input" on-change="usernameChange" bind-value="{{username}}" center inputvalue="{{username}}"></ac-input>
+              <iron-collapse id="collapse" opened="{{datachanged}}">
+                <div class="whitespace"></div>
+
+                <div class="confirmbtns">
+                  <ac-icon icon="ac-decline" iconcolor="white" on-tap="close" small>decline</ac-icon>
+                  <ac-button icon="ac-v" txtcolor="white" bg="btncolor" on-tap="confirm" small>confirm</ac-button>
+                </div>
+              </iron-collapse>
+
+              <div class$="pubkey {{pubwhat}}" on-tap="togglePub">
+                <p>{{pubkey}}</p>
+              </div>
+            </div>
+            <div class="flex"></div>
+
+            <div class="profilepart coll" id="preferencestotal">
+              <h2 on-tap="collapseMe" id="preferences">Preferences</h2>
+              <iron-collapse class="collapserz" id="preferencescollapser">
+               <ac-preferences place="center" prefselected={{prefselected}}></ac-preferences>
+              </iron-collapse>
+            </div>
+
+
+            <div class="profilepart coll" id="synctotal">
+            <h2 on-tap="collapseMe" id="sync">Sync with device</h2>
+              <iron-collapse class="collapserz" id="synccollapser">
+                <h4 class="white centertxt">7789</h4><br>
+                <p on-tap="collapseMe" class="white centertxt">Use this shortcode to sync with another device.</p>
+              </iron-collapse>
+            </div>
+
+            <div class="profilepart coll" id="backuptotal">
+              <h2 on-tap="collapseMe" id="backup">Create backup</h2>
+              <iron-collapse class="collapserz" id="backupcollapser">
+                <p on-tap="collapseMe" class="yellow">Het is al geruime tijd een bekend gegeven dat een lezer, tijdens het bekijken van de layout van een pagina, afgeleid wordt door de tekstuele inhoud. Het belangrijke punt van het gebruik van Lorem Ipsum is dat het uit een min of meer normale verdeling van letters bestaat, in tegenstelling tot "Hier uw tekst, hier uw tekst" wat het tot min of meer leesbaar nederlands maakt. Veel desktop publishing pakketten en web pagina editors gebruiken tegenwoordig Lorem Ipsum als hun standaard model tekst, en een zoekopdracht naar "lorem ipsum" ontsluit veel websites die nog in aanbouw zijn. Verscheidene versies hebben zich ontwikkeld in de loop van de jaren, soms per ongeluk soms expres (ingevoegde humor en dergelijke).</p>
+              </iron-collapse>
+            </div>
+
+<!--           <div class="loggerout">
+            <ac-button bg="white" txtcolor="base" small txtbtn>log out
+            <ac-icon icon="ac-logout" iconcolor="base" on-tap="exit" small></ac-icon>
+            </ac-button>
+          </div> -->
+
+          </div>
+      </neon-animatable>
+
+      <neon-animatable data-state="edit">
+        <div class="profilepic">
+          <div class="profilepicinner">
+            <div id="croppie"></div>
+
+
+              <div class="confirmbtns">
+                <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="setcurrentavatar_cancel" small>decline</ac-icon>
+                <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="setcurrentavatar" small>confirm</ac-button>
+              </div>
+
+<!--
+            <ac-button on-tap="setcurrentavatar_cancel" txtbtn txtcolor="blue" bg="btncolor" small>cancel</ac-button>
+            <ac-button on-tap="setcurrentavatar" txtbtn txtcolor="blue" bg="btncolor" small>save</ac-button> -->
+          </div>
+        </div>
+
+
+      </neon-animatable>
+    </neon-animated-pages>
+  </div>
+
+</template>
+
+<script>
+  Polymer({
+    is: 'ac-profile',
+
+    behaviors: [
+      Polymer.NeonSharedElementAnimatableBehavior
+    ],
+
+    properties: {
+      identity: {
+        type: String,
+        observer: '_identity',
+        notify: true
+      },
+
+      pubkey: {
+        type: String
+      },
+
+      pubwhat: {
+        type: String,
+        value: 'pubhidden'
+      },
+
+      datachanged: {
+        type: Boolean,
+        value: false
+      },
+
+      avatarloading: {
+        type: Boolean,
+        value: false
+      },
+
+      username: {
+        type: String,
+        observer: '_username'
+      },
+
+      sharedElements: {
+        type: Object,
+        value: function() {
+          return {
+            'hero': this.$.currentavatar,
+          }
+        }
+      },
+
+      shownbool: {
+        type: String,
+        value: 'random'
+      },
+
+      animationConfig: {
+        type: Object,
+        value: function() {
+          return {
+            'entry': [{
+              name: 'fade-in-animation',
+              node:this.$.profilecontent,
+              toPage: this,
+              timing: {
+                duration: 200
+              }
+            },{
+              name: 'fade-in-animation',
+              node:this.$.uploadbtn,
+              toPage: this,
+              timing: {
+                duration: 200
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                  duration: 200
+              }
+            }],
+
+            'exit': [{
+              name: 'fade-out-animation',
+              node:this.$.profilecontent,
+              fromPage: this,
+              timing: {
+                duration: 200
+              }
+            },{
+              name: 'fade-out-animation',
+              node:this.$.uploadbtn,
+              toPage: this,
+              timing: {
+                duration: 200
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 200
+              }
+              }]
+            }
+          },
+        }
+
+      },
+
+    ready: function() {
+      this.datastate = 'view';
+    },
+
+    attached: function(){
+      this.init();
+    },
+
+    init: function(cb){
+      try{
+        this.username = this.identity.username;
+        this.avatarhash = this.identity.avatarhash;
+      }catch(e){
+        console.log(e);
+        //
+      }
+      if (cb) cb();
+    },
+
+    uploadfile: function() {
+      document.querySelector('#avatarupload').click();
+    },
+
+    usernameChange: function() {
+
+      //this.identity.username = this.username;
+      // this.datachanged = true;
+    },
+
+    avatarChange: function(e) {
+      var input = e.target;
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          this.toCropper(e.target.result);
+        }.bind(this);
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+
+    _is: function(a, b) {
+      if (b === undefined) {
+        b = true;
+      }
+      return a === b;
+    },
+
+    // receive identity from data binder
+    _identity: function() {
+//      this.currentavatar = this.identity.avatarurl;
+    },
+
+    toCropper: function(image) {
+      this.datastate = 'edit';
+      this.currentavatar = image;
+      if (this.croppie && this.croppie.destroy) {
+        this.croppie.destroy();
+      }
+      this.croppie = new Croppie(this.$.croppie, {
+        viewport: {
+          width: 120,
+          height: 120,
+          type: 'circle'
+        },
+        boundary: {
+          width: 150,
+          height: 150
+        },
+        showZoomer: false
+          //enableOrientation: true
+      });
+      this.croppie.bind({
+        url: image,
+        orientation: 4
+      });
+    },
+
+    setcurrentavatar_cancel: function() {
+      this.datastate = 'view';
+      self.croppie.destroy();
+    },
+
+    setcurrentavatar: function() {
+      this.avatarloading = true;
+      var self = this;
+      this.croppie.result({
+        type: 'base64',
+        format: 'jpeg',
+        quality: 0.9
+      }).then(function(base64) {
+
+        // set the avatar to the dataURL.
+        this.currentavatar = base64;
+        this.datastate = 'view';
+
+        // now convert and save to IPFS in the background.
+        var base64data = base64.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
+        var imgbuffer = this.$.ipfs.ipfs.Buffer(base64data, 'base64');
+
+        this.$.ipfs.add(imgbuffer, function(err, result) {
+          console.log(err, result[0].hash);
+          //var hashurl = this.$.ipfs.geturl(result[0].hash);
+          self.avatarhash = result[0].hash;
+          self.avatarurl = this.$.ipfs.geturl(result[0].hash);
+          // self.datachanged = true;
+
+          self.fire('identity-update',{
+            username: self.username,
+            avatarhash: self.avatarhash
+          });
+          this.avatarloading = false;
+        }.bind(this));
+
+        // remove cropper
+        self.croppie.destroy();
+        // self.datachanged = true;
+
+      }.bind(this));
+
+    },
+
+    _sizeview: function() {
+      switch (this.sizeview) {
+        case 'phone':
+          this.align = 'verticcenter';
+          this.customStyle['--avatar-size'] = '90px';
+          console.log('YOOOOOOOO in profile ======', this.sizeview);
+
+          this.updateStyles();
+          break;
+        case 'desktop':
+          this.align = 'verticstart';
+          this.customStyle['--avatar-size'] = '130px';
+          console.log('YOOOOOOOO in profile ======', this.sizeview);
+
+          this.updateStyles();
+          break;
+        case 'xlarge':
+          this.align = 'verticstart';
+          this.customStyle['--avatar-size'] = '130px';
+          console.log('YOOOOOOOO in profile ======', this.sizeview);
+
+          this.updateStyles();
+          break;
+        default:
+          console.log("!!! ** Niks");
+      }
+    },
+
+    logout: function() {
+      this.fire('logout');
+//      sessionStorage.removeItem('ac-password');
+//      window.location = '/';
+    },
+    backupvault: function(){
+      this.fire('backup');
+    },
+
+    _username: function(newVal,oldVal) {
+      if (oldVal!==undefined){
+        this.datachanged = true;
+      console.log('dit komt van username', newVal, oldVal);
+
+      }
+
+      // console.log('dit komt van username', newVal, oldVal);
+
+      // this.datachanged = true;
+
+      // if (this.username != this.identity.username) {
+      //   var collapser = document.getElementById('collapse');
+      //   collapser.show();
+      // }
+      // if (this.username == this.identity.username) {
+      //   var collapser = document.getElementById('collapse');
+      //   collapser.hide();
+      // }
+    },
+
+    exit: function(){
+      this.datastate = 'view';
+      this.datachanged = false;
+      this.fire('exit');
+    },
+
+    confirm: function() {
+      this.set('identity.username', this.username);
+      this.datachanged = false;
+
+      this.fire('identity-update',{
+        username: this.username,
+        avatarhash: this.avatarhash
+      });
+      //this.fire('exit');
+
+    },
+
+    close: function() {
+      this.datachanged = false;
+    },
+
+    _datachanged: function() {
+      console.log('joooo');
+    },
+
+    _account: function() {
+      // console.log('joooo', this.account);
+    },
+
+    togglePub: function()  {
+      if (this.pubwhat == "pubhidden"){
+        this.pubwhat = "pubshown";
+      } else {
+        this.pubwhat = "pubhidden";
+      }
+    },
+
+    collapseMe: function(e)  {
+      var item = e.target.parentNode.id;
+
+      var itemp = e.target.id;
+      var collapsid = itemp + 'collapser';
+      var collapsdis = document.getElementById(collapsid);
+      collapsdis.toggle();
+
+      var itemtotal = document.getElementById(item);
+      if (collapsdis.opened){
+       itemtotal.classList.add("openedcoll");
+      } else {
+       itemtotal.classList.remove("openedcoll");
+      }
+    },
+
+    closeMe: function()  {
+      var collapsid = this.shownbool + 'collapser';
+      var collapsdis = document.getElementById(collapsid);
+      collapsdis.toggle();
+      this.shownbool= 'random';
+    },
+
+
+
+
+    // savenewUsername: function() {
+    //   var collapser = document.getElementById('collapse');
+    //   console.log("this is it", collapser);
+    //   collapser.toggle();
+    // },
+
+    // backtohome: function() {
+    //   this.datastate = 'view';
+    //   this.fire('exit');
+    // },
+
+    // toggleupload: function() {
+    //   this.$.ipfsupload.click();
+    // }
+
+  });
+</script>
+
+</dom-module>

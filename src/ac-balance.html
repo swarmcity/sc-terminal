@@ -1,0 +1,290 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="ac-sizeview.html">
+
+<dom-module id="ac-balance">
+  <template>
+  <style>
+  :host {
+    display: inline-block;
+    --balance-h1:60px;
+    --balance-h1-lineheight:72px;
+    --arc-h1:60px;
+    --arc-h1-lineheight:72px;
+    --prefcurr-p:22px;
+    --prefcurr-p-lineheight:24px;
+    --prefcurr-margins: 0px 0px 8px 14px;
+    min-width: 50%;
+
+  }
+
+  .arc-balance {
+    width: 100%;
+  }
+
+  .verticcenter {
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+  }
+  .verticstart {
+    @apply(--layout-vertical);
+    @apply(--layout-start);
+    @apply(--layout-center-justified);
+  }
+  .horizontcenter {
+    @apply(--layout-horizontal);
+    @apply(--layout-center-center);
+  }
+  .horizontend {
+    @apply(--layout-horizontal);
+    @apply(--layout-start-justified);
+    @apply(--layout-end);
+  }
+
+  .horizontstartwrap {
+    @apply(--layout-horizontal);
+    @apply(--layout-wrap);
+    @apply(--layout-start-justified);
+
+  }
+
+  .horizontcenterwrap {
+    @apply(--layout-horizontal);
+    @apply(--layout-wrap);
+    @apply(--layout-center-center);
+  }
+
+  h1 {
+    @apply(--montserrat-hairline);
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
+    -webkit-margin-start:0em;
+    -webkit-margin-end:0em;
+    margin: 0px 0px 0px 0px;
+    padding: 0px;
+
+    font-size: var(--balance-h1);
+    line-height: var(--balance-h1-lineheight);
+
+    color: var(--ac-red);
+    text-shadow: -1px 1px 8px rgba(249,85,85,0.1), 1px -1px 18px rgba(249,85,85,0.1);
+
+  }
+
+  p {
+    @apply(--montserrat-light);
+    font-size: var(--prefcurr-p);
+    line-height: var(--prefcurr-p-lineheight);
+    -webkit-margin-before:0px;
+    -webkit-margin-after:0px;
+    -webkit-margin-start:0em;
+    -webkit-margin-end:0em;
+    margin: 0px;
+
+    color: var(--ac-red);
+    opacity: 0.75;
+  }
+
+  /*      .balancetotal {
+  @apply(--layout-horizontal);
+  @apply(--layout-center-justified);
+  @apply(--layout-end);
+  margin: 0px;
+  padding: 0px;
+
+  }*/
+
+  .balancetotal:hover {
+    cursor: pointer;
+  }
+
+  .ARCletters {
+    font-size: var(--arc-h1);
+    line-height: var(--arc-h1-lineheight);
+    margin-left: 6px;
+    @apply(--montserrat-light);
+
+  }
+
+
+  .prefcurrletters {
+    margin: var(--prefcurr-margins);
+    opacity: 0.75;
+  }
+
+
+  .prefcurrletters p {
+    color: var(--ac-red);
+    opacity: 0.5;
+  }
+
+  .extramargin {
+    margin: 0px 10px 0px 10px;
+  }
+
+  .refrbtn {
+    margin: 0px 0px 0px 10px;
+  }
+
+
+
+
+  </style>
+  <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+
+  <iron-ajax
+  url="https://api.coinmarketcap.com/v1/ticker/arcade-token/"
+  on-response="handleResponse"
+  auto>
+</iron-ajax>
+
+<iron-ajax
+url="http://api.fixer.io/latest?base=USD"
+on-response="handleResponseUSDEUR"
+auto>
+</iron-ajax>
+
+<div class$="arc-balance {{align}}">
+  <div class="horizontend">
+    <h1>{{arcbalance}}</h1><h1><span class="ARCletters"> ARC</span>
+    <!-- <ac-button class="refrbtn" veryverysmall icon="refresh1" txtcolor="red" bg="btncolor" on-tap="fireRefresh"></ac-button> --></h1>
+  </div>
+    <template is="dom-if" if="{{wereinwallet}}">
+      <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
+      <div class="horizontend prefcurrletters">
+          <p>({{prefcurrency}} {{balanceref}})</p>
+        </div>
+      </template>
+      <template is="dom-if" if="{{_is(sizeview,'phone')}}">
+        <div class="verticcenter prefcurrletters">
+          <p>{{prefcurrency}} {{balanceref}}</p>
+        </div>
+      </template>
+    </template>
+
+</div>
+
+</template>
+
+<script>
+Polymer({
+
+  is: 'ac-balance',
+
+  properties: {
+    arcbalance: {
+      type: Number,
+      value: 440,
+      observer: '_arcbalance'
+    },
+    balanceref: {
+      type: Number,
+      value: 44,
+    },
+    prefcurrency: {
+      type: String,
+      value: '$',
+    },
+    sizeview: {
+      type: String,
+      observer: '_sizeview'
+    },
+    align: {
+      type: String,
+    },
+    wereinwallet: {
+      type: Boolean,
+      value: false
+    }
+  },
+
+  ready: function() {
+  },
+
+  handleResponse: function(e) {
+    this.priceusd = e.detail.response[0].price_usd;
+    this.convertcurrency(this.arcbalance);
+  },
+
+  handleResponseUSDEUR: function(e) {
+    this.eurusd = e.detail.response.rates.EUR;
+  },
+
+  _arcbalance: function() {
+    var charcount = this.arcbalance.toString().length;
+    this.balancesize = charcount * this.basesize;
+    this.balanceref = this.convertcurrency(this.arcbalance);
+  },
+
+  convertcurrency: function(e) {
+    if(this.priceusd && this.arcbalance) {
+      var x = e / this.priceusd;
+      //console.log(x);
+      this.balanceref = this.arcbalance * this.priceusd;
+      this.balanceref = this.balanceref.toFixed(2);
+      this.eurref = this.balanceref * this.eurusd;
+      this.eurref = this.eurref.toFixed(2);
+      return x.toFixed(2);
+    }
+  },
+
+  _is: function(a, b) {
+    if (b === undefined){
+      b = true;
+    }
+    //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
+    return a === b;
+  },
+
+  _sizeview: function(){
+    switch(this.sizeview) {
+      case 'phone':
+      this.customStyle['--balance-h1'] = '80px';
+      this.customStyle['--balance-h1-lineheight'] = '92px';
+      this.customStyle['--arc-h1'] = '20px';
+      this.customStyle['--arc-h1-lineheight'] = '24px';
+      this.customStyle['--prefcurr-p'] = '16px';
+      this.customStyle['--prefcurr-p-lineheight'] = '18px';
+      this.customStyle['--prefcurr-margins'] = '0px';
+
+      this.align = 'verticcenter';
+      this.updateStyles();
+      break;
+      case 'desktop':
+      this.customStyle['--balance-h1'] = '90px';
+      this.customStyle['--balance-h1-lineheight'] = '100px';
+      this.customStyle['--arc-h1'] = '24px';
+      this.customStyle['--arc-h1-lineheight'] = '26px';
+      this.customStyle['--prefcurr-p'] = '24px';
+      this.customStyle['--prefcurr-p-lineheight'] = '26px';
+      this.customStyle['--prefcurr-margins'] = '0px 0px 8px 14px';
+
+      this.align = 'horizontstartwrap';
+      this.updateStyles();
+      break;
+      case 'xlarge':
+      this.customStyle['--balance-h1'] = '112px';
+      this.customStyle['--balance-h1-lineheight'] = '120px';
+      this.customStyle['--arc-h1'] = '24px';
+      this.customStyle['--arc-h1-lineheight'] = '26px';
+      this.customStyle['--prefcurr-p'] = '24px';
+      this.customStyle['--prefcurr-p-lineheight'] = '26px';
+      this.customStyle['--prefcurr-margins'] = '0px 0px 8px 14px';
+
+      this.align = 'horizontstartwrap';
+      this.updateStyles();
+      break;
+      default:
+      console.log("!!! ** Niks");
+    }
+  },
+
+  fireRefresh: function(){
+    this.fire('refresh');
+  }
+
+});
+</script>
+</dom-module>

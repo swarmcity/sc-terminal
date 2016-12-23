@@ -1,0 +1,195 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+
+
+<dom-module id="ac-preferences">
+  <template>
+    <style>
+    :host {
+      display: block;
+      width: 100%;
+      height: 100%;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    }
+
+    h1 {
+      @apply(--ac-font-h1);
+    }
+
+    h2 {
+      @apply(--ac-font-h2);
+      @apply(--montserrat-light);
+      font-size: 18px;
+    }
+
+    h3 {
+      @apply(--ac-font-h3);
+    }
+
+    h4 {
+      @apply(--ac-font-h4);
+      margin: 0px;
+    }
+    p {
+      @apply(--ac-font-body1);
+    }
+
+    .total {
+      display: block;
+      width: 80%;
+    }
+
+    .yellow {
+      color: var(--ac-yellow);
+    }
+    .red {
+      color: var(--ac-red);
+    }
+    .blue {
+      color: var(--ac-blue);
+    }
+    .white {
+      color: var(--ac-white);
+    }
+
+
+    .bold {
+      @apply(--montserrat-bold);
+    }
+
+    .centertxt {
+      text-align: center;
+    }
+
+
+  .verticcenter {
+    width: 100%;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+  }
+
+  .verticstart {
+    @apply(--layout-vertical);
+    @apply(--layout-center-justified);
+    @apply(--layout-start);
+  }
+
+
+  .horizontcenter {
+    width: 100%;
+    @apply(--layout-horizontal);
+    @apply(--layout-start-justified);
+    @apply(--layout-center);
+  }
+
+  iron-selector {
+/*    width: 100%;*/
+  }
+
+  .prefitem {
+    @apply(--layout-horizontal);
+    @apply(--layout-start-justified);
+    @apply(--layout-start);
+    box-sizing: border-box;
+    min-height: 30px;
+    opacity: 0.9;
+
+  }
+
+  .prefitem p {
+    margin: 4px;  
+  }
+
+  .prefitem ac-icon {
+    opacity: 0.05;
+  }
+
+  .iron-selected ac-icon  {
+    opacity: 1;
+    box-sizing: border-box;
+    padding: 0px;
+  }
+  .iron-selected {
+    opacity: 1;
+    box-sizing: border-box;
+    padding: 0px;
+  }
+  .iron-selected p {
+    @apply(--montserrat-bold);
+  }
+
+  .opy {
+    opacity: 0.65;
+    margin-bottom: 10px;
+    font-size: 20px;
+    @apply(--montserrat-ultralight);
+
+  }
+
+
+
+
+    </style>
+    <template is="dom-if" if="{{_is(place,'center')}}">
+      <div class="total verticstart">
+        <p class="white opy">Compare ARC-tokens to</p>
+        <div class="white">
+        <iron-selector attr-for-selected="name" selected="{{prefselected}}">
+        <div class="prefitem" name="USD">
+          <ac-icon icon="ac-v" iconcolor="yellow" small></ac-icon>
+          <p>USD ($)</p>
+        </div>
+
+        <div class="prefitem" name="EURO">
+          <ac-icon icon="ac-v" iconcolor="yellow" small></ac-icon>
+          <p>EURO (€)</p>
+        </div>
+
+        <div class="prefitem" name="ETH">
+          <ac-icon icon="ac-v" iconcolor="yellow" small></ac-icon>
+          <p>ETH</p>
+        </div>
+
+        </iron-selector>
+        </div>
+      </div>
+    </template>
+
+
+
+<!-- Preferences:
+- Language
+- Preferred relative currency -->
+
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'ac-preferences',
+
+      properties: {
+        place: {
+          type: String
+        },
+        prefselected: {
+          type: String,
+          value: 'USD',
+          notify: true
+        },
+      },
+
+    _is: function(a, b) {
+      if (b === undefined) {
+        b = true;
+      }
+      return a === b;
+    },
+    });
+  </script>
+</dom-module>

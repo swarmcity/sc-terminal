@@ -1,0 +1,65 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="ac-config">
+  <script>
+    Polymer({
+      is: 'ac-config',
+      properties: {
+        ipfs: {
+          type: Object,
+          notify: true
+        },
+        web3host: {
+          type: String,
+          notify:true
+        },
+        etherscanroot: {
+          type: String,
+          notify:true
+        },
+        tokencontractaddress: {
+          type: String,
+          notify: true
+        }
+      },
+
+      ready: function(){
+      
+        var environment = 'livenet';
+
+        switch (environment){
+          case 'testnet':
+
+            this.ipfs = {
+              host: 'ipfs.arcadecity.world',
+              protocol: 'https'
+            };
+
+            this.web3host = 'https://eth.arcadecity.world:8545';
+            this.etherscanroot = 'https://localhost/';
+            this.tokencontractaddress = '0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5'
+
+            break;
+          case 'ropsten':
+
+            break;
+          case 'livenet':
+            
+            this.ipfs = {
+              host: 'ipfs.arcadecity.world',
+              protocol: 'https'
+            };
+
+            this.web3host = 'http://faucet.ma.cx:8546/';
+            this.etherscanroot = 'https://etherscan.io/';
+            this.tokencontractaddress = '0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5'
+            break;
+
+          default:
+            throw new Error('no environment defined.');
+        }
+
+      }
+    });
+  </script>
+</dom-module>

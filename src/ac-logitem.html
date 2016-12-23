@@ -1,0 +1,344 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/ac-loader/ac-loader.html">
+
+<link rel="import" href="ac-sizeview.html">
+
+<dom-module id="ac-logitem">
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+        --amount-fontsize: 32px;
+      }
+
+      h1 {
+        @apply(--ac-font-h1);
+      }
+
+      h2 {
+        @apply(--ac-font-h2);
+      }
+
+      p {
+        @apply(--ac-font-body1);
+      }
+
+      small {
+        @apply(--ac-font-small);
+      }
+
+      .yellow {
+        color: var(--ac-yellow);
+      }
+
+      .red {
+        color: var(--ac-red);
+      }
+
+      .blue {
+        color: var(--ac-blue);
+      }
+
+      .green {
+        color: var(--ac-green);
+      }
+
+      .item {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 20px 10px 20px 10px;
+        border-bottom: 2px dotted rgba(255,255,255,0.05);
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+
+
+      .flex {
+        @apply(--layout-flex);
+      }
+
+
+      .amount {
+        margin-right: 15px;
+      }
+
+      .amount p, .amountmobile p {
+        color: var(--ac-red);
+        font-size: var(--amount-fontsize);
+      }
+
+
+      .fromto {
+        width: 100%;
+        height: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-end);
+        @apply(--layout-start-justified);
+
+        box-sizing: border-box;
+        padding: 10px 0px 0px 0px;
+      }
+
+      .fromto p {
+        color: rgba(255,255,255,1);
+        font-size: 12px;
+        line-height: 14px;
+      }
+
+
+      .pendingcss p {
+        opacity: 1;
+      }
+
+      .completecss p {
+        color: rgba(255,255,255,1);
+        opacity: 0.25;
+      }
+
+      .errorcss p {
+        color: rgba(255,255,255,1);
+        opacity: 0.25;
+      }
+
+      .completedamount p {
+          font-size: 24px;
+          line-height: 8px;
+      }
+
+      .ARCletters {
+        font-size: 12px;
+        margin-left: 5px;
+
+      }
+
+      .status {
+        /*width: 25%;*/
+      }
+
+      .status p {
+        font-size: 16px;
+      }
+
+      .complete {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+      .complete p {
+        color: var(--ac-blue);
+      }
+
+      .pending {
+        /*opacity: 0.7; */
+      }
+      .error p {
+        color: var(--ac-base);
+        box-sizing: border-box;
+        padding: 0px 5px 0px 5px;
+        background-color: var(--ac-blue);
+        @apply(--montserrat-semibold);
+      }
+
+      .bold {
+        @apply(--montserrat-semibold);
+      }
+
+
+
+      /* ALL MOBILE CSS */
+      .itemmobile {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 20px 10px 20px 10px;
+        border-bottom: 2px dotted rgba(255,255,255,0.05);
+        @apply(--layout-vertical);
+        @apply(--layout-start);
+        @apply(--layout-center-justified);
+      }
+
+      .amountandstatus {
+        width: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+
+      .fromtomobile {
+        width: 85%;
+        box-sizing: border-box;
+        padding: 4px 0px 0px 28px;
+      }
+      .fromtomobile p {
+        color: rgba(255,255,255,1);
+        font-size: 10px;
+        line-height: 12px;
+      }
+
+    </style>
+    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+
+
+
+    <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
+    <!-- The whole SHABANG when it's NOT mobile starts here
+    (so maybe set a repeater twice: one time here...) -->
+    <div class="item">
+      <div class$="amount {{statuscss}} {{completedamount}}">
+        <p>{{amount}}<span class="ARCletters">ARC</span></p>
+      </div>
+      <div class$="fromto {{statuscss}} flex">
+        <p on-tap="change">14 min ago, from <span class="bold">{{fromuser}}</span> to <span class="bold">{{touser}}</span></p>
+      </div>
+      <div class="status">
+        <template is="dom-if" if="{{_is(status,'pending')}}">
+          <div class="pending">
+          <ac-loader small color="blue">pending</ac-loader>
+          </div>
+        </template>
+        <template is="dom-if" if="{{_is(status,'complete')}}">
+          <div class="complete">
+            <!-- <p>done</p> -->
+            <ac-icon icon="ac-v" iconcolor="blue" small></ac-icon>
+          </div>
+        </template>
+        <template is="dom-if" if="{{_is(status,'error')}}">
+          <div class="error">
+            <p>failed!</p>
+          </div>
+        </template>
+      </div>
+    </div>
+    <!-- NOT mobile ends here -->
+    </template>
+
+
+
+    <template is="dom-if" if="{{_is(sizeview,'phone')}}">
+    <!-- The whole SHABANG when it IS mobile starts here
+    (...and one here) -->
+    <div class="itemmobile">
+    <div class="amountandstatus">
+      <div class$="amount {{statuscss}} {{completedamount}} flex">
+        <p>{{amount}}<span class="ARCletters">ARC</span></p>
+      </div>
+      <div class="status">
+        <template is="dom-if" if="{{_is(status,'pending')}}">
+          <div class="pending">
+          <ac-loader small color="yellow"></ac-loader>
+          </div>
+        </template>
+        <template is="dom-if" if="{{_is(status,'complete')}}">
+          <div class="complete">
+            <p></p>
+            <ac-icon icon="ac-v" iconcolor="yellow" small></ac-icon>
+          </div>
+        </template>
+        <template is="dom-if" if="{{_is(status,'error')}}">
+          <div class="error">
+            <p>failed!</p>
+          </div>
+        </template>
+      </div>
+    </div>
+    <div class$="fromtomobile {{statuscss}}">
+      <p on-tap="change">14 min ago, from <span class="bold">from</span> to <span class="bold">{{touser}}</span></p>
+    </div>
+    </div>
+    <!-- mobile view ends here -->
+    </template>
+
+
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'ac-logitem',
+
+      properties: {
+        amount: {
+          type: String,
+          value: '+ 120.19',
+        },
+
+        status: {
+          type: String,
+          value: 'complete',
+          observer: '_status'
+        },
+
+
+        sizeview: {
+          type: String,
+          observer: '_sizeview'
+        },
+
+        statuscss: {
+          type: String
+        },
+
+        fromuser: {
+          type: String,
+          value: 'Markus B.'
+        },
+
+        touser: {
+          type: String,
+          value: 'Mr. AC (me)'
+        }
+
+
+      },
+
+      ready: function(){
+        this.completedamount = '';
+      },
+
+      _is: function(a, b) {
+        if (b === undefined){
+          b = true;
+        }
+        //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
+        return a === b;
+      },
+
+      change: function(){
+        if (this.status == 'pending'){
+        this.status = 'complete';
+        } else {
+        this.status = 'pending';
+        }
+
+      },
+
+      _sizeview: function(){
+
+      },
+
+      _status: function(){
+        switch(this.status) {
+            case 'pending':
+                this.completedamount = '';
+                this.statuscss = 'pendingcss';
+                console.log("pendingcss");
+                break;
+            case 'complete':
+                this.completedamount = 'completedamount';
+                this.statuscss = 'completecss';
+                console.log("completecss");
+                break;
+            case 'error':
+                this.completedamount = 'completedamount';
+                this.statuscss = 'errorcss';
+                console.log("errorcss");
+                break;
+            default:
+            console.log("!!! ** Niks");
+        }
+
+      }
+
+    });
+  </script>
+</dom-module>

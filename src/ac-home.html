@@ -1,0 +1,581 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html">
+
+<link rel="import" href="ac-sizeview.html">
+<link rel="import" href="ac-wallet.html">
+<link rel="import" href="ac-avatar.html">
+<link rel="import" href="ac-ipfsupload.html">
+<link rel="import" href="ac-ipfs.html">
+<link rel="import" href="ac-shortcode.html">
+<link rel="import" href="ac-tokentransfer.html">
+<link rel="import" href="ac-spinner.html">
+
+<link rel="stylesheet" href="../bower_components/Croppie/croppie.css" />
+<script src="../bower_components/Croppie/croppie.js"></script>
+
+<dom-module id="ac-home">
+  <!-- Defines the element's style and local DOM -->
+  <template>
+    <style>
+  :host {
+    display: block;
+    width: 100%;
+    height: 100%;
+    --ac-balance-width:100%;
+    --ac-balance-height:30vh;
+    --tokentrans-width:100%;
+    --tokentrans-top:3vh;
+
+    --avbox-padding: 15vh 0px 2vh 0px;
+    --homecontent-height:85vh;
+
+  }
+
+  .yellow {
+    color: var(--ac-yellow);
+  }
+  .red {
+    color: var(--ac-red);
+  }
+  .blue {
+    color: var(--ac-blue);
+  }
+
+  .white {
+    color: var(--ac-white);
+  }
+  .opacity {
+    opacity: 0.5;
+  }
+  h1 {
+    @apply(--ac-font-h1);
+  }
+
+    h2 {
+      @apply(--ac-font-h2);
+    }
+
+  p {
+    @apply(--ac-font-body1);
+  }
+
+    .hometotal {
+      background-color: var(--ac-base);
+      /*@apply(--base-structure);*/
+      height: 100%;
+    }
+
+    #homecontent {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0vh 10vw 10vh 10vw;
+      /*height: var(--homecontent-height);*/
+    }
+
+    .homebalancebox {
+      height: 35vh;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .toptoolbar {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0px 0px 16px 10vw;
+      height: 16vh;
+      background-color: var(--ac-base);
+      z-index: 3;
+      @apply(--layout-horizontal);
+      @apply(--layout-end);
+    }
+
+    .ac-avatar-box {
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+      width: 100%;
+      box-sizing: border-box;
+      padding: var(--avbox-padding);
+    }
+
+    .arcbalance {
+      width: var(--ac-balance-width);
+      height: var(--ac-balance-height);
+    }
+
+    .tokentrans {
+      width: var(--tokentrans-width);
+      margin-top: var(--tokentrans-top);
+    }
+
+    .verticcenter {
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+    }
+    .verticstart {
+      @apply(--layout-vertical);
+      @apply(--layout-start);
+      @apply(--layout-center-justified);
+    }
+
+    .horizontcenter {
+      @apply(--layout-horizontal);
+      @apply(--layout-center-center);
+    }
+    .horizontstart {
+      @apply(--layout-horizontal);
+      @apply(--layout-start);
+      @apply(--layout-center-justified);
+    }
+
+    .flex {
+      @apply(--layout-flex);
+    }
+    .whitespace {
+      width: 100%;
+      height: 20px;
+    }
+
+    .toridesharebtn {
+      padding-top: 10px;
+      padding-bottom: 13px;
+      /*padding: 26px 38px 26px 38px;*/
+      @apply(--base-shadow-and-inset);
+      /*width: 80%;
+      max-width: 200px;*/
+    }
+
+    .rideshare {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 20px 0px 35px 0px;
+      border-top: 2px dotted rgba(255,255,255,0.15);
+      border-bottom: 2px dotted rgba(255,255,255,0.15);
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+    }
+
+    .rideshare h2 {
+      font-size: 18px;
+      line-height: 20px;
+      @apply(--montserrat-semibold);
+    }
+
+    .rideshare p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.35);
+    }
+
+
+
+  </style>
+
+
+<ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+      <ac-wallet
+        id="wallet"
+        keystore="[[keystore]]"
+        pubkey="[[pubkey]]"
+        updating="{{balanceupdating}}"
+        arcbalance="{{arcbalance}}"
+        ethbalance="{{ethbalance}}"></ac-wallet>
+  <div class="hometotal verticcenter">
+    <div class="ac-avatar-box" on-tap="toProfile">
+    <ac-avatar
+        identity="[[identity]]"
+        pubkey="[[pubkey]]"
+        id="homeavatar"
+        ></ac-avatar>
+    <div class="whitespace"></div>
+    <ac-avatar
+        identity="[[identity]]"
+        pubkey="[[pubkey]]"
+        mode="txtonly"
+        viewmode="center"
+        ></ac-avatar>
+    </div>
+    <div class="homebalancebox flex verticcenter">
+      <div id="homebalance">
+        <template is="dom-if" if="{{!balanceupdating}}">
+          <div class$="arcbalance flex" on-tap="toWalletview">
+            <ac-balance
+            refcur="EUR"
+            arcbalance="{{arcbalance}}"
+            ethbalance="{{ethbalance}}"
+            on-refresh="monitorBalance"
+            ></ac-balance>
+          </div>
+        </template>
+
+        <template is="dom-if" if="{{balanceupdating}}">
+          <div class$="arcbalance {{arcalign}}">
+            <ac-spinner big></ac-spinner>
+          </div>
+        </template>
+      </div>
+    </div>
+    <div class="flex"></div>
+
+    <div id="homecontent" class="verticcenter">
+      <div class="rideshare">
+        <h2 class="yellow">/rideshare</h2>
+        <p>You haven't played this game yet.</p>
+        <div class="whitespace"></div>
+      <ac-button txtbtn bg="btncolor" txtcolor="yellow" class="toridesharebtn" small>Play!</ac-button>
+    </div>
+
+    </div>
+
+  </div>
+</template>
+
+<script>
+  Polymer({
+    is: 'ac-home',
+    properties: {
+      identity: {
+        type: String,
+        observer: '_identity',
+        notify: true
+      },
+      datachanged: {
+        type: Boolean,
+        value: false
+      },
+
+
+      keystore: {
+        type: Object,
+         observer: '_keystore',
+      },
+      sizeview: {
+        type: String,
+        observer: '_sizeview'
+      },
+
+      arcalign: {
+        type: String,
+      },
+
+      pubkey: {
+        type: String,
+      },
+
+      sharedElements: {
+        type: Object,
+        value: function() {
+          return {
+            'hero': '',
+          }
+        }
+      },
+
+      animationConfig: {
+        type: Object,
+        value: function() {
+          return {
+            'entry': [{
+              name: 'fade-in-animation',
+              node:this.$.homecontent,
+              toPage: this,
+              timing: {
+                duration: 200
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                  duration: 200
+              }
+            }],
+
+            'exit': [{
+              name: 'fade-out-animation',
+              node:this.$.homecontent,
+              fromPage: this,
+              timing: {
+                  duration: 200
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 200
+              }
+            }]
+          }
+        },
+      }
+
+    },
+
+
+    behaviors: [
+      Polymer.NeonSharedElementAnimatableBehavior
+    ],
+
+    _keystore: function(){
+      //debugger;
+    },
+
+    monitorBalance: function(){
+      this.$.wallet.monitorBalance();
+    },
+
+
+    ready: function() {
+      this.datastate = 'view';
+    },
+
+    init: function(cb){
+      this.username = this.identity.username;
+      this.avatarhash = this.identity.avatarhash;
+      if (cb) cb();
+    },
+    attached: function(){
+      console.log('pubkey',this.pubkey);
+    },
+
+    uploadfile: function() {
+      document.querySelector('#avatarupload').click();
+    },
+
+    usernameChange: function() {
+      this.identity.username = this.username;
+      // this.datachanged = true;
+    },
+
+    avatarChange: function(e) {
+      var input = e.target;
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          this.toCropper(e.target.result);
+        }.bind(this);
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+
+    _is: function(a, b) {
+      if (b === undefined) {
+        b = true;
+      }
+      return a === b;
+    },
+
+    // receive identity from data binder
+    _identity: function() {
+      this.currentavatar = this.identity.avatarurl;
+    },
+
+    toCropper: function(image) {
+      this.datastate = 'edit';
+      this.currentavatar = image;
+      if (this.croppie && this.croppie.destroy) {
+        this.croppie.destroy();
+      }
+      this.croppie = new Croppie(this.$.croppie, {
+        viewport: {
+          width: 100,
+          height: 100,
+          type: 'circle'
+        },
+        boundary: {
+          width: 200,
+          height: 200
+        },
+        showZoomer: false
+          //enableOrientation: true
+      });
+      this.croppie.bind({
+        url: image,
+        orientation: 4
+      });
+    },
+
+    setcurrentavatar_cancel: function() {
+      this.datastate = 'view';
+      self.croppie.destroy();
+    },
+
+    setcurrentavatar: function() {
+      var self = this;
+      this.croppie.result({
+        type: 'base64',
+        format: 'jpeg',
+        quality: 0.9
+      }).then(function(base64) {
+
+        // set the avatar to the dataURL.
+        this.currentavatar = base64;
+        this.datastate = 'view';
+
+        // now convert and save to IPFS in the background.
+        var base64data = base64.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
+        var imgbuffer = this.$.ipfs.ipfs.Buffer(base64data, 'base64');
+
+        this.$.ipfs.add(imgbuffer, function(err, result) {
+          console.log(err, result[0].hash);
+          var hashurl = this.$.ipfs.geturl(result[0].hash);
+          self.identity.avatarurl = hashurl;
+          self.datachanged = true;
+          self.fire('identity-update',self.identity);
+        }.bind(this));
+
+        // remove cropper
+        self.croppie.destroy();
+        self.datachanged = true;
+
+      }.bind(this));
+
+    },
+
+
+    logout: function() {
+      this.fire('logout');
+//      sessionStorage.removeItem('ac-password');
+//      window.location = '/';
+    },
+
+    _username: function(newVal,oldVal) {
+      if (oldVal!==undefined){
+        this.datachanged = true;
+      }
+      //console.log(this.username);
+      // if (this.username != this.identity.username) {
+      //   var collapser = document.getElementById('collapse');
+      //   collapser.show();
+      // }
+      // if (this.username == this.identity.username) {
+      //   var collapser = document.getElementById('collapse');
+      //   collapser.hide();
+      // }
+    },
+
+    exit: function(){
+      this.datastate = 'view';
+      this.datachanged = false;
+      this.fire('exit');
+    },
+
+    confirm: function() {
+      this.set('identity.username', this.username);
+      this.datachanged = false;
+      this.fire('identity-update',this.identity);
+      // this.fire('exit');
+    },
+
+    close: function() {
+      this.datachanged = false;
+    },
+
+    _datachanged: function() {
+      console.log('joooo');
+    },
+
+
+    toProfile: function() {
+      this.sharedElements = {
+          'hero': this.$.homeavatar,
+        };
+      this.fire('to-profile');
+    },
+
+    toWalletview: function() {
+      this.sharedElements = {
+        'hero': this.$.homebalance,
+        };
+      this.animationConfig = {
+            'entry': [{
+              name: 'fade-in-animation',
+              node:this.$.homecontent,
+              toPage: this,
+              timing: {
+                duration: 200
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                  duration: 600
+              }
+            }],
+
+            'exit': [{
+              name: 'fade-out-animation',
+              node:this.$.homecontent,
+              fromPage: this,
+              timing: {
+                  duration: 200
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 600
+              }
+            }]
+        };
+      this.fire('to-walletview');
+    },
+
+      _sizeview: function() {
+        switch (this.sizeview) {
+          case 'phone':
+            this.arcalign = 'verticcenter';
+            this.customStyle['--ac-balance-height'] = '20vh';
+            this.customStyle['--ac-balance-width'] = '100%';
+            this.customStyle['--tokentrans-width'] = '100%';
+            this.customStyle['--tokentrans-top'] = '0vh';
+            this.updateStyles();
+            break;
+          case 'desktop':
+            this.arcalign = 'verticstart';
+            this.customStyle['--ac-balance-height'] = '16vh';
+            this.customStyle['--ac-balance-width'] = '100%';
+            this.customStyle['--tokentrans-top'] = '3vh';
+            this.updateStyles();
+            break;
+          case 'xlarge':
+            this.arcalign = 'verticstart';
+            this.customStyle['--ac-balance-height'] = '20vh';
+            this.customStyle['--ac-balance-width'] = '100%';
+            this.customStyle['--tokentrans-top'] = '4vh';
+            this.updateStyles();
+            break;
+          default:
+            console.log("!!! ** Niks");
+        }
+      },
+
+    _checkAnimconfig: function() {
+      // console.log('joooo, dit is de Animconfig', this.animationConfig);
+    },
+
+    // savenewUsername: function() {
+    //   var collapser = document.getElementById('collapse');
+    //   console.log("this is it", collapser);
+    //   collapser.toggle();
+    // },
+
+    // backtohome: function() {
+    //   this.datastate = 'view';
+    //   this.fire('exit');
+    // },
+
+    // toggleupload: function() {
+    //   this.$.ipfsupload.click();
+    // }
+
+  });
+</script>
+
+</dom-module>

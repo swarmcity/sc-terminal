@@ -1,0 +1,50 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+
+<dom-module id="ac-sizeview">
+  <template>
+    <iron-media-query query="(min-width:0px) and (max-width: 600px)" query-matches="{{phoneview}}"></iron-media-query>
+    <iron-media-query query="(min-width:601px) and (max-width: 1400px)" query-matches="{{desktopview}}"></iron-media-query>
+    <iron-media-query query="(min-width:1401px)" query-matches="{{xlargeview}}"></iron-media-query>
+  </template>
+  <script>
+    Polymer({
+      is: 'ac-sizeview',
+      properties: {
+        phoneview: {
+          type: Boolean,
+          observer: '_sizeview'
+        },
+
+        desktopview: {
+          type: Boolean,
+          observer: '_sizeview'
+        },
+
+        xlargeview: {
+          type: Boolean,
+          observer: '_sizeview'
+        },
+
+        sizeview: {
+          type: String,
+          notify: true
+        }
+      },
+
+      _sizeview: function(){
+        if (this.phoneview) {
+          this.sizeview = 'phone';
+        }
+        if (this.desktopview) {
+          this.sizeview = 'desktop';
+        }
+        if (this.xlargeview) {
+          this.sizeview = 'xlarge';
+        }
+
+      }
+
+    });
+  </script>
+</dom-module>

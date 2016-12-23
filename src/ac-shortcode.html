@@ -1,0 +1,237 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+
+<dom-module id="ac-shortcode">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+        --txtcolorz-code: var(--ac-yellow);
+      }
+
+      h1 {
+        @apply(--ac-font-h1);
+        color: white;
+      }
+
+      h2 {
+        @apply(--ac-font-h2);
+      }
+
+      p {
+        @apply(--ac-font-body1);
+      }
+
+      small {
+        @apply(--ac-font-small);
+      }
+
+      ac-button {
+        @apply(--base-shadow-and-inset);
+        width: 100%;
+      }
+
+      .code {
+        min-height: 56px;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+      }
+
+      .code p {
+        @apply(--montserrat-reg);
+        font-size: 16px;
+        line-height: 20px;
+        color: var(--txtcolorz-code);
+        padding-bottom:4px;
+        border-bottom: 1px dashed var(--txtcolorz-code);
+      }
+
+      .code small {
+        @apply(--montserrat-reg);
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--txtcolorz-code);
+        padding-bottom:2px;
+        border-bottom: 1px dashed var(--txtcolorz-code);
+      }
+
+      .codeandbtn {
+        height: 100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        box-sizing: border-box;
+        padding: 0px 15px 0px 15px;
+      }
+
+      .codeandbtn p {
+        @apply(--montserrat-semibold);
+        font-size: 20px;
+        line-height: 22px;
+        color: var(--txtcolorz-code);
+      }
+
+      .codeandbtn ac-button {
+        margin-left: 14px;
+      }
+
+    </style>
+
+  <template is="dom-if" if="{{_is(topic,0)}}">
+
+    <template is="dom-if" if="{{!txtlink}}">
+      <ac-button txtbtn on-tap="fireshowshortcode" txtcolor="red" bg="btncolor" class="sender">
+        <content></content>
+      </ac-button>
+    </template>
+
+    <template is="dom-if" if="{{txtlink}}">
+
+      <template is="dom-if" if="{{!small}}">
+        <div class="code" on-tap="fireshowshortcode">
+          <p>
+            <content></content>
+          </p>
+        </div>
+      </template>
+      <template is="dom-if" if="{{small}}">
+        <div class="code" on-tap="fireshowshortcode">
+          <small>
+            <content></content>
+          </small>
+        </div>
+      </template>
+
+    </template>
+
+  </template>
+
+  <template is="dom-if" if="{{topic}}">
+    <div class="codeandbtn">
+      <p>{{topic}} {{progress}}</p>
+      <ac-button small on-tap="cancel" txtcolor$="{{txtcolor}}" bg$="{{bg}}" icon="ac-decline"></ac-button>
+    </div>
+  </template>
+
+</template>
+
+<script>
+    Polymer({
+
+      is: 'ac-shortcode',
+
+      properties: {
+        // prop1: {
+        //   type: String,
+        //   value: 'ac-shortcode',
+        // },
+
+        topic: {
+          type: Number
+        },
+
+        progress: {
+          type: Number
+        },
+
+        txtlink: {
+          type:Boolean,
+          value: true,
+          observer: '_type'
+        },
+
+        btn: {
+          type: Boolean,
+          value: false,
+          observer: '_type'
+        },
+
+        bg: {
+          type: String,
+          value: 'btncolor',
+          observer: '_type'
+        },
+
+        txtcolor: {
+          type: String,
+          observer: '_txtcolor'
+        },
+
+        // shortcodeshown: {
+        //   type:Boolean,
+        //   value: false
+        // },
+
+        small: {
+          type:Boolean,
+          value: false
+        }
+      },
+
+      listeners: {
+        'tap': 'toggleVisibility'
+      },
+
+      // _txtlink: function(){
+      //   if (this.txtlink){
+      //   this.btn = false;
+      //   }
+      // },
+
+      _txtcolor: function(){
+        var txtcolorz = 'var(--ac-'+ this.txtcolor + ')';
+        this.customStyle['--txtcolorz-code'] = txtcolorz;
+        this.updateStyles();
+      },
+
+      _type: function(){
+        // console.log("button?",this.btn, 'Of txtlink?', this.txtlink);
+        if (this.btn){
+        this.txtlink = false;
+        } else {
+        this.txtlink = true;
+        }
+      },
+
+      cancel: function(){
+        this.fire('cancel');
+      },
+
+      fireshowshortcode: function(){
+        this.fire('showshortcode');
+      },
+
+      _is: function(a, b) {
+        if (b === undefined){
+          b = true;
+        }
+        //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
+        return a === b;
+      },
+
+      toggleVisibility: function() {
+        // var collapser = document.getElementById('collapsecode');
+        // collapser.toggle();
+      }
+
+      // toggleCode: function(){
+      //   var collapser = document.getElementById('collapsecode');
+      //   collapser.toggle();
+
+      //   console.log(this.shortcodeshown);
+
+      //   if(this.shortcodeshown){
+      //     setTimeout(function(){
+      //       this.shortcodeshown=!this.shortcodeshown;
+      //     }.bind(this), 280);
+      //   } else {
+      //     this.shortcodeshown=!this.shortcodeshown;
+      //   };
+
+      // }
+
+    });
+  </script>
+</dom-module>

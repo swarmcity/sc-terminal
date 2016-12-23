@@ -1,0 +1,66 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/ac-loader/ac-loader.html">
+
+<link rel="import" href="ac-sizeview.html">
+<link rel="import" href="ac-logitem.html">
+<!-- <link rel="import" href="ac-transactionlog.html"> -->
+
+<dom-module id="ac-log">
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+      }
+    </style>
+    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+    <ac-web3 web3="{{web3}}"></ac-web3>
+
+    <!-- <ac-transactionlog logitems="{{logitems}}"></ac-transactionlog> -->
+
+    <template is="dom-repeat" items="[[logitems]]">
+      <ac-logitem
+        amount="[[item.x]]"
+        fromuser="[[item.x]]"
+        touser="[[item.x]]"
+        status="[[item.x]]">
+      </ac-logitem>
+    </template>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'ac-log',
+
+      properties: {
+        pubkey: {
+          type: String,
+          observer: '_pubkey'
+        }
+      },
+
+      _is: function(a, b) {
+        if (b === undefined){
+          b = true;
+        }
+        //console.log(a ,'(',typeof a,') is',b,'(',typeof b,') they are equal for ==',a == b,', they are equal for ===',a === b);
+        return a === b;
+      },
+
+      _pubkey: function() {
+        // Get the tx's for this pub key and cache it in localstorage.
+        // Save the last block also to localstorage so we know where we need to start listening.
+        // filter.get(filter, callback);
+      },
+
+      _sizeview: function(){
+
+      }
+
+
+    });
+  </script>
+</dom-module>

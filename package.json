@@ -1,0 +1,25 @@
+{
+  "name": "ac-terminal",
+  "version": "1.0.0",
+  "description": "Swarm City Terminal",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swarmcity/ac-terminal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/swarmcity/ac-terminal/issues"
+  },
+  "homepage": "https://swarm.city",
+  "dependencies": {
+    "polymer-cli": "^0.17.0"
+  }
+}

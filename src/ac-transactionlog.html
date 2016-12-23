@@ -1,0 +1,144 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="ac-config.html">
+<link rel="import" href="ac-web3.html">
+
+<dom-module id="ac-transactionlog">
+  <template>
+    <ac-web3 web3="{{web3}}"></ac-web3>
+ <iron-localstorage
+  id="txlogcache"
+  value="{{txlogcache}}"
+  on-iron-localstorage-load-empty="initcache"
+  on-iron-localstorage-load="loadcache"
+  ></iron-localstorage>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'ac-transactionlog',
+      properties: {
+        address: {
+          type: String,
+          observer: '_address',
+        },
+        logitems: {
+          type: Array,
+          notify:true
+        },
+      },
+      observers: [
+        'fillinitial(address, web3, txlogcache)'
+      ],
+
+      ready: function(){
+        this.lastblock
+      },
+
+      attached: function(){
+        console.log('ac-transactionlog -> attached');
+      },
+
+      initcache: function(){
+        if (this.$.txlogcache.name){
+          this.firstblock= 0;
+          this.lastblock= 0;
+          this.logitems = [];
+          this.saveCache();          
+        }
+      },
+
+      saveCache: function() {
+        this.set('txlogcache', {
+          firstblock: this.firstblock,
+          lastblock: this.lastblock,
+          logitems: this.logitems
+        });
+      },
+
+      loadcache: function() {
+        console.log('ac-transactionlog: cache loaded for',this.address);
+        this.firstblock= this.txlogcache.firstblock;
+        this.lastblock= this.txlogcache.firstblock;
+        this.logitems = this.txlogcache.logitems;
+      },
+
+      _address: function(){
+        console.log('ac-transactionlog for address = ',this.address);
+        this.$.txlogcache.name= 'ac-txlog-' + this.address;
+//        this.fillinitial();
+      },
+
+      fillinitial: function() {
+
+        if (!this.web3 || !this.address || !this.txlogcache){
+          // not ready for this yet.
+          return;
+        }
+
+        if (this.firstblock === 0 && this.lastblock === 0){
+          var startBlock = this.web3.eth.blockNumber - Math.floor(60 * 60 * 24 / 14);
+          var endBlock = this.web3.eth.blockNumber;
+          this.getrange(startBlock,endBlock);
+        }
+      },
+
+      renew: function(){
+        this.updatenewer();
+      },
+
+      // append some block at the end ( aka sync until best block )
+      updatenewer: function(){
+        var startBlock = this.lastblock;
+        var endBlock = this.web3.eth.blockNumber;
+        if (startBlock < endBlock - Math.floor(60 * 60 * 24 / 14)){
+          startBlock = endBlock - Math.floor(60 * 60 * 24 / 14);
+        }
+        this.getrange(startBlock,endBlock);
+      },
+
+      // append some block at the beginning
+      updateolder: function(){
+        var endBlock = this.firstblock;
+        var startBlock = this.firstblock - Math.floor(60 * 60 * 24 / 14);
+        if (startBlock < 0){
+          startBlock = 0;
+        }
+        this.getrange(startBlock,endBlock);
+      },
+
+      getrange: function(from,to){
+        var self = this;
+        var filter = this.web3.eth.filter({
+          fromBlock: from,
+          toBlock: to,
+          address: this.address
+        }).get(function(err, res) {
+          //            filter.stopWatching();
+          var dirty = false;
+          if( self.from < self.startBlock){
+            self.startBlock = self.from;
+            self.dirty = true;
+          }
+          if (self.to > self.endBlock){
+            self.endBlock = self.to;
+            self.dirty = true;
+          }
+          filter = null;
+          if (dirty){
+            self.saveCache();
+          }
+        });
+      },
+
+      // add a txhash to this log
+      logtx: function(txhash){
+        // TODO : add listener for pending txhashes
+        this.push('logitems',{
+          txhash: txhash
+        });
+      }
+
+    });
+  </script>
+</dom-module>

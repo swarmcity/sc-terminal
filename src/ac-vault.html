@@ -1,0 +1,737 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html">
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="ac-helpers.html">
+<link rel="import" href="ac-password.html">
+<script src="scripts/lightwallet.min.js"></script>
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+
+<dom-module id="ac-vault">
+
+  <style>
+      :host {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      h1 {
+        @apply(--ac-font-h1);
+      }
+
+      h2 {
+        @apply(--ac-font-h2);
+      }
+
+      h3 {
+        @apply(--ac-font-h3);
+      }
+
+      h4 {
+        @apply(--ac-font-h4);
+      }
+
+      p {
+        @apply(--ac-font-body1);
+      }
+
+      a {
+        @apply(--ac-font-ahref);
+      }
+
+      neon-animated-pages {
+        width: 100%;
+        height: 100%;
+      }
+
+      .pascanvas {
+      width: 100%;
+      height: 100%;
+      /*@apply(--base-structure);*/
+      background-color: var(--ac-base);
+     }
+
+     .pascanvasunderexit {
+       width: 100%;
+       height: 92%;
+     }
+
+
+
+     .verticcenter {
+       @apply(--layout-vertical);
+       @apply(--layout-center-center);
+
+     }
+
+     .enterpass {
+     /*width: 80%;
+     max-width: 500px;*/
+    }
+
+    .yellow {
+      color: var(--ac-yellow);
+    }
+    .red {
+      color: var(--ac-red);
+    }
+
+    .blue {
+      color: var(--ac-blue);
+    }
+
+    .white {
+
+      color: var(--ac-white);
+
+    }
+
+    ac-password {
+    width: 80%;
+    max-width: 500px;
+   }
+
+
+    .whitespace {
+      height: 20px;
+    }
+
+    .centertxt {
+      text-align: center;
+
+    }
+
+    .smallio {
+      text-align: center;
+      width: 80%;
+      max-width: 500px;
+    }
+
+    .smallio ac-input {
+      width: 100%;
+    }
+
+    .maxwidth {
+      max-width: 80%;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .error {
+      text-align: center;
+      width: 80%;
+      max-width: 500px;
+      box-sizing: border-box;
+      padding: 20px;
+
+    }
+
+    .oops {
+      @apply(--montserrat-bold);
+    }
+
+    .paddingside {
+      box-sizing: border-box;
+      padding-left: 6vw;
+      padding-right: 6vw;
+
+    }
+
+    .flex {
+      @apply(--layout-flex);
+    }
+    .topback {
+        width: 100%;
+        background-color: var(--ac-base);
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        box-sizing: border-box;
+        padding: 5vh 5vw 0px 5vw;
+        height: 8%;
+      }
+
+
+      .topback ac-icon {
+        opacity: 0.5;
+      }
+      .topback ac-button {
+        @apply(--base-shadow);
+        opacity: 0.9;
+      }
+
+      .bold {
+        @apply(--montserrat-semibold);
+
+      }
+
+      .smaller {
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+      .notundone ac-button {
+        @apply(--base-shadow-and-inset);
+      }
+
+      .notundone {
+        width: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+        box-sizing: border-box;
+        padding: 30px 30px 40px 30px;
+        border-top: 1px dashed rgba(249,85,85,0.25);
+        border-bottom: 1px dashed rgba(249,85,85,0.25);
+        margin:5vh 0px 4vh 0px;
+      }
+      .yesnobtns {
+        width: 100%;
+      }
+
+      .yesno {
+        width: 80%;
+        max-width: 280px;
+        margin: 5px;
+      }
+
+      .caution {
+        color:var(--ac-base);
+        background-color: var(--ac-blue);
+        padding: 5px 12px 5px 12px;
+      }
+
+
+    </style>
+
+  <template>
+    <ac-helpers id="helpers"></ac-helpers>
+    <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
+
+    <neon-animated-pages attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
+
+
+      <!-- first stage in importing PK -->
+      <neon-animatable data-page="importpk">
+        <div class="pascanvas verticcenter">
+          <div class="topback">
+            <span class="flex"></span>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+          </div>
+          <div class="pascanvasunderexit verticcenter paddingside">
+          <div class="smallio">
+          <p class="yellow centertxt">Enter the private key you'll find on your ARC-wallet.</p>
+          <div class="whitespace"></div>
+            <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="Private key" type="password" bind-value="{{privatekey}}" center></ac-input>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+
+            <ac-button class="loginbtn" icon="ac-arrowright" on-tap="pkreceived" bg="btncolor" txtcolor="yellow"></ac-button>
+          </div>
+        </div>
+      </div>
+      </neon-animatable>
+
+      <!-- second stage in importing PK -->
+      <neon-animatable data-page="importpkmakewallet">
+        <div class="pascanvas verticcenter">
+          <div class="topback">
+            <span class="flex"></span>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="toClearvault" verysmall>back</ac-button>
+          </div>
+          <div class="pascanvasunderexit verticcenter paddingside">
+          <div class="pascanvas verticcenter">
+            <p class="yellow centertxt maxwidth">A profile will be created for the wallet with public key <span class="bold">0x4455687</span>. <br><br> Enter a password (min. 9 characters) for this new profile and repeat.</p>
+            <div class="whitespace"></div>
+            <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+          </div>
+        </div>
+      </div>
+      </neon-animatable>
+
+
+      <!-- import a keyfile -->
+      <neon-animatable data-page="importfile">
+        <div class="pascanvas verticcenter">
+          <div class="topback">
+            <span class="flex"></span>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+          </div>
+          <div class="pascanvasunderexit verticcenter">
+        <template is="dom-if" if="{{vaulterror}}">
+          <div class="error red"><p><span class="oops">Oops!</span><br>{{vaulterror}}<p>
+        <div class="whitespace"></div>
+          </div>
+        </template>
+          <input type="file"  class="hidden" id="uploaditem"  on-change="readSingleFile">
+          <ac-button on-tap="uploadclick" txtbtn txtcolor="blue" bg="btncolor">Choose your wallet-file</ac-button>
+
+        </div>
+      </div>
+
+      </neon-animatable>
+
+
+      <!-- unlock imported file -->
+      <neon-animatable data-page="unlockimport">
+        <div class="pascanvas verticcenter">
+          <div class="topback">
+            <span class="flex"></span>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="toClearvault" verysmall>back</ac-button>
+          </div>
+          <div class="pascanvasunderexit verticcenter paddingside">
+          <div class="pascanvas verticcenter">
+            <p class="yellow centertxt maxwidth">Unlock this AC-wallet with its password</p>
+            <div class="whitespace"></div>
+            <ac-password></ac-password>
+          </div>
+        </div>
+      </div>
+      </neon-animatable>
+
+      <!-- Create password for vault with imported jsonfile -->
+      <neon-animatable data-page="importfilemakewallet">
+        <div class="pascanvas verticcenter">
+          <div class="topback">
+            <span class="flex"></span>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="toClearvault" verysmall>back</ac-button>
+          </div>
+          <div class="pascanvasunderexit verticcenter paddingside">
+          <div class="pascanvas verticcenter">
+            <p class="yellow centertxt maxwidth"><span class="bold">Great!</span><br>A profile will now be created with your ARC-wallet. <br><br> Enter a password (min. 9 characters) for this new profile and repeat.</p>
+            <div class="whitespace"></div>
+            <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+          </div>
+        </div>
+      </div>
+      </neon-animatable>
+
+
+
+      <neon-animatable data-page="backup">
+        <div class="pascanvas verticcenter">
+          <a id="downloadAnchorElem" style="display:none"></a>
+          <ac-button on-tap="downloadvault" txtbtn txtcolor="blue" bg="btncolor">Download your vault</ac-button>
+        </div>
+      </neon-animatable>
+
+
+        <neon-animatable data-page="clearvault">
+          <div class="pascanvas verticcenter paddingside">
+            <p class="centertxt smallio blue"><span class="bold caution">Caution!</span><br><br>Do you want to cancel all progress and start over?</p>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="yesnobtns verticcenter">
+              <ac-button big class="yesno" bg="btncolor" txtcolor="blue" on-tap="" txtbtn>Yes</ac-button>
+              <ac-button big class="yesno" bg="btncolor" txtcolor="blue" on-tap="" txtbtn>No</ac-button>
+            </div>
+          </div>
+        </neon-animatable>
+
+
+      <neon-animatable data-page="createnew">
+        <div class="pascanvas verticcenter">
+          <div class="topback">
+            <span class="flex"></span>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+          </div>
+          <div class="pascanvasunderexit verticcenter paddingside">
+            <p class="yellow centertxt">Choose a password (min. 9 characters) and repeat.</p>
+            <div class="whitespace"></div>
+            <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
+          </div>
+        </div>
+    </neon-animatable>
+
+    <neon-animatable data-page="unlock">
+      <div class="pascanvas verticcenter">
+        <div class="topback">
+          <span class="flex"></span>
+            <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="removeall" verysmall>back</ac-button>
+        </div>
+        <div class="pascanvasunderexit verticcenter">
+        <ac-password id="newuser" sessionname="vaultpassword" on-password-received="unlockvault"></ac-password>
+      </div>
+    </div>
+    </neon-animatable>
+
+    <neon-animatable data-page="removeall">
+        <div class="pascanvas verticcenter paddingside">
+          <div class="verticcenter smallio resetter">
+          <p class="white centertxt bold">Can't find your password?</p>
+          <div class="whitespace"></div>
+          <p class="white centertxt smaller">Without your password, the only thing you can do is remove the current profile and start over.</p>
+
+          <div class="notundone">
+            <p class="red smaller bold">This action can not be undone!</p>
+            <div class="whitespace"></div>
+
+          <ac-button txtbtn txtcolor="base" bg="red">remove profile</ac-button>
+        </div>
+        <ac-button icon="ac-arrowleft" txtcolor="white" bg="btncolor" on-tap="cancel" small>cancel</ac-button>
+
+        </div>
+      </div>
+    </neon-animatable>
+
+
+  </neon-animated-pages>
+
+</template>
+
+<script>
+    Polymer({
+
+      is: 'ac-vault',
+
+      properties: {
+        route: {
+          type: Object,
+          notify: true,
+        },
+        password: {
+          type: String,
+        },
+        keystore: {
+          type: Object,
+          notify: true,
+        },
+        // the exposed lightwallet.keystore object
+        currentkeystore: {
+          type: Object,
+          notify: true,
+        },
+        // the ethereum account assiciated with the current identity
+        currentaccount: {
+          type: String,
+          notify: true,
+        },
+        // an object containing a set of fields with identity data.
+        currentidentity: {
+          type: Object,
+          notify: true
+        }
+      },
+
+      observers: [
+          '_onRoutePathChanged(data.page,data)'
+      ],
+
+      _onRoutePathChanged: function(page,d) {
+        console.log('ac-vault _onRoutePathChanged',d,page);
+        switch (page) {
+          case 'importpk':
+          case 'importpkmakewallet':
+          case 'importfile':
+          case 'createnew':
+            if (this.hasVault()) {
+              console.log('You already have a vault');
+            }
+            break;
+          case 'unlock':
+
+            break;
+          default:
+            console.log('unknown path ', page);
+            break;
+        }
+      },
+
+
+      exit: function(){
+        this.fire('exit');
+      },
+
+      removeall: function(){
+        this.set('route.path', '/removeall');
+      },
+
+      toClearvault: function(){
+        this.exitAnimation = "slide-down-animation";
+        this.entryAnimation = "slide-from-top-animation";
+        this.set('route.path', '/clearvault');
+        this.exitAnimation = "slide-up-animation";
+        this.entryAnimation = "slide-from-bottom-animation";
+      },
+
+
+      cancel: function(){
+        this.exitAnimation = "slide-right-animation";
+        this.entryAnimation = "slide-from-left-animation";
+        this.set('route.path', '/unlock');
+        this.exitAnimation = "slide-left-animation";
+        this.entryAnimation = "slide-from-right-animation";
+      },
+
+
+      activate: function(){
+        if (!this.hasVault()) {
+          return this.fire('novault');
+        };
+        if (!this.password) {
+          return this.fire('locked');
+        }
+      },
+
+      uploadclick: function() {
+        document.querySelector('#uploaditem').click();
+      },
+
+      readSingleFile: function(e) {
+        //debugger;
+        var self = this;
+        var file = e.target.files[0];
+        if (!file) {
+          return;
+        }
+        this.walletfilename = file.name;
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var contents = e.target.result;
+          //self.readwallet = contents;
+          if (self._parseVault(contents)){
+            self.saveVault();
+            return self.fire('locked');
+          }
+          // so we've read the vault file. It's locked.
+
+        };
+        reader.readAsText(file);
+      },
+
+      pkreceived: function(){
+        this.set('route.path', '/importpkmakewallet');
+      },
+
+      createvaultfrompk: function(e) {
+        this.password = e.detail.password;
+        this.createVault(0, function() {
+          this._getpwDerivedKey(function(err, pwDerivedKey) {
+            this.keystore.importPrivateKey(this.privatekey, pwDerivedKey);
+            this.saveVault();
+            this.loadVault();
+            this.fire('unlocked');
+          }.bind(this));
+        }.bind(this));
+      },
+
+      attached: function(){
+        console.log('ac-vault attached');
+        this.exitAnimation = "slide-left-animation";
+        this.entryAnimation = "slide-from-right-animation";
+      },
+
+      _currentidentity: function(){
+        console.log('ac-vault ->','currentidentity updated',this.currentidentity);
+      },
+
+
+      unlockvault: function(e) {
+        if (!this.hasVault()) {
+          //return page.redirect('/');
+          console.log("there is no vault!");
+        }
+        this.password = e.detail.password;
+        this.loadVault();
+        this.fire('unlocked');
+        //page.redirect('/home');
+      },
+
+      downloadvault: function(){
+        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem('ac-vault'));;
+        var dlAnchorElem = document.getElementById('downloadAnchorElem');
+        dlAnchorElem.setAttribute("href", dataStr);
+        dlAnchorElem.setAttribute("download", 'swarmCityVault-' + Date.now() + '.json');
+        dlAnchorElem.click();
+      },
+
+      // Load vault from local storage
+      loadVault: function(){
+        var tmpvault = JSON.parse(window.localStorage.getItem('ac-vault'));
+        this._parseVault(tmpvault);
+      },
+
+      _convertWalletToVault: function(content){
+        var self = this;
+
+        var keystore = JSON.parse(content);
+        var identity = self._creatBlankIdentity();        //self.saveVault();
+        return ({
+          type: 'ac-vault',
+          version: 1,
+          keystore: keystore,
+          identity: identity
+        });
+
+
+      },
+
+      // parse vault data and unpack it
+      _parseVault: function(vaultdata) {
+        this.vaulterror = null;
+        if (!vaultdata) return;
+        try {
+          // if the vaultdata is a string - it's probably an old wallet file
+          if (typeof vaultdata === 'string') {
+            vaultdata = this._convertWalletToVault(vaultdata);
+          }
+
+          if (!vaultdata) {
+            throw new Error('ac-vault: loadVault: vault is not defined.');
+          }
+          // if (!this.password) {
+          //   throw new Error('ac-vault: loadVault: no password set.');
+          // }
+          if (!vaultdata.type === 'ac-vault') {
+            throw new Error('ac-vault: loadVault: JSON format not recognized.');
+          }
+
+          switch (vaultdata.version) {
+
+            case 1:
+              this.keystore = lightwallet.keystore.deserialize(vaultdata.keystore);
+              this.currentkeystore = this.keystore;
+              this.currentaccount = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
+              this.currentidentity = vaultdata.identity;
+              console.log('ac-vault -> Vault loaded. Account=', this.currentaccount);
+              return true;
+              break;
+
+            default:
+              throw new Error('Vault version unknown', vaultdata.version);
+              break;
+          }
+        } catch (e) {
+//          throw new Error('Vault could not be loaded', e);
+            this.vaulterror = "This file could not be loaded, it's not an ARC-wallet json-file.";
+            return false;
+        }
+      },
+
+      importPrivateKey: function(pk) {
+        var self = this;
+        this._getpwDerivedKey(function(err, pwDerivedKey) {
+          self.keystore.importPrivateKey(pk, pwDerivedKey);
+        });
+      },
+
+      saveVault: function(){
+
+          var serializedKeystore = this.keystore.serialize();
+          var serializedIdentity = this.currentidentity || {};
+
+          var vault = {
+            type: 'ac-vault',
+            version:1,
+            keystore: serializedKeystore,
+            identity: serializedIdentity
+          };
+
+          //encryption.multiEncryptString(keystore, pwDerivedKey, msg, myPubKey, theirPubKeyArray [, hdPathString])
+
+          window.localStorage.setItem('ac-vault', JSON.stringify(vault));
+
+      },
+
+      hasVault: function(){
+        var vault = window.localStorage.getItem('ac-vault');
+        return (vault);
+      },
+
+      createvault: function(e){
+        this.password = e.detail.password;
+        this.createVault(1,function(){
+           this.fire('unlocked');
+        }.bind(this));
+      },
+
+      createVault: function(amountofaccounts, fn) {
+        if (!this.password) {
+          throw new Error('no password set for creating Vault');
+        }
+
+        var self = this;
+        lightwallet.keystore.createVault({
+          password: this.password,
+        }, function(err, ks) {
+          if (err) {
+            throw new Error(err);
+          }
+          self.keystore = ks;
+
+          if (amountofaccounts==0){
+
+            self.currentidentity = self._creatBlankIdentity();
+            self.saveVault();
+            self.loadVault();
+
+            if (fn) {
+              fn();
+            }
+            return;
+
+          }else{
+            self.generateNewAddress(1,function() {
+
+              self.currentidentity = self._creatBlankIdentity();
+
+              self.saveVault();
+              self.loadVault();
+
+              if (fn) {
+                fn();
+              }
+              return;
+
+            });
+          }
+
+        });
+      },
+
+      _creatBlankIdentity: function() {
+        return({
+          version: 1,
+          username: 'Mr Swarm',
+          avatarhash: 'QmRjHCtrTCMbK8PfptY41dLKZvoGiX8pNC94BCesSzpSed'
+        });
+      },
+
+      _getpwDerivedKey: function(cb){
+        if (this.pwDerivedKey){
+          return cb(null,this.pwDerivedKey);
+        }
+        if (!this.password){
+          throw new Error('no password set');
+        }
+        var self=this;
+        self.keystore.keyFromPassword(self.password, function(err, pwDerivedKey) {
+            if (err){
+              return cb(err);
+            }
+            self.pwDerivedKey = pwDerivedKey;
+            cb(null,pwDerivedKey);
+          });
+      },
+
+      generateNewAddress: function(amount,cb) {
+        if (!this.keystore) {
+          throw new Error('no keystore available');
+        }
+        var self = this;
+        this._getpwDerivedKey(function(err,pwDerivedKey ) {
+          self.keystore.generateNewAddress(pwDerivedKey, amount || 1);
+          cb();
+        });
+      },
+
+      _currentAccount: function(){
+        var addr = this.keystore.getAddresses();
+        if (addr.length>0){
+          this.currentaccount = self.fixaddress(addr[0]);
+        }
+      }
+    });
+  </script>
+</dom-module>

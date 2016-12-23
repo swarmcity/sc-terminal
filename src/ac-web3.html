@@ -1,0 +1,46 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<script src="../bower_components/web3/dist/web3.min.js"></script>
+<link rel="import" href="ac-config.html">
+
+<dom-module id="ac-web3">
+  <ac-config web3host="{{host}}"></ac-config>
+  <script>
+
+    var acweb3_web3;
+
+    Polymer({
+      is: 'ac-web3',
+      properties: {
+        web3: {
+          type: Object,
+          notify: true
+        },
+      },
+
+      observers: [
+        '_host(host)'
+      ],
+
+      _host: function(){
+        this.initweb3();        
+      },
+
+      ready: function(){
+        //console.log('ac-web3 -> ready');
+        this.initweb3();
+      },
+
+      initweb3: function(){
+        if (!acweb3_web3){
+          if (!this.host){
+            return;
+          }
+          acweb3_web3 = new Web3(new Web3.providers.HttpProvider(this.host));
+          console.log('ac-web3 -> created Web3');
+        }
+        this.web3 = acweb3_web3;
+        this.fire('web3-ready');
+      }
+    });
+  </script>
+</dom-module>
