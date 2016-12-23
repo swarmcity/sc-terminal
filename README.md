@@ -1,9 +1,9 @@
 # Swarm City Terminal
 
-The Swarm city terminal is the starting point of the user journey in Swarm City. The Swarm City Terminal will be the main entry screen into the Swarm City ecosystem and will be the switchboard towards all the Swarm City games ( starting with Ridesharing ). It provides the Arcadians the possibility to create and and manage a basic profile and exchange SWC tokens in a wallet.
+The Swarm city terminal is the starting point of the user journey in Swarm City. The Swarm City Terminal will be the main entry screen into the Swarm City ecosystem and will be the switchboard towards all the Swarm City games ( starting with Ridesharing ). It provides the swarm city members the possibility to create and and manage a basic profile and exchange SWC tokens in a wallet.
 
 ## New user
-A new Arcadian opens the app (terminal.swarm.city) and can create his own wallet in Swarm City. He must choose a strong password (min 9 characters) and needs to enter this twice. A new user account is created. 
+A new swarm city member opens the app (terminal.swarm.city) and can create his own wallet in Swarm City. He must choose a strong password (min 9 characters) and needs to enter this twice. A new user account is created. 
 
 ## New session on device with my wallet
 A user that already has a wallet installed on his device, can open the app and unlock it by entering his password.
