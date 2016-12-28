@@ -1,6 +1,6 @@
 {
-  "name": "ac-terminal",
-  "short_name": "ac-terminal",
+  "name": "sc-terminal",
+  "short_name": "sc-terminal",
   "description": "Starting app for the Swarm City ecosystem",
   "start_url": "/",
   "display": "standalone"
