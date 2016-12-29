@@ -503,7 +503,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       tosendform: function(){
-        this.sendcoinstate = 'confirmtx';
+        this.sendcoinstate = 'sendform';
       },
 
       // activatereceivecoins: function(){
@@ -534,7 +534,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       tosendcoins: function() {
         var self = this;
         this.sendcoinstate = 'sendcoins';
-        this.transfer(this.amount, this.$.helpers.fixaddress(self.receiver.account), function(err, result) {
+        this.transfer(this.amount * 1e18, this.$.helpers.fixaddress(self.receiver.account), function(err, result) {
           self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
             'command': 'confirmtransfer',
             'amount': self.amount,
