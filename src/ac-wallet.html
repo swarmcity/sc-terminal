@@ -72,16 +72,13 @@
           transaction_signer: this.keystore
         });
 
-        //this._setprovider();
-
         this.account = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
 
         this.web3.setProvider(this.web3Provider);
 
         var MyContract = this.web3.eth.contract(this.token.abi);
         this.myContractInstance = MyContract.at(this.tokencontractaddress);
-
-        //this.updateBalance();
+        
       },
 
 
@@ -142,19 +139,18 @@
       },
 
       updateBalance: function(e) {
-        if (!this.pubkey) {
+        var self = this;
+       
+        if (!this.pubkey || !self.web3 || !self.web3.eth) {
           return;
         }
         this.updating = true;
-        var self = this;
-        setTimeout(function() {
-          self.ethbalance = self.web3.eth.getBalance(self.$.helpers.fixaddress(self.pubkey)).toNumber();
-          self.arcbalance = self.myContractInstance.balanceOf(self.$.helpers.fixaddress(self.pubkey)).toNumber();
-          self.updating = false;
-        }, 0);
+        self.ethbalance = self.web3.eth.getBalance(self.$.helpers.fixaddress(self.pubkey)).toNumber();
+        self.arcbalance = self.myContractInstance.balanceOf(self.$.helpers.fixaddress(self.pubkey)).toNumber();
+        self.updating = false;
 
-        // console.log('ETH balance is', this.ethbalance);
-        // console.log('ARC balance is', this.arcbalance);
+        console.log('ETH balance is', this.ethbalance);
+        console.log('ARC balance is', this.arcbalance);
 
       },
 

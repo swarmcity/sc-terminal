@@ -174,62 +174,61 @@
 
   </style>
 
-
-<ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
-      <ac-wallet
+    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+    <ac-wallet
         id="wallet"
         keystore="[[keystore]]"
         pubkey="[[pubkey]]"
         updating="{{balanceupdating}}"
         arcbalance="{{arcbalance}}"
         ethbalance="{{ethbalance}}"></ac-wallet>
-  <div class="hometotal verticcenter">
-    <div class="ac-avatar-box" on-tap="toProfile">
-    <ac-avatar
+    <div class="hometotal verticcenter">
+      <div class="ac-avatar-box" on-tap="toProfile">
+        <ac-avatar
         identity="[[identity]]"
         pubkey="[[pubkey]]"
         id="homeavatar"
         ></ac-avatar>
-    <div class="whitespace"></div>
-    <ac-avatar
+        <div class="whitespace"></div>
+        <ac-avatar
         identity="[[identity]]"
         pubkey="[[pubkey]]"
         mode="txtonly"
         viewmode="center"
         ></ac-avatar>
-    </div>
-    <div class="homebalancebox flex verticcenter">
-      <div id="homebalance">
-        <template is="dom-if" if="{{!balanceupdating}}">
-          <div class$="arcbalance flex" on-tap="toWalletview">
-            <ac-balance
+      </div>
+      <div class="homebalancebox flex verticcenter">
+        <div id="homebalance">
+          <template is="dom-if" if="{{!balanceupdating}}">
+            <div class$="arcbalance flex" on-tap="toWalletview">
+              <ac-balance
             refcur="EUR"
             arcbalance="{{arcbalance}}"
             ethbalance="{{ethbalance}}"
             on-refresh="monitorBalance"
             ></ac-balance>
-          </div>
-        </template>
+            </div>
+          </template>
 
-        <template is="dom-if" if="{{balanceupdating}}">
-          <div class$="arcbalance {{arcalign}}">
-            <ac-spinner big></ac-spinner>
-          </div>
-        </template>
+          <template is="dom-if" if="{{balanceupdating}}">
+            <div class$="arcbalance {{arcalign}}">
+              <ac-spinner big></ac-spinner>
+            </div>
+          </template>
+        </div>
       </div>
-    </div>
-    <div class="flex"></div>
+      <div class="flex"></div>
 
-    <div id="homecontent" class="verticcenter">
+      <!--   <div id="homecontent" class="verticcenter">
       <div class="rideshare">
         <h2 class="yellow">/rideshare</h2>
         <p>You haven't played this game yet.</p>
         <div class="whitespace"></div>
-      <ac-button txtbtn bg="btncolor" txtcolor="yellow" class="toridesharebtn" small>Play!</ac-button>
-    </div>
+        <ac-button txtbtn bg="btncolor" txtcolor="yellow" class="toridesharebtn" small>Play!</ac-button>
+      </div>
 
     </div>
-
+    -->
   </div>
 </template>
 
@@ -263,6 +262,7 @@
 
       pubkey: {
         type: String,
+        observer: '_pubkey'
       },
 
       sharedElements: {
@@ -319,6 +319,12 @@
     behaviors: [
       Polymer.NeonSharedElementAnimatableBehavior
     ],
+
+    _pubkey: function(){
+      if (this.pubkey){
+        this.$.wallet.updateBalance();
+      }
+    },
 
     _keystore: function(){
       //debugger;
@@ -437,11 +443,11 @@
     },
 
 
-    logout: function() {
-      this.fire('logout');
+//    logout: function() {
+//      this.fire('logout');
 //      sessionStorage.removeItem('ac-password');
 //      window.location = '/';
-    },
+//    },
 
     _username: function(newVal,oldVal) {
       if (oldVal!==undefined){

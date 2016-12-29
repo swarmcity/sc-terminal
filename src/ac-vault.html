@@ -609,6 +609,14 @@
         }
       },
 
+      closeVault: function(){
+        this.password = null;
+        this.keystore = null;
+        this.currentkeystore = null;
+        this.currentidentity = null;
+        return this.fire('locked');
+      },
+
       importPrivateKey: function(pk) {
         var self = this;
         this._getpwDerivedKey(function(err, pwDerivedKey) {

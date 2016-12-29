@@ -1,25 +1,16 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<!-- <link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html"> -->
-<!-- <script src="../bower_components/page/page.js"></script> -->
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
-<!-- <link rel="import" href="../bower_components/ac-button/ac-button.html"> -->
-
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-
-<!-- <link rel="import" href="ac-transactionlog.html"> -->
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-avatar.html">
 <link rel="import" href="ac-balance.html">
-<!-- <link rel="import" href="ac-wallet.html"> -->
 <link rel="import" href="ac-vault.html">
 <link rel="import" href="ac-config.html">
 <link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-profile.html">
 <link rel="import" href="ac-preferences.html">
 <link rel="import" href="ac-walletview.html">
-
-<!-- <link rel="import" href="ac-tokentransfer.html"> -->
 <link rel="import" href="ac-intro.html">
 <link rel="import" href="ac-home.html">
 
@@ -32,8 +23,6 @@
     padding: 0px;
     width: 100%;
     height: 100vh;
-
-
   }
 
 
@@ -152,6 +141,7 @@
       on-exit="toHome"
       on-identity-update="saveIdentity"
       on-backup="toBackup"
+      on-logout="logout"
       sizeview="{{sizeview}}">
     </ac-profile>
 
@@ -237,6 +227,10 @@
 
       toWallet: function() {
         this.transitionto('/wallet');
+      },
+
+      logout: function() {
+        this.transitionto('/vault/unlock');
       },
 
       toHome: function() {

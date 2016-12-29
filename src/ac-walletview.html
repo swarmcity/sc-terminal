@@ -106,15 +106,13 @@
         <span class="flex"></span>
         <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
       </div>
-
       <div class="balancebox verticcenter">
         <div id="balance">
           <template is="dom-if" if="{{!balanceupdating}}">
             <div class$="arcbalance flex" on-tap="monitorBalance">
               <ac-balance
               refcur="EUR"
-              arcbalance="{{arcbalance}}"
-              ethbalance="{{ethbalance}}"
+              arcbalance="[[arcbalance]]"
               on-refresh="monitorBalance"
               wereinwallet
               ></ac-balance>
@@ -145,17 +143,12 @@
           identity="[[identity]]"
           keystore="[[keystore]]"
         ></ac-tokenreceive>
-<!--         <template is="dom-if" if="{{sendcollsclosed}}">
-        TR
-
-        TR2
-        </template> -->
         </div>
 
       <ac-wallet
         id="wallet"
         keystore="[[keystore]]"
-        account="[[account]]"
+        pubkey="[[account]]"
         updating="{{balanceupdating}}"
         arcbalance="{{arcbalance}}"
         ethbalance="{{ethbalance}}">
@@ -200,6 +193,7 @@
 
       account: {
         type: String,
+        observer: '_account'
       },
 
       sharedElements: {
@@ -263,6 +257,12 @@
     observers: [
         '_checkSize(sizeview)'
       ],
+
+    _account: function(){
+      if (this.account){
+        this.$.wallet.updateBalance();
+      }
+    },
 
     monitorBalance: function(){
       this.$.wallet.monitorBalance();

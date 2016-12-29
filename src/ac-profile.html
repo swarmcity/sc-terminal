@@ -362,7 +362,7 @@
               </div>
             </div>
             <div class="flex"></div>
-
+<!-- 
             <div class="profilepart coll" id="preferencestotal">
               <h2 on-tap="collapseMe" id="preferences">Preferences</h2>
               <iron-collapse class="collapserz" id="preferencescollapser">
@@ -370,7 +370,7 @@
               </iron-collapse>
             </div>
 
-
+ -->
             <div class="profilepart coll" id="synctotal">
             <h2 on-tap="collapseMe" id="sync">Sync with device</h2>
               <iron-collapse class="collapserz" id="synccollapser">
@@ -378,19 +378,19 @@
                 <p on-tap="collapseMe" class="white centertxt">Use this shortcode to sync with another device.</p>
               </iron-collapse>
             </div>
-
+<!-- 
             <div class="profilepart coll" id="backuptotal">
               <h2 on-tap="collapseMe" id="backup">Create backup</h2>
               <iron-collapse class="collapserz" id="backupcollapser">
                 <p on-tap="collapseMe" class="yellow">Het is al geruime tijd een bekend gegeven dat een lezer, tijdens het bekijken van de layout van een pagina, afgeleid wordt door de tekstuele inhoud. Het belangrijke punt van het gebruik van Lorem Ipsum is dat het uit een min of meer normale verdeling van letters bestaat, in tegenstelling tot "Hier uw tekst, hier uw tekst" wat het tot min of meer leesbaar nederlands maakt. Veel desktop publishing pakketten en web pagina editors gebruiken tegenwoordig Lorem Ipsum als hun standaard model tekst, en een zoekopdracht naar "lorem ipsum" ontsluit veel websites die nog in aanbouw zijn. Verscheidene versies hebben zich ontwikkeld in de loop van de jaren, soms per ongeluk soms expres (ingevoegde humor en dergelijke).</p>
               </iron-collapse>
             </div>
-
-<!--           <div class="loggerout">
+ -->
+          <div class="loggerout">
             <ac-button bg="white" txtcolor="base" small txtbtn>log out
             <ac-icon icon="ac-logout" iconcolor="base" on-tap="exit" small></ac-icon>
             </ac-button>
-          </div> -->
+          </div>
 
           </div>
       </neon-animatable>
@@ -584,6 +584,7 @@
       this.currentavatar = image;
       if (this.croppie && this.croppie.destroy) {
         this.croppie.destroy();
+        delete self.croppie;
       }
       this.croppie = new Croppie(this.$.croppie, {
         viewport: {
@@ -607,6 +608,7 @@
     setcurrentavatar_cancel: function() {
       this.datastate = 'view';
       self.croppie.destroy();
+      delete self.croppie;
     },
 
     setcurrentavatar: function() {
@@ -627,21 +629,27 @@
         var imgbuffer = this.$.ipfs.ipfs.Buffer(base64data, 'base64');
 
         this.$.ipfs.add(imgbuffer, function(err, result) {
-          console.log(err, result[0].hash);
-          //var hashurl = this.$.ipfs.geturl(result[0].hash);
-          self.avatarhash = result[0].hash;
-          self.avatarurl = this.$.ipfs.geturl(result[0].hash);
-          // self.datachanged = true;
+          if (err || !result || !result[0]){
+            console.log('cannot upload avatar',err);
+            this.avatarloading = false;
+          }else{
+            console.log(err, result[0].hash);
+            //var hashurl = this.$.ipfs.geturl(result[0].hash);
+            self.avatarhash = result[0].hash;
+            self.avatarurl = this.$.ipfs.geturl(result[0].hash);
+            // self.datachanged = true;
 
-          self.fire('identity-update',{
-            username: self.username,
-            avatarhash: self.avatarhash
-          });
-          this.avatarloading = false;
+            self.fire('identity-update',{
+              username: self.username,
+              avatarhash: self.avatarhash
+            });
+            this.avatarloading = false;            
+          }
         }.bind(this));
 
         // remove cropper
         self.croppie.destroy();
+        delete self.croppie;
         // self.datachanged = true;
 
       }.bind(this));
