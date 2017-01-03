@@ -311,8 +311,14 @@
 
       <neon-animatable data-page="backup">
         <div class="pascanvas verticcenter">
-          <a id="downloadAnchorElem" style="display:none"></a>
-          <ac-button on-tap="downloadvault" txtbtn txtcolor="blue" bg="btncolor">Download your vault</ac-button>
+          <div class="topback">
+            <span class="flex"></span>
+            <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="goBack" verysmall>back</ac-button>
+          </div>        
+          <div class="pascanvasunderexit verticcenter paddingside">          
+            <a id="downloadAnchorElem" style="display:none"></a>
+            <ac-button on-tap="downloadvault" txtbtn txtcolor="blue" bg="btncolor">Download your vault</ac-button>
+          </div>
         </div>
       </neon-animatable>
 
@@ -436,6 +442,10 @@
             console.log('unknown path ', page);
             break;
         }
+      },
+
+      goBack: function(){
+        window.history.back();
       },
 
 

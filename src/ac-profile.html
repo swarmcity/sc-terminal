@@ -371,14 +371,14 @@
             </div>
 
  -->
-            <div class="profilepart coll" id="synctotal">
+<!--             <div class="profilepart coll" id="synctotal">
             <h2 on-tap="collapseMe" id="sync">Sync with device</h2>
               <iron-collapse class="collapserz" id="synccollapser">
                 <h4 class="white centertxt">7789</h4><br>
                 <p on-tap="collapseMe" class="white centertxt">Use this shortcode to sync with another device.</p>
               </iron-collapse>
             </div>
-
+ -->
           <div class="loggerout">
             <ac-button bg="white" txtcolor="base" on-tap="backupvault" small txtbtn>back-up my vault
             </ac-button>
@@ -690,6 +690,7 @@
     },
 
     logout: function() {
+      debugger;
       this.fire('logout');
 //      sessionStorage.removeItem('ac-password');
 //      window.location = '/';
