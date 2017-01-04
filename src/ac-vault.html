@@ -357,7 +357,8 @@
             <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="removeall" verysmall>back</ac-button>
         </div>
         <div class="pascanvasunderexit verticcenter">
-        <ac-password id="newuser" sessionname="vaultpassword" on-password-received="unlockvault"></ac-password>
+        <p class="yellow centertxt maxwidth">Unlock your vault.</p>
+        <ac-password id="newuser" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
       </div>
     </div>
     </neon-animatable>
@@ -538,18 +539,41 @@
 
 
       unlockvault: function(e) {
+        var self=this;
+        self.unlockpasswordwrong = false;
         if (!this.hasVault()) {
           //return page.redirect('/');
           console.log("there is no vault!");
         }
         this.password = e.detail.password;
         this.loadVault();
-        this.fire('unlocked');
-        //page.redirect('/home');
+        this.checkpassword(function(err,pwdcorrect){
+          if (pwdcorrect){
+            self.fire('unlocked');
+          }else{
+            self.unlockpasswordwrong = true;
+          }
+        })
+      },
+
+      // checks the password. If it's correct call cb(null,true)
+      checkpassword: function(cb){
+        var self= this;
+        if (!this.keystore){
+          return cb(new Error('no keystore set'));
+        }
+        this._getpwDerivedKey(function(err, pwDerivedKey) {
+          if (!self.keystore.isDerivedKeyCorrect(pwDerivedKey)){
+            return cb(null,false);
+          }else{
+            return cb(null,true);
+          }
+        });
+
       },
 
       downloadvault: function(){
-        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem('ac-vault'));;
+        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(window.localStorage.getItem('sc-vault'));;
         var dlAnchorElem = document.getElementById('downloadAnchorElem');
         dlAnchorElem.setAttribute("href", dataStr);
         dlAnchorElem.setAttribute("download", 'swarmCityVault-' + Date.now() + '.json');
@@ -558,7 +582,7 @@
 
       // Load vault from local storage
       loadVault: function(){
-        var tmpvault = JSON.parse(window.localStorage.getItem('ac-vault'));
+        var tmpvault = JSON.parse(window.localStorage.getItem('sc-vault'));
         this._parseVault(tmpvault);
       },
 
@@ -568,7 +592,7 @@
         var keystore = JSON.parse(content);
         var identity = self._creatBlankIdentity();        //self.saveVault();
         return ({
-          type: 'ac-vault',
+          type: 'sc-vault',
           version: 1,
           keystore: keystore,
           identity: identity
@@ -590,10 +614,8 @@
           if (!vaultdata) {
             throw new Error('ac-vault: loadVault: vault is not defined.');
           }
-          // if (!this.password) {
-          //   throw new Error('ac-vault: loadVault: no password set.');
-          // }
-          if (!vaultdata.type === 'ac-vault') {
+         
+          if (!vaultdata.type === 'sc-vault') {
             throw new Error('ac-vault: loadVault: JSON format not recognized.');
           }
 
@@ -639,7 +661,7 @@
           var serializedIdentity = this.currentidentity || {};
 
           var vault = {
-            type: 'ac-vault',
+            type: 'sc-vault',
             version:1,
             keystore: serializedKeystore,
             identity: serializedIdentity
@@ -647,12 +669,12 @@
 
           //encryption.multiEncryptString(keystore, pwDerivedKey, msg, myPubKey, theirPubKeyArray [, hdPathString])
 
-          window.localStorage.setItem('ac-vault', JSON.stringify(vault));
+          window.localStorage.setItem('sc-vault', JSON.stringify(vault));
 
       },
 
       hasVault: function(){
-        var vault = window.localStorage.getItem('ac-vault');
+        var vault = window.localStorage.getItem('sc-vault');
         return (vault);
       },
 
@@ -713,6 +735,10 @@
           username: 'Mr Swarm',
           avatarhash: 'QmRjHCtrTCMbK8PfptY41dLKZvoGiX8pNC94BCesSzpSed'
         });
+      },
+
+      _password: function(){
+        this.pwDerivedKey = null;
       },
 
       _getpwDerivedKey: function(cb){
