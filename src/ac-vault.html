@@ -218,13 +218,13 @@
         <div class="pascanvas verticcenter">
           <div class="topback">
             <span class="flex"></span>
-              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="deleteVault" verysmall>back</ac-button>
           </div>
           <div class="pascanvasunderexit verticcenter paddingside">
           <div class="smallio">
-          <p class="yellow centertxt">Enter the private key you'll find on your ARC-wallet.</p>
+          <p class="yellow centertxt">Enter the private key of your wallet.</p>
           <div class="whitespace"></div>
-            <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="Private key" type="password" bind-value="{{privatekey}}" center></ac-input>
+            <ac-input id="privatekeyinput" color="yellow" id="inputpass" label="Private key" type="password" bind-value="{{privatekey::input}}" center></ac-input>
             <div class="whitespace"></div>
             <div class="whitespace"></div>
 
@@ -243,9 +243,13 @@
           </div>
           <div class="pascanvasunderexit verticcenter paddingside">
           <div class="pascanvas verticcenter">
-            <p class="yellow centertxt maxwidth">A profile will be created for the wallet with public key <span class="bold">0x4455687</span>. <br><br> Enter a password (min. 9 characters) for this new profile and repeat.</p>
+            <p class="yellow centertxt maxwidth">A profile will be created with the private key you provided. <br><br> Enter a password (min. 9 characters) for this new profile and repeat.</p>
             <div class="whitespace"></div>
             <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+            <template is="dom-if" if="{{creatingvault}}">
+                <p class="yellow centertxt maxwidth">creating wallet - please wait...</p>
+                <ac-spinner big></ac-spinner>
+            </template>
           </div>
         </div>
       </div>
@@ -309,6 +313,10 @@
             <p class="yellow centertxt maxwidth"><span class="bold">Great!</span><br>A profile will now be created with your ARC-wallet. <br><br> Enter a password (min. 9 characters) for this new profile and repeat.</p>
             <div class="whitespace"></div>
             <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+            <template is="dom-if" if="{{creatingvault}}">
+                <p class="yellow centertxt maxwidth">please wait...</p>
+                <ac-spinner big></ac-spinner>
+            </template>
           </div>
         </div>
       </div>
@@ -336,8 +344,8 @@
             <div class="whitespace"></div>
             <div class="whitespace"></div>
             <div class="yesnobtns verticcenter">
-              <ac-button big class="yesno" bg="btncolor" txtcolor="blue" on-tap="" txtbtn>Yes</ac-button>
-              <ac-button big class="yesno" bg="btncolor" txtcolor="blue" on-tap="" txtbtn>No</ac-button>
+              <ac-button big class="yesno" bg="btncolor" txtcolor="blue" on-tap="deleteVault" txtbtn>Yes</ac-button>
+              <ac-button big class="yesno" bg="btncolor" txtcolor="blue" on-tap="goBack" txtbtn>No</ac-button>
             </div>
           </div>
         </neon-animatable>
@@ -512,6 +520,7 @@
           var contents = e.target.result;
           //self.readwallet = contents;
           window.setTimeout(function(){
+            self.uploadingwallet = false;
             if (self._parseVault(contents)){
               self.saveVault();
               self.uploadingwallet = false;
@@ -529,12 +538,16 @@
       },
 
       createvaultfrompk: function(e) {
+        this.creatingvault = true;
         this.password = e.detail.password;
         this.createVault(0, function() {
           this._getpwDerivedKey(function(err, pwDerivedKey) {
             this.keystore.importPrivateKey(this.privatekey, pwDerivedKey);
+            this.privatekey = null;
+            this.$.privatekeyinput.inputvalue = null;
             this.saveVault();
             this.loadVault();
+            this.creatingvault = false;
             this.fire('unlocked');
           }.bind(this));
         }.bind(this));
@@ -663,10 +676,11 @@
         this.currentkeystore = null;
         this.currentidentity = null;
         sessionStorage.removeItem('sc-password-vaultpassword');
-//        window.location = '/';
       },
 
       deleteVault: function(){
+        this.privatekey = null;
+        this.$.privatekeyinput.inputvalue = null;
         this.closeVault();
         window.localStorage.removeItem('sc-vault');
         return this.fire('novault');
