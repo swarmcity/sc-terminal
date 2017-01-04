@@ -362,7 +362,7 @@
               </div>
             </div>
             <div class="flex"></div>
-<!-- 
+<!--
             <div class="profilepart coll" id="preferencestotal">
               <h2 on-tap="collapseMe" id="preferences">Preferences</h2>
               <iron-collapse class="collapserz" id="preferencescollapser">
@@ -382,8 +382,8 @@
           <div class="loggerout">
             <ac-button bg="white" txtcolor="base" on-tap="backupvault" small txtbtn>back-up my vault
             </ac-button>
-          </div>            
-<!-- 
+          </div>
+<!--
             <div class="profilepart coll" id="backuptotal">
               <h2 on-tap="collapseMe" id="backup">Create backup</h2>
               <iron-collapse class="collapserz" id="backupcollapser">
@@ -392,8 +392,8 @@
             </div>
  -->
           <div class="loggerout">
-            <ac-button bg="white" txtcolor="base" small txtbtn>log out
-            <ac-icon icon="ac-logout" iconcolor="base" on-tap="logout" small></ac-icon>
+            <ac-button bg="white" on-tap="logout" txtcolor="base" small txtbtn>log out
+            <ac-icon icon="ac-logout" iconcolor="base" small></ac-icon>
             </ac-button>
           </div>
 
@@ -648,7 +648,7 @@
               username: self.username,
               avatarhash: self.avatarhash
             });
-            this.avatarloading = false;            
+            this.avatarloading = false;
           }
         }.bind(this));
 
@@ -690,11 +690,9 @@
     },
 
     logout: function() {
-      debugger;
       this.fire('logout');
-//      sessionStorage.removeItem('ac-password');
-//      window.location = '/';
     },
+
     backupvault: function(){
       this.fire('backup');
     },
