@@ -321,8 +321,8 @@
           <div class="topback">
             <span class="flex"></span>
             <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="goBack" verysmall>back</ac-button>
-          </div>        
-          <div class="pascanvasunderexit verticcenter paddingside">          
+          </div>
+          <div class="pascanvasunderexit verticcenter paddingside">
             <a id="downloadAnchorElem" style="display:none"></a>
             <ac-button on-tap="downloadvault" txtbtn txtcolor="blue" bg="btncolor">Download your vault</ac-button>
           </div>
@@ -629,7 +629,7 @@
           if (!vaultdata) {
             throw new Error('ac-vault: loadVault: vault is not defined.');
           }
-         
+
           if (!vaultdata.type === 'sc-vault') {
             throw new Error('ac-vault: loadVault: JSON format not recognized.');
           }
@@ -661,6 +661,8 @@
         this.keystore = null;
         this.currentkeystore = null;
         this.currentidentity = null;
+        sessionStorage.removeItem('sc-password-vaultpassword');
+        window.location = '/';
       },
 
       deleteVault: function(){
@@ -752,7 +754,7 @@
       _creatBlankIdentity: function() {
         return({
           version: 1,
-          username: 'Mr Swarm',
+          username: 'nickname',
           avatarhash: 'QmRjHCtrTCMbK8PfptY41dLKZvoGiX8pNC94BCesSzpSed'
         });
       },
