@@ -505,7 +505,7 @@
           return;
         }
         this.walletfilename = file.name;
-        
+
         self.uploadingwallet = true;
         var reader = new FileReader();
         reader.onload = function(e) {
@@ -515,7 +515,7 @@
             if (self._parseVault(contents)){
               self.saveVault();
               self.uploadingwallet = false;
-              return self.fire('locked');        
+              return self.fire('locked');
             }
           },100);
           // so we've read the vault file. It's locked.
