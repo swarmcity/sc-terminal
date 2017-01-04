@@ -381,7 +381,7 @@
             <p class="red smaller bold">This action can not be undone!</p>
             <div class="whitespace"></div>
 
-          <ac-button txtbtn txtcolor="base" bg="red">remove profile</ac-button>
+            <ac-button on-tap="deleteVault" txtbtn txtcolor="base" bg="red">remove profile</ac-button>
         </div>
         <ac-button icon="ac-arrowleft" txtcolor="white" bg="btncolor" on-tap="cancel" small>cancel</ac-button>
 
@@ -445,6 +445,7 @@
             }
             break;
           case 'unlock':
+          case 'removeall':
 
             break;
           default:
@@ -662,12 +663,13 @@
         this.currentkeystore = null;
         this.currentidentity = null;
         sessionStorage.removeItem('sc-password-vaultpassword');
-        window.location = '/';
+//        window.location = '/';
       },
 
       deleteVault: function(){
         this.closeVault();
-        window.localStorage.setItem('sc-vault', null);
+        window.localStorage.removeItem('sc-vault');
+        return this.fire('novault');
       },
 
       importPrivateKey: function(pk) {
