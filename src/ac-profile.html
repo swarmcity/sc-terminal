@@ -308,6 +308,10 @@
     opacity: 0.25;
   }
 
+  .fullopacity {
+    opacity: 1;
+  }
+
   </style>
 
     <ac-ipfs id="ipfs"></ac-ipfs>
@@ -397,18 +401,18 @@
             </ac-button>
           </div>
 
-          <div class="loggerout">
+          <div>
 
-<div>
-<ac-button bg="white" txtcolor="base" on-tap="collapseMe" id="deletemyvault" small txtbtn>Delete vault           
+<div class="verticcenter fullopacity">
+<ac-button bg="white" txtcolor="base" on-tap="collapseMe" id="deletemyvault" small txtbtn>Delete vault
             </ac-button>
-          </div>
+
 <!--               <h2 on-tap="collapseMe" id="deletevault">Delete vault</h2>
  -->              <iron-collapse class="collapserz" id="deletemyvaultcollapser">
-              <ac-button bg="white" txtcolor="base" on-tap="deletevault" small txtbtn>Click here to delete vault           
+              <ac-button bg="red"  class="fullopacity" txtcolor="white" on-tap="deletevault" small txtbtn>Delete my vault
             </ac-button>
               </iron-collapse>
- 
+  </div>
 
 
           </div>
@@ -785,7 +789,7 @@
       collapsdis.toggle();
 
       var itemtotal = document.getElementById(item);
-      if (itemtotal){      
+      if (itemtotal){
         if (collapsdis.opened){
          itemtotal.classList.add("openedcoll");
         } else {
