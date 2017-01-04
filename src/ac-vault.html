@@ -265,7 +265,7 @@
           </div>
         </template>
           <input type="file"  class="hidden" id="uploaditem"  on-change="readSingleFile">
-          <ac-button on-tap="uploadclick" txtbtn txtcolor="blue" bg="btncolor">Choose your wallet-file</ac-button>
+          <ac-button on-tap="uploadclick" txtbtn txtcolor="blue" bg="btncolor">Upload your wallet-file</ac-button>
 
         </div>
       </div>
@@ -399,6 +399,7 @@
         },
         password: {
           type: String,
+          observer: '_password'
         },
         keystore: {
           type: Object,
