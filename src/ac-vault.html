@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/ac-style/ac-style.html">
 <link rel="import" href="ac-helpers.html">
 <link rel="import" href="ac-password.html">
+<link rel="import" href="ac-spinner.html">
 <script src="scripts/lightwallet.min.js"></script>
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 
@@ -267,6 +268,12 @@
           <input type="file"  class="hidden" id="uploaditem"  on-change="readSingleFile">
           <ac-button on-tap="uploadclick" txtbtn txtcolor="blue" bg="btncolor">Upload your wallet-file</ac-button>
 
+          <template is="dom-if" if="{{uploadingwallet}}">
+              <p class="yellow centertxt maxwidth">uploading wallet - please wait...</p>
+              <ac-spinner big></ac-spinner>
+          </template>
+
+
         </div>
       </div>
 
@@ -491,21 +498,25 @@
       },
 
       readSingleFile: function(e) {
-        //debugger;
         var self = this;
         var file = e.target.files[0];
         if (!file) {
           return;
         }
         this.walletfilename = file.name;
+        
+        self.uploadingwallet = true;
         var reader = new FileReader();
         reader.onload = function(e) {
           var contents = e.target.result;
           //self.readwallet = contents;
-          if (self._parseVault(contents)){
-            self.saveVault();
-            return self.fire('locked');
-          }
+          window.setTimeout(function(){
+            if (self._parseVault(contents)){
+              self.saveVault();
+              self.uploadingwallet = false;
+              return self.fire('locked');        
+            }
+          },100);
           // so we've read the vault file. It's locked.
 
         };
@@ -538,7 +549,6 @@
         console.log('ac-vault ->','currentidentity updated',this.currentidentity);
       },
 
-
       unlockvault: function(e) {
         var self=this;
         self.unlockpasswordwrong = false;
@@ -547,6 +557,10 @@
           console.log("there is no vault!");
         }
         this.password = e.detail.password;
+
+        if (!this.password){
+          return;
+        }
         this.loadVault();
         this.checkpassword(function(err,pwdcorrect){
           if (pwdcorrect){
@@ -647,6 +661,11 @@
         this.keystore = null;
         this.currentkeystore = null;
         this.currentidentity = null;
+      },
+
+      deleteVault: function(){
+        this.closeVault();
+        window.localStorage.setItem('sc-vault', null);
       },
 
       importPrivateKey: function(pk) {

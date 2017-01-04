@@ -142,6 +142,7 @@
       on-identity-update="saveIdentity"
       on-backup="toBackup"
       on-logout="logout"
+      on-deletevault="deletevault"
       sizeview="{{sizeview}}">
     </ac-profile>
 
@@ -230,9 +231,13 @@
       },
 
       logout: function() {
-        debugger;
         this.$.thevault.closeVault();        
         this.transitionto('/vault/unlock');
+      },
+
+      deletevault: function(){
+        this.$.thevault.deleteVault();        
+        this.transitionto('/intro/welcome');
       },
 
       toHome: function() {
