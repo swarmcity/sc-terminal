@@ -13,6 +13,7 @@
 <link rel="import" href="ac-walletview.html">
 <link rel="import" href="ac-intro.html">
 <link rel="import" href="ac-home.html">
+<link rel="import" href="ac-swtconversion.html">
 
 <dom-module id="ac-app">
   <template>
@@ -95,6 +96,8 @@
 
   <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[data.page]]">
 
+    <ac-swtconversion data-page="swt"></ac-swtconversion>
+
     <ac-intro
       data-page="intro"
       on-newvault="createNewVault"
@@ -106,7 +109,7 @@
       >
     </ac-intro>
 
-    <ac-vault
+    <!-- <ac-vault
       id="thevault"
       data-page="vault"
       route="[[pageTail]]"
@@ -121,7 +124,7 @@
       on-exit="reset"
       >
 
-    </ac-vault>
+    </ac-vault> -->
 
     <ac-home
       data-page="home"
@@ -233,12 +236,12 @@
       },
 
       logout: function() {
-        this.$.thevault.closeVault();        
+        this.$.thevault.closeVault();
         this.transitionto('/vault/unlock');
       },
 
       deletevault: function(){
-        this.$.thevault.deleteVault();        
+        this.$.thevault.deleteVault();
         this.transitionto('/intro/welcome');
       },
 
