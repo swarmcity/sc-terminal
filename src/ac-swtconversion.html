@@ -5,6 +5,7 @@
 <link rel="import" href="../bower_components/ac-style/ac-style.html">
 <link rel="import" href="ac-helpers.html">
 <link rel="import" href="ac-password.html">
+<link rel="import" href="ac-statusitem.html">
 <link rel="import" href="ac-spinner.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 
@@ -174,7 +175,7 @@ li {
   opacity: 1;
 }
 
-.done {
+.finished {
   opacity: 0.5;
 }
 
@@ -213,17 +214,18 @@ li {
       <div class="whitespace"></div>
 
       <ol class="white">
-        <li class="done">Asking permission to transfer ARC</li>
-        <li class="working">Permission to transfer ARC granted</li>
-        <li class="inactive">Sending ARC to SWT contract</li>
-        <li class="inactive">SWT received</li>
+        <li><ac-statusitem id="s1" status="inactive">Asking permission to transfer ARC</ac-statusitem></li>
+        <li><ac-statusitem id="s2" status="inactive">Permission to transfer ARC granted</ac-statusitem></li>
+        <li><ac-statusitem id="s3" status="inactive">Sending ARC to SWT contract</ac-statusitem></li>
+        <li><ac-statusitem id="s4" status="inactive">SWT received</ac-statusitem></li>
       </ol>
-      <ac-spinner big></ac-spinner>
 
       <div class="whitespace"></div>
       <div class="whitespace"></div>
       <div class="yesnobtns vertic">
-        <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toimportwallet" txtbtn>Start</ac-button>
+        <ac-button big id="startbtn" class="yesno" bg="btncolor" txtcolor="red" on-tap="startconversion" txtbtn>Start</ac-button>
+        <ac-spinner hidden id="processspinner" big>spinning</ac-spinner>
+        <ac-button big id="continuebtn" class="yesno" bg="btncolor" txtcolor="red" on-tap="startconversion" txtbtn>All set.</ac-button>
       </div>
     </div>
     </neon-animatable>
@@ -254,6 +256,40 @@ Polymer({
   tostepone: function() {
     this.set('route.path', '/stepone');
   },
+
+  startconversion: function() {
+    var self = this;
+    this.$.startbtn.hidden = true;
+    this.$.processspinner.hidden = false;
+    window.setTimeout(function(){
+      this.$.s1.status = "working";
+      window.setTimeout(function(){
+        this.$.s1.status = "done";
+        window.setTimeout(function(){
+          this.$.s2.status = "working";
+          window.setTimeout(function(){
+            this.$.s2.status = "done";
+            window.setTimeout(function(){
+              this.$.s3.status = "working";
+              window.setTimeout(function(){
+                this.$.s3.status = "done";
+                window.setTimeout(function(){
+                  this.$.s4.status = "working";
+                  window.setTimeout(function(){
+                    this.$.s4.status = "done";
+                    this.$.continuebtn.hidden = false;
+                    this.$.processspinner.hidden = true;
+                  }.bind(this), 2000);
+                }.bind(this), 2000);
+              }.bind(this), 2000);
+            }.bind(this), 2000);
+          }.bind(this), 2000);
+        }.bind(this), 2000);
+      }.bind(this), 2000);
+    }.bind(this), 1000);
+
+
+  }
 
 });
 </script>

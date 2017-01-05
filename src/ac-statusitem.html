@@ -1,0 +1,76 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="ac-spinner.html">
+<dom-module id="ac-statusitem">
+  <template>
+    <style>
+      :host {
+        --item-transp: 0.25;
+        display: block;
+        opacity: var(--item-transp);
+      }
+
+      @keyframes flickerAnimation {
+        0%   { opacity:1; }
+        50%  { opacity:0; }
+        100% { opacity:1; }
+      }
+      @-o-keyframes flickerAnimation{
+        0%   { opacity:1; }
+        50%  { opacity:0; }
+        100% { opacity:1; }
+      }
+      @-moz-keyframes flickerAnimation{
+        0%   { opacity:1; }
+        50%  { opacity:0; }
+        100% { opacity:1; }
+      }
+      @-webkit-keyframes flickerAnimation{
+        0%   { opacity:1; }
+        50%  { opacity:0; }
+        100% { opacity:1; }
+      }
+      .animate-flicker {
+         -webkit-animation: flickerAnimation 1s infinite;
+         -moz-animation: flickerAnimation 1s infinite;
+         -o-animation: flickerAnimation 1s infinite;
+          animation: flickerAnimation 1s infinite;
+      }
+    </style>
+    <p id="pm"><content></content></p>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'ac-statusitem',
+
+      properties: {
+        status: {
+          type: String,
+          value: 'inactive',
+          observer: '_status'
+        },
+      },
+
+      _status: function() {
+        switch (this.status) {
+          case 'inactive':
+            this.customStyle['--item-transp'] = '0.5';
+            this.updateStyles();
+            break;
+          case 'done':
+            this.customStyle['--item-transp'] = '0.25';
+            this.updateStyles();
+            break;
+          case 'working':
+          this.customStyle['--item-transp'] = '1';
+          this.updateStyles();
+            break;
+          default:
+        }
+
+      }
+
+    });
+  </script>
+</dom-module>
