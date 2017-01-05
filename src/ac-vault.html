@@ -229,6 +229,10 @@
             <div class="whitespace"></div>
 
             <ac-button class="loginbtn" icon="ac-arrowright" on-tap="pkreceived" bg="btncolor" txtcolor="yellow"></ac-button>
+            <template is="dom-if" if="{{invalidpk}}">
+            <div class="red"><p><span class="oops">This is not a valid key</span></p>
+              </div>
+            </template>            
           </div>
         </div>
       </div>
@@ -542,7 +546,15 @@
       },
 
       pkreceived: function(){
-        this.set('route.path', '/importpkmakewallet');
+        this.invalidpk = false;
+        var patt = new RegExp(/^[a-f0-9]{64}$/i);
+        var res = patt.test(this.privatekey);
+        if (!res){
+          console.log('foute key');
+          this.invalidpk = true;
+        }else{
+          this.set('route.path', '/importpkmakewallet');
+        }
       },
 
       createvaultfrompk: function(e) {
