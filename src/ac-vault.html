@@ -328,7 +328,7 @@
         <div class="pascanvas verticcenter">
           <div class="topback">
             <span class="flex"></span>
-            <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="to" verysmall>back</ac-button>
+            <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="backupexit" verysmall>back</ac-button>
           </div>
           <div class="pascanvasunderexit verticcenter paddingside">
             <a id="downloadAnchorElem" style="display:none"></a>
@@ -460,6 +460,10 @@
             console.log('unknown path ', page);
             break;
         }
+      },
+
+      backupexit: function(){
+        this.fire('backupexit')
       },
 
       goBack: function(){
