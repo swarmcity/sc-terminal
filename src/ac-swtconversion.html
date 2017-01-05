@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/ac-input/ac-input.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
 <link rel="import" href="../bower_components/ac-style/ac-style.html">
 <link rel="import" href="ac-helpers.html">
 <link rel="import" href="ac-password.html">
@@ -141,6 +142,10 @@ neon-animated-pages {
   color: var(--ac-white);
 }
 
+.green {
+  color: var(--ac-green);
+}
+
 .yesnobtns {
   width: 100%;
 }
@@ -151,16 +156,37 @@ neon-animated-pages {
   margin: 5px;
 }
 
+ol {
+  width: 80%;
+  max-width: 380px;
+  margin: 5px;
+  @apply(--layout-vertical);
+  text-align: left;
+  line-height: 1.5;
+  @apply(--ac-font-body1);
+}
 
+li {
+  margin-bottom: 15px;
+}
 
+.working {
+  opacity: 1;
+}
+
+.done {
+  opacity: 0.5;
+}
+
+.inactive {
+  opacity: 0.25;
+}
 
 </style>
 <template>
 
   <ac-helpers id="helpers"></ac-helpers>
   <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
-
-  <h1 class="white">TEST <span>[[data.page]]</span></h1>
 
   <div class="topback">
     <span class="flex"></span>
@@ -176,22 +202,28 @@ neon-animated-pages {
       <div class="yesnobtns vertic">
         <p class="white">In the next steps, you will be converting your ARC tokens to SWT tokens. Swarm City will not work with ARC tokens.</p>
         <div class="whitespace"></div>
-        <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="tostepone" txtbtn>Continue</ac-button>
+        <ac-button class="yesno" bg="btncolor" txtcolor="red" on-tap="tostepone" txtbtn>Continue</ac-button>
       </div>
     </div>
     </neon-animatable>
 
     <neon-animatable data-page="stepone">
       <div class="total vertic">
-      <p class="red">Follow these easy steps:</p>
-      <p class="white">1. Allowance</p>
-      <p class="white">2. Transfer</p>
-      <p class="white">3. Done</p>
+      <h2 class="red">ARC to SWT process</h2>
+      <div class="whitespace"></div>
+
+      <ol class="white">
+        <li class="done">Asking permission to transfer ARC</li>
+        <li class="working">Permission to transfer ARC granted</li>
+        <li class="inactive">Sending ARC to SWT contract</li>
+        <li class="inactive">SWT received</li>
+      </ol>
+      <ac-spinner big></ac-spinner>
+
       <div class="whitespace"></div>
       <div class="whitespace"></div>
       <div class="yesnobtns vertic">
-        <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toimportwallet" txtbtn>Yes</ac-button>
-        <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="tocreatewallet" txtbtn>No</ac-button>
+        <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toimportwallet" txtbtn>Start</ac-button>
       </div>
     </div>
     </neon-animatable>
@@ -206,9 +238,9 @@ Polymer({
   is: 'ac-swtconversion',
 
   properties: {
-    prop1: {
-      type: String,
-      value: 'ac-swtconversion',
+    route: {
+      type: Object,
+      notify: true,
     },
   },
 

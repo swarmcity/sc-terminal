@@ -96,7 +96,10 @@
 
   <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[data.page]]">
 
-    <ac-swtconversion data-page="swt"></ac-swtconversion>
+    <ac-swtconversion
+      data-page="swt"
+      route="[[pageTail]]">
+    </ac-swtconversion>
 
     <ac-intro
       data-page="intro"
