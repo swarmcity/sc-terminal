@@ -7,6 +7,8 @@
 <link rel="import" href="ac-password.html">
 <link rel="import" href="ac-statusitem.html">
 <link rel="import" href="ac-spinner.html">
+<link rel="import" href="ac-wallet.html">
+<link rel="import" href="ac-config.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 
 <dom-module id="ac-swtconversion">
@@ -186,6 +188,7 @@ li {
 </style>
 <template>
 
+  <ac-config tokencontractaddress="{{ARCTokenAddress}}"></ac-config>
   <ac-helpers id="helpers"></ac-helpers>
   <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
 
@@ -244,6 +247,9 @@ Polymer({
       type: Object,
       notify: true,
     },
+    web3: {
+      type: Object,
+    },
   },
 
   attached: function(){
@@ -257,8 +263,45 @@ Polymer({
     this.set('route.path', '/stepone');
   },
 
+  checkallowance: function(){
+    debugger;
+    console.log('web3',this.web3);
+
+
+        var self = this;
+
+        this.$.helpers.getjson('./contracts/ARCToken.json', function(err,arctokenjson) {
+          
+          // this.contractjson = JSON.parse(e.target.import.body.innerText);
+          //    self.web3.eth.getGasPrice(function(err, result){
+          //   var gasPrice = result.toNumber(10);
+          // console.log('gasprice: ', gasPrice);
+
+          var MyContract = self.web3.eth.contract(arctokenjson.abi);
+          var myContractInstance = MyContract.at(self.$.helpers.arcaddress);
+            console.log('doing transfer of ',amount,' to: ', to, 'from: ', window.account);
+            myContractInstance.transfer.sendTransaction(to, amount, {
+              from: self.$.helpers.fixaddress(window.account),
+              gasPrice: gasPrice,
+              gasLimit: 3000000,
+              gas: 2000000
+            }, function(err, result){
+              console.log(err, result);
+              var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(window.account));
+                self.arcbalance = coinbalance;
+                if (cb){
+                  cb(err,result);
+                }
+            });
+
+          // });
+
+
+  },
+
   startconversion: function() {
     var self = this;
+    this.checkallowance();
     this.$.startbtn.hidden = true;
     this.$.processspinner.hidden = false;
     window.setTimeout(function(){
@@ -289,7 +332,8 @@ Polymer({
     }.bind(this), 1000);
 
 
-  }
+  },
+  
 
 });
 </script>
