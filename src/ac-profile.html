@@ -396,6 +396,10 @@
               <div class="confirmbtns">
                 <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="setcurrentavatar_cancel" small>decline</ac-icon>
                 <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="setcurrentavatar" small>confirm</ac-button>
+
+                <ac-button icon="ac-arrowright" txtcolor="yellow" bg="btncolor" on-tap="rotate" small>draaie</ac-button>
+
+
               </div>
 
 <!--
@@ -588,8 +592,8 @@
           width: 150,
           height: 150
         },
-        showZoomer: false
-          //enableOrientation: true
+        showZoomer: false,
+        enableOrientation: true
       });
       this.croppie.bind({
         url: image,
@@ -601,6 +605,13 @@
       this.datastate = 'view';
       self.croppie.destroy();
       delete self.croppie;
+    },
+
+    rotate: function(){
+      if (!this.croppie){
+        return;
+      }
+      this.croppie.rotate(90);
     },
 
     setcurrentavatar: function() {
