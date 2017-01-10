@@ -2,10 +2,10 @@
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 
-<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<!-- <link rel="import" href="../bower_components/ac-style/ac-style.html">
 <link rel="import" href="../bower_components/ac-button/ac-button.html">
 <link rel="import" href="../bower_components/ac-icon/ac-icon.html">
-<link rel="import" href="../bower_components/ac-input/ac-input.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html"> -->
 
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-wallet.html">
@@ -16,10 +16,15 @@
 <link rel="import" href="ac-tokentransfer.html">
 <link rel="import" href="ac-spinner.html">
 
+<link rel="import" href="../bower_components/sc-style/sc-style.html">
+<link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
+
 <link rel="stylesheet" href="../bower_components/Croppie/croppie.css" />
 <script src="../bower_components/Croppie/croppie.js"></script>
 
 <dom-module id="ac-home">
+<link rel="import" href="../bower_components/sc-style/sc-style.css"  type="css">
+
   <!-- Defines the element's style and local DOM -->
   <template>
     <style>
@@ -34,40 +39,11 @@
 
     --avbox-padding: 15vh 0px 2vh 0px;
     --homecontent-height:85vh;
+        background: var(--sc-white);
 
-  }
-
-  .yellow {
-    color: var(--ac-yellow);
-  }
-  .red {
-    color: var(--ac-red);
-  }
-  .blue {
-    color: var(--ac-blue);
-  }
-
-  .white {
-    color: var(--ac-white);
-  }
-  .opacity {
-    opacity: 0.5;
-  }
-  h1 {
-    @apply(--ac-font-h1);
-  }
-
-    h2 {
-      @apply(--ac-font-h2);
-    }
-
-  p {
-    @apply(--ac-font-body1);
   }
 
     .hometotal {
-      background-color: var(--ac-base);
-      /*@apply(--base-structure);*/
       height: 100%;
     }
 
@@ -112,34 +88,6 @@
       margin-top: var(--tokentrans-top);
     }
 
-    .verticcenter {
-      @apply(--layout-vertical);
-      @apply(--layout-center-center);
-    }
-    .verticstart {
-      @apply(--layout-vertical);
-      @apply(--layout-start);
-      @apply(--layout-center-justified);
-    }
-
-    .horizontcenter {
-      @apply(--layout-horizontal);
-      @apply(--layout-center-center);
-    }
-    .horizontstart {
-      @apply(--layout-horizontal);
-      @apply(--layout-start);
-      @apply(--layout-center-justified);
-    }
-
-    .flex {
-      @apply(--layout-flex);
-    }
-    .whitespace {
-      width: 100%;
-      height: 20px;
-    }
-
     .toridesharebtn {
       padding-top: 10px;
       padding-bottom: 13px;
@@ -182,8 +130,8 @@
         updating="{{balanceupdating}}"
         arcbalance="{{arcbalance}}"
         ethbalance="{{ethbalance}}"></ac-wallet>
-    <div class="hometotal verticcenter">
-      <div class="ac-avatar-box" on-tap="toProfile">
+    <div class="hometotal vertic center">
+      <div class="ac-avatar-box grey1back" on-tap="toProfile">
         <ac-avatar
         identity="[[identity]]"
         pubkey="[[pubkey]]"
@@ -197,7 +145,7 @@
         viewmode="center"
         ></ac-avatar>
       </div>
-      <div class="homebalancebox flex verticcenter">
+      <div class="homebalancebox flex vertic centercenter grey1back">
         <div id="homebalance">
           <template is="dom-if" if="{{!balanceupdating}}">
             <div class$="arcbalance flex" on-tap="toWalletview">

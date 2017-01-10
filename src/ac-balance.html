@@ -1,18 +1,20 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/ac-style/ac-style.html">
-<link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/sc-style/sc-style.html">
+<link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="ac-sizeview.html">
 
 <dom-module id="ac-balance">
+<link rel="import" href="../bower_components/sc-style/sc-style.css"  type="css">
+
   <template>
   <style>
   :host {
     display: inline-block;
-    --balance-h1:60px;
-    --balance-h1-lineheight:72px;
-    --arc-h1:60px;
-    --arc-h1-lineheight:72px;
+    --balance-h1:50px;
+    --balance-h1-lineheight:56px;
+    --arc-h1:14px;
+    --arc-h1-lineheight:16px;
     --prefcurr-p:22px;
     --prefcurr-p-lineheight:24px;
     --prefcurr-margins: 0px 0px 8px 14px;
@@ -23,7 +25,7 @@
   .arc-balance {
     width: 100%;
   }
-
+/*
   .verticcenter {
     @apply(--layout-vertical);
     @apply(--layout-center-center);
@@ -54,36 +56,28 @@
     @apply(--layout-horizontal);
     @apply(--layout-wrap);
     @apply(--layout-center-center);
-  }
+  }*/
 
   h1 {
-    @apply(--montserrat-hairline);
+    /*@apply(--montserrat-hairline);
     -webkit-margin-before: 0px;
     -webkit-margin-after: 0px;
     -webkit-margin-start:0em;
     -webkit-margin-end:0em;
     margin: 0px 0px 0px 0px;
-    padding: 0px;
+    padding: 0px;*/
 
     font-size: var(--balance-h1);
     line-height: var(--balance-h1-lineheight);
 
-    color: var(--ac-red);
+/*    color: var(--ac-red);
     text-shadow: -1px 1px 8px rgba(249,85,85,0.1), 1px -1px 18px rgba(249,85,85,0.1);
-
+*/
   }
 
   p {
-    @apply(--montserrat-light);
     font-size: var(--prefcurr-p);
     line-height: var(--prefcurr-p-lineheight);
-    -webkit-margin-before:0px;
-    -webkit-margin-after:0px;
-    -webkit-margin-start:0em;
-    -webkit-margin-end:0em;
-    margin: 0px;
-
-    color: var(--ac-red);
     opacity: 0.75;
   }
 
@@ -100,12 +94,10 @@
     cursor: pointer;
   }
 
-  .ARCletters {
+  .SWTletters {
     font-size: var(--arc-h1);
     line-height: var(--arc-h1-lineheight);
     margin-left: 6px;
-    @apply(--montserrat-light);
-
   }
 
 
@@ -147,8 +139,8 @@
 </iron-ajax>
 
 <div class$="arc-balance {{align}}">
-  <div class="horizontend">
-    <h1>{{formatpong(arcbalance)}}</h1><h1><span class="ARCletters"> ARC</span>
+  <div class="horizont end">
+    <h1 class="yellow bold">{{formatpong(arcbalance)}}</h1><h1 class="yellow bold"><span class="SWTletters"> SWT</span>
     <!-- <ac-button class="refrbtn" veryverysmall icon="refresh1" txtcolor="red" bg="btncolor" on-tap="fireRefresh"></ac-button> --></h1>
   </div>
     <template is="dom-if" if="{{wereinwallet}}">
@@ -246,10 +238,10 @@ Polymer({
   _sizeview: function(){
     switch(this.sizeview) {
       case 'phone':
-      this.customStyle['--balance-h1'] = '80px';
-      this.customStyle['--balance-h1-lineheight'] = '92px';
-      this.customStyle['--arc-h1'] = '20px';
-      this.customStyle['--arc-h1-lineheight'] = '24px';
+      this.customStyle['--balance-h1'] = '50px';
+      this.customStyle['--balance-h1-lineheight'] = '56px';
+      this.customStyle['--arc-h1'] = '14px';
+      this.customStyle['--arc-h1-lineheight'] = '16px';
       this.customStyle['--prefcurr-p'] = '16px';
       this.customStyle['--prefcurr-p-lineheight'] = '18px';
       this.customStyle['--prefcurr-margins'] = '0px';
@@ -258,10 +250,10 @@ Polymer({
       this.updateStyles();
       break;
       case 'desktop':
-      this.customStyle['--balance-h1'] = '90px';
-      this.customStyle['--balance-h1-lineheight'] = '100px';
-      this.customStyle['--arc-h1'] = '24px';
-      this.customStyle['--arc-h1-lineheight'] = '26px';
+      this.customStyle['--balance-h1'] = '60px';
+      this.customStyle['--balance-h1-lineheight'] = '70px';
+      this.customStyle['--arc-h1'] = '20px';
+      this.customStyle['--arc-h1-lineheight'] = '22px';
       this.customStyle['--prefcurr-p'] = '24px';
       this.customStyle['--prefcurr-p-lineheight'] = '26px';
       this.customStyle['--prefcurr-margins'] = '0px 0px 8px 14px';
@@ -270,10 +262,10 @@ Polymer({
       this.updateStyles();
       break;
       case 'xlarge':
-      this.customStyle['--balance-h1'] = '112px';
-      this.customStyle['--balance-h1-lineheight'] = '120px';
-      this.customStyle['--arc-h1'] = '24px';
-      this.customStyle['--arc-h1-lineheight'] = '26px';
+      this.customStyle['--balance-h1'] = '72px';
+      this.customStyle['--balance-h1-lineheight'] = '80px';
+      this.customStyle['--arc-h1'] = '20px';
+      this.customStyle['--arc-h1-lineheight'] = '22px';
       this.customStyle['--prefcurr-p'] = '24px';
       this.customStyle['--prefcurr-p-lineheight'] = '26px';
       this.customStyle['--prefcurr-margins'] = '0px 0px 8px 14px';
