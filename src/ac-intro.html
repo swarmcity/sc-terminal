@@ -1,300 +1,125 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
-<link rel="import" href="../bower_components/ac-button/ac-button.html">
-<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../bower_components/sc-style/sc-style.html">
+<link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
+
 
 <link rel="import" href="ac-sizeview.html">
 
 <dom-module id="ac-intro">
+<link rel="import" href="../bower_components/sc-style/sc-style.css"  type="css">
+
   <template>
     <style>
- :host {
-    display: block;
-    margin: 0px;
-    padding: 0px;
-    --title-big: 40px;
-    --title-bigheight: 46px;
-    width: 100%;
+   :host {
+      display: block;
+      margin: 0px;
+      padding: 0px;
+      --title-big: 40px;
+      --title-bigheight: 46px;
+      width: 100vw;
+      height: 100vh;
+      @apply(--base-structure);
+    }
+
+
+  .totalwidth {
     height: 100%;
   }
 
-  .total {
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    padding: 10vw;
-    margin: 0px;
-    background-color: var(--ac-base);
-    text-align: center;
-    /*background: url(../images/AC-intro-bg2b.png) #1d143f;
-    background-repeat: no-repeat;
-    background-position: bottom;
-    background-size: auto 100%;*/
+/*  .topbar {
+    opacity: 0.5;
+  }*/
+  .topbar ac-icon {
+    opacity: 0.5;
   }
-
-
-  .topback {
-      width: 100%;
-      background-color: var(--ac-base);
-      @apply(--layout-horizontal);
-      @apply(--layout-center-center);
-      box-sizing: border-box;
-      padding: 5vh 5vw 0px 5vw;
-      height: 8%;
-    }
-
-
-    .topback ac-icon {
-      opacity: 0.5;
-    }
-    .topback ac-button {
-      @apply(--base-shadow);
-      opacity: 0.9;
-    }
+  .topbar ac-button {
+    @apply(--base-shadow);
+    opacity: 0.9;
+  }
 
   neon-animated-pages {
     height: 92%;
   }
 
-    .horiz {
-    @apply(--layout-horizontal);
-    @apply(--layout-center-center);
-  }
-
-  .vertic {
-    @apply(--layout-vertical);
-    @apply(--layout-center-center);
-  }
-
-  .maxwidth {
-    width: 100%;
-    max-width: 400px;
-  }
-   .maxwidth ac-input {
-    width: 100%;
-    max-width: 400px;
-  }
-
-  h1 {
-    @apply(--ac-font-h1);
-    text-align: center;
-    white-space: normal;
-    font-size: var(--title-big);
-    line-height: var(--title-bigheight);
-  }
-
-  h2 {
-    @apply(--ac-font-h2);
-  }
-
-  h3 {
-    @apply(--ac-font-h3);
-  }
-
-  h4 {
-    @apply(--ac-font-h4);
-  }
-
-  p {
-    @apply(--ac-font-body1);
-  }
-
-  a {
-    @apply(--ac-font-ahref);
-  }
-
-  small {
-    @apply(--ac-font-small);
-  }
-
-  .white {
-    color: var(--ac-white);
-  }
-
-  .blue {
-    color: var(--ac-blue);
-  }
-
-  .red {
-    color: var(--ac-red);
-  }
-
-  .yellow {
-    color: var(--ac-yellow);
-  }
-
-
   .yesnobtns {
-    width: 100%;
+    width: 80%;
+    max-width: 300px;    
   }
 
   .yesno {
-    width: 80%;
-    max-width: 280px;
-
-    margin: 5px;
-  }
-
-  .whitespace {
+    margin: 5px 5px 5px 0px;
     width: 100%;
-    height: 20px;
   }
 
-  .centervlak {
-    width: 100%;
-    max-width: 400px;
-  }
-  .flex {
-    @apply(--layout-flex);
-  }
-
-  .inner {
-    width: 90%;
-    height: 76%;
-    @apply(--layout-vertical);
-    @apply(--layout-center);
-    @apply(--layout-start-justified);
-    /*@apply(--layout-wrap);*/
-    box-sizing: border-box;
-    /*background-color: red;*/
-  }
-
-  .logo_canvas {
-    @apply(--layout-vertical);
-    @apply(--layout-center-center);
-    box-sizing: border-box;
-    padding: 0px 10vw 10vw 10vw;
-  }
-
-  .phone {
-    padding: 0px 10vw 10vw 10vw;
+  iron-icon:hover {
+    cursor: pointer;
   }
 
 
-  .desktop {
-    padding: 10vh 10vw 10vw 10vw;
-  }
 
-
-  .xlarge {
-    padding: 10vh 10vw 10vw 10vw;
-  }
-
-
-  .logo {
-    @apply(--layout-vertical);
-    @apply(--layout-center-center);
-  }
-
-  .logo p {
-    @apply(--montserrat-bold);
-    color: var(--ac-white);
-    font-size: var(--title-big);
-    line-height: var(--title-bigheight);
-  }
-
-  .logo_whitespace {
-    width: 100%;
-    height: 28vh;
-  }
-
-    .logo_canvas ac-button {
-      width: 70vw;
-      max-width: 360px;
-      padding: 24px;
-      @apply(--base-shadow-and-inset);
-      font-size: 20px;
-      text-shadow: -1px 1px 8px rgba(249,85,85,0.2), 1px -1px 18px rgba(249,85,85,0.2);
-    }
-
-    .synclink {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 20px 0px 20px 0px;
-
-    }
-    .synclink a {
-      color:var(--ac-red);
-      box-sizing: border-box;
-      padding: 3px 0px 3px 0px;
-      text-decoration: none;
-      border-bottom: 1px dotted var(--ac-red);
-      opacity: 0.35;
-      font-size: 12px;
-      line-height: 14px;
-    }
-
-
-
-    .externallink {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 20px 0px 20px 0px;
-
-    }
-    .externallink a {
-      color:var(--ac-red);
-      box-sizing: border-box;
-      padding: 3px 0px 3px 0px;
-      text-decoration: none;
-      border-bottom: 1px dotted var(--ac-red);
-      font-size: 12px;
-      line-height: 16px;
-    }
-
-
+/*  .basestructure {
+    @apply(--base-structure);
+  }*/
 
     </style>
 
     <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
-    <!-- <ac-sizeview sizeview=“{{sizeview}}”></ac-sizeview> -->
 
-    <div class="topback">
+    <div class="topbar">
       <span class="flex"></span>
       <template is="dom-if" if="{{!_is(data.page,'welcome')}}">
-        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+      <iron-icon class="grey3" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
       </template>
     </div>
 
     <neon-animated-pages id="createwalletpgs" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimationintro}}" exit-animation="{{exitAnimationintro}}">
       <neon-animatable data-page="welcome">
-        <div class$="total vertic logo_canvas {{sizeview}}">
-          <div class="logo">
-            <!-- <ac-icon icon="ac-brandlogo-color" big></ac-icon> -->
-            <p>swarm.city</p>
-          </div>
-          <div class="logo_whitespace"></div>
-            <ac-button on-tap="totokenquestion" txtbtn bg="btncolor" txtcolor="red">start new</ac-button>
-<!--             <div class="synclink"><a on-tap>sync with a device / backup-file</a></div> -->
+        <div class="totalwidth vertic start paddingwithouttop basestructure">
+          <div class="whitespace"></div>
+          <h1 class="bold yellow">You must bee<br>new here</h1>
+          <div class="whitespace"></div>
+          <p class="reg">There’s no user found on this device.</p>
+          <div class="flex"></div>
+          <paper-button on-tap="totokenquestion" class="grey4 lighter bigbtn">I’m a new user</paper-button>
+          <div class="whitespace"></div>
+          <!-- <a href="" class="grey3 small">sync with a device / backup-file</a> -->
         </div>
       </neon-animatable>
 
       <neon-animatable data-page="first">
-          <div class="total vertic">
-          <p class="red">Do you own ARC-tokens?</p>
+        <div class="totalwidth vertic centercenter paddingwithouttop">
+          <p class="centertxt">Do you own ARC-tokens?</p>
           <div class="whitespace"></div>
           <div class="whitespace"></div>
-          <div class="yesnobtns vertic">
-            <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="toimportwallet" txtbtn>Yes</ac-button>
-            <ac-button big class="yesno" bg="btncolor" txtcolor="red" on-tap="tocreatewallet" txtbtn>No</ac-button>
+          <div class="whitespace"></div>
+          <div class="vertic yesnobtns">
+            <paper-button class="grey4 lighter yesno bigbtn centertxt" on-tap="toimportwallet">Yes</paper-button>
+            <paper-button class="grey4 lighter yesno bigbtn centertxt" on-tap="tocreatewallet" txtbtn>No</paper-button>
           </div>
         </div>
       </neon-animatable>
 
+
       <neon-animatable data-page="importwallet">
-        <div class="total vertic">
-          <p class="red">How did you save your ARC-wallet?</p>
+        <div class="totalwidth vertic centercenter paddingwithouttop">
+          <p class="centertxt">How did you save your ARC-wallet?</p>
           <div class="whitespace"></div>
           <div class="whitespace"></div>
-          <div class="yesnobtns vertic">
-            <ac-button class="yesno" bg="btncolor" txtcolor="red" on-tap="touploadjson" txtbtn>as a json-file</ac-button>
-            <ac-button class="yesno" bg="btncolor" txtcolor="red" on-tap="toprivatekey" txtbtn>as a print / pdf</ac-button>
+          <div class="vertic yesnobtns">
+            <paper-button class="grey4 lighter yesno bigbtn centertxt" on-tap="touploadjson">as a json-file</paper-button>
+            <paper-button class="grey4 lighter yesno bigbtn centertxt" on-tap="toprivatekey" txtbtn>as a print / pdf</paper-button>
+          </div>
             <div class="whitespace"></div>
-            <div class="externallink">
+<!--             <div class="externallink">
               <a on-tap="toprivatekey">I have an external wallet<br> with ARC-tokens</a>
             </div>
+ -->
 
           </div>
         </div>

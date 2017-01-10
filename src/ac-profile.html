@@ -1,11 +1,16 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
-<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<!-- <link rel="import" href="../bower_components/ac-style/ac-style.html">
 <link rel="import" href="../bower_components/ac-button/ac-button.html">
 <link rel="import" href="../bower_components/ac-icon/ac-icon.html">
-<link rel="import" href="../bower_components/ac-input/ac-input.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html"> -->
+
+<link rel="import" href="../bower_components/sc-style/sc-style.html">
+<link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
 
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-avatar.html">
@@ -18,6 +23,8 @@
 <script src="../bower_components/Croppie/croppie.js"></script>
 
 <dom-module id="ac-profile">
+<link rel="import" href="../bower_components/sc-style/sc-style.css" type="css">
+
   <!-- Defines the element's style and local DOM -->
   <template>
     <style>
@@ -25,45 +32,20 @@
     display: block;
     width: 100%;
     height: 100%;
-  }
+    --paper-input-container-input: {
+        @apply(--montserrat-bold);
+    };
+    --paper-input-container-label: { 
+    @apply(--montserrat-bold);
+    };
 
-  h1 {
-    @apply(--ac-font-h1);
-  }
-
-  h2 {
-    @apply(--ac-font-h2);
-  }
-
-  h3 {
-    @apply(--ac-font-h3);
-  }
-
-  h4 {
-    @apply(--ac-font-h4);
-    margin: 0px;
-  }
-  p {
-    @apply(--ac-font-body1);
   }
 
   .total {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-color: var(--ac-base);
     overflow-y: scroll;
   }
 
-  .flex {
-    width: 100%;
-    @apply(--layout-flex);
-  }
 
-  .whitespace {
-    width: 100%;
-    height: 20px;
-  }
 
   .profilepic {
     width: 100%;
@@ -80,13 +62,26 @@
     @apply(--layout-end);
   }
 
-  .profilepicinner ac-button {
+  .uploadicon {
     z-index: 12;
     margin-top: -20px;
-    @apply(--base-structure-and-inset);
+/*    @apply(--base-structure-and-inset);*/
   }
 
-  .uploadbtn {
+  .croppiecontrols {
+    z-index: 12;
+    margin: -70px 0px 20px 0px;
+    box-sizing:border-box;    
+    padding-left: 10px;
+  }
+
+  .croppiecontrols paper-icon-button {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 5px;
+  }
+  .croppiecontrols p {
+    @apply(--montserrat-semibold);
 
   }
 
@@ -109,7 +104,7 @@
   }
 
 
-  .profileusername ac-input {
+  .profileusername paper-input {
     width: 60%;
     max-width: 260px;
     overflow: hidden;
@@ -121,7 +116,6 @@
 
   .scrollcontainer {
     width: 100%;
-    background-color: var(--ac-base);
   }
 
   .confirmbtns {
@@ -132,15 +126,15 @@
     @apply(--layout-center-center);
   }
 
-  .confirmbtns ac-button {
+  .confirmbtns paper-icon-button {
     margin: 2px;
   }
 
-  .confirmbtns ac-icon {
+  .confirmbtns iron-icon {
     margin-right: 4px;
   }
 
-  .topback {
+ /* .topback {
     width: 100%;
     background-color: var(--ac-base);
     @apply(--layout-horizontal);
@@ -157,7 +151,7 @@
     @apply(--base-shadow);
     opacity: 0.85;
   }
-
+*/
 
   .profilepart {
     width: 100%;
@@ -175,14 +169,14 @@
     margin: 20px 0px 20px 0px;
   }
 
-
+/*
   .verticcenter {
     width: 100%;
     @apply(--layout-vertical);
     @apply(--layout-center-center);
     box-sizing: border-box;
     padding: 5vh 0px 5vh 0px;
-  }
+  }*/
 
 
   .pubkey {
@@ -228,7 +222,7 @@
     height: 90vh;
   }
 
-  .yellow {
+/*  .yellow {
     color: var(--ac-yellow);
   }
   .red {
@@ -245,12 +239,12 @@
     text-align: center;
   }
 
-
+*/
   .avatarloading {
-    width: 120px;
-    height: 120px;
-    min-width: 120px;
-    min-height: 120px;
+    width: 115px;
+    height: 115px;
+    min-width: 115px;
+    min-height: 115px;
     overflow: hidden;
     border-radius: 50%;
     background-color: rgba(0,0,0,0.75);
@@ -312,16 +306,26 @@
     opacity: 1;
   }
 
+  .usernameinput {
+    /*--paper-checkbox-unchecked-color: var(--sc-blue);*/
+    /*--paper-checkbox-checkmark-color: var(--sc-grey4);*/
+    /*text-align: right;*/
+
+  }
+
   </style>
 
     <ac-ipfs id="ipfs"></ac-ipfs>
 
     <div class="total">
-      <div class="topback">
-        <span class="flex"></span>
-        <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
-  <!--       <ac-button icon="ac-logout2" bg="btncolor" txtcolor="blue" on-tap="logout" small>back</ac-button> -->
-      </div>
+
+
+
+    <div class="topbar">
+      <span class="flex"></span>
+      <iron-icon class="grey3" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+    </div>
+
 
       <neon-animated-pages selected="{{datastate}}" attr-for-selected="data-state" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
 
@@ -331,7 +335,7 @@
 
             <template is="dom-if" if="{{avatarloading}}">
             <div class="avatarloading">
-              <ac-spinner color="yellow" small></ac-spinner>
+              <ac-spinner color="blue" small></ac-spinner>
             </div>
             </template>
 
@@ -344,20 +348,23 @@
             ></ac-avatar>
 
               <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
-              <ac-button icon="ac-upload" small bg="btncolor" txtcolor="yellow" id="uploadbtn"></ac-button>
+              <paper-icon-button icon="sc-icons:upload" class="blueback white uploadicon" id="uploadbtn"></paper-icon-button>
+              <!-- <ac-button icon="ac-upload" small bg="btncolor" txtcolor="yellow" id="uploadbtn"></ac-button> -->
             </div>
           </div>
 
           <div class="profilecontent" id="profilecontent">
 
             <div class="profileusername">
-              <ac-input color="white" label="username" type="input" on-change="usernameChange" bind-value="{{username}}" center inputvalue="{{username}}"></ac-input>
+              <paper-input label="username" value="{{username}}" on-change="usernameChange" class="usernameinput centertxt">{{username}}</paper-input>
+
+              <!-- <ac-input color="white" label="username" type="input" on-change="usernameChange" bind-value="{{username}}" center inputvalue="{{username}}"></ac-input> -->
               <iron-collapse id="collapse" opened="{{datachanged}}">
                 <div class="whitespace"></div>
 
                 <div class="confirmbtns">
-                  <ac-icon icon="ac-decline" iconcolor="white" on-tap="close" small>decline</ac-icon>
-                  <ac-button icon="ac-v" txtcolor="white" bg="btncolor" on-tap="confirm" small>confirm</ac-button>
+                  <iron-icon icon="sc-icons:decline" class="white" on-tap="close">decline</iron-icon>
+                  <paper-icon-button icon="sc-icons:v" class="white" on-tap="confirm">confirm</paper-icon-button>
                 </div>
               </iron-collapse>
 
@@ -424,11 +431,23 @@
         <div class="profilepic">
           <div class="profilepicinner">
             <div id="croppie"></div>
+            <div class="croppiecontrols totalwidth horizont centercenter">
+              <p class="blue small bold txtshadow">Scroll to zoom</p>
+              <div class="flex"></div>
+              <paper-icon-button icon="sc-icons:imgrotate" class="blue" on-tap="rotate" noink>decline</paper-icon-button>
+            </div>
 
-
+            <div class="whitespace"></div>
               <div class="confirmbtns">
-                <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="setcurrentavatar_cancel" small>decline</ac-icon>
-                <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="setcurrentavatar" small>confirm</ac-button>
+                <iron-icon icon="sc-icons:decline" class="blue big" on-tap="setcurrentavatar_cancel">decline</iron-icon>
+                <!-- <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="setcurrentavatar_cancel" small>decline</ac-icon> -->
+                <paper-icon-button icon="sc-icons:v" class="blue whiteback shadow big" on-tap="setcurrentavatar"></paper-icon-button>
+
+                <!-- <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="setcurrentavatar" small>confirm</ac-button> -->
+
+               <!--  <ac-button icon="ac-arrowright" txtcolor="yellow" bg="btncolor" on-tap="rotate" small>rotate</ac-button> -->
+
+
               </div>
 
 <!--
@@ -618,15 +637,15 @@
           type: 'circle'
         },
         boundary: {
-          width: 150,
-          height: 150
+          width: 250,
+          height: 250
         },
-        showZoomer: false
-          //enableOrientation: true
+        showZoomer: false,
+        enableOrientation: true
       });
       this.croppie.bind({
         url: image,
-        orientation: 4
+        orientation: 1
       });
     },
 
@@ -634,6 +653,13 @@
       this.datastate = 'view';
       self.croppie.destroy();
       delete self.croppie;
+    },
+
+    rotate: function(){
+      if (!this.croppie){
+        return;
+      }
+      this.croppie.rotate(270);
     },
 
     setcurrentavatar: function() {

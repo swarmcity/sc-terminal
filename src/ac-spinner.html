@@ -1,9 +1,14 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <!-- <link rel="import" href="../bower_components/ac-loader/ac-loader.html"> -->
 <link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
+<link rel="import" href="../bower_components/sc-style/sc-style.html">
+<link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
 
 <dom-module id="ac-spinner">
+<link rel="import" href="../bower_components/sc-style/sc-style.css" type="css">
+
   <!-- Defines the element's style and local DOM -->
   <template>
     <style>
@@ -47,13 +52,13 @@
     </style>
 
     <template is="dom-if" if="{{small}}">
-      <ac-icon class="refresher" icon="refresh1" iconcolor="[[color]]" small></ac-icon>
+      <iron-icon class$="refresher [[color]]" icon="sc-icons:refresh1"></iron-icon>
     </template>
     <template is="dom-if" if="{{normal}}">
-      <ac-icon class="refresher" icon="refresh1" iconcolor="[[color]]"></ac-icon>
+      <iron-icon class$="refresher [[color]]" icon="sc-icons:refresh1" iconcolor="[[color]]"></iron-icon>
     </template>
     <template is="dom-if" if="{{big}}">
-      <ac-icon class="refresher" icon="refresh1" iconcolor="[[color]]" big></ac-icon>
+      <iron-icon class$="refresher big [[color]]" icon="sc-icons:refresh1"></iron-icon>
     </template>
 
 
