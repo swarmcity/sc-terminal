@@ -13,6 +13,7 @@
 <link rel="import" href="ac-walletview.html">
 <link rel="import" href="ac-intro.html">
 <link rel="import" href="ac-home.html">
+<link rel="import" href="ac-swtconversion.html">
 
 <dom-module id="ac-app">
   <template>
@@ -91,9 +92,17 @@
 
   <ac-config web3host="{{web3host}}"></ac-config>
 
-  <ac-web3 host="{{web3host}}" web3="{{web3}}"></ac-web3>
+  <ac-web3 host="{{web3host}}" web3="{{web3}}" keystore="[[keystore]]"></ac-web3>
 
   <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[data.page]]">
+
+    <ac-swtconversion
+      data-page="swt"
+      route="[[pageTail]]"
+      keystore="[[keystore]]"
+      web3="[[web3]]"
+      >
+    </ac-swtconversion>
 
     <ac-intro
       data-page="intro"
@@ -120,7 +129,6 @@
       sizeview="{{sizeview}}"
       on-exit="reset"
       >
-
     </ac-vault>
 
     <ac-home
@@ -233,12 +241,12 @@
       },
 
       logout: function() {
-        this.$.thevault.closeVault();        
+        this.$.thevault.closeVault();
         this.transitionto('/vault/unlock');
       },
 
       deletevault: function(){
-        this.$.thevault.deleteVault();        
+        this.$.thevault.deleteVault();
         this.transitionto('/intro/welcome');
       },
 

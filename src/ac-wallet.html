@@ -12,7 +12,7 @@
 
   <template>
     <ac-config web3host="{{host}}" tokencontractaddress="{{tokencontractaddress}}"></ac-config>  
-    <ac-web3 id="web3" web3="{{web3}}" on-web3-ready="_setprovider"></ac-web3>
+    <!-- <ac-web3 id="web3" web3="{{web3}}" on-web3-ready="_setprovider"></ac-web3> -->
     <ac-helpers id="helpers"></ac-helpers>
   </template>
 
@@ -22,14 +22,18 @@
       is: 'ac-wallet',
 
       properties: {
-        keystore: {
-          type: Object,
-          observer: '_keystore'
-        },
+        // keystore: {
+        //   type: Object,
+        //   observer: '_keystore'
+        // },
         ethbalance: {
           type: Number,
           notify: true,
           value: 0
+        },
+        web3: {
+          type: Object,
+          notify: true,
         },
         arcbalance: {
           type: Number,
@@ -54,32 +58,32 @@
 
       attached: function() {
         // console.log('ac-wallet attached');
-        this.$.web3.initweb3();
+        //this.$.web3.initweb3();
         this.updateBalance();
       },
 
-      _keystore: function(){
-        this._setprovider();
-      },
+      // _keystore: function(){
+      //   this._setprovider();
+      // },
 
-      _setprovider: function(){
-        if (!this.web3 || !this.keystore){
-          return;
-        }
+      // _setprovider: function(){
+      //   if (!this.web3 || !this.keystore){
+      //     return;
+      //   }
 
-        this.web3Provider = new HookedWeb3Provider({
-          host: this.host,
-          transaction_signer: this.keystore
-        });
+      //   this.web3Provider = new HookedWeb3Provider({
+      //     host: this.host,
+      //     transaction_signer: this.keystore
+      //   });
 
-        this.account = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
+      //   this.account = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
 
-        this.web3.setProvider(this.web3Provider);
+      //   this.web3.setProvider(this.web3Provider);
 
-        var MyContract = this.web3.eth.contract(this.token.abi);
-        this.myContractInstance = MyContract.at(this.tokencontractaddress);
+      //   var MyContract = this.web3.eth.contract(this.token.abi);
+      //   this.myContractInstance = MyContract.at(this.tokencontractaddress);
         
-      },
+      // },
 
 
       sendTokens: function(to,amount,cb){

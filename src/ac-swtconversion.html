@@ -1,0 +1,340 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/ac-input/ac-input.html">
+<link rel="import" href="../bower_components/ac-button/ac-button.html">
+<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="ac-helpers.html">
+<link rel="import" href="ac-password.html">
+<link rel="import" href="ac-statusitem.html">
+<link rel="import" href="ac-spinner.html">
+<link rel="import" href="ac-wallet.html">
+<link rel="import" href="ac-config.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+
+<dom-module id="ac-swtconversion">
+<style>
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+h1 {
+  @apply(--ac-font-h1);
+}
+
+h2 {
+  @apply(--ac-font-h2);
+}
+
+h3 {
+  @apply(--ac-font-h3);
+}
+
+h4 {
+  @apply(--ac-font-h4);
+}
+
+p {
+  @apply(--ac-font-body1);
+}
+
+a {
+  @apply(--ac-font-ahref);
+}
+
+neon-animated-pages {
+  width: 100%;
+  height: 100%;
+}
+
+.vertic {
+  @apply(--layout-vertical);
+  @apply(--layout-center-center);
+}
+
+.total {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 10vw;
+  margin: 0px;
+  background-color: var(--ac-base);
+  text-align: center;
+  /*background: url(../images/AC-intro-bg2b.png) #1d143f;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: auto 100%;*/
+}
+
+.verticcenter {
+  @apply(--layout-vertical);
+  @apply(--layout-center-center);
+}
+
+.whitespace {
+  height: 20px;
+}
+
+.centertxt {
+  text-align: center;
+}
+
+.maxwidth {
+  max-width: 80%;
+}
+
+.hidden {
+  display: none;
+}
+
+.error {
+  text-align: center;
+  width: 80%;
+  max-width: 500px;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.paddingside {
+  box-sizing: border-box;
+  padding-left: 6vw;
+  padding-right: 6vw;
+}
+
+.flex {
+  @apply(--layout-flex);
+}
+
+.topback {
+  width: 100%;
+  background-color: var(--ac-base);
+  @apply(--layout-horizontal);
+  @apply(--layout-center-center);
+  box-sizing: border-box;
+  padding: 5vh 5vw 0px 5vw;
+  height: 8%;
+}
+
+.topback ac-icon {
+  opacity: 0.5;
+}
+
+.topback ac-button {
+  @apply(--base-shadow);
+  opacity: 0.9;
+}
+
+.bold {
+  @apply(--montserrat-semibold);
+}
+
+.yellow {
+  color: var(--ac-yellow);
+}
+
+.red {
+  color: var(--ac-red);
+}
+
+.blue {
+  color: var(--ac-blue);
+}
+
+.white {
+  color: var(--ac-white);
+}
+
+.green {
+  color: var(--ac-green);
+}
+
+.yesnobtns {
+  width: 100%;
+}
+
+.yesno {
+  width: 80%;
+  max-width: 280px;
+  margin: 5px;
+}
+
+ol {
+  width: 80%;
+  max-width: 380px;
+  margin: 5px;
+  @apply(--layout-vertical);
+  text-align: left;
+  line-height: 1.5;
+  @apply(--ac-font-body1);
+}
+
+li {
+  margin-bottom: 15px;
+}
+
+.working {
+  opacity: 1;
+}
+
+.finished {
+  opacity: 0.5;
+}
+
+.inactive {
+  opacity: 0.25;
+}
+
+</style>
+<template>
+
+  <ac-config tokencontractaddress="{{ARCTokenAddress}}"></ac-config>
+  <ac-helpers id="helpers"></ac-helpers>
+  <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
+
+  <div class="topback">
+    <span class="flex"></span>
+      <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
+  </div>
+
+  <neon-animated-pages attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
+
+    <neon-animatable data-page="start">
+      <div class="total vertic">
+      <h2 class="red">Convert ARC to SWT</h2>
+      <div class="whitespace"></div>
+      <div class="yesnobtns vertic">
+        <p class="white">In the next steps, you will be converting your ARC tokens to SWT tokens. Swarm City will not work with ARC tokens.</p>
+        <div class="whitespace"></div>
+        <ac-button class="yesno" bg="btncolor" txtcolor="red" on-tap="tostepone" txtbtn>Continue</ac-button>
+      </div>
+    </div>
+    </neon-animatable>
+
+    <neon-animatable data-page="stepone">
+      <div class="total vertic">
+      <h2 class="red">ARC to SWT process</h2>
+      <div class="whitespace"></div>
+
+      <ol class="white">
+        <li><ac-statusitem id="s1" status="inactive">Asking permission to transfer ARC</ac-statusitem></li>
+        <li><ac-statusitem id="s2" status="inactive">Permission to transfer ARC granted</ac-statusitem></li>
+        <li><ac-statusitem id="s3" status="inactive">Sending ARC to SWT contract</ac-statusitem></li>
+        <li><ac-statusitem id="s4" status="inactive">SWT received</ac-statusitem></li>
+      </ol>
+
+      <div class="whitespace"></div>
+      <div class="whitespace"></div>
+      <div class="yesnobtns vertic">
+        <ac-button big id="startbtn" class="yesno" bg="btncolor" txtcolor="red" on-tap="startconversion" txtbtn>Start</ac-button>
+        <ac-spinner hidden id="processspinner" big>spinning</ac-spinner>
+        <ac-button big hidden id="continuebtn" class="yesno" bg="btncolor" txtcolor="red" on-tap="startconversion" txtbtn>All set.</ac-button>
+      </div>
+    </div>
+    </neon-animatable>
+
+
+  </neon-animated-pages>
+</template>
+
+<script>
+Polymer({
+
+  is: 'ac-swtconversion',
+
+  properties: {
+    route: {
+      type: Object,
+      notify: true,
+    },
+    web3: {
+      type: Object,
+    },
+  },
+
+  attached: function(){
+    console.log('ac-swtconversion attached');
+    this.exitAnimation = "slide-left-animation";
+    this.entryAnimation = "slide-from-right-animation";
+    //this.set('route.path', '/start');
+  },
+
+  tostepone: function() {
+    this.set('route.path', '/stepone');
+  },
+
+  checkallowance: function() {
+    debugger;
+    console.log('web3', this.web3);
+
+
+    var self = this;
+
+    this.$.helpers.getjson('./contracts/ARCToken.json', function(err, arctokenjson) {
+
+      // this.contractjson = JSON.parse(e.target.import.body.innerText);
+      //    self.web3.eth.getGasPrice(function(err, result){
+      //   var gasPrice = result.toNumber(10);
+      // console.log('gasprice: ', gasPrice);
+
+      var MyContract = self.web3.eth.contract(arctokenjson.abi);
+      var myContractInstance = MyContract.at(self.$.helpers.arcaddress);
+      console.log('doing transfer of ', amount, ' to: ', to, 'from: ', window.account);
+      myContractInstance.transfer.sendTransaction(to, amount, {
+        from: self.$.helpers.fixaddress(window.account),
+        gasPrice: gasPrice,
+        gasLimit: 3000000,
+        gas: 2000000
+      }, function(err, result) {
+        console.log(err, result);
+        var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(window.account));
+        self.arcbalance = coinbalance;
+        if (cb) {
+          cb(err, result);
+        }
+      });
+
+    });
+
+
+  },
+
+  startconversion: function() {
+    var self = this;
+    this.checkallowance();
+    this.$.startbtn.hidden = true;
+    this.$.processspinner.hidden = false;
+    window.setTimeout(function(){
+      this.$.s1.status = "working";
+      window.setTimeout(function(){
+        this.$.s1.status = "done";
+        window.setTimeout(function(){
+          this.$.s2.status = "working";
+          window.setTimeout(function(){
+            this.$.s2.status = "done";
+            window.setTimeout(function(){
+              this.$.s3.status = "working";
+              window.setTimeout(function(){
+                this.$.s3.status = "done";
+                window.setTimeout(function(){
+                  this.$.s4.status = "working";
+                  window.setTimeout(function(){
+                    this.$.s4.status = "done";
+                    this.$.continuebtn.hidden = false;
+                    this.$.processspinner.hidden = true;
+                  }.bind(this), 2000);
+                }.bind(this), 2000);
+              }.bind(this), 2000);
+            }.bind(this), 2000);
+          }.bind(this), 2000);
+        }.bind(this), 2000);
+      }.bind(this), 2000);
+    }.bind(this), 1000);
+
+
+  },
+  
+
+});
+</script>
+</dom-module>

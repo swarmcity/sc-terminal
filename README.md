@@ -1,9 +1,9 @@
 # Swarm City Terminal
 
-The Swarm city terminal is the starting point of the user journey in Swarm City. The Swarm City Terminal will be the main entry screen into the Swarm City ecosystem and will be the switchboard towards all the Swarm City games ( starting with Ridesharing ). It provides the swarm city members the possibility to create and and manage a basic profile and exchange SWC tokens in a wallet.
+The Swarm City Terminal is the starting point of the user journey in Swarm City. The Swarm City Terminal will be the main entry screen into the Swarm City ecosystem and will be the browser for the hashtags ( starting with #ridesharing ). It provides the Swarm City citizens the possibility to create and and manage a basic profile and exchange SWC tokens in a wallet.
 
 ## New user
-A new swarm city member opens the app (terminal.swarm.city) and can create his own wallet in Swarm City. He must choose a strong password (min 9 characters) and needs to enter this twice. A new user account is created. 
+A new swarm city member opens the app (terminal.swarm.city) and can create his own wallet in Swarm City. He must choose a strong password (min 9 characters) and needs to enter this twice. A new user account is created.
 
 ## New session on device with my wallet
 A user that already has a wallet installed on his device, can open the app and unlock it by entering his password.
@@ -12,7 +12,7 @@ A user that already has a wallet installed on his device, can open the app and u
 The new user enters the terminal view, with empty avatar, empty username, empty balance, reference currency and an overview of all games provided in Swarm City (to start with ridesharing).
 
 ## Profile
-By clicking on the profile picture or the username, the user goes to the profile view. 
+By clicking on the profile picture or the username, the user goes to the profile view.
 On the profile view, you see your profile picture, username, history of all transactions, button to make backup, and the shortcode to sync another device.
 
 To personalize his account, the user can change his profile picture and username. The user can upload a file for profile picture, or take a picture with the camera in his device. The image can be cropped before saving. A user can set the currency to which he wants the SWC tokens to refer to. The user can choose between BTC/ETH/USD/EUR. In the balance of the wallet, this reference currency will be shown, besides the SWC token balance. On the profile screen, the user sees a history of all transactions he made.
@@ -25,11 +25,11 @@ The user can download the json file and can choose to store it on the device or 
 By clicking on the balance on the terminal, the user goes to wallet view.
 He sees his SWC balance, the reference currency, a button to do a transaction and a button to top up your SWC token balance with tokens you have on another wallet.
 
-The user can send tokens to another user, by entering the amount and the shortcode of the receiver. Once the transaction is completed, the current status of that transaction is shown and gets updated until done. 
+The user can send tokens to another user, by entering the amount and the shortcode of the receiver. Once the transaction is completed, the current status of that transaction is shown and gets updated until done.
 The user can receive tokens by giving his shortcode to the person wanting to send tokens.
 
 ## Importing ARC tokens
-The SWC token can import an ARC wallet and automatically convert your ARC tokens into SWC tokens. 
+The SWC token can import an ARC wallet and automatically convert your ARC tokens into SWC tokens.
 
 ## Importing a backup file
 The user can import the SWC wallet by uploading the json file and entering the password, or by entering the private key from the paper wallet.
@@ -40,7 +40,3 @@ The user can transfer SWC tokens straight from any other wallet into the SWC ter
 A user that opens the app, has the option to click on the button to upload the backup or sync with another device.
 The user can upload the json file, enter the password and the user account gets imported.
 The user can also choose to sync two devices. To do so he needs the device where the terminal is already active (device A) and the new device, that he wants to sync (new device). The user is asked to get the new device and device A ready. On the new device he is asked to enter a shortcode to sync. The user gets this shortcode on device A, in his profile view. When the shortcode is entered on new device, a dialogue pops up on device A, asking for permission to sync the account on a new device. If permission is granted, the user account is imported on the new device.
-
-
-
-
