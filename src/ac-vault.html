@@ -173,6 +173,13 @@
   iron-icon:hover {
     cursor: pointer;
   }
+  .saveyourwidth {
+    width: 35px;
+    height: 35px;
+    min-width: 35px;
+    min-height: 35px;
+
+  }
 
     </style>
 
@@ -196,8 +203,10 @@
           <p class="centertxt">Enter the private key you'll find on your ARC-wallet.</p>
           <div class="whitespace"></div>
             <!-- <ac-input id="privatekeyinput" color="yellow" id="inputpass" label="Private key" type="password" bind-value="{{privatekey::input}}" center></ac-input> -->
+            <div class="totalwidth horizont end centerjust">
           <paper-input id="privatekeyinput" label="Private key" type="password" bind-value="{{privatekey::input}}" class="centertxt"></paper-input>
-          <paper-icon-button icon="sc-icons:arrowright" class="big grey1back shadow" on-tap="pktoggle" noink>show</paper-icon-button>
+          <paper-icon-button icon="sc-icons:looky" class="grey1back grey4 saveyourwidth" on-tap="pktoggle" noink>show</paper-icon-button>
+            </div>
           <!--  <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="Private key" type="password" bind-value="{{privatekey}}" center></ac-input> -->
           <div class="whitespace"></div>
           <div class="whitespace"></div>
