@@ -222,11 +222,11 @@
           </div>
           <div class="pascanvasunderexit vertic centercenter paddingsides">
             <div class="smallio vertic centercenter">
-            <p class="centertxt light grey2 maxwidth paddingsides pubk"><span class="">A profile will be created with the private key you provided. <br><br> Enter a password (min. 9 characters) for this new profile and repeat.</span>
+            <p class="centertxt light grey2 maxwidth paddingsides pubk"><span class="">A profile will be created with the private key you provided. <br><br> Enter a password (min. 4 characters) for this new profile and repeat.</span>
             </p>
             <div class="whitespace"></div>
 
-            <p class="centertxt">Enter a password (min. 9 characters) and repeat.</p>
+            <p class="centertxt">Enter a password (min. 4 characters) and repeat.</p>
             <div class="whitespace"></div>
             <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
             <template is="dom-if" if="{{creatingvault}}">
@@ -294,7 +294,7 @@
           </div>
           <div class="pascanvasunderexit verticcenter paddingside">
           <div class="pascanvas verticcenter">
-            <p class="yellow centertxt maxwidth"><span class="bold">Great!</span><br>A profile will now be created with your ARC-wallet. <br><br> Enter a password (min. 9 characters) for this new profile and repeat.</p>
+            <p class="yellow centertxt maxwidth"><span class="bold">Great!</span><br>A profile will now be created with your ARC-wallet. <br><br> Enter a password (min. 5 characters) for this new profile and repeat.</p>
             <div class="whitespace"></div>
             <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
             <template is="dom-if" if="{{creatingvault}}">
@@ -350,7 +350,7 @@
           </div>
 
           <div class="pascanvasunderexit vertic centercenter paddingsides">
-            <p class="grey4 bold centertxt">Choose a password (min. 9 characters) and repeat.</p>
+            <p class="grey4 bold centertxt">Choose a password (min. 5 characters) and repeat.</p>
             <div class="whitespace"></div>
             <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
           </div>
