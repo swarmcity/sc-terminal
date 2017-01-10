@@ -194,6 +194,7 @@
           <p class="centertxt">Enter the private key you'll find on your ARC-wallet.</p>
           <div class="whitespace"></div>
           <paper-input id="inputpass" label="Private key" type="password" value="{{privatekey}}" class="centertxt"></paper-input>
+          <paper-icon-button icon="sc-icons:arrowright" class="big grey1back shadow" on-tap="pktoggle" noink>show</paper-icon-button>
           <!--  <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="Private key" type="password" bind-value="{{privatekey}}" center></ac-input> -->
           <div class="whitespace"></div>
           <div class="whitespace"></div>
@@ -442,6 +443,14 @@
 
       removeall: function(){
         this.set('route.path', '/removeall');
+      },
+
+      pktoggle: function(){
+        if (this.$.inputpass.getAttribute('type') == 'text'){
+          this.$.inputpass.setAttribute('type','password');
+        }else{
+          this.$.inputpass.setAttribute('type','text');
+        }
       },
 
       toClearvault: function(){
