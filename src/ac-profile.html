@@ -62,13 +62,26 @@
     @apply(--layout-end);
   }
 
-  .profilepicinner paper-icon-button {
+  .uploadicon {
     z-index: 12;
     margin-top: -20px;
 /*    @apply(--base-structure-and-inset);*/
   }
 
-  .uploadbtn {
+  .croppiecontrols {
+    z-index: 12;
+    margin: -70px 0px 20px 0px;
+    box-sizing:border-box;    
+    padding-left: 10px;
+  }
+
+  .croppiecontrols paper-icon-button {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 5px;
+  }
+  .croppiecontrols p {
+    @apply(--montserrat-semibold);
 
   }
 
@@ -113,11 +126,11 @@
     @apply(--layout-center-center);
   }
 
-  .confirmbtns ac-button {
+  .confirmbtns paper-icon-button {
     margin: 2px;
   }
 
-  .confirmbtns ac-icon {
+  .confirmbtns iron-icon {
     margin-right: 4px;
   }
 
@@ -228,10 +241,10 @@
 
 */
   .avatarloading {
-    width: 120px;
-    height: 120px;
-    min-width: 120px;
-    min-height: 120px;
+    width: 115px;
+    height: 115px;
+    min-width: 115px;
+    min-height: 115px;
     overflow: hidden;
     border-radius: 50%;
     background-color: rgba(0,0,0,0.75);
@@ -289,6 +302,13 @@
     opacity: 0.25;
   }
 
+    .usernameinput {
+      /*--paper-checkbox-unchecked-color: var(--sc-blue);*/
+      /*--paper-checkbox-checkmark-color: var(--sc-grey4);*/
+      /*text-align: right;*/
+
+    }
+
   </style>
 
     <ac-ipfs id="ipfs"></ac-ipfs>
@@ -311,7 +331,7 @@
 
             <template is="dom-if" if="{{avatarloading}}">
             <div class="avatarloading">
-              <ac-spinner color="yellow" small></ac-spinner>
+              <ac-spinner color="blue" small></ac-spinner>
             </div>
             </template>
 
@@ -324,7 +344,7 @@
             ></ac-avatar>
 
               <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
-              <paper-icon-button icon="sc-icons:upload" class="blueback white" id="uploadbtn"></paper-icon-button>
+              <paper-icon-button icon="sc-icons:upload" class="blueback white uploadicon" id="uploadbtn"></paper-icon-button>
               <!-- <ac-button icon="ac-upload" small bg="btncolor" txtcolor="yellow" id="uploadbtn"></ac-button> -->
             </div>
           </div>
@@ -332,7 +352,7 @@
           <div class="profilecontent" id="profilecontent">
 
             <div class="profileusername">
-              <paper-input label="username" value="{{username}}" on-change="usernameChange" class="centertxt">{{username}}</paper-input>
+              <paper-input label="username" value="{{username}}" on-change="usernameChange" class="usernameinput centertxt">{{username}}</paper-input>
 
               <!-- <ac-input color="white" label="username" type="input" on-change="usernameChange" bind-value="{{username}}" center inputvalue="{{username}}"></ac-input> -->
               <iron-collapse id="collapse" opened="{{datachanged}}">
@@ -340,7 +360,7 @@
 
                 <div class="confirmbtns">
                   <iron-icon icon="sc-icons:decline" class="white" on-tap="close">decline</iron-icon>
-                  <iron-button icon="sc-icons:v" class="white" on-tap="confirm">confirm</iron-button>
+                  <paper-icon-button icon="sc-icons:v" class="white" on-tap="confirm">confirm</paper-icon-button>
                 </div>
               </iron-collapse>
 
@@ -391,13 +411,21 @@
         <div class="profilepic">
           <div class="profilepicinner">
             <div id="croppie"></div>
+            <div class="croppiecontrols totalwidth horizont centercenter">
+              <p class="blue small bold txtshadow">Scroll to zoom</p>
+              <div class="flex"></div>
+              <paper-icon-button icon="sc-icons:imgrotate" class="blue" on-tap="rotate" noink>decline</paper-icon-button>
+            </div>
 
-
+            <div class="whitespace"></div>
               <div class="confirmbtns">
-                <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="setcurrentavatar_cancel" small>decline</ac-icon>
-                <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="setcurrentavatar" small>confirm</ac-button>
+                <iron-icon icon="sc-icons:decline" class="blue big" on-tap="setcurrentavatar_cancel">decline</iron-icon>
+                <!-- <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="setcurrentavatar_cancel" small>decline</ac-icon> -->
+                <paper-icon-button icon="sc-icons:v" class="blue whiteback shadow big" on-tap="setcurrentavatar"></paper-icon-button>
 
-                <ac-button icon="ac-arrowright" txtcolor="yellow" bg="btncolor" on-tap="rotate" small>draaie</ac-button>
+                <!-- <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="setcurrentavatar" small>confirm</ac-button> -->
+
+               <!--  <ac-button icon="ac-arrowright" txtcolor="yellow" bg="btncolor" on-tap="rotate" small>rotate</ac-button> -->
 
 
               </div>
@@ -589,8 +617,8 @@
           type: 'circle'
         },
         boundary: {
-          width: 150,
-          height: 150
+          width: 250,
+          height: 250
         },
         showZoomer: false,
         enableOrientation: true
