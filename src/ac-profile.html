@@ -339,14 +339,16 @@
           <div class="profilecontent vertic centercenter flex" id="profilecontent">
 
             <div class="profileusername">
-              <paper-input label="username" value="{{username}}" on-change="usernameChange" class="usernameinput centertxt">{{username}}</paper-input>
+              <paper-input label="username" value="{{username}}" on-change="usernameChange" class="usernameinput centertxt" id="usernameinput">{{username}}</paper-input>
               <iron-collapse id="collapse" opened="{{datachanged}}">
                 <div class="whitespace"></div>
 
                 <div class="confirmbtns">
-                  <iron-icon icon="sc-icons:decline" class="grey4" on-tap="close">decline</iron-icon>
-                  <paper-icon-button icon="sc-icons:v" class="grey4 whiteback" on-tap="confirm">confirm</paper-icon-button>
+                  <iron-icon icon="sc-icons:decline" class="blue" on-tap="close">decline</iron-icon>
+                  <paper-icon-button icon="sc-icons:v" class="blue whiteback" on-tap="confirm">confirm</paper-icon-button>
                 </div>
+
+                <div class="whitespace"></div>
               </iron-collapse>
 
               <div class$="pubkey {{pubwhat}}" on-tap="togglePub">
@@ -743,6 +745,8 @@
 
     close: function() {
       this.datachanged = false;
+      debugger;
+      this.$.usernameinput.value = this.username;
     },
 
     _datachanged: function() {
