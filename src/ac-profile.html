@@ -339,7 +339,7 @@
           <div class="profilecontent vertic centercenter flex" id="profilecontent">
 
             <div class="profileusername">
-              <paper-input label="username" value="{{username}}" on-change="usernameChange" class="usernameinput centertxt" id="usernameinput">{{username}}</paper-input>
+              <paper-input label="username" value="{{newusername}}" on-change="usernameChange" class="usernameinput centertxt" id="usernameinput">{{newusername}}</paper-input>
               <iron-collapse id="collapse" opened="{{datachanged}}">
                 <div class="whitespace"></div>
 
@@ -447,9 +447,12 @@
 
       username: {
         type: String,
+        //observer: '_username'
+      },
+      newusername: {
+        type: String,
         observer: '_username'
       },
-
       sharedElements: {
         type: Object,
         value: function() {
@@ -538,6 +541,7 @@
     init: function(cb){
       try{
         this.username = this.identity.username;
+        this.newusername = this.username;
         this.avatarhash = this.identity.avatarhash;
       }catch(e){
         console.log(e);
@@ -732,7 +736,8 @@
     },
 
     confirm: function() {
-      this.set('identity.username', this.username);
+      this.username = this.newusername;
+      this.set('identity.username', this.newusername);
       this.datachanged = false;
 
       this.fire('identity-update',{
@@ -744,9 +749,8 @@
     },
 
     close: function() {
-      this.datachanged = false;
-      debugger;
       this.$.usernameinput.value = this.username;
+      this.datachanged = false;
     },
 
     _datachanged: function() {

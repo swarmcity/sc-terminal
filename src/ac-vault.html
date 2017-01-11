@@ -9,6 +9,7 @@
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="../bower_components/sc-style/sc-style.html">
 <link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
+<link rel="import" href="../bower_components/polymer-detect-js/detect-js.html">
 
 <dom-module id="ac-vault">
 <link rel="import" href="../bower_components/sc-style/sc-style.css"  type="css">
@@ -185,6 +186,7 @@
 
   <template>
     <ac-helpers id="helpers"></ac-helpers>
+    <detect-js device="{{device}}" os="{{os}}" browser="{{browser}}"></detect-js>
     <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
 
     <neon-animated-pages attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
@@ -489,10 +491,10 @@
       },
 
       pktoggle: function(){
-        if (this.$.inputpass.getAttribute('type') == 'text'){
-          this.$.inputpass.setAttribute('type','password');
+        if (this.$.privatekeyinput.getAttribute('type') == 'text'){
+          this.$.privatekeyinput.setAttribute('type','password');
         }else{
-          this.$.inputpass.setAttribute('type','text');
+          this.$.privatekeyinput.setAttribute('type','text');
         }
       },
 
@@ -586,6 +588,11 @@
         console.log('ac-vault attached');
         this.exitAnimation = "slide-left-animation";
         this.entryAnimation = "slide-from-right-animation";
+
+          debugger;
+        console.log('os=',this.os);
+        console.log('os=',this.browser);
+        console.log('os=',this.device);
       },
 
       _currentidentity: function(){
