@@ -358,6 +358,10 @@
             <p class="grey4 bold centertxt">Choose a password (min. 5 characters) and repeat.</p>
             <div class="whitespace"></div>
             <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
+            <template is="dom-if" if="{{creatingvault}}">
+                <p class="yellow centertxt maxwidth">creating wallet - please wait...</p>
+                <ac-spinner big></ac-spinner>
+            </template>
           </div>
         </div>
     </neon-animatable>
@@ -756,8 +760,10 @@
 
       createvault: function(e){
         this.password = e.detail.password;
+        this.creatingvault = true;
         this.createVault(1,function(){
-           this.fire('unlocked');
+          this.creatingvault = false;
+          this.fire('unlocked');
         }.bind(this));
       },
 
