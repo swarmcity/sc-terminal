@@ -357,10 +357,10 @@
             </div>
 
             <div class="whitespace"></div>
-          <paper-button class="whiteback bold downbtns" on-tap="backupvault">Create backup</paper-button>
+          <paper-button class="whiteback bold downbtns" on-tap="backupvault" noink>Create backup</paper-button>
 
           <template is="dom-if" if="{{itemshow}}">
-            <paper-button class="whiteback bold downbtns" on-tap="collapseMe" id="deletemyvault">Delete this user</paper-button>
+            <paper-button class="whiteback bold downbtns" on-tap="collapseMe" id="deletemyvault" noink>Delete this user</paper-button>
           </template>
 
            <iron-collapse class="collapserz vertic centercenter" id="deletemyvaultcollapser">
@@ -374,13 +374,13 @@
               <div class="vertic centercenter">
                 <p class="bold red centertxt">You're about to remove this user. <br>This can not be undone.</p>
                 <div class="whitespace"></div>
-                <paper-button class="redback white bold small" on-tap="deletevault">continue</paper-button>
+                <paper-button class="redback white bold" on-tap="deletevault">continue</paper-button>
               </div>
 
             </div>
             </iron-collapse>
 
-            <paper-button class="darkerer white bold downbtns" on-tap="logout">Log out</paper-button>
+            <paper-button class="darkerer white bold downbtns" on-tap="logout" noink>Log out</paper-button>
 
 
 

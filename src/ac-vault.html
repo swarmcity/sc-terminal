@@ -318,7 +318,14 @@
               <paper-button on-tap="downloadvault" class="grey4 bigbtn lighter centertxt">Download your backup-file</paper-button>
             </template>
             <template is="dom-if" if="{{backup_unavailable}}">
-              You cannot download your backup on this device.
+              <p class="bold">Oops!</p>
+              <div class="whitespace"></div>
+              <p class="centertxt">You can not download your backup on this device/operating system.</p>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+
+              <paper-button on-tap="exit" class="grey4 grey1back small shadow" noink>back to profile</paper-button>
+
             </template>
           </div>
         </div>
