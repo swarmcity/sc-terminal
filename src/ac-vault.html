@@ -364,11 +364,13 @@
           </div>
 
           <div class="pascanvasunderexit vertic centercenter paddingsides">
-        
+          <template is="dom-if" if="{{_is(creatingvault,false)}}">
             <p class="grey4 bold centertxt">Choose a password (min. 5 characters) and repeat.</p>
             <div class="whitespace"></div>
             <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
-            <template is="dom-if" if="{{creatingvault}}">
+          </template>
+
+            <template is="dom-if" if="{{_is(creatingvault,true)}}">
                 <p class="yellow centertxt maxwidth">creating wallet - please wait...</p>
                 <ac-spinner big></ac-spinner>
             </template>
