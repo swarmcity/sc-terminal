@@ -203,6 +203,7 @@
           <div class="pascanvasunderexit vertic centercenter paddingsides">
           <div class="smallio vertic centercenter">
           <p class="centertxt">Enter the private key you'll find on your ARC-wallet.</p>
+
           <div class="whitespace"></div>
             <!-- <ac-input id="privatekeyinput" color="yellow" id="inputpass" label="Private key" type="password" bind-value="{{privatekey::input}}" center></ac-input> -->
             <div class="totalwidth horizont end centerjust">
@@ -211,12 +212,11 @@
             </div>
           <!--  <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="Private key" type="password" bind-value="{{privatekey}}" center></ac-input> -->
           <div class="whitespace"></div>
+          <template is="dom-if" if="{{invalidpk}}">
+            <p class="red bold"><span class="oops">This is not a valid key.</span></p>
+            </template>  
           <div class="whitespace"></div>
           <paper-icon-button icon="sc-icons:arrowright" class="big grey1back shadow" on-tap="pkreceived" noink>next</paper-icon-button>
-          <template is="dom-if" if="{{invalidpk}}">
-            <div class="red"><p><span class="oops">This is not a valid key</span></p>
-              </div>
-            </template>  
           <!--  <ac-button class="loginbtn" icon="ac-arrowright" on-tap="pkreceived" bg="btncolor" txtcolor="yellow"></ac-button> -->
 
           </div>
@@ -264,7 +264,7 @@
           </div>
         </template>
           <input type="file"  class="hidden" id="uploaditem"  on-change="readSingleFile">
-          <paper-button on-tap="uploadclick" class="blue bigbtn lighter centertxt">Choose your wallet-file</paper-button>
+          <paper-button on-tap="uploadclick" class="blue bigbtn lighter centertxt" noink>Choose your wallet-file</paper-button>
 
           <template is="dom-if" if="{{uploadingwallet}}">
               <p class="yellow centertxt maxwidth">uploading wallet - please wait...</p>
@@ -292,36 +292,9 @@
       </div>
       </neon-animatable>
 
-      <!-- 
 
-       **** DIT HAD IK ERBIJ VERZONNEN MAAR WAS OVERBODIG ZEI SPONNY
-
-      Create password for vault with imported jsonfile 
-      <neon-animatable data-page="importfilemakewallet">
-        <div class="pascanvas verticcenter">
-          <div class="topback">
-            <span class="flex"></span>
-              <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="toClearvault" verysmall>back</ac-button>
-          </div>
-          <div class="pascanvasunderexit verticcenter paddingside">
-          <div class="pascanvas verticcenter">
-            <p class="yellow centertxt maxwidth"><span class="bold">Great!</span><br>A profile will now be created with your ARC-wallet. <br><br> Enter a password (min. 5 characters) for this new profile and repeat.</p>
-            <div class="whitespace"></div>
-            <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
-            <template is="dom-if" if="{{creatingvault}}">
-                <p class="yellow centertxt maxwidth">please wait...</p>
-                <ac-spinner big></ac-spinner>
-            </template>
-          </div>
-        </div>
-      </div>
-      </neon-animatable> -->
-
-
-
-      <!-- **** KUNNEN WE BACKUP MEE IN PROFILE KRIJGEN? -->
       <neon-animatable data-page="backup">
-        <div class="pascanvas verticcenter">
+<!--         <div class="pascanvas verticcenter">
           <div class="topback">
             <span class="flex"></span>
             <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="backupexit" verysmall>back</ac-button>
@@ -330,7 +303,22 @@
             <a id="downloadAnchorElem" style="display:none"></a>
             <ac-button on-tap="downloadvault" txtbtn txtcolor="blue" bg="btncolor">Download your vault</ac-button>
           </div>
+ 
+        </div> -->
+
+
+        <div class="total vertic centercenter">
+          <div class="topbar">
+            <span class="flex"></span>
+              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+          </div>
+          <div class="pascanvasunderexit vertic centercenter paddingsides">        
+            <a id="downloadAnchorElem" style="display:none"></a>
+            <paper-button on-tap="downloadvault" class="grey4 bigbtn lighter centertxt">Download your backup-file</paper-button>
         </div>
+      </div>
+
+
       </neon-animatable>
 
 
@@ -376,7 +364,6 @@
           </div>
 
         <div class="pascanvasunderexit verticcenter">
-        <p class="yellow centertxt maxwidth">Unlock your vault.</p>
         <ac-password class="height" id="newuser" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
       </div>
     </div>
@@ -588,8 +575,6 @@
         console.log('ac-vault attached');
         this.exitAnimation = "slide-left-animation";
         this.entryAnimation = "slide-from-right-animation";
-
-          debugger;
         console.log('os=',this.os);
         console.log('os=',this.browser);
         console.log('os=',this.device);
