@@ -196,6 +196,9 @@
         value: false
       },
 
+      web3: {
+        type: Object
+      },
 
       keystore: {
         type: Object,
@@ -341,7 +344,9 @@
 
     // receive identity from data binder
     _identity: function() {
-      this.currentavatar = this.identity.avatarurl;
+      if (this.identity){
+        this.currentavatar = this.identity.avatarurl;
+      }
     },
 
     toCropper: function(image) {

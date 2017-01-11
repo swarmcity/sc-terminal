@@ -12,7 +12,6 @@
 
   <template>
     <ac-config web3host="{{host}}" tokencontractaddress="{{tokencontractaddress}}"></ac-config>  
-    <!-- <ac-web3 id="web3" web3="{{web3}}" on-web3-ready="_setprovider"></ac-web3> -->
     <ac-helpers id="helpers"></ac-helpers>
   </template>
 
@@ -22,10 +21,6 @@
       is: 'ac-wallet',
 
       properties: {
-        // keystore: {
-        //   type: Object,
-        //   observer: '_keystore'
-        // },
         ethbalance: {
           type: Number,
           notify: true,
@@ -34,6 +29,7 @@
         web3: {
           type: Object,
           notify: true,
+          observer: '_web3'
         },
         arcbalance: {
           type: Number,
@@ -59,12 +55,13 @@
       attached: function() {
         // console.log('ac-wallet attached');
         //this.$.web3.initweb3();
+        //debugger;
         this.updateBalance();
       },
 
-      // _keystore: function(){
-      //   this._setprovider();
-      // },
+      _web3: function(){
+         this.updateBalance();
+      },
 
       // _setprovider: function(){
       //   if (!this.web3 || !this.keystore){
@@ -148,6 +145,12 @@
         if (!this.pubkey || !self.web3 || !self.web3.eth) {
           return;
         }
+
+        if (!this.myContractInstance){
+          var MyContract = this.web3.eth.contract(this.token.abi);
+          this.myContractInstance = MyContract.at(this.tokencontractaddress);
+        }
+
         this.updating = true;
         self.ethbalance = self.web3.eth.getBalance(self.$.helpers.fixaddress(self.pubkey)).toNumber();
         self.arcbalance = self.myContractInstance.balanceOf(self.$.helpers.fixaddress(self.pubkey)).toNumber();
