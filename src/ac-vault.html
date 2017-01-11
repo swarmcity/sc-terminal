@@ -233,17 +233,17 @@
           </div>
           <div class="pascanvasunderexit vertic centercenter paddingsides">
             <div class="smallio vertic centercenter">
-            <p class="centertxt light grey2 maxwidth paddingsides pubk"><span class="">A profile will be created with the private key you provided. <br><br> Enter a password (min. 4 characters) for this new profile and repeat.</span>
-            </p>
+            <p class="centertxt grey2 maxwidth">A profile will be created with the private key you provided.</p>
             <div class="whitespace"></div>
 
             <p class="centertxt">Enter a password (min. 4 characters) and repeat.</p>
             <div class="whitespace"></div>
-            <template is="dom-if" if="{{_is(creatingvault,false)}}">
+            <template is="dom-if" if="{{!creatingvault}}">
               <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
             </template>
-            <template is="dom-if" if="{{_is(creatingvault,true)}}">
-                <p class="yellow centertxt maxwidth">creating wallet - please wait...</p>
+            <template is="dom-if" if="{{creatingvault}}">
+                <p class="centertxt maxwidth">Creating wallet...</p>
+                <div class="whitespace"></div>
                 <ac-spinner big></ac-spinner>
             </template>
 
@@ -372,9 +372,8 @@
 
 
           <template is="dom-if" if="{{creatingvault}}">
-<!--                 <p class="yellow centertxt maxwidth">creating wallet - please wait...</p>
+                <p class="centertxt maxwidth">Creating wallet...</p>
                 <div class="whitespace"></div>
- -->
                 <ac-spinner big></ac-spinner>
             </template>
           </div>
