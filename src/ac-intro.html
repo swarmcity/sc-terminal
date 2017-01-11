@@ -3,6 +3,8 @@
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
 <link rel="import" href="../bower_components/sc-style/sc-style.html">
@@ -32,9 +34,11 @@
     height: 100%;
   }
 
-/*  .topbar {
-    opacity: 0.5;
-  }*/
+
+
+  .topbar {
+    transition: all 0.25s linear;
+  }
   .topbar ac-icon {
     opacity: 0.5;
   }
@@ -60,6 +64,53 @@
   iron-icon:hover {
     cursor: pointer;
   }
+  .fullyellow {
+    width: 100%;
+    height: 100%;
+    padding-top: 
+  }
+
+
+  .logoicon {
+    margin-bottom: -20px;
+  }
+  .logotitle {
+    text-align: right;
+    font-size: 68px;
+    line-height: 62px;
+  }
+
+  .findyourhive {
+      text-align: left;
+
+    width: 100%;
+    font-size: 44px;
+    line-height: 42px;
+  }
+
+  .enterbtn {
+      font-size: 26px;
+      padding: 14px 24px 14px 24px;
+
+    width: 200px;
+  }
+
+  @media all and (min-width: 0) and (max-width: 420px) { 
+  .findyourhive {
+      text-align: center;
+    width: 100%;
+    font-size: 32px;
+    line-height: 28px;
+  }
+
+    .logotitle {
+      text-align: center;
+      font-size: 44px;
+      line-height: 42px;
+    }
+  }
+
+
 
 
 
@@ -69,9 +120,15 @@
 
     </style>
 
+<iron-media-query query="(min-width:0px) and (max-width: 420px)" query-matches="{{phoneview}}"></iron-media-query>
+
     <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
 
-    <div class="topbar">
+    <div class$="topbar {{topbarbg}}">
+            <template is="dom-if" if="{{_is(data.page,'welcome')}}">
+              <div class="fullyellow yellow"></div>
+            </template>
+
       <span class="flex"></span>
       <template is="dom-if" if="{{!_is(data.page,'welcome')}}">
       <iron-icon class="grey3" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
@@ -80,6 +137,32 @@
 
     <neon-animated-pages id="createwalletpgs" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimationintro}}" exit-animation="{{exitAnimationintro}}">
       <neon-animatable data-page="welcome">
+        <div class$="totalwidth vertic {{logoalign}} paddingsides yellowback">
+          <div class="whitespace"></div>
+          <h1 class="white findyourhive bold">Find your <template is="dom-if" if="{{!phoneview}}"><br></template>hive.</h1>
+          <div class="flex"></div>
+
+          <iron-icon icon="sc-icons:logo" class="giant grey4 logoicon">Swarmcity-logo</iron-icon>
+          <h1 class="bold grey4 logotitle">swarm<template is="dom-if" if="{{!phoneview}}"><br></template>.city</h1>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+          <template is="dom-if" if="{{phoneview}}">
+            <div class="whitespace"></div>
+          </template>
+
+          <paper-button on-tap="tonewuser" class="white darkerer shadow enterbtn" noink>enter</paper-button>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
+          <!-- <a href="" class="grey3 small">sync with a device / backup-file</a> -->
+        </div>
+      </neon-animatable>
+
+      <neon-animatable data-page="newuser">
         <div class="totalwidth vertic start paddingwithouttop basestructure">
           <div class="whitespace"></div>
           <h1 class="bold yellow">You must bee<br>new here</h1>
@@ -150,7 +233,8 @@
       },
 
       observers: [
-          '_onRoutePathChanged(data.page)'
+          '_onRoutePathChanged(data.page)',
+          '_sizevieuuuuuuw(phoneview)'
           // '_checkSize(sizeview)'
         ],
 
@@ -159,6 +243,12 @@
         },
 
       _onRoutePathChanged: function(page) {
+
+          if (this.data.page ==='welcome'){
+            this.topbarbg = "yellowback";
+          } else {
+            this.topbarbg = "";
+          };
 
         // switch (page) {
            // case '':
@@ -193,6 +283,11 @@
         this.set('route.path', '/welcome');
         this.exitAnimationintro = "slide-left-animation";
         this.entryAnimationintro = "slide-from-right-animation";
+      },
+
+      tonewuser: function() {
+        this.set('route.path', '/newuser');
+//        this.state = 'first';
       },
 
       totokenquestion: function() {
@@ -253,6 +348,19 @@
         }
         return a === b;
       },
+
+      _sizevieuuuuuuw: function(){
+        if (this.phoneview) {
+          console.log("JAWEL, HET IS TRUE",this.phoneview);
+          this.logoalign = "center";
+          // this.logotxtalign = "";
+
+        } else {
+          console.log("OEI NIEJE NIEJE, HET IS",this.phoneview);
+          this.logoalign = "end";
+
+        };
+      }
 
 
 
