@@ -233,12 +233,12 @@
           </div>
           <div class="pascanvasunderexit vertic centercenter paddingsides">
             <div class="smallio vertic centercenter">
-            <p class="centertxt grey2 maxwidth">A profile will be created with the private key you provided.</p>
-            <div class="whitespace"></div>
+             <template is="dom-if" if="{{!creatingvault}}">
+              <p class="centertxt grey2 maxwidth">A profile will be created with the private key you provided.</p>
+              <div class="whitespace"></div>
 
-            <p class="centertxt">Enter a password (min. 4 characters) and repeat.</p>
-            <div class="whitespace"></div>
-            <template is="dom-if" if="{{!creatingvault}}">
+              <p class="centertxt">Enter a password (min. 5 characters) and repeat.</p>
+              <div class="whitespace"></div>
               <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
             </template>
             <template is="dom-if" if="{{creatingvault}}">
@@ -528,6 +528,7 @@
 
 
       activate: function(){
+        //debugger;
         if (!this.hasVault()) {
           return this.fire('novault');
         };

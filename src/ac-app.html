@@ -82,6 +82,7 @@
       on-importfile="toimportfile"
       on-importpk="toimportpk"
       on-externalpk="toexternalpk"
+      on-enter="enter"  
       route="[[pageTail]]"
       sizeview="{{sizeview}}"
       >
@@ -162,6 +163,10 @@
          // We need to check if we have a passwd in sessionstorage.
       },
 
+      enter: function(){
+        this.$.thevault.activate();
+      },
+
       reset: function(){
         this.transitionto('/intro/welcome');
       },
@@ -175,7 +180,7 @@
       },
 
       noVault: function(){
-        this.transitionto('/intro/welcome');
+        this.transitionto('/intro/newuser');
       },
 
       createNewVault: function(){
@@ -205,8 +210,9 @@
       },
 
       attached: function() {
-          this.$.thevault.activate();
-          console.log("OP APP...............",this.sizeview);
+         this.transitionto('/intro/welcome');
+          //this.$.thevault.activate();
+          //console.log("OP APP...............",this.sizeview);
       },
 
       toWallet: function() {
