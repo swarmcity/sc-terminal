@@ -364,14 +364,17 @@
           </div>
 
           <div class="pascanvasunderexit vertic centercenter paddingsides">
-          <template is="dom-if" if="{{_is(creatingvault,false)}}">
+          <template is="dom-if" if="{{!creatingvault}}">
             <p class="grey4 bold centertxt">Choose a password (min. 5 characters) and repeat.</p>
             <div class="whitespace"></div>
             <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
           </template>
 
-            <template is="dom-if" if="{{_is(creatingvault,true)}}">
-                <p class="yellow centertxt maxwidth">creating wallet - please wait...</p>
+
+          <template is="dom-if" if="{{creatingvault}}">
+<!--                 <p class="yellow centertxt maxwidth">creating wallet - please wait...</p>
+                <div class="whitespace"></div>
+ -->
                 <ac-spinner big></ac-spinner>
             </template>
           </div>
@@ -778,6 +781,7 @@
       },
 
       _is: function(a, b) {
+        debugger;
         if (b === undefined){
           b = true;
         }
