@@ -143,9 +143,10 @@
         pubkey="[[pubkey]]"
         mode="txtonly"
         viewmode="center"
+        id="avatarpubkey"
         ></ac-avatar>
       </div>
-      <div class="homebalancebox flex vertic centercenter grey1back">
+      <div id="homebalance" class="homebalancebox flex vertic centercenter grey1back">
         <div id="homebalance">
           <template is="dom-if" if="{{!balanceupdating}}">
             <div class$="arcbalance flex" on-tap="toWalletview">
@@ -165,9 +166,10 @@
           </template>
         </div>
       </div>
+      
       <div class="flex"></div>
-
-      <!--   <div id="homecontent" class="verticcenter">
+<!--
+         <div id="homecontent" class="verticcenter">
       <div class="rideshare">
         <h2 class="yellow">/rideshare</h2>
         <p>You haven't played this game yet.</p>
@@ -228,12 +230,19 @@
           return {
             'entry': [{
               name: 'fade-in-animation',
-              node:this.$.homecontent,
+              node:this.$.homebalance,
               toPage: this,
               timing: {
                 duration: 200
               }
             }, {
+              name: 'fade-in-animation',
+              node:this.$.avatarpubkey,
+              fromPage: this,
+              timing: {
+                  duration: 200
+              }
+            },{
               name: 'hero-animation',
               id: 'hero',
               toPage: this,
@@ -244,12 +253,19 @@
 
             'exit': [{
               name: 'fade-out-animation',
-              node:this.$.homecontent,
+              node:this.$.homebalance,
               fromPage: this,
               timing: {
                   duration: 200
               }
             }, {
+              name: 'fade-out-animation',
+              node:this.$.avatarpubkey,
+              fromPage: this,
+              timing: {
+                  duration: 200
+              }
+            },{
               name: 'hero-animation',
               id: 'hero',
               fromPage: this,
@@ -452,12 +468,19 @@
       this.animationConfig = {
             'entry': [{
               name: 'fade-in-animation',
-              node:this.$.homecontent,
+              node:this.$.homebalance,
               toPage: this,
               timing: {
                 duration: 200
               }
             }, {
+              name: 'fade-in-animation',
+              node:this.$.avatarpubkey,
+              toPage: this,
+              timing: {
+                duration: 200
+              }
+            },{
               name: 'hero-animation',
               id: 'hero',
               toPage: this,
@@ -468,12 +491,19 @@
 
             'exit': [{
               name: 'fade-out-animation',
-              node:this.$.homecontent,
+              node:this.$.homebalance,
               fromPage: this,
               timing: {
                   duration: 200
               }
             }, {
+              name: 'fade-out-animation',
+              node:this.$.avatarpubkey,
+              fromPage: this,
+              timing: {
+                  duration: 200
+              }
+            },{
               name: 'hero-animation',
               id: 'hero',
               fromPage: this,

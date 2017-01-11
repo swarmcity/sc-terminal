@@ -32,12 +32,6 @@
     display: block;
     width: 100%;
     height: 100%;
-    --paper-input-container-input: {
-        @apply(--montserrat-bold);
-    };
-    --paper-input-container-label: { 
-    @apply(--montserrat-bold);
-    };
 
   }
 
@@ -97,7 +91,7 @@
   .profileusername {
     width: 100%;
     box-sizing: border-box;
-    padding: 0px 0px 7vh 0px;
+    padding: 0px 0px 5vh 0px;
     @apply(--layout-vertical);
     @apply(--layout-center-center);
     /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
@@ -134,24 +128,6 @@
     margin-right: 4px;
   }
 
- /* .topback {
-    width: 100%;
-    background-color: var(--ac-base);
-    @apply(--layout-horizontal);
-    @apply(--layout-center-center);
-    box-sizing: border-box;
-    padding: 5vw 5vw 0px 5vw;
-    height: 10vh;
-  }
-
-  .topback ac-icon {
-    opacity: 0.5;
-  }
-  .topback ac-button {
-    @apply(--base-shadow);
-    opacity: 0.85;
-  }
-*/
 
   .profilepart {
     width: 100%;
@@ -169,15 +145,6 @@
     margin: 20px 0px 20px 0px;
   }
 
-/*
-  .verticcenter {
-    width: 100%;
-    @apply(--layout-vertical);
-    @apply(--layout-center-center);
-    box-sizing: border-box;
-    padding: 5vh 0px 5vh 0px;
-  }*/
-
 
   .pubkey {
     margin-top: 6px;
@@ -188,12 +155,9 @@
     font-size: 13px;
     line-height: 15px;
     @apply(--montserrat-reg);
-    color: var(--ac-white);
-    opacity: 0.25;
+    color: var(--sc-grey2);
     text-align: center;
-  }
-
-
+  } 
 
   .pubhidden {
     width: 60px;
@@ -287,7 +251,7 @@
     opacity: 0.1;
   }
 
-  .loggerout {
+/*  .loggerout {
     margin: 3vh 0px 0px 0px;
 
     @apply(--layout-horizontal);
@@ -300,7 +264,7 @@
     @apply(--layout-horizontal);
     @apply(--layout-center-center);
     opacity: 0.25;
-  }
+  }*/
 
   .fullopacity {
     opacity: 1;
@@ -313,11 +277,31 @@
 
   }
 
+  .vaultdeleter {
+    width: 100%;
+    max-width: 600px;
+    box-sizing:border-box;
+    padding: 20px 0px 20px 0px;
+    border-top: 2px dotted var(--sc-red);
+    border-bottom: 2px dotted var(--sc-red);
+  }
+
+  .downbtns {
+    width: 200px;
+    margin: 4px;
+  }
+
+  .dottedline {
+    height: 1px;
+    width: 100%;
+    border-top: 1px dotted var(--sc-grey2);
+  }
+
   </style>
 
     <ac-ipfs id="ipfs"></ac-ipfs>
 
-    <div class="total">
+    <div class="total darkerer" id="totalbox">
 
 
 
@@ -349,22 +333,19 @@
 
               <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
               <paper-icon-button icon="sc-icons:upload" class="blueback white uploadicon" id="uploadbtn"></paper-icon-button>
-              <!-- <ac-button icon="ac-upload" small bg="btncolor" txtcolor="yellow" id="uploadbtn"></ac-button> -->
             </div>
           </div>
 
-          <div class="profilecontent" id="profilecontent">
+          <div class="profilecontent vertic centercenter flex" id="profilecontent">
 
             <div class="profileusername">
               <paper-input label="username" value="{{username}}" on-change="usernameChange" class="usernameinput centertxt">{{username}}</paper-input>
-
-              <!-- <ac-input color="white" label="username" type="input" on-change="usernameChange" bind-value="{{username}}" center inputvalue="{{username}}"></ac-input> -->
               <iron-collapse id="collapse" opened="{{datachanged}}">
                 <div class="whitespace"></div>
 
                 <div class="confirmbtns">
-                  <iron-icon icon="sc-icons:decline" class="white" on-tap="close">decline</iron-icon>
-                  <paper-icon-button icon="sc-icons:v" class="white" on-tap="confirm">confirm</paper-icon-button>
+                  <iron-icon icon="sc-icons:decline" class="grey4" on-tap="close">decline</iron-icon>
+                  <paper-icon-button icon="sc-icons:v" class="grey4 whiteback" on-tap="confirm">confirm</paper-icon-button>
                 </div>
               </iron-collapse>
 
@@ -372,57 +353,34 @@
                 <p>{{pubkey}}</p>
               </div>
             </div>
-            <div class="flex"></div>
-<!--
-            <div class="profilepart coll" id="preferencestotal">
-              <h2 on-tap="collapseMe" id="preferences">Preferences</h2>
-              <iron-collapse class="collapserz" id="preferencescollapser">
-               <ac-preferences place="center" prefselected={{prefselected}}></ac-preferences>
-              </iron-collapse>
+
+            <div class="whitespace"></div>
+          <paper-button class="whiteback bold downbtns" on-tap="backupvault">Create backup</paper-button>
+
+          <template is="dom-if" if="{{itemshow}}">
+            <paper-button class="whiteback bold downbtns" on-tap="collapseMe" id="deletemyvault">Delete this user</paper-button>
+          </template>
+
+           <iron-collapse class="collapserz vertic centercenter" id="deletemyvaultcollapser">
+           <div class="vertic centercenter vaultdeleter">
+
+              <div class="totalwidth horizont centercenter">
+                <div class="flex"></div>
+                <iron-icon icon="sc-icons:decline" class="grey4" on-tap="closeMe">decline</iron-icon>
+              </div>
+
+              <div class="vertic centercenter">
+                <p class="bold red centertxt">You're about to remove this user. <br>This can not be undone.</p>
+                <div class="whitespace"></div>
+                <paper-button class="redback white bold small" on-tap="deletevault">continue</paper-button>
+              </div>
+
             </div>
+            </iron-collapse>
 
- -->
-<!--             <div class="profilepart coll" id="synctotal">
-            <h2 on-tap="collapseMe" id="sync">Sync with device</h2>
-              <iron-collapse class="collapserz" id="synccollapser">
-                <h4 class="white centertxt">7789</h4><br>
-                <p on-tap="collapseMe" class="white centertxt">Use this shortcode to sync with another device.</p>
-              </iron-collapse>
-            </div>
- -->
-          <div class="loggerout">
-            <ac-button bg="white" txtcolor="base" on-tap="backupvault" small txtbtn>back-up my vault
-            </ac-button>
-          </div>
-<!--
-            <div class="profilepart coll" id="backuptotal">
-              <h2 on-tap="collapseMe" id="backup">Create backup</h2>
-              <iron-collapse class="collapserz" id="backupcollapser">
-                <p on-tap="collapseMe" class="yellow">Het is al geruime tijd een bekend gegeven dat een lezer, tijdens het bekijken van de layout van een pagina, afgeleid wordt door de tekstuele inhoud. Het belangrijke punt van het gebruik van Lorem Ipsum is dat het uit een min of meer normale verdeling van letters bestaat, in tegenstelling tot "Hier uw tekst, hier uw tekst" wat het tot min of meer leesbaar nederlands maakt. Veel desktop publishing pakketten en web pagina editors gebruiken tegenwoordig Lorem Ipsum als hun standaard model tekst, en een zoekopdracht naar "lorem ipsum" ontsluit veel websites die nog in aanbouw zijn. Verscheidene versies hebben zich ontwikkeld in de loop van de jaren, soms per ongeluk soms expres (ingevoegde humor en dergelijke).</p>
-              </iron-collapse>
-            </div>
- -->
-          <div class="loggerout">
-            <ac-button bg="white" on-tap="logout" txtcolor="base" small txtbtn>log out
-            <ac-icon icon="ac-logout" iconcolor="base" small></ac-icon>
-            </ac-button>
-          </div>
-
-          <div>
-
-<div class="verticcenter fullopacity">
-<ac-button bg="white" txtcolor="base" on-tap="collapseMe" id="deletemyvault" small txtbtn>Delete vault
-            </ac-button>
-
-<!--               <h2 on-tap="collapseMe" id="deletevault">Delete vault</h2>
- -->              <iron-collapse class="collapserz" id="deletemyvaultcollapser">
-              <ac-button bg="red"  class="fullopacity" txtcolor="white" on-tap="deletevault" small txtbtn>Delete my vault
-            </ac-button>
-              </iron-collapse>
-  </div>
+            <paper-button class="darkerer white bold downbtns" on-tap="logout">Log out</paper-button>
 
 
-          </div>
 
           </div>
       </neon-animatable>
@@ -436,23 +394,11 @@
               <div class="flex"></div>
               <paper-icon-button icon="sc-icons:imgrotate" class="blue" on-tap="rotate" noink>decline</paper-icon-button>
             </div>
-
             <div class="whitespace"></div>
               <div class="confirmbtns">
                 <iron-icon icon="sc-icons:decline" class="blue big" on-tap="setcurrentavatar_cancel">decline</iron-icon>
-                <!-- <ac-icon icon="ac-decline" iconcolor="yellow" on-tap="setcurrentavatar_cancel" small>decline</ac-icon> -->
                 <paper-icon-button icon="sc-icons:v" class="blue whiteback shadow big" on-tap="setcurrentavatar"></paper-icon-button>
-
-                <!-- <ac-button icon="ac-v" txtcolor="yellow" bg="btncolor" on-tap="setcurrentavatar" small>confirm</ac-button> -->
-
-               <!--  <ac-button icon="ac-arrowright" txtcolor="yellow" bg="btncolor" on-tap="rotate" small>rotate</ac-button> -->
-
-
               </div>
-
-<!--
-            <ac-button on-tap="setcurrentavatar_cancel" txtbtn txtcolor="blue" bg="btncolor" small>cancel</ac-button>
-            <ac-button on-tap="setcurrentavatar" txtbtn txtcolor="blue" bg="btncolor" small>save</ac-button> -->
           </div>
         </div>
 
@@ -506,7 +452,7 @@
         type: Object,
         value: function() {
           return {
-            'hero': this.$.currentavatar,
+            'hero': this.$.currentavatar
           }
         }
       },
@@ -557,6 +503,13 @@
               timing: {
                 duration: 200
               }
+            },{
+              name: 'fade-out-animation',
+              node:this.$.totalbox,
+              toPage: this,
+              timing: {
+                duration: 200
+              }
             }, {
               name: 'hero-animation',
               id: 'hero',
@@ -577,6 +530,7 @@
 
     attached: function(){
       this.init();
+      this.itemshow = true;
     },
 
     init: function(cb){
@@ -749,7 +703,7 @@
     },
 
     _username: function(newVal,oldVal) {
-      if (oldVal!==undefined){
+      if (oldVal){
         this.datachanged = true;
       console.log('dit komt van username', newVal, oldVal);
 
@@ -815,6 +769,9 @@
       var collapsdis = document.getElementById(collapsid);
       collapsdis.toggle();
 
+      this.itemshow =! this.itemshow;
+      console.log("*******",this.itemshow);
+
       var itemtotal = document.getElementById(item);
       if (itemtotal){
         if (collapsdis.opened){
@@ -825,12 +782,23 @@
       }
     },
 
+
     closeMe: function()  {
-      var collapsid = this.shownbool + 'collapser';
-      var collapsdis = document.getElementById(collapsid);
+      var collapsdis = document.getElementById('deletemyvaultcollapser');
+      // console.log("*******",collapsdis);
       collapsdis.toggle();
-      this.shownbool= 'random';
+      this.itemshow =! this.itemshow;
+
     },
+
+
+
+    // closeMe: function()  {
+    //   var collapsid = this.shownbool + 'collapser';
+    //   var collapsdis = document.getElementById(collapsid);
+    //   collapsdis.toggle();
+    //   this.shownbool= 'random';
+    // },
 
 
 
