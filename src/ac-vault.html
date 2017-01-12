@@ -312,7 +312,7 @@
         <div class="total vertic centercenter">
           <div class="topbar">
             <span class="flex"></span>
-              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="backupexit">back</iron-icon>
           </div>
           <div class="pascanvasunderexit vertic centercenter paddingsides">        
             <a id="downloadAnchorElem" style="display:none"></a>
@@ -326,7 +326,7 @@
               <div class="whitespace"></div>
               <div class="whitespace"></div>
 
-              <paper-button on-tap="exit" class="grey4 grey1back small shadow" noink>back to profile</paper-button>
+              <paper-button on-tap="backupexit" class="grey4 grey1back small shadow" noink>back to profile</paper-button>
 
             </template>
           </div>
@@ -781,7 +781,7 @@
       },
 
       _is: function(a, b) {
-        debugger;
+        //debugger;
         if (b === undefined){
           b = true;
         }
