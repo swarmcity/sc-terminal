@@ -1,8 +1,15 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<!-- <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/ac-input/ac-input.html">
 <link rel="import" href="../bower_components/ac-button/ac-button.html">
-<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../bower_components/ac-style/ac-style.html"> -->
+
+<link rel="import" href="../bower_components/sc-style/sc-style.html">
+<link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
+
+<link rel="import" href="sc-loader.html">
+
 <link rel="import" href="ac-helpers.html">
 <link rel="import" href="ac-password.html">
 <link rel="import" href="ac-statusitem.html">
@@ -12,6 +19,8 @@
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 
 <dom-module id="ac-swtconversion">
+<link rel="import" href="../bower_components/sc-style/sc-style.css" type="css">
+
 <style>
 :host {
   display: block;
@@ -19,171 +28,66 @@
   height: 100%;
 }
 
-h1 {
-  @apply(--ac-font-h1);
-}
+/*  .total {
+    height: 100%;
+  }*/
 
-h2 {
-  @apply(--ac-font-h2);
-}
+  neon-animated-pages {
+    height: 92%;
+  }
 
-h3 {
-  @apply(--ac-font-h3);
-}
+  .bigp {
+    font-size: 20px;
+    line-height: 22px;
+  }
 
-h4 {
-  @apply(--ac-font-h4);
-}
+  .bigh {
+     font-size: 62px;
+    line-height: 68px;   
+  }
 
-p {
-  @apply(--ac-font-body1);
-}
+  .blueborder {
+    border: 2px dotted rgba(36,177,255,0.5);
+    box-sizing:border-box;
+    padding: 20px 25px 20px 30px;
+  }
 
-a {
-  @apply(--ac-font-ahref);
-}
 
-neon-animated-pages {
-  width: 100%;
-  height: 100%;
-}
+  .item {
+   /* max-width: 730px;*/
+    margin: 0px;
+  }
 
-.vertic {
-  @apply(--layout-vertical);
-  @apply(--layout-center-center);
-}
+  .steptime {
+    font-size: 14px;
+    line-height: 15px;    
+  }
 
-.total {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  padding: 10vw;
-  margin: 0px;
-  background-color: var(--ac-base);
-  text-align: center;
-  /*background: url(../images/AC-intro-bg2b.png) #1d143f;
-  background-repeat: no-repeat;
-  background-position: bottom;
-  background-size: auto 100%;*/
-}
+  .stepnr {
+    width: 20px;
+  }
 
-.verticcenter {
-  @apply(--layout-vertical);
-  @apply(--layout-center-center);
-}
+  .lightgrey {
+    color: rgba(0,0,0,0.10);
 
-.whitespace {
-  height: 20px;
-}
+  }
+  .maxwidth {
+    max-width: 530px;
+  }
 
-.centertxt {
-  text-align: center;
-}
+  .stateicon {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+  }
 
-.maxwidth {
-  max-width: 80%;
-}
 
-.hidden {
-  display: none;
-}
-
-.error {
-  text-align: center;
-  width: 80%;
-  max-width: 500px;
-  box-sizing: border-box;
-  padding: 20px;
-}
-
-.paddingside {
-  box-sizing: border-box;
-  padding-left: 6vw;
-  padding-right: 6vw;
-}
-
-.flex {
-  @apply(--layout-flex);
-}
-
-.topback {
-  width: 100%;
-  background-color: var(--ac-base);
-  @apply(--layout-horizontal);
-  @apply(--layout-center-center);
-  box-sizing: border-box;
-  padding: 5vh 5vw 0px 5vw;
-  height: 8%;
-}
-
-.topback ac-icon {
-  opacity: 0.5;
-}
-
-.topback ac-button {
-  @apply(--base-shadow);
-  opacity: 0.9;
-}
-
-.bold {
-  @apply(--montserrat-semibold);
-}
-
-.yellow {
-  color: var(--ac-yellow);
-}
-
-.red {
-  color: var(--ac-red);
-}
-
-.blue {
-  color: var(--ac-blue);
-}
-
-.white {
-  color: var(--ac-white);
-}
-
-.green {
-  color: var(--ac-green);
-}
-
-.yesnobtns {
-  width: 100%;
-}
-
-.yesno {
-  width: 80%;
-  max-width: 280px;
-  margin: 5px;
-}
-
-ol {
-  width: 80%;
-  max-width: 380px;
-  margin: 5px;
-  @apply(--layout-vertical);
-  text-align: left;
-  line-height: 1.5;
-  @apply(--ac-font-body1);
-}
-
-li {
-  margin-bottom: 15px;
-}
-
-.working {
-  opacity: 1;
-}
-
-.finished {
-  opacity: 0.5;
-}
-
-.inactive {
-  opacity: 0.25;
-}
+  @media all and (min-width: 0) and (max-width: 620px) { 
+  .item {
+    margin: 2vh 0px 2vh 0px;
+  }
+  }
 
 </style>
 <template>
@@ -192,27 +96,150 @@ li {
   <ac-helpers id="helpers"></ac-helpers>
   <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
 
-  <div class="topback">
-    <span class="flex"></span>
-      <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="exit" verysmall>back</ac-button>
-  </div>
+
+    <div class="topbar basestructure">
+      <span class="flex"></span>
+      <iron-icon class="grey3" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+    </div>
 
   <neon-animated-pages attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
     <neon-animatable data-page="start">
-      <div class="total vertic">
-      <h2 class="red">Convert ARC to SWT</h2>
-      <div class="whitespace"></div>
-      <div class="yesnobtns vertic">
-        <p class="white">In the next steps, you will be converting your ARC tokens to SWT tokens. Swarm City will not work with ARC tokens.</p>
-        <div class="whitespace"></div>
-        <ac-button class="yesno" bg="btncolor" txtcolor="red" on-tap="tostepone" txtbtn>Continue</ac-button>
-      </div>
-    </div>
+
+      <div class="total vertic start paddingsides basestructure">
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
+          <div class="blueborder">
+            <p class="bold blue">Your ARC-balance</p>
+            <h1 class="bold blue bigh">{{arcbalance}}</h1>
+          </div>
+
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
+          <div class=""> 
+            <p class="grey4"><span class="reg">You will receive <span class="">{{arcbalance}} SWT</span> (conversion rate 1:1).</span><br>Converting the tokens might take a couple of minutes, don't close your browser.</p>
+          </div>
+
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+          <div class="totalwidth vertic">
+            <div class="totalwidth horizont centercenter item">
+              <template is="dom-if" if="{{_is(firststate,'init')}}">
+                <div class="flex">
+                  <p class="bold lightgrey">Allowing the SWT-contract to receive your ARC</p>
+                </div>
+                <div class="stateicon">
+                  <iron-icon icon="sc-icons:v" class="lightgrey big"></iron-icon>
+                </div>
+              </template>
+              <template is="dom-if" if="{{_is(firststate,'doing')}}">
+                <div class="flex" on-tap="succestest">
+                  <p class="bold">Allowing the SWT-contract to receive your ARC</p>
+                </div>
+                <div class="stateicon">
+                  <sc-loader color="blue"></sc-loader>
+                </div>
+              </template>
+              <template is="dom-if" if="{{_is(firststate,'succes')}}">
+                <div class="flex">
+                  <p class="bold green">Allowed the SWT-contract to receive your ARC</p>
+                </div>
+                <div class="stateicon">
+                  <iron-icon icon="sc-icons:v" class="green big"></iron-icon>
+                </div>
+              </template>
+              <template is="dom-if" if="{{_is(firststate,'error')}}">
+                <div class="flex">
+                  <p class="bold red">Something went wrong. {{errormsg}}</p>
+                </div>
+                <div class="stateicon">
+                  <iron-icon icon="sc-icons:decline" class="red big"></iron-icon>
+                </div>
+              </template>
+            </div>
+
+            <div class="totalwidth horizont centercenter item">
+              <template is="dom-if" if="{{_is(secondstate,'init')}}">
+                <div class="flex">
+                  <p class="bold lightgrey">Issueing your new SWT and sending them to you</p>
+                </div>
+                <div class="stateicon">
+                  <iron-icon icon="sc-icons:v" class="lightgrey big"></iron-icon>
+                </div>
+              </template>
+              <template is="dom-if" if="{{_is(secondstate,'doing')}}">
+                <div class="flex" on-tap="errortest">
+                  <p class="bold">Issueing your new SWT and sending them to you</p>
+                </div>
+                <div class="stateicon">
+                  <sc-loader color="blue"></sc-loader>
+                </div>
+              </template>
+              <template is="dom-if" if="{{_is(secondstate,'succes')}}">
+                <div class="flex">
+                  <p class="bold green">Issued your new SWT and sended them to you</p>
+                </div>
+                <div class="stateicon">
+                  <iron-icon icon="sc-icons:v" class="green big"></iron-icon>
+                </div>
+              </template>
+              <template is="dom-if" if="{{_is(secondstate,'error')}}">
+                <div class="flex">
+                  <p class="bold red">Something went wrong. {{errormsg}}</p>
+                </div>
+                <div class="stateicon">
+                  <iron-icon icon="sc-icons:decline" class="red big"></iron-icon>
+                </div>
+              </template>
+            </div>
+
+          </div>
+
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
+          <div class="vertic yesnobtns">
+            <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="startconvert" noink disabled="{{convertingstarted}}">convert my ARC to SWT</paper-button>
+          </div>
+          <div class="whitespace"></div>
+
+          <!-- <div class="totalwidth horizont startjust start">
+            <p class="stepnr grey4 bold">1.</p>
+            <div class="vertical totalwidth start startjust">
+              <p class="grey4 bold">Give allowance <span class="steptime">(est. time 1 min)</class>
+              <template is="dom-if" if="{{giveallowanceshow}}">
+                <span id="giveallowance" on-tap="collapseMe" class="blue">details</span>
+              </template></p>
+               <iron-collapse class="collapserz vertic start" id="giveallowancecollapser">
+                <p>details bee here</p>
+               </iron-collapse>
+            </div>
+          </div>
+
+          <div class="whitespace"></div>
+
+          <div class="totalwidth horizont startjust start">
+            <p class="stepnr grey4 bold">2.</p>
+            <div class="vertical totalwidth start startjust">
+              <p class="grey4 bold">Convert tokens <span class="steptime">(est. time 1 min) • </class>
+              <template is="dom-if" if="{{converttokensshow}}">
+                <span id="converttokens" on-tap="collapseMe" class="blue">details</span>
+              </template>
+              </p>
+               <iron-collapse class="collapserz vertic start" id="converttokenscollapser">
+                <p>details bee here</p>
+               </iron-collapse>
+            </div>
+          </div>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div> -->
+        </div>
     </neon-animatable>
 
-    <neon-animatable data-page="stepone">
-      <div class="total vertic">
+    <neon-animatable data-page="confirm">
+      <!-- <div class="total vertic">
       <h2 class="red">ARC to SWT process</h2>
       <div class="whitespace"></div>
 
@@ -230,7 +257,7 @@ li {
         <ac-spinner hidden id="processspinner" big>spinning</ac-spinner>
         <ac-button big hidden id="continuebtn" class="yesno" bg="btncolor" txtcolor="red" on-tap="startconversion" txtbtn>All set.</ac-button>
       </div>
-    </div>
+    </div> -->
     </neon-animatable>
 
 
@@ -250,12 +277,24 @@ Polymer({
     web3: {
       type: Object,
     },
+    arcbalance: {
+      type: Number,
+      value: '3000.0'
+    }
   },
 
   attached: function(){
     console.log('ac-swtconversion attached');
     this.exitAnimation = "slide-left-animation";
     this.entryAnimation = "slide-from-right-animation";
+    // this.giveallowanceshow = true;
+    // this.converttokensshow = true;
+      this.convertingstarted = false;
+      this.firststate = 'init';
+      this.secondstate = 'init';
+
+      this.errormsg = "NOBODY PANIC. AAaarh!"
+
     //this.set('route.path', '/start');
   },
 
@@ -333,7 +372,63 @@ Polymer({
 
 
   },
-  
+
+
+
+    collapseMe: function(e)  {
+      var item = e.target.parentNode.id;
+
+      var itemp = e.target.id;
+      var collapsid = itemp + 'collapser';
+      var collapsdis = document.getElementById(collapsid);
+      collapsdis.toggle();
+
+      var showbool = itemp + 'show';
+
+      if (showbool=='giveallowanceshow') {
+        this.giveallowanceshow =! this.giveallowanceshow;
+      }
+
+      if (showbool=='converttokensshow') {
+        this.converttokensshow =! this.converttokensshow;
+      }
+
+
+      // this.itemshow =! this.itemshow;
+      console.log("*******",this.giveallowanceshow, "**************showbool",showbool );
+
+
+      // var itemtotal = document.getElementById(item);
+      // if (itemtotal){
+      //   if (collapsdis.opened){
+      //    itemtotal.classList.add("openedcoll");
+      //   } else {
+      //    itemtotal.classList.remove("openedcoll");
+      //   }
+      // }
+    },
+
+
+    startconvert: function () {
+      this.convertingstarted = true;
+      this.firststate = 'doing';
+    },
+
+    succestest: function () {
+      this.firststate = 'succes';
+      this.secondstate = 'doing';
+    },
+
+    errortest: function () {
+      this.secondstate = 'error';
+    },
+    
+    _is: function(a, b) {
+      if (b === undefined) {
+        b = true;
+      }
+      return a === b;
+    },
 
 });
 </script>

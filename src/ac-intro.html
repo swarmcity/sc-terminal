@@ -52,13 +52,15 @@
   }
 
   .yesnobtns {
-    width: 80%;
+    width: 100%;
     max-width: 300px;    
   }
+
 
   .yesno {
     margin: 5px 5px 5px 0px;
     width: 100%;
+    text-align: left;
   }
 
   iron-icon:hover {
@@ -89,10 +91,12 @@
   }
 
   .enterbtn {
-      font-size: 26px;
-      padding: 14px 24px 14px 24px;
+      font-size: 20px;
+/*      padding: 14px 24px 14px 24px;*/
+  }
 
-    width: 200px;
+  .maxwidth {
+    max-width:420px;
   }
 
   @media all and (min-width: 0) and (max-width: 420px) { 
@@ -125,10 +129,6 @@
     <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
 
     <div class$="topbar {{topbarbg}}">
-            <template is="dom-if" if="{{_is(data.page,'welcome')}}">
-              <div class="fullyellow yellow"></div>
-            </template>
-
       <span class="flex"></span>
       <template is="dom-if" if="{{!_is(data.page,'welcome')}}">
       <iron-icon class="grey3" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
@@ -142,7 +142,7 @@
           <h1 class="white findyourhive bold">Find your <template is="dom-if" if="{{!phoneview}}"><br></template>hive.</h1>
           <div class="flex"></div>
 
-          <iron-icon icon="sc-icons:logo" class="giant grey4 logoicon">Swarmcity-logo</iron-icon>
+          <iron-icon icon="sc-icons:logonew" class="giant grey4 logoicon">Swarmcity-logo</iron-icon>
           <h1 class="bold grey4 logotitle">swarm<template is="dom-if" if="{{!phoneview}}"><br></template>.city</h1>
           <div class="whitespace"></div>
           <div class="whitespace"></div>
@@ -150,7 +150,7 @@
             <div class="whitespace"></div>
           </template>
 
-          <paper-button on-tap="tonewuser" class="white darkerer shadow enterbtn" noink>enter</paper-button>
+          <paper-button on-tap="tonewuser" class="white darkerer shadow enterbtn" noink>enter swarm.city</paper-button>
           <div class="whitespace"></div>
           <div class="whitespace"></div>
           <div class="whitespace"></div>
@@ -165,6 +165,8 @@
       <neon-animatable data-page="newuser">
         <div class="totalwidth vertic start paddingwithouttop basestructure">
           <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
           <h1 class="bold yellow">You must bee<br>new here</h1>
           <div class="whitespace"></div>
           <p class="reg">There’s no user found on this device.</p>
@@ -176,35 +178,42 @@
       </neon-animatable>
 
       <neon-animatable data-page="first">
-        <div class="totalwidth vertic centercenter paddingwithouttop">
-          <p class="centertxt">Do you own ARC you want to convert to SWT?</p>
+        <div class="totalwidth vertic start paddingwithouttop blueback">
           <div class="whitespace"></div>
           <div class="whitespace"></div>
+
+          <div class="maxwidth">
+          <h1 class="bold white">Let's talk tokens first...</h1>
           <div class="whitespace"></div>
+          <p class="reg white">Do you own Arcade-tokens (ARC) you want to convert to Swarm-tokens (SWT)?</p>
+        </div>
+          <div class="flex"></div>
           <div class="vertic yesnobtns">
-            <paper-button class="grey4 lighter yesno bigbtn centertxt" on-tap="toimportwallet" noink>Yes</paper-button>
-            <paper-button class="grey4 lighter yesno bigbtn centertxt" on-tap="tocreatewallet" noink>No</paper-button>
+            <paper-button class="white lighter yesno shadow" on-tap="toimportwallet" noink>Yes, convert my tokens!</paper-button>
+            <paper-button class="white lighter yesno shadow" on-tap="tocreatewallet" noink>Nope, don't have any.</paper-button>
           </div>
         </div>
       </neon-animatable>
 
 
       <neon-animatable data-page="importwallet">
-        <div class="totalwidth vertic centercenter paddingwithouttop">
-          <p class="centertxt">How did you save your ARC-wallet?</p>
+        <div class="totalwidth vertic start paddingwithouttop basestructure">
           <div class="whitespace"></div>
           <div class="whitespace"></div>
-          <div class="vertic yesnobtns">
-            <paper-button class="grey4 lighter yesno bigbtn centertxt" on-tap="touploadjson" noink>as a json-file</paper-button>
-            <paper-button class="grey4 lighter yesno bigbtn centertxt" on-tap="toprivatekey" noink>as a print / pdf</paper-button>
+          <div class="maxwidth">
+          <h1 class="bold blue">We bee converting!</h1>
+          <div class="whitespace"></div>
+          <p class="reg grey4">How did you save your ARC-wallet?</p>
           </div>
-            <div class="whitespace"></div>
+          <div class="flex"></div>
+          <div class="vertic yesnobtns">
+            <paper-button class="blue darker shadow yesno" on-tap="touploadjson" noink>as a json-file</paper-button>
+            <paper-button class="blue darker shadow yesno" on-tap="toprivatekey" noink>as a print / pdf</paper-button>
+          </div>
 <!--             <div class="externallink">
               <a on-tap="toprivatekey">I have an external wallet<br> with ARC-tokens</a>
             </div>
  -->
-
-          </div>
         </div>
       </neon-animatable>
 
@@ -244,33 +253,23 @@
 
       _onRoutePathChanged: function(page) {
 
-          if (this.data.page ==='welcome'){
+          // if (this.data.page ==='welcome'){
+          //   this.topbarbg = "yellowback";
+          // } else {
+          //   this.topbarbg = "";
+          // };
+
+        switch (page) {
+          case 'welcome':
             this.topbarbg = "yellowback";
-          } else {
+            break;
+          case 'first':
+            this.topbarbg = "blueback";
+            break;
+          default:
             this.topbarbg = "";
-          };
-
-        // switch (page) {
-           // case '':
-           //  this.set('route.path', '/welcome');
-
-        //   case 'importpkmakewallet':
-        //   case 'importfile':
-        //   case 'createnew':
-        //     if (this.hasVault()) {
-        //       console.log('You already have a vault');
-        //     }
-        //     break;
-        //   default:
-        //     if (!this.hasVault()) {
-        //       return this.fire('novault');
-        //     };
-        //     if (!this.password) {
-        //       return this.fire('locked');
-        //     }
-            // break;
-
-        // }
+            break;
+        }
       },
       attached: function() {
         this.exitAnimationintro = "slide-left-animation";
