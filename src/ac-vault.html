@@ -181,6 +181,13 @@
 
   }
 
+  .blueborder {
+    border: 2px dotted rgba(36,177,255,0.5);
+    box-sizing:border-box;
+    padding: 20px 25px 20px 30px;
+  }
+
+
     </style>
 
   <template>
@@ -219,7 +226,7 @@
               <p class="red bold"><span class="oops">You didn't enter a valid key.</span></p>
             </template>  
             <div class="totalwidth horizont center endjust">
-            <paper-icon-button icon="sc-icons:arrowright" class="big grey1back shadow blue" on-tap="pkreceived" noink>next</paper-icon-button>
+            <paper-icon-button icon="sc-icons:arrowright" class="big whiteback shadow blue" on-tap="pkreceived" noink>next</paper-icon-button>
             </div>
           <!--  <ac-button class="loginbtn" icon="ac-arrowright" on-tap="pkreceived" bg="btncolor" txtcolor="yellow"></ac-button> -->
 
@@ -264,16 +271,24 @@
               <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
           </div>
 
-          <div class="pascanvasunderexit vertic start paddingwithouttop">
+          <div class="pascanvasunderexit vertic start paddingsides">
             <div class="whitespace"></div>
             <div class="whitespace"></div>
             <div class="maxwidth">
               <h1 class="bold blue">ARC-wallet as a json-file</h1>
               <div class="whitespace"></div>
-              <p class="reg grey4">Locate your ARC-wallet json-file.</p>
-            </div>
-            <div class="flex"></div>
+              <template is="dom-if" if="{{!pkshowpassw}}">
+                <p class="reg grey4">Locate your ARC-wallet json-file.</p>
+              </template>
+ 
+              <template is="dom-if" if="{{pkshowpassw}}">
 
+               <p class="reg grey4">Unlock your AC-vault with its password.</p>
+             </template>
+
+            </div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
 
             <template is="dom-if" if="{{vaulterror}}">
               <div class="error red"><p><span class="bold">Oops!</span><br>{{vaulterror}}<p>
@@ -281,12 +296,32 @@
               </div>
             </template>
 
-            <input type="file"  class="hidden" id="uploaditem"  on-change="readSingleFile">
-            <paper-button on-tap="uploadclick" class="blue lighter bigbtn shadow centertxt" noink>Choose file</paper-button>
+          <template is="dom-if" if="{{!uploadingwallet}}">
+
+            <template is="dom-if" if="{{!pkshowpassw}}">
+              <input type="file"  class="hidden" id="uploaditem"  on-change="readSingleFile">
+              <paper-button on-tap="uploadclick" class="blue lighter bigbtn shadow centertxt" noink>Choose file</paper-button>
+            </template>
+          </template>
+
+
+            <template is="dom-if" if="{{pkshowpassw}}">
+              <p class="grey4 semibold blueborder">{{jsonfilename}}</p>
+              <div class="whitespace"></div>
+              <div class="totalwidth horizont end startjust maxwidth">
+                <paper-input label="Password AC-Vault" type="password" value=""></paper-input>
+                <paper-icon-button icon="sc-icons:looky" class="grey1back grey4 saveyourwidth" on-tap="pktoggle" noink>show</paper-icon-button>
+              </div>
+              <div class="whitespace"></div> 
+              <div class="totalwidth horizont center endjust">
+              <paper-icon-button icon="sc-icons:arrowright" class="big whiteback shadow blue" on-tap="pkreceived" noink>next</paper-icon-button>
+              </div>
+
+            </template>
+
 
           <template is="dom-if" if="{{uploadingwallet}}">
-              <p class="yellow centertxt maxwidth">uploading wallet - please wait...</p>
-              <ac-spinner big></ac-spinner>
+              <sc-loader small color="blue">uploading wallet - please wait...</sc-loader>
           </template>
 
         </div>
@@ -295,7 +330,8 @@
       </neon-animatable>
 
 
-      <!-- unlock imported file -->
+      <!--    ***** NOT USED ANYMORE
+      unlock imported file 
       <neon-animatable data-page="unlockimport">
         <div class="total vertic centercenter">
           <div class="topbar">
@@ -308,23 +344,10 @@
             <ac-password></ac-password>
         </div>
       </div>
-      </neon-animatable>
+      </neon-animatable> -->
 
 
       <neon-animatable data-page="backup">
-<!--         <div class="pascanvas verticcenter">
-          <div class="topback">
-            <span class="flex"></span>
-            <ac-button icon="ac-decline" bg="btncolor" txtcolor="white" on-tap="backupexit" verysmall>back</ac-button>
-          </div>
-          <div class="pascanvasunderexit verticcenter paddingside">
-            <a id="downloadAnchorElem" style="display:none"></a>
-            <ac-button on-tap="downloadvault" txtbtn txtcolor="blue" bg="btncolor">Download your vault</ac-button>
-          </div>
- 
-        </div> -->
-
-
         <div class="total vertic centercenter">
           <div class="topbar">
             <span class="flex"></span>
@@ -575,7 +598,8 @@
             if (self._parseVault(contents)){
               self.saveVault();
               self.uploadingwallet = false;
-              return self.fire('locked');
+              self.pkshowpassw = true;
+              // return self.fire('locked');
             }
           },100);
           // so we've read the vault file. It's locked.
@@ -617,6 +641,9 @@
         this.exitAnimation = "slide-left-animation";
         this.entryAnimation = "slide-from-right-animation";
         this.creatingvault = false;
+        this.pkshowpassw = false;
+        this.uploadingwallet = false;
+        this.jsonfilename = "walletfiletjé.json"
 
         this.backup_download = true;
         this.backup_unavailable = true;
