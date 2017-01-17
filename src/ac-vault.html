@@ -5,6 +5,8 @@
 <link rel="import" href="ac-helpers.html">
 <link rel="import" href="ac-password.html">
 <link rel="import" href="ac-spinner.html">
+<link rel="import" href="sc-loader.html">
+
 <script src="scripts/lightwallet.min.js"></script>
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="../bower_components/sc-style/sc-style.html">
@@ -57,8 +59,8 @@
 
 
     ac-password {
-    width: 80%;
-    max-width: 500px;
+    width: 100%;
+/*    max-width: 500px;*/
    }
 
    .height {
@@ -187,6 +189,10 @@
     padding: 20px 25px 20px 30px;
   }
 
+  .btmmargin {
+    padding-bottom: 15vh;
+  }
+
 
     </style>
 
@@ -252,9 +258,7 @@
               <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
             </template>
             <template is="dom-if" if="{{creatingvault}}">
-                <p class="centertxt maxwidth">Creating wallet...</p>
-                <div class="whitespace"></div>
-                <ac-spinner big></ac-spinner>
+                <sc-loader color="blue" big>Creating wallet...</sc-loader>
             </template>
 
             </div>
@@ -402,20 +406,25 @@
               <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
           </div>
 
-          <div class="pascanvasunderexit vertic centercenter paddingsides">
-          <template is="dom-if" if="{{!creatingvault}}">
-            <p class="grey4 bold centertxt">Choose a password (min. 5 characters) and repeat.</p>
+          <div class="pascanvasunderexit vertic start paddingwithouttop">
+          <div class="whitespace"></div>
             <div class="whitespace"></div>
+            <div class="maxwidth">
+              <h1 class="bold blue">Alright!</h1>
+              <div class="whitespace"></div>
+              <p>We just need a password (min. 5 characters) to create your profile.</p>
+            </div>
+            <div class="flex"></div>
+ 
+          <template is="dom-if" if="{{!creatingvault}}">
             <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
           </template>
 
 
           <template is="dom-if" if="{{creatingvault}}">
-                <p class="centertxt maxwidth">Creating wallet...</p>
-                <div class="whitespace"></div>
-                <ac-spinner big></ac-spinner>
+                <sc-loader color="blue" small>Creating wallet</sc-loader>
             </template>
-          </div>
+          </div> 
         </div>
     </neon-animatable>
 

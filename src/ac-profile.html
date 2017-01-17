@@ -39,15 +39,15 @@
     overflow-y: scroll;
   }
 
+  .view {
+    padding: 7vh 0px 14vh 0px;
+  }
 
 
   .profilepic {
-    width: 100%;
     box-sizing: border-box;
-    padding: 5vh 0px 2vh 0px;
-    @apply(--layout-vertical);
-    @apply(--layout-center-center);
-    /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
+    padding: 0px 4vw 0px 10vw;
+
   }
 
   .profilepicinner {
@@ -80,29 +80,27 @@
   }
 
   .profilecontent {
-    width: 100%;
-    box-sizing: border-box;
+/*    width: 100%;
+*/    box-sizing: border-box;
     padding: 0vh 0px 0px 0px;
     @apply(--layout-vertical);
     @apply(--layout-center-center);
-    /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
+    border-bottom: 2px dotted rgba(255,255,255,0.05);
   }
+
+
 
   .profileusername {
     width: 100%;
     box-sizing: border-box;
-    padding: 0px 0px 5vh 0px;
+    padding: 0px 0px 4vh 0px;
     @apply(--layout-vertical);
-    @apply(--layout-center-center);
+    @apply(--layout-start);
+    @apply(--layout-center-justified);
     /*border-bottom: 2px dotted rgba(255,255,255,0.05);*/
   }
 
 
-  .profileusername paper-input {
-    width: 60%;
-    max-width: 260px;
-    overflow: hidden;
-  }
 
   .profileusername p {
     color: white;
@@ -171,8 +169,12 @@
   .pubshown p {
     word-break: break-all;
   }
-  .logout ac-button {
-    @apply(--base-shadow);
+
+  paper-button.logoutbtn {
+min-width: 120px;
+    box-sizing:border-box;
+    margin: 0px 10vw 0px 4vw;
+    /*@apply(--base-shadow);*/
   }
 
   .avataredit {
@@ -186,24 +188,6 @@
     height: 90vh;
   }
 
-/*  .yellow {
-    color: var(--ac-yellow);
-  }
-  .red {
-    color: var(--ac-red);
-  }
-  .blue {
-    color: var(--ac-blue);
-  }
-  .white {
-    color: var(--ac-white);
-  }
-
-  .centertxt {
-    text-align: center;
-  }
-
-*/
   .avatarloading {
     width: 115px;
     height: 115px;
@@ -271,6 +255,9 @@
   }
 
   .usernameinput {
+    width: 80%;
+    max-width: 500px;
+
     /*--paper-checkbox-unchecked-color: var(--sc-blue);*/
     /*--paper-checkbox-checkmark-color: var(--sc-grey4);*/
     /*text-align: right;*/
@@ -297,6 +284,57 @@
     border-top: 1px dotted var(--sc-grey2);
   }
 
+  .toppart {
+    @apply(--layout-horizontal);
+    @apply(--layout-center-center);
+    box-sizing:border-box;
+    padding-bottom: 12vh;
+    border-bottom: 2px dotted rgba(0,0,0,0.05);
+  }
+
+
+@media all and (min-width: 0) and (max-width: 420px) { 
+  .profilepic {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2vh 0px 2vh 0px;
+  }
+  .view {
+    padding: 5vh 0px 0vh 0px;
+  }
+
+    .profileusername {
+      width: 100%;
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+  }
+
+
+  .toppart {
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+    box-sizing:border-box;
+    padding-bottom: 6vh;
+
+  }
+  .usernameinput {
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+
+  }
+  .profilecontent {
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+
+  }
+
+    }
+
+
+
+
+
   </style>
 
     <ac-ipfs id="ipfs"></ac-ipfs>
@@ -314,32 +352,33 @@
       <neon-animated-pages selected="{{datastate}}" attr-for-selected="data-state" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
 
         <neon-animatable data-state="view">
-          <div class="profilepic">
-            <div class="profilepicinner" on-tap="uploadfile">
+        <div class="totalwidth vertical centercenter view">
 
-            <template is="dom-if" if="{{avatarloading}}">
-            <div class="avatarloading">
-              <ac-spinner color="blue" small></ac-spinner>
+          <div class="totalwidth toppart">
+
+            <div class="profilepic vertic centercenter">
+              <div class="profilepicinner" on-tap="uploadfile">
+
+              <template is="dom-if" if="{{avatarloading}}">
+              <div class="avatarloading">
+                <ac-spinner color="blue" small></ac-spinner>
+              </div>
+              </template>
+
+                <ac-avatar
+              id="currentavatar"
+              identity="{{identity}}"
+              pubkey="{{account}}"
+              mode="imgonly"
+              size="big"
+              ></ac-avatar>
+
+                <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
+                <paper-icon-button icon="sc-icons:upload" class="blueback white uploadicon" id="uploadbtn"></paper-icon-button>
+              </div>
             </div>
-            </template>
-
-              <ac-avatar
-            id="currentavatar"
-            identity="{{identity}}"
-            pubkey="{{account}}"
-            mode="imgonly"
-            size="big"
-            ></ac-avatar>
-
-              <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
-              <paper-icon-button icon="sc-icons:upload" class="blueback white uploadicon" id="uploadbtn"></paper-icon-button>
-            </div>
-          </div>
-
-          <div class="profilecontent vertic centercenter flex" id="profilecontent">
-
             <div class="profileusername">
-              <paper-input label="username" value="{{newusername}}" on-change="usernameChange" class="usernameinput centertxt" id="usernameinput">{{newusername}}</paper-input>
+              <paper-input label="username" value="{{newusername}}" on-change="usernameChange" class="usernameinput" id="usernameinput">{{newusername}}</paper-input>
               <iron-collapse id="collapse" opened="{{datachanged}}">
                 <div class="whitespace"></div>
 
@@ -355,6 +394,19 @@
                 <p>{{pubkey}}</p>
               </div>
             </div>
+<!--             <div class="flex">
+            </div> -->
+
+            <paper-button class="darkerer blue bold logoutbtn" on-tap="logout" noink>Log out</paper-button>
+
+          </div>
+
+          <div class="profilecontent" id="profilecontent">
+
+            <div class="whitespace"></div>
+<!-- 
+            <div class="whitespace"></div>
+            <div class="whitespace"></div> -->
 
             <div class="whitespace"></div>
           <paper-button class="whiteback bold downbtns" on-tap="backupvault" noink>Create backup</paper-button>
@@ -375,19 +427,19 @@
                 <p class="bold red centertxt">You're about to remove this user. <br>This can not be undone.</p>
                 <div class="whitespace"></div>
                 <paper-button class="redback white bold" on-tap="deletevault">continue</paper-button>
+                <div class="whitespace"></div>
+
               </div>
 
             </div>
             </iron-collapse>
 
-            <paper-button class="darkerer white bold downbtns" on-tap="logout" noink>Log out</paper-button>
-
-
-
           </div>
+        </div>
+
       </neon-animatable>
 
-      <neon-animatable data-state="edit">
+      <!-- <neon-animatable data-state="edit">
         <div class="profilepic">
           <div class="profilepicinner">
             <div id="croppie"></div>
@@ -405,7 +457,7 @@
         </div>
 
 
-      </neon-animatable>
+      </neon-animatable> -->
     </neon-animated-pages>
   </div>
 
@@ -536,6 +588,8 @@
     attached: function(){
       this.init();
       this.itemshow = true;
+      var colly = document.getElementById('deletemyvaultcollapser');
+      colly.closed = true;
     },
 
     init: function(cb){
@@ -667,33 +721,6 @@
 
     },
 
-    _sizeview: function() {
-      switch (this.sizeview) {
-        case 'phone':
-          this.align = 'verticcenter';
-          this.customStyle['--avatar-size'] = '90px';
-          console.log('YOOOOOOOO in profile ======', this.sizeview);
-
-          this.updateStyles();
-          break;
-        case 'desktop':
-          this.align = 'verticstart';
-          this.customStyle['--avatar-size'] = '130px';
-          console.log('YOOOOOOOO in profile ======', this.sizeview);
-
-          this.updateStyles();
-          break;
-        case 'xlarge':
-          this.align = 'verticstart';
-          this.customStyle['--avatar-size'] = '130px';
-          console.log('YOOOOOOOO in profile ======', this.sizeview);
-
-          this.updateStyles();
-          break;
-        default:
-          console.log("!!! ** Niks");
-      }
-    },
 
     logout: function() {
       this.fire('logout');
