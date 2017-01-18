@@ -14,6 +14,7 @@
 <link rel="import" href="ac-password.html">
 <link rel="import" href="ac-statusitem.html">
 <link rel="import" href="ac-spinner.html">
+<link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-config.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
@@ -92,8 +93,9 @@
 </style>
 <template>
 
-  <ac-config tokencontractaddress="{{ARCTokenAddress}}"></ac-config>
+  <ac-config config="{{config}}"></ac-config>
   <ac-helpers id="helpers"></ac-helpers>
+   <ac-web3 web3="{{web3}}"></ac-web3>
   <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
 
 
@@ -110,16 +112,26 @@
           <div class="whitespace"></div>
           <div class="whitespace"></div>
 
+        
+
           <div class="blueborder">
             <p class="bold blue">Your ARC-balance</p>
-            <h1 class="bold blue bigh">{{arcbalance}}</h1>
+            <h1 class="bold blue bigh">{{formatpong(arcbalance)}}</h1>
           </div>
+
+          <template is="dom-if" if="{{!needstoconvert}}">
+            <p>Sorry you HAZ no ARCz</p>
+          </template>
+
+          <template is="dom-if" if="{{!hasenoughgas}}">
+            <p>Sorry you CAN NOT do this coz thou hast too little Etherz</p>
+          </template>
 
           <div class="whitespace"></div>
           <div class="whitespace"></div>
 
           <div class=""> 
-            <p class="grey4"><span class="reg">You will receive <span class="">{{arcbalance}} SWT</span> (conversion rate 1:1).</span><br>Converting the tokens might take a couple of minutes, don't close your browser.</p>
+            <p class="grey4"><span class="reg">You will receive <span class="">{{formatpong(arcbalance)}} SWT</span> (conversion rate 1:1).</span><br>Converting the tokens might take a couple of minutes, don't close your browser.</p>
           </div>
 
           <div class="whitespace"></div>
@@ -277,102 +289,142 @@ Polymer({
     web3: {
       type: Object,
     },
-    arcbalance: {
-      type: Number,
-      value: '3000.0'
-    }
+    // arcbalance: {
+    //   type: Number,
+    //   value: '3000.0'
+    // },
+    account: {
+          type: String
+    },    
   },
 
-  attached: function(){
+  ready: function() {
+   
+  },
+
+  attached: function() {
     console.log('ac-swtconversion attached');
+
+    var self = this;
+    this.importHref(this.resolveUrl('./contracts/ARCToken.json'), function(e) {
+      var contractjson = JSON.parse(e.target.import.body.innerText);
+      var MyContract = self.web3.eth.contract(contractjson.abi);
+      self.ARCTokenInstance = MyContract.at(self.config.tokencontractaddress);
+      self.getARCBalance(self.checkarc);
+      self.getETHBalance(self.checkgas);
+    });
+
     this.exitAnimation = "slide-left-animation";
     this.entryAnimation = "slide-from-right-animation";
     // this.giveallowanceshow = true;
     // this.converttokensshow = true;
-      this.convertingstarted = false;
-      this.firststate = 'init';
-      this.secondstate = 'init';
+    this.convertingstarted = false;
+    this.firststate = 'init';
+    this.secondstate = 'init';
+    this.hasenoughgas = false;
+    this.needstoconvert = false;
 
-      this.errormsg = "NOBODY PANIC. AAaarh!"
+    this.errormsg = "NOBODY PANIC. AAaarh!"
 
     //this.set('route.path', '/start');
   },
+
+  formatpong: function(val){
+    return (0 + (val / 1e18)).toFixed(2);
+  },
+
+checkarc: function(err,ARCbalance){
+  debugger;
+  if (ARCbalance == 0){
+    this.needstoconvert = false;
+  }else{
+    this.needstoconvert = true;    
+  }
+},
+
+checkgas: function(err,ETHbalance){
+  if (ETHbalance < 500000){
+    this.hasenoughgas = false;
+  }else{
+    this.hasenoughgas = true;    
+  }
+},
 
   tostepone: function() {
     this.set('route.path', '/stepone');
   },
 
-  checkallowance: function() {
-    debugger;
-    console.log('web3', this.web3);
+//   checkallowance: function() {
+//     debugger;
+//     console.log('web3', this.web3);
 
 
-    var self = this;
+//     var self = this;
 
-    this.$.helpers.getjson('./contracts/ARCToken.json', function(err, arctokenjson) {
+//     this.$.helpers.getjson('./contracts/ARCToken.json', function(err, arctokenjson) {
 
-      // this.contractjson = JSON.parse(e.target.import.body.innerText);
-      //    self.web3.eth.getGasPrice(function(err, result){
-      //   var gasPrice = result.toNumber(10);
-      // console.log('gasprice: ', gasPrice);
+//       // this.contractjson = JSON.parse(e.target.import.body.innerText);
+//       //    self.web3.eth.getGasPrice(function(err, result){
+//       //   var gasPrice = result.toNumber(10);
+//       // console.log('gasprice: ', gasPrice);
+// debugger;
+//       var MyContract = self.web3.eth.contract(arctokenjson.abi);
+//       var myContractInstance = MyContract.at(self.$.helpers.arcaddress);
+//       console.log('doing transfer of ', amount, ' to: ', to, 'from: ', window.account);
+//       myContractInstance.transfer.sendTransaction(to, amount, {
+//         from: self.$.helpers.fixaddress(window.account),
+//         gasPrice: gasPrice,
+//         gasLimit: 3000000,
+//         gas: 2000000
+//       }, function(err, result) {
+//         console.log(err, result);
+//         var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(window.account));
+//         self.arcbalance = coinbalance;
+//         if (cb) {
+//           cb(err, result);
+//         }
+//       });
 
-      var MyContract = self.web3.eth.contract(arctokenjson.abi);
-      var myContractInstance = MyContract.at(self.$.helpers.arcaddress);
-      console.log('doing transfer of ', amount, ' to: ', to, 'from: ', window.account);
-      myContractInstance.transfer.sendTransaction(to, amount, {
-        from: self.$.helpers.fixaddress(window.account),
-        gasPrice: gasPrice,
-        gasLimit: 3000000,
-        gas: 2000000
-      }, function(err, result) {
-        console.log(err, result);
-        var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(window.account));
-        self.arcbalance = coinbalance;
-        if (cb) {
-          cb(err, result);
-        }
-      });
-
-    });
+//     });
 
 
-  },
+//   },
 
   startconversion: function() {
     var self = this;
-    this.checkallowance();
-    this.$.startbtn.hidden = true;
-    this.$.processspinner.hidden = false;
-    window.setTimeout(function(){
-      this.$.s1.status = "working";
-      window.setTimeout(function(){
-        this.$.s1.status = "done";
-        window.setTimeout(function(){
-          this.$.s2.status = "working";
-          window.setTimeout(function(){
-            this.$.s2.status = "done";
-            window.setTimeout(function(){
-              this.$.s3.status = "working";
-              window.setTimeout(function(){
-                this.$.s3.status = "done";
-                window.setTimeout(function(){
-                  this.$.s4.status = "working";
-                  window.setTimeout(function(){
-                    this.$.s4.status = "done";
-                    this.$.continuebtn.hidden = false;
-                    this.$.processspinner.hidden = true;
-                  }.bind(this), 2000);
-                }.bind(this), 2000);
-              }.bind(this), 2000);
-            }.bind(this), 2000);
-          }.bind(this), 2000);
-        }.bind(this), 2000);
-      }.bind(this), 2000);
-    }.bind(this), 1000);
+    debugger;
+    
+    // this.$.startbtn.hidden = true;
+    // this.$.processspinner.hidden = false;
+    // window.setTimeout(function(){
+    //   this.$.s1.status = "working";
+    //   window.setTimeout(function(){
+    //     this.$.s1.status = "done";
+    //     window.setTimeout(function(){
+    //       this.$.s2.status = "working";
+    //       window.setTimeout(function(){
+    //         this.$.s2.status = "done";
+    //         window.setTimeout(function(){
+    //           this.$.s3.status = "working";
+    //           window.setTimeout(function(){
+    //             this.$.s3.status = "done";
+    //             window.setTimeout(function(){
+    //               this.$.s4.status = "working";
+    //               window.setTimeout(function(){
+    //                 this.$.s4.status = "done";
+    //                 this.$.continuebtn.hidden = false;
+    //                 this.$.processspinner.hidden = true;
+    //               }.bind(this), 2000);
+    //             }.bind(this), 2000);
+    //           }.bind(this), 2000);
+    //         }.bind(this), 2000);
+    //       }.bind(this), 2000);
+    //     }.bind(this), 2000);
+    //   }.bind(this), 2000);
+    // }.bind(this), 1000);
 
 
   },
-
 
 
     collapseMe: function(e)  {
@@ -409,9 +461,65 @@ Polymer({
     },
 
 
-    startconvert: function () {
+    startconvert: function() {
       this.convertingstarted = true;
       this.firststate = 'doing';
+      this.createAllowance();
+    },
+
+    // fetches coinbalance
+    getARCBalance: function(cb){
+        var coinbalance = this.ARCTokenInstance.balanceOf(this.$.helpers.fixaddress(this.account));
+          this.arcbalance = coinbalance.toNumber();
+          if (cb){
+            cb(null,this.arcbalance);
+          }
+    },
+
+    getETHBalance: function(cb){
+      if (cb){
+        cb(null,this.web3.eth.getBalance(this.$.helpers.fixaddress(this.account)).toNumber());
+      }
+    },
+
+    // returns the current allowance for the configured account
+    getAllowance: function(cb) {
+      debugger;
+      var coinbalance = this.ARCTokenInstance.allowance(this.$.helpers.fixaddress(this.account), this.config.swtconversioncontractaddress, function(err, remaining) {
+        cb(null, remaining);
+      });
+    },
+
+
+    createAllowance: function(callback) {
+      var self = this;
+      if (!self.ARCTokenInstance) {
+        cb('ARC contract not initialized yet');
+      }
+
+      this.getAllowance(function(err,allowance) {
+        debugger;
+
+        self.web3.eth.getGasPrice(function(err, result) {
+          var gasPrice = result.toNumber(10);
+          console.log('gasprice: ', gasPrice);
+
+          //   console.log('doing transfer of ',amount,' LC to: ', pubkey, 'from: ', self.account);
+          //function allow(address _spender, uint256 _value) returns (bool success) {
+          self.ARCTokenInstance.approve.sendTransaction(self.config.swtconversioncontractaddress, 1, {
+            from: self.$.helpers.fixaddress(self.account),
+            gasPrice: gasPrice,
+            gas: 100000
+          }, function(err, result) {
+            console.log(err, result);
+
+            if (callback) {
+              callback(err, result);
+            }
+          });
+        });
+      });
+
     },
 
     succestest: function () {

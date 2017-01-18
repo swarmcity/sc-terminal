@@ -20,7 +20,11 @@
         tokencontractaddress: {
           type: String,
           notify: true
-        }
+        },
+        config: {
+          type: Object,
+          notify: true
+        },
       },
 
       ready: function(){
@@ -45,15 +49,23 @@
             break;
           case 'livenet':
             
-            this.ipfs = {
+            this.set('ipfs', {
               host: 'ipfs.swarm.city',
               protocol: 'https'
-            };
+            });
 
-//            this.web3host = 'http://faucet.ma.cx:8546/';
             this.web3host = 'https://mainnet.infura.io/Z7tCSntEyYR7Fm0b4VdY';
             this.etherscanroot = 'https://etherscan.io/';
-            this.tokencontractaddress = '0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5'
+            this.tokencontractaddress = '0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5';
+            this.swtconversioncontractaddress = '0x2389EcfB574c308F2321C72c7fE4833689150Be6'; // TODO : replace with actual later on
+            this.set('config', {
+              ipfs: this.ipfs,
+              web3host: this.web3host,
+              etherscanroot: this.etherscanroot,
+              tokencontractaddress: this.tokencontractaddress,
+              swtconversioncontractaddress: this.swtconversioncontractaddress
+            });
+
             break;
 
           default:

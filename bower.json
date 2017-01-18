@@ -29,7 +29,8 @@
     "ac-iconset": "https://github.com/swarmcity/ac-iconset.git",
     "sc-style": "https://github.com/swarmcity/sc-style.git",
     "sc-iconset": "https://github.com/swarmcity/sc-iconset.git",
-    "polymer-detect-js": "^1.0.3"
+    "polymer-detect-js": "^1.0.3",
+    "browser-builds": "https://github.com/ethereumjs/browser-builds.git"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
