@@ -1,0 +1,118 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<!-- <link rel="import" href="../bower_components/ac-loader/ac-loader.html"> -->
+<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+
+<link rel="import" href="../bower_components/sc-style/sc-style.html">
+<link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
+
+<dom-module id="sc-spinner">
+<link rel="import" href="../bower_components/sc-style/sc-style.css" type="css">
+
+  <!-- Defines the element's style and local DOM -->
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
+
+      .refresher {
+        margin: 10px 0px 10px 0px;
+        -webkit-animation-name: rotate;
+        -webkit-animation-duration: 1s;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-timing-function: linear;
+        -moz-animation-name: rotate;
+        -moz-animation-duration: 1s;
+        -moz-animation-iteration-count: infinite;
+        -moz-animation-timing-function: linear;
+        animation-name: rotate;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+
+      @-webkit-keyframes rotate {
+        from {-webkit-transform: rotate(0deg);}
+        to {-webkit-transform: rotate(360deg);}
+      }
+
+      @-moz-keyframes rotate {
+        from {-moz-transform: rotate(0deg);}
+        to {-moz-transform: rotate(360deg);}
+      }
+
+      @keyframes rotate {
+        from {transform: rotate(0deg);}
+        to {transform: rotate(360deg);}
+      }
+
+
+
+    </style>
+
+    <template is="dom-if" if="{{small}}">
+      <iron-icon class$="refresher [[color]]" icon="sc-icons:refresh1"></iron-icon>
+    </template>
+    <template is="dom-if" if="{{normal}}">
+      <iron-icon class$="refresher [[color]]" icon="sc-icons:refresh1" iconcolor="[[color]]"></iron-icon>
+    </template>
+    <template is="dom-if" if="{{big}}">
+      <iron-icon class$="refresher big [[color]]" icon="sc-icons:refresh1"></iron-icon>
+    </template>
+
+  </template>
+  <!-- Creates the element's prototype and registers it -->
+  <script>
+    Polymer({
+      is: 'sc-spinner',
+      properties: {
+
+        color: {
+          type: String,
+          value: 'blue',
+          observer: '_color'
+         },
+         normal: {
+          type: Boolean
+         },
+         small: {
+          type: Boolean,
+          observer: '_small'
+         },
+         big: {
+          type: Boolean,
+          observer: '_big'
+         }
+      },
+
+      _color: function() {
+        // console.log('dit is de kleur van de spinner nu=', this.color);
+      },
+
+      _small: function(){
+        if(this.small){
+          this.normal = false;
+        }
+      },
+
+      _big: function(){
+        if(this.big){
+          this.normal = false;
+        }
+      }
+      // _size: function() {
+      //   console.log('dit is de size van de spinner nu=', this.size);
+      // },
+
+      // _is: function(a, b) {
+      //   if (b === undefined) {
+      //     b = true;
+      //   }
+      //   return a === b;
+      // },
+
+
+    });
+  </script>
+</dom-module>
