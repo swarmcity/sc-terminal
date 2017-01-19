@@ -150,13 +150,17 @@
       id="hashtaglist"
       identity="[[identity]]"
       pubkey="[[account]]"
-      on-exit="toHome">
+      on-exit="toHome"
+      on-to-hashtag="toHashtag">
     </sc-hashtaglist>
 
     <sc-hashtag
       data-page="hashtag"
+      id="hashtag"
+      identity="[[identity]]"
+      pubkey="[[account]]"
       on-exit="toHome"
-      id="hashtag">
+      on-back="toHashtaglist">
     </sc-hashtag>
 
 
@@ -267,6 +271,10 @@
       toHashtaglist: function() {
         this.transitionto('/hashtaglist');
       },
+      toHashtag: function() {
+        this.transitionto('/hashtag');
+      },
+
 
       toWalletview: function() {
         this.transitionto('/walletview');

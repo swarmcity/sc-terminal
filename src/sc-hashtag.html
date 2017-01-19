@@ -20,6 +20,17 @@
   }
 
 
+  .topbar {
+    padding: 40px 50px 0px 50px;
+    height: 14%;
+    min-height: 82px;
+  }
+
+  .hashtagtitle {
+    font-size: 22px;
+    line-height: 24px;
+  }
+
 
   @media all and (min-width: 0) and (max-width: 420px) { 
   }
@@ -29,11 +40,30 @@
 
 
   </style>
-    <div class="total redback">
+    <div class="total vertic centercenter whiteback">
     <div class="topbar">
       <span class="flex"></span>
-      <iron-icon class="grey3" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+      <ac-avatar
+        id="currentavatar"
+        identity="{{identity}}"
+        pubkey="{{account}}"
+        mode="imgonly"
+        size="small"
+        on-tap="exit">
+      </ac-avatar>
+<!--       <ac-balance
+        refcur="EUR"
+        arcbalance="{{arcbalance}}"
+        ethbalance="{{ethbalance}}">
+      </ac-balance> -->
     </div>
+
+      <div id="hashtagcontent" class="totalwidth paddingsides flex">
+        <div class="totalwidth horizont center startjust">
+          <iron-icon on-tap="back" icon="sc-icons:arrowleft" class="small">back</iron-icon>
+          <p class="bold hashtagtitle"># needaride</p>
+        </div>
+      </div>
 
   </div>
 
@@ -64,18 +94,11 @@
         value: function() {
           return {
             'entry': [{
-              name: 'fade-in-animation',
-              node:this.$.profilecontent,
+              name: 'slide-from-right-animation',
+              node:this.$.hashtagcontent,
               toPage: this,
               timing: {
-                duration: 200
-              }
-            },{
-              name: 'fade-in-animation',
-              node:this.$.uploadbtn,
-              toPage: this,
-              timing: {
-                duration: 200
+                duration: 600
               }
             }, {
               name: 'hero-animation',
@@ -87,26 +110,13 @@
             }],
 
             'exit': [{
-              name: 'fade-out-animation',
-              node:this.$.profilecontent,
+              name: 'slide-right-animation',
+              node:this.$.hashtagcontent,
               fromPage: this,
               timing: {
-                duration: 200
+                duration: 600
               }
-            },{
-              name: 'fade-out-animation',
-              node:this.$.uploadbtn,
-              toPage: this,
-              timing: {
-                duration: 200
-              }
-            },{
-              name: 'fade-out-animation',
-              node:this.$.totalbox,
-              toPage: this,
-              timing: {
-                duration: 200
-              }
+
             }, {
               name: 'hero-animation',
               id: 'hero',
@@ -128,6 +138,13 @@
     
     },
 
+    back: function(){
+      this.fire('back');
+    },
+
+    exit: function(){
+      this.fire('exit');
+    }
   });
 </script>
 

@@ -20,8 +20,9 @@
   }
 
   .topbar {
-    padding: 8vw 8vw 0px 8vw;
+    padding: 40px 50px 0px 50px;
     height: 14%;
+    min-height: 82px;
   }
 
 
@@ -37,7 +38,7 @@
     <div class="total whiteback">
     <div class="topbar">
       <span class="flex"></span>
-            <ac-avatar
+      <ac-avatar
         id="currentavatar"
         identity="{{identity}}"
         pubkey="{{account}}"
@@ -46,13 +47,18 @@
         on-tap="exit">
       </ac-avatar>
 
-<!--       <iron-icon class="grey3" icon="sc-icons:decline" on-tap="exit">back</iron-icon> -->
+<!--       <ac-balance
+        refcur="EUR"
+        arcbalance="{{arcbalance}}"
+        ethbalance="{{ethbalance}}">
+      </ac-balance> -->
     </div>
-    <div class="totalwidth horizont endjust center">
 
+    <div class="total vertic start paddingsides" id="hashtaglistcontent">
+      <div class="whitespace"></div>
+      <div class="whitespace"></div>
+      <paper-button on-tap="toHashtag" noink class="bigbtn blue shadow"># needaride</paper-button>
     </div>
-
-  <div id="profilecontent"><p>Hooozzdiebdkjzeb</p></div>
 
   </div>
 
@@ -84,10 +90,10 @@
           return {
             'entry': [{
               name: 'fade-in-animation',
-              node:this.$.profilecontent,
+              node:this.$.hashtaglistcontent,
               toPage: this,
               timing: {
-                duration: 200
+                duration: 700
               }
             // },{
             //   name: 'fade-in-animation',
@@ -101,16 +107,16 @@
               id: 'hero',
               toPage: this,
               timing: {
-                  duration: 1200
+                  duration: 5000
               }
             }],
 
             'exit': [{
               name: 'fade-out-animation',
-              node:this.$.profilecontent,
+              node:this.$.hashtaglistcontent,
               fromPage: this,
               timing: {
-                duration: 200
+                duration: 300
               }
             // },{
             //   name: 'fade-out-animation',
@@ -119,19 +125,19 @@
             //   timing: {
             //     duration: 200
             //   }
-            },{
-              name: 'fade-out-animation',
-              node:this.$.totalbox,
-              toPage: this,
-              timing: {
-                duration: 200
-              }
+            // },{
+            //   name: 'fade-out-animation',
+            //   node:this.$.totalbox,
+            //   toPage: this,
+            //   timing: {
+            //     duration: 300
+            //   }
             }, {
               name: 'hero-animation',
               id: 'hero',
               fromPage: this,
               timing: {
-                  duration: 200
+                  duration: 500
               }
               }]
             }
@@ -143,6 +149,8 @@
     ready: function() {
     },
 
+
+
     attached: function(){
     
     },
@@ -150,6 +158,47 @@
     exit: function(){
       this.fire('exit');
     },
+
+    toHashtag: function() {
+      // this.sharedElements = {
+      //  'hero': this.$.currentavatar,
+      // };
+      this.animationConfig = {
+            'entry': [{
+              name: 'slide-from-left-animation',
+              node:this.$.hashtaglistcontent,
+              toPage: this,
+              timing: {
+                duration: 600
+              }
+            },{
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                  duration: 600
+              }
+            }],
+
+            'exit': [{
+              name: 'slide-left-animation',
+              node:this.$.hashtaglistcontent,
+              fromPage: this,
+              timing: {
+                  duration: 600
+              }
+            },{
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 600
+              }
+            }]
+        };
+
+      this.fire('to-hashtag');
+    }
 
   });
 </script>

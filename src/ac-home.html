@@ -37,7 +37,7 @@
 
     .homebalanceandavatar {
       box-sizing:border-box;
-      padding: 14vh 0px 14vh 0px;
+      padding: 8vh 0px 14vh 0px;
     }
 
     #homecontent {
@@ -134,7 +134,7 @@
       @apply(--layout-center-center);
         width: 100%;
         box-sizing: border-box;
-        padding: 17vh 0px 2vh 0px;
+        padding: 8vh 0px 2vh 0px;
 
       }
 
@@ -531,6 +531,57 @@
       this.sharedElements = {
           'hero': this.$.homeavatar,
         };
+
+      this.animationConfig = {
+            'entry': [{
+              name: 'fade-in-animation',
+              node:this.$.homebalance,
+              toPage: this,
+              timing: {
+                duration: 700
+              }
+            }, {
+              name: 'fade-in-animation',
+              node:this.$.avatarpubkey,
+              toPage: this,
+              timing: {
+                duration: 700
+              }
+            },{
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                  duration: 500
+              }
+            }],
+
+            'exit': [{
+              name: 'fade-out-animation',
+              node:this.$.homebalance,
+              fromPage: this,
+              timing: {
+                  duration: 200
+              }
+            }, {
+              name: 'fade-out-animation',
+              node:this.$.avatarpubkey,
+              fromPage: this,
+              timing: {
+                  duration: 200
+              }
+            },{
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 500
+              }
+            }]
+        };
+
+
+
       this.fire('to-hashtaglist');
     },
 
