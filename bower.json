@@ -1,5 +1,5 @@
 {
-  "name": "ac-terminal",
+  "name": "sc-terminal",
   "description": "swarm city wallet",
   "main": "index.html",
   "dependencies": {
@@ -21,7 +21,6 @@
     "app-route": "https://github.com/PolymerElements/app-route.git#^0.9.3",
     "paper-dropdown-menu": "^1.4.3",
     "paper-listbox": "^1.1.2",
-    "ac-iconset": "https://github.com/swarmcity/ac-iconset.git",
     "sc-style": "https://github.com/swarmcity/sc-style.git",
     "sc-iconset": "https://github.com/swarmcity/sc-iconset.git",
     "polymer-detect-js": "^1.0.3",
