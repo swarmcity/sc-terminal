@@ -12,7 +12,7 @@
   "includeDependencies": [
     "manifest.json",
     "bower.json",
-    "bower_components/ac-style/ac-fonts/*.otf",
+    "bower_components/sc-style/sc-fonts/*.otf",
     "src/contracts/*",
     "bower_components/webcomponentsjs/webcomponents-lite.min.js"
   ]
