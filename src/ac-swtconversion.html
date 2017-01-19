@@ -425,10 +425,16 @@ Polymer({
     this.convertingstarted = true;
     this.firststate = 'doing';
     var self = this;
-    this.createAllowance(function() {
+    this.createAllowance(function(err) {
+      if (err){
+        return self.firststate = 'error';
+      }
       self.firststate = 'succes';
       self.secondstate = 'doing';
-      self.convertTokens(function() {
+      self.convertTokens(function(err) {
+        if (err){
+          return self.secondstate = 'error';
+        }
         self.secondstate = 'succes';
         self.getARCBalance();
         self.getSWTBalance(self.verify);
@@ -489,20 +495,22 @@ Polymer({
           gas: 100000
         }, function(err, result) {
           console.log(err, result);
-
-          self.waitTx(result,function(){
-            console.log('ok that is DONE');           
-            callback();
+          if(err){
+            return callback(err);
+          }
+          self.waitTx(result,function(success){
+            if (success){
+              return callback();
+            }else{
+              return callback(new Error('tx failed'));
+            }
           });
-
         });
       });
     });
-
   },
 
   convertTokens: function(callback) {
-
     var self = this;
     self.web3.eth.getGasPrice(function(err, result) {
       var gasPrice = result.toNumber(10);
@@ -513,13 +521,16 @@ Polymer({
         gas: 200000
       }, function(err, result) {
         console.log(err, result);
-
+        if(err){
+          return callback(err);
+        }
         self.waitTx(result, function() {
-          console.log('ok that is DONE');
-          self.secondstate = 'succes';
-          callback();
+          if (success){
+              return callback();
+            }else{
+              return callback(new Error('tx failed'));
+            }
         });
-
       });
     });
   },
