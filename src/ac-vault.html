@@ -187,8 +187,32 @@
             <span class="flex"></span>
               <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
           </div>
-          <div class="pascanvasunderexit vertic centercenter paddingsides">
-            <div class="smallio vertic centercenter">
+          <div class="pascanvasunderexit vertic start paddingwithouttop">
+
+
+             <template is="dom-if" if="{{!creatingvault}}">
+
+          <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="maxwidth">
+              <h1 class="bold blue">Alright!</h1>
+              <div class="whitespace"></div>
+              <p>A profile will be created with the private key you provided. You just need a password and you're all set.</p>
+            </div>
+            <div class="flex"></div>
+ 
+<!--           <template is="dom-if" if="{{!creatingvault}}"> -->
+            <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+<!--           </template>
+ -->
+          </template>
+
+
+          <template is="dom-if" if="{{creatingvault}}">
+                <sc-loader color="blue" small>Creating wallet</sc-loader>
+            </template>
+
+<!--             <div class="smallio vertic centercenter">
              <template is="dom-if" if="{{!creatingvault}}">
               <p class="grey2 maxwidth">A profile will be created with the private key you provided.</p>
               <div class="whitespace"></div>
@@ -201,7 +225,7 @@
                 <sc-loader color="blue" big>Creating wallet...</sc-loader>
             </template>
 
-            </div>
+            </div> -->
           </div>
         </div>
       </neon-animatable>
