@@ -175,6 +175,12 @@
     
   <div class="totalwidth vertic startjust center">
 
+    <div class="topbar grey1back">
+      <span class="flex"></span>
+      <iron-icon class="grey3" icon="sc-icons:decline" on-tap="toHashtaglist">back</iron-icon>
+    </div>
+
+
     <div class="totalwidth homebalanceandavatar horizont center wrap grey1back">
       <div class="ac-avatar-box grey1back" on-tap="toProfile">
         <div class="vertic centercenter">
@@ -498,11 +504,13 @@
       // }
     },
 
-    exit: function(){
-      this.datastate = 'view';
-      this.datachanged = false;
-      this.fire('exit');
-    },
+    // exit: function(){
+    //   this.datastate = 'view';
+    //   this.datachanged = false;
+    //   this.fire('exit');
+    // },
+
+
 
     confirm: function() {
       this.set('identity.username', this.username);
@@ -517,6 +525,13 @@
 
     _datachanged: function() {
       console.log('joooo');
+    },
+
+    toHashtaglist: function() {
+      this.sharedElements = {
+          'hero': this.$.homeavatar,
+        };
+      this.fire('to-hashtaglist');
     },
 
 

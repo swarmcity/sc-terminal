@@ -15,6 +15,9 @@
 <link rel="import" href="ac-home.html">
 <link rel="import" href="ac-swtconversion.html">
 
+<link rel="import" href="sc-hashtaglist.html">
+<link rel="import" href="sc-hashtag.html">
+
 <dom-module id="ac-app">
   <template>
     <style>
@@ -114,6 +117,7 @@
       pubkey="[[account]]"
       on-to-profile="toProfile"
       on-to-walletview="toWalletview"
+      on-to-hashtaglist="toHashtaglist"
       sizeview="{{sizeview}}">
     </ac-home>
 
@@ -140,6 +144,20 @@
       on-exit="toHome"
       sizeview="{{sizeview}}">
     </ac-walletview>
+
+    <sc-hashtaglist
+      data-page="hashtaglist"
+      id="hashtaglist"
+      identity="[[identity]]"
+      pubkey="[[account]]"
+      on-exit="toHome">
+    </sc-hashtaglist>
+
+    <sc-hashtag
+      data-page="hashtag"
+      on-exit="toHome"
+      id="hashtag">
+    </sc-hashtag>
 
 
 </neon-animated-pages>
@@ -244,6 +262,10 @@
         this.$.profile.init(function(){
         this.transitionto('/profile');
         }.bind(this));
+      },
+
+      toHashtaglist: function() {
+        this.transitionto('/hashtaglist');
       },
 
       toWalletview: function() {
