@@ -521,6 +521,7 @@ Polymer({
           if(err){
             return callback(err);
           }
+          console.log('approval started. txhash=',result);
           self.waitTx(result,function(success){
             if (success){
               return callback();
@@ -547,6 +548,7 @@ Polymer({
         if(err){
           return callback(err);
         }
+        console.log('convert started. txhash=',result);        
         self.waitTx(result, function() {
           if (success){
               return callback();
