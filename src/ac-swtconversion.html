@@ -313,6 +313,8 @@ Polymer({
   },
 
   ready: function() {
+    this.hasenoughgas = false;
+    this.needstoconvert = false;
   },
 
   _account: function(){
@@ -331,8 +333,7 @@ Polymer({
     this.convertingstarted = false;
     this.firststate = 'init';
     this.secondstate = 'init';
-    this.hasenoughgas = false;
-    this.needstoconvert = false;
+
 
     this.errormsg = "NOBODY PANIC. AAaarh!"
 
@@ -344,29 +345,35 @@ Polymer({
       return;
     }
     var self = this;
-    if (!self.SWTTokenInstance){
+    if (!self.SWTTokenInstance) {
       this.importHref(this.resolveUrl('./contracts/ARCToken.json'), function(e) {
         var contractjson = JSON.parse(e.target.import.body.innerText);
         var MyContract = self.web3.eth.contract(contractjson.abi);
         self.ARCTokenInstance = MyContract.at(self.config.tokencontractaddress);
-        self.getARCBalance(self.checkarc);
-        self.getETHBalance(self.checkgas);
-      });      
-    }else{
-      self.getARCBalance(self.checkarc);
-      self.getETHBalance(self.checkgas);
+        self.getARCBalance(function() {
+          self.checkarc();
+        });
+        self.getETHBalance(function() {
+          self.checkgas();
+        });
+      });
+    } else {
+      self.getARCBalance(function() {
+        self.checkarc();
+      });
+      self.getETHBalance(function() {
+        self.checkgas();
+      });
     }
     if (!self.SWTConverterInstance){
-      this.importHref(this.resolveUrl('./contracts/SWTConverter.json'), function(e) {
-        var contractjson = JSON.parse(e.target.import.body.innerText);
-        var MyContract = self.web3.eth.contract(contractjson.abi);
+       this.$.helpers.getjson('./contracts/SWTConverter.json', function(err, tokendata) {
+        var MyContract = self.web3.eth.contract(tokendata.abi);
         self.SWTConverterInstance = MyContract.at(self.config.swtconversioncontractaddress);
       });      
     }
     if (!self.SWTTokenInstance){
-      this.importHref(this.resolveUrl('./contracts/MiniMeToken.json'), function(e) {
-        var contractjson = JSON.parse(e.target.import.body.innerText);
-        var MyContract = self.web3.eth.contract(contractjson.abi);
+      this.$.helpers.getjson('./contracts/MiniMeToken.json', function(err, tokendata) {
+        var MyContract = self.web3.eth.contract(tokendata.abi);
         self.SWTTokenInstance = MyContract.at(self.config.swttokencontractaddress);
         self.getSWTBalance();
       });      
