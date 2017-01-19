@@ -117,7 +117,7 @@
             <div class="total vertic start startjust ">
             <h1 class="maxwidth grey2 bold">Oops!</h1>
             <div class="whitespace"></div>
-            <p class="reg maxwidth">No ARC-balance was found on <span class="bold">{{pubkey}}</span>. Make sure you are trying to import the right wallet and try again.</p>
+            <p class="reg maxwidth">No ARC-balance was found on <span class="bold">{{account}}</span>. Make sure you are trying to import the right wallet and try again.</p>
             <div class="flex"></div>
             <paper-icon-button noink icon="sc-icons:arrowleft" class="shadow big grey1back" on-tap="back">Back</paper-icon-button>   
             <div class="whitespace"></div>
@@ -221,7 +221,7 @@
 
           <template is="dom-if" if="{{!hasenoughgas}}">
             <div class="totalwidth gotgaz">
-            <p class="bold darkblue">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction. Send some gas to your wallet (<span>{{pubkey}}</span>), or find @kikipluche on Slack for support.</p>
+            <p class="bold darkblue">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction. Send some gas to your wallet (<span>{{account}}</span>), or find @kikipluche on Slack for support.</p>
             </div>
           </template>
 
@@ -333,7 +333,6 @@ Polymer({
     this.secondstate = 'init';
     this.hasenoughgas = false;
     this.needstoconvert = false;
-    this.pubkey = "0x8876u6ySponnetzetjijhierdepubeven"
 
     this.errormsg = "NOBODY PANIC. AAaarh!"
 
