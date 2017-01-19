@@ -1,5 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
 <!-- <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/ac-input/ac-input.html">
 <link rel="import" href="../bower_components/ac-button/ac-button.html">
@@ -13,7 +15,7 @@
 <link rel="import" href="ac-helpers.html">
 <link rel="import" href="ac-password.html">
 <link rel="import" href="ac-statusitem.html">
-<link rel="import" href="ac-spinner.html">
+<link rel="import" href="sc-spinner.html">
 <link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-config.html">
@@ -83,6 +85,12 @@
     min-height: 40px;
   }
 
+  .gotgaz {
+    box-sizing:border-box;
+    padding-top: 20px;
+    border-top: 2px dotted var(--sc-darkblue);
+  }
+
 
   @media all and (min-width: 0) and (max-width: 620px) { 
   .item {
@@ -112,22 +120,28 @@
           <div class="whitespace"></div>
           <div class="whitespace"></div>
 
-        
+          <template is="dom-if" if="{{!needstoconvert}}">
+            <div class="total vertic start startjust ">
+            <h1 class="maxwidth grey2 bold">Oops!</h1>
+            <div class="whitespace"></div>
+            <p class="reg maxwidth">No ARC-balance was found on <span class="bold">{{pubkey}}</span>. Make sure you are trying to import the right wallet and try again.</p>
+            <div class="flex"></div>
+            <paper-icon-button noink icon="sc-icons:arrowleft" class="shadow big grey1back" on-tap="back">Back</paper-icon-button>   
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>        
+          </template>
+
+
+        <template is="dom-if" if="{{needstoconvert}}">
 
           <div class="blueborder">
             <p class="bold blue">Your ARC-balance</p>
             <h1 class="bold blue bigh">{{formatpong(arcbalance)}}</h1>
           </div>
-
-          <template is="dom-if" if="{{!needstoconvert}}">
-            <p>Sorry you HAZ no ARCz duuuuude</p>
-          </template>
-
-          <template is="dom-if" if="{{!hasenoughgas}}">
-            <p>Sorry you CAN NOT do this coz thou hast too little Etherz</p>
-          </template>
-
-          <div class="whitespace"></div>
           <div class="whitespace"></div>
 
           <div class=""> 
@@ -212,10 +226,18 @@
           <div class="whitespace"></div>
           <div class="whitespace"></div>
 
-          <div class="vertic yesnobtns">
-            <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="startconvert" noink disabled="{{convertingstarted}}">convert my ARC to SWT</paper-button>
+          <template is="dom-if" if="{{!hasenoughgas}}">
+            <div class="totalwidth gotgaz">
+            <p class="bold darkblue">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction. Send some gas to your wallet (<span>{{pubkey}}</span>), or find @kikipluche on Slack for support.</p>
+            </div>
+          </template>
+
+          <template is="dom-if" if="{{hasenoughgas}}">
+          <div class="horizontal center startjust yesnobtns">
+            <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="startconvert" noink>convert my ARC to SWT</paper-button>
           </div>
           <div class="whitespace"></div>
+        </template>
 
           <!-- <div class="totalwidth horizont startjust start">
             <p class="stepnr grey4 bold">1.</p>
@@ -247,6 +269,8 @@
           </div>
           <div class="whitespace"></div>
           <div class="whitespace"></div> -->
+
+        </template>
         </div>
     </neon-animatable>
 
@@ -266,7 +290,7 @@
       <div class="whitespace"></div>
       <div class="yesnobtns vertic">
         <ac-button big id="startbtn" class="yesno" bg="btncolor" txtcolor="red" on-tap="startconversion" txtbtn>Start</ac-button>
-        <ac-spinner hidden id="processspinner" big>spinning</ac-spinner>
+        <sc-spinner hidden id="processspinner" big>spinning</sc-spinner>
         <ac-button big hidden id="continuebtn" class="yesno" bg="btncolor" txtcolor="red" on-tap="startconversion" txtbtn>All set.</ac-button>
       </div>
     </div> -->
@@ -296,7 +320,6 @@ Polymer({
   },
 
   ready: function() {
-
   },
 
   _account: function(){
@@ -317,6 +340,7 @@ Polymer({
     this.secondstate = 'init';
     this.hasenoughgas = false;
     this.needstoconvert = false;
+    this.pubkey = "0x8876u6ySponnetzetjijhierdepubeven"
 
     this.errormsg = "NOBODY PANIC. AAaarh!"
 
@@ -586,6 +610,10 @@ Polymer({
     }
     return a === b;
   },
+
+  back: function(){
+    console.log("Kunde gij efkes MAKE DA GE TERUGGA?");
+  }
 
 });
 </script>
