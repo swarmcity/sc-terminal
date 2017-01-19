@@ -7,15 +7,6 @@
 <dom-module id="ac-ipfs">
   <template>
     <ac-config ipfs="{{config}}"></ac-config>
-
-<!--
-    <iron-localstorage
-  name="ac-ipfscache"
-  value="{{ipfscache}}"
-  on-iron-localstorage-load-empty="initcache"
-  on-iron-localstorage-load="loadcache"
-  ></iron-localstorage> -->
-
   </template>
   <!-- Creates the element's prototype and registers it -->
   <script>
@@ -36,35 +27,8 @@
       },
 
       ready: function(){
-        //this.cacheLoaded = deferred();
+        
       },
-
-      // initcache: function(){
-      //   this.ipfscache = {};
-      // },
-      // loadcache: function(){
-      //   debugger;
-      //   if (!this.cacheLoaded){
-      //     this.cacheLoaded = deferred();
-      //   }
-      //   this.cacheLoaded.resolve();
-      // },
-
-      // cache_put: function(hash,data){
-      //   if (!this.ipfscache){
-      //     this.ipfscache = {};
-      //   }
-      //   this.ipfscache[hash] = data;
-      //   this.notifyPath('ipfscache.' + hash);
-      // },
-
-      // cache_get: function(hash){
-      //   debugger;
-      //   if (!this.ipfscache){
-      //     return;
-      //   }
-      //   return this.ipfscache[hash];
-      // },
 
       initipfs: function() {
         if (this.config && !this.ipfs){
@@ -91,30 +55,23 @@
       // usage : <ac-ipfs id="ipfs"></ac-ipfs>
       //         self.$.ipfs.cat(ipfshash, function(err, data) { ... });
       cat: function(hash, cb) {
-        // this.cacheLoaded.then(function(){
-        //   var cached = this.cache_get(hash);
-        //   if (cached) {
-        //     return cached;
-        //   }
-
-          var self = this; this.ipfs.cat(hash, function(err, res) {
-            var buf = "";
-            if (err) {
-              return cb(err);
-            }
-            res
-              .on('error', function(err) {
-                throw (err);
-              })
-              .on('data', function(data) {
-                buf += data;
-              })
-              .on('end', function() {
-                // self.cache_put(hash, buf);
-                return cb(null, buf);
-              });
-          });
-        // }.bind(this));
+        var self = this;
+        this.ipfs.cat(hash, function(err, res) {
+          var buf = "";
+          if (err) {
+            return cb(err);
+          }
+          res
+            .on('error', function(err) {
+              throw (err);
+            })
+            .on('data', function(data) {
+              buf += data;
+            })
+            .on('end', function() {
+              return cb(null, buf);
+            });
+        });
       },
 
       geturl: function(hash) {
@@ -122,7 +79,6 @@
       },
 
       detached: function() {},
-
 
     });
   </script></dom-module>

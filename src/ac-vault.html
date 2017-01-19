@@ -1,10 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/ac-input/ac-input.html">
-<link rel="import" href="../bower_components/ac-style/ac-style.html">
 <link rel="import" href="ac-helpers.html">
 <link rel="import" href="ac-password.html">
-<link rel="import" href="ac-spinner.html">
 <link rel="import" href="sc-loader.html">
 
 <script src="scripts/lightwallet.min.js"></script>
@@ -30,13 +27,6 @@
         width: 100%;
         height: 100%;
       }
-
-/*      .pascanvas {
-      width: 100%;
-      height: 100%;
-      @apply(--base-structure);
-      background-color: var(--ac-base);
-     }*/
 
      .pascanvasunderexit {
        width: 100%;
@@ -90,48 +80,8 @@
 
     .error {
       width: 100%;
-/*      box-sizing: border-box;
-      padding: 20px;*/
-
     }
 
-/*    .oops {
-      @apply(--montserrat-bold);
-    }
-
-    .paddingside {
-      box-sizing: border-box;
-      padding-left: 6vw;
-      padding-right: 6vw;
-
-    }
-
-    .flex {
-      @apply(--layout-flex);
-    }
-    .topback {
-        width: 100%;
-        background-color: var(--ac-base);
-        @apply(--layout-horizontal);
-        @apply(--layout-center-center);
-        box-sizing: border-box;
-        padding: 5vh 5vw 0px 5vw;
-        height: 8%;
-      }
-
-
-      .topback ac-icon {
-        opacity: 0.5;
-      }
-      .topback ac-button {
-        @apply(--base-shadow);
-        opacity: 0.9;
-      }
-
-      .bold {
-        @apply(--montserrat-semibold);
-
-      }*/
 
       .smaller {
         font-size: 14px;
@@ -165,12 +115,6 @@
       .pubk {
             word-break: break-all;
       }
-/*
-      .caution {
-        color:var(--ac-base);
-        background-color: var(--ac-blue);
-        padding: 5px 12px 5px 12px;
-      }*/
 
   iron-icon:hover {
     cursor: pointer;
@@ -221,12 +165,10 @@
               <p class="reg grey4">Enter the private key you'll find on your ARC-wallet.</p>
             </div>
             <div class="flex"></div>
-            <!-- <ac-input id="privatekeyinput" color="yellow" id="inputpass" label="Private key" type="password" bind-value="{{privatekey::input}}" center></ac-input> -->
             <div class="totalwidth horizont end startjust maxwidth">
               <paper-input id="privatekeyinput" label="Private key" type="password" bind-value="{{privatekey::input}}"></paper-input>
               <paper-icon-button icon="sc-icons:looky" class="grey1back grey4 saveyourwidth" on-tap="pktoggle" noink>show</paper-icon-button>
             </div>
-          <!--  <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="Private key" type="password" bind-value="{{privatekey}}" center></ac-input> -->
             <div class="whitespace"></div>
             <template is="dom-if" if="{{invalidpk}}">
               <p class="red bold"><span class="oops">You didn't enter a valid key.</span></p>
@@ -234,8 +176,6 @@
             <div class="totalwidth horizont center endjust">
             <paper-icon-button icon="sc-icons:arrowright" class="big whiteback shadow blue" on-tap="pkreceived" noink>next</paper-icon-button>
             </div>
-          <!--  <ac-button class="loginbtn" icon="ac-arrowright" on-tap="pkreceived" bg="btncolor" txtcolor="yellow"></ac-button> -->
-
           </div>
       </div>
       </neon-animatable>
@@ -333,24 +273,6 @@
 
       </neon-animatable>
 
-
-      <!--    ***** NOT USED ANYMORE
-      unlock imported file 
-      <neon-animatable data-page="unlockimport">
-        <div class="total vertic centercenter">
-          <div class="topbar">
-            <span class="flex"></span>
-              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
-          </div>
-          <div class="pascanvasunderexit vertic centercenter paddingsides">
-            <p class="centertxt maxwidth">Unlock the AC-wallet with its password (this will also be the password for this account).</p>
-            <div class="whitespace"></div>
-            <ac-password></ac-password>
-        </div>
-      </div>
-      </neon-animatable> -->
-
-
       <neon-animatable data-page="backup">
         <div class="total vertic centercenter">
           <div class="topbar">
@@ -440,29 +362,6 @@
       </div>
     </div>
     </neon-animatable>
-
-<!-- 
-
-  **** GAAN WE DEZE NOG DOEN?
-    <neon-animatable data-page="removeall">
-        <div class="pascanvas verticcenter paddingside">
-          <div class="verticcenter smallio resetter">
-          <p class="white centertxt bold">Can't find your password?</p>
-          <div class="whitespace"></div>
-          <p class="white centertxt smaller">Without your password, the only thing you can do is remove the current profile and start over.</p>
-
-          <div class="notundone">
-            <p class="red smaller bold">This action can not be undone!</p>
-            <div class="whitespace"></div>
-
-            <ac-button on-tap="deleteVault" txtbtn txtcolor="base" bg="red">remove profile</ac-button>
-        </div>
-        <ac-button icon="ac-arrowleft" txtcolor="white" bg="btncolor" on-tap="cancel" small>cancel</ac-button>
-
-        </div>
-      </div>
-    </neon-animatable> -->
-
 
   </neon-animated-pages>
 
