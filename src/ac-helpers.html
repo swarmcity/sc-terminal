@@ -35,7 +35,7 @@
       },
 
       getjson: function(fileurl, cb) {
-        this.getfile.call(fileurl, true, cb);
+        this.getfile(fileurl, true, cb);
       },
 
       unixtime: function() {
@@ -56,9 +56,9 @@
         if (this.filecache[key]) {
           return cb(null, this.filecache[key]);
         }
-        var fileurl = app.resolveUrl(fileurl);
+        var fileurl = this.resolveUrl(fileurl);
         var self = this;
-        app.importHref(fileurl, function(e) {
+        this.importHref(fileurl, function(e) {
           var result = e.target.import.body.innerText;
           if (asJSON) {
             try {
@@ -71,8 +71,6 @@
           cb(null, result);
         });
       },
-
-
 
     });
   </script>

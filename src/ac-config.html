@@ -54,16 +54,18 @@
               protocol: 'https'
             });
 
-            this.web3host = 'https://mainnet.infura.io/Z7tCSntEyYR7Fm0b4VdY';
+            this.web3host = 'https://eth.swarm.city/';
             this.etherscanroot = 'https://etherscan.io/';
             this.tokencontractaddress = '0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5';
             this.swtconversioncontractaddress = '0x2389EcfB574c308F2321C72c7fE4833689150Be6'; // TODO : replace with actual later on
+            this.swttokencontractaddress = '0xb12a3ce74941d2ca3ff705d12a2c072f4a18bb5b';
             this.set('config', {
               ipfs: this.ipfs,
               web3host: this.web3host,
               etherscanroot: this.etherscanroot,
               tokencontractaddress: this.tokencontractaddress,
-              swtconversioncontractaddress: this.swtconversioncontractaddress
+              swtconversioncontractaddress: this.swtconversioncontractaddress,
+              swttokencontractaddress: this.swttokencontractaddress
             });
 
             break;

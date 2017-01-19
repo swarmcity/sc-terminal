@@ -10,6 +10,7 @@
 <link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-profile.html">
 <link rel="import" href="ac-preferences.html">
+<link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-walletview.html">
 <link rel="import" href="ac-intro.html">
 <link rel="import" href="ac-home.html">
@@ -47,7 +48,6 @@
 
 
   </style>
-<!-- <div class$="{{sizeview}}"> -->
     <!-- app-location binds with the URL and produces a route for
     app-route elements to consume. -->
     <app-location route="{{route}}" use-hash-as-path></app-location>
@@ -58,9 +58,7 @@
     comes after the `pattern` is put into the `tail` object, which can be
     passed to the `route` property of downstream app-routes. -->
     <app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{pageTail}}"></app-route>
-<!--     <app-route route="{{route}}" pattern="/vault" data="{{data}}" tail="{{vaultTail}}"></app-route>
- -->    <!--     <app-route route="{{route}}" pattern="/video" tail="{{videoTail}}" active="{{videoPageActive}}"></app-route>
-  -->
+
 
   <ac-config web3host="{{web3host}}"></ac-config>
 
@@ -106,6 +104,16 @@
       >
     </ac-vault>
 
+    <ac-wallet
+        id="wallet"
+        keystore="[[keystore]]"
+        pubkey="[[account]]"
+        updating="{{balanceupdating}}"
+        arcbalance="{{arcbalance}}"
+        ethbalance="{{ethbalance}}"
+        on-hasarcbalance="toConvertSWT">
+    </ac-wallet>
+
     <ac-home
       data-page="home"
       keystore="[[keystore]]"
@@ -138,7 +146,12 @@
       identity="[[identity]]"
       account="[[account]]"
       on-exit="toHome"
-      sizeview="{{sizeview}}">
+      sizeview="{{sizeview}}"
+      updating="[[balanceupdating]]"
+      arcbalance="[[arcbalance]]"
+      swtbalance="[[swtbalance]]"
+      ethbalance="[[ethbalance]]"
+      >
     </ac-walletview>
 
 
@@ -161,7 +174,7 @@
       ],
 
       _onRoutePathChanged: function(path) {
-         console.log('ac-app -> _onRoutePathChanged',this.route,this.pageTail);
+         console.log('ac-app -> _onRoutePathChanged',this.route.path);
          // We need to check if we have a passwd in sessionstorage.
       },
 
@@ -254,6 +267,11 @@
         this.identity = e.detail;
         this.$.thevault.saveVault();
       },
+
+      toConvertSWT: function(){
+        debugger;
+        this.transitionto('/swt/start');        
+      }
 
     });
   </script>
