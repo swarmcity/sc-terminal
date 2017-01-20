@@ -10,7 +10,7 @@
 <dom-module id="ac-wallet">
 
   <template>
-    <ac-config web3host="{{host}}" config="{{config}}" tokencontractaddress="{{tokencontractaddress}}"></ac-config>  
+    <ac-config config="{{config}}"></ac-config>  
     <ac-helpers id="helpers"></ac-helpers>
   </template>
 
@@ -20,20 +20,22 @@
       is: 'ac-wallet',
 
       properties: {
-        ethbalance: {
-          type: Number,
-          notify: true,
-          value: 0
-        },
         web3: {
           type: Object,
-          notify: true,
           observer: '_web3'
         },
+        ethbalance: {
+          type: Number,
+          notify: true
+        },        
         arcbalance: {
           type: Number,
           notify: true,
-          value: 0
+          observer: '_arc'
+        },
+        swtbalance: {
+          type: Number,
+          notify: true,
         },
         pubkey: {
           type: String,
@@ -44,19 +46,65 @@
           value: false,
           notify: true
         },
+        status: {
+          type: String,
+          notify: true
+        }
+      },
+
+      ready: function(){
+        this.arcbalance = 123; //this.status = 'init';
+      },
+
+      _arc: function(){
+        console.log(this.arcbalance);
       },
 
       attached: function() {
         console.log('ac-wallet attached');
-        //this.updateBalance();
+      },
+
+      checkreadystate: function(){
+
+        if (!this.status && this.arcbalance != undefined && this.swtbalance != undefined && this.ethbalance != undefined){
+          console.log('vals:',this.swtbalance,this.ethbalance,this.arcbalance);
+          this.status = 'ready';
+          this.fire('ready');
+        }
       },
 
       _web3: function(){
-         this.updateBalance();
+         this.setup();
+
       },
 
       _pubkey: function(){
-         this.updateBalance();
+         this.setup();
+      },
+
+      setup: function() {
+          this.arcbalance = 8;
+
+        if (!this.web3 || !this.pubkey) {
+          return;
+        }
+          this.arcbalance = 9;
+        var self = this;
+        this.$.helpers.getjson('./contracts/ARCToken.json', function(err, tokendata) {
+          var contract = self.web3.eth.contract(tokendata.abi);
+          self.ARCTokeninstance = contract.at(self.config.tokencontractaddress);
+          self.arcbalance = 678;
+          self._readARCBalance(function() {
+            self.checkreadystate();
+          });
+        });
+        this.$.helpers.getjson('./contracts/MiniMeToken.json', function(err, tokendata) {
+          var contract = self.web3.eth.contract(tokendata.abi);
+          self.SWTTokeninstance = contract.at(self.config.swttokencontractaddress);
+          self._readSWTBalance(function() {
+            self.checkreadystate();
+          });
+        });
       },
 
       monitorBalance: function(){
@@ -80,31 +128,16 @@
       updateBalance: function(e) {
         var self = this;
 
-        if (!this.pubkey || !self.web3 || !self.web3.eth) {
+        if (!this.pubkey || !self.web3 || !self.web3.eth || !this.ARCTokeninstance || !this.SWTTokeninstance) {
           return;
         }
 
-        if (!this.ARCTokeninstance) {
-          this.$.helpers.getjson('./contracts/ARCToken.json', function(err, tokendata) {
-            var contract = self.web3.eth.contract(tokendata.abi);
-            self.ARCTokeninstance = contract.at(self.config.tokencontractaddress);
-            self._readARCBalance();
-          });
-        }else{
-            self._readARCBalance();
-        }
-        if (!this.SWTTokeninstance) {
-          this.$.helpers.getjson('./contracts/MiniMeToken.json', function(err, tokendata) {
-            var contract = self.web3.eth.contract(tokendata.abi);
-            self.SWTTokeninstance = contract.at(self.config.swttokencontractaddress);
-            self._readSWTBalance();
-          });
-        }else{
-            self._readSWTBalance();
-        }        
+        self._readARCBalance();
+        self._readSWTBalance();
+    
       },
 
-      _readARCBalance: function() {
+      _readARCBalance: function(cb) {
         if (!this.ARCTokeninstance || !this.pubkey) {
           return;
         }
@@ -114,17 +147,20 @@
           self.ethbalance = self.web3.eth.getBalance(self.$.helpers.fixaddress(self.pubkey)).toNumber();
           self.arcbalance = self.ARCTokeninstance.balanceOf(self.$.helpers.fixaddress(self.pubkey)).toNumber();
           self.updating = false;
-          if (self.arcbalance > 0) {
-            self.fire('hasarcbalance');
-          }
           console.log('ETH balance is', self.ethbalance);
           console.log('ARC balance is', self.arcbalance);
+          if (cb){
+            cb.bind(self)();
+          }
         }, 500);
 
       },
 
-      _readSWTBalance: function() {
+      _readSWTBalance: function(cb) {
         if (!this.SWTTokeninstance || !this.pubkey) {
+          if (cb){
+            return cb();
+          }
           return;
         }
         var self = this;
@@ -134,6 +170,10 @@
           self.updating = false;
 
           console.log('SWT balance is', this.swtbalance);
+          if (cb){
+            cb.bind(self)();
+          }
+
         }, 500);
       }
 

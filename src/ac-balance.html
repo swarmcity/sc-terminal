@@ -90,7 +90,7 @@
 
 <div class$="arc-balance {{align}}">
   <div class="horizont end">
-    <h1 class="yellow bold">{{formatpong(arcbalance)}}</h1><h1 class="yellow bold"><span class="SWTletters"> SWT</span>
+    <h1 class="yellow bold">{{formatpong(swtbalance)}}</h1><h1 class="yellow bold"><span class="SWTletters"> SWT</span>
     <!-- <ac-button class="refrbtn" veryverysmall icon="refresh1" txtcolor="red" bg="btncolor" on-tap="fireRefresh"></ac-button> --></h1>
   </div>
     <template is="dom-if" if="{{wereinwallet}}">
@@ -116,10 +116,9 @@ Polymer({
   is: 'ac-balance',
 
   properties: {
-    arcbalance: {
+    swtbalance: {
       type: Number,
-      value: 440,
-      observer: '_arcbalance'
+      observer: '_swtbalance'
     },
     balanceref: {
       type: Number,
@@ -152,24 +151,24 @@ Polymer({
 
   handleResponse: function(e) {
     this.priceusd = e.detail.response[0].price_usd;
-    this.convertcurrency(this.arcbalance);
+    this.convertcurrency(this.swtbalance);
   },
 
   handleResponseUSDEUR: function(e) {
     this.eurusd = e.detail.response.rates.EUR;
   },
 
-  _arcbalance: function() {
-    var charcount = this.arcbalance.toString().length;
+  _swtbalance: function() {
+    var charcount = this.swtbalance.toString().length;
     this.balancesize = charcount * this.basesize;
-    this.balanceref = this.convertcurrency(this.arcbalance);
+    this.balanceref = this.convertcurrency(this.swtbalance);
   },
 
   convertcurrency: function(e) {
-    if(this.priceusd && this.arcbalance) {
+    if(this.priceusd && this.swtbalance) {
       var x = e / this.priceusd;
       //console.log(x);
-      this.balanceref = this.arcbalance * this.priceusd / 1e18;
+      this.balanceref = this.swtbalance * this.priceusd / 1e18;
       this.balanceref = this.balanceref.toFixed(2);
       this.eurref = this.balanceref * this.eurusd;
       this.eurref = this.eurref.toFixed(2);

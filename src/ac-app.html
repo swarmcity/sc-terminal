@@ -58,8 +58,8 @@
     comes after the `pattern` is put into the `tail` object, which can be
     passed to the `route` property of downstream app-routes. -->
     <app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{pageTail}}"></app-route>
-
-
+<!-- HALLO -{{vaultstatus}}- -{{walletstatus}}- -{{swtbalance}}-
+ -->
   <ac-config web3host="{{web3host}}"></ac-config>
 
   <ac-web3 host="{{web3host}}" web3="{{web3}}" keystore="[[keystore]]"></ac-web3>
@@ -95,9 +95,8 @@
       currentkeystore="{{keystore}}"
       currentidentity="{{identity}}"
       currentaccount="{{account}}"
-      on-unlocked="vaultUnlocked"
-      on-locked="vaultLocked"
-      on-novault="noVault"
+      on-ready="checkready"
+      status="{{vaultstatus}}"
       on-backupexit="toProfile"
       sizeview="{{sizeview}}"
       on-exit="reset"
@@ -105,21 +104,26 @@
     </ac-vault>
 
     <ac-wallet
-        id="wallet"
-        keystore="[[keystore]]"
+        web3="[[web3]]"    
         pubkey="[[account]]"
         updating="{{balanceupdating}}"
         arcbalance="{{arcbalance}}"
+        swtbalance="{{swtbalance}}"
         ethbalance="{{ethbalance}}"
-        on-hasarcbalance="toConvertSWT">
+        status="{{walletstatus}}"
+        on-ready="checkready"
+        >
     </ac-wallet>
-
+ 
     <ac-home
       data-page="home"
       keystore="[[keystore]]"
       identity="[[identity]]"
       web3="[[web3]]"
       pubkey="[[account]]"
+      swtbalance="[[swtbalance]]"
+      ethbalance="{{ethbalance}}"
+      balanceupdating="[[balanceupdating]]"
       on-to-profile="toProfile"
       on-to-walletview="toWalletview"
       sizeview="{{sizeview}}">
@@ -148,14 +152,15 @@
       on-exit="toHome"
       sizeview="{{sizeview}}"
       updating="[[balanceupdating]]"
-      arcbalance="[[arcbalance]]"
-      swtbalance="[[swtbalance]]"
-      ethbalance="[[ethbalance]]"
+
       >
     </ac-walletview>
 
-
-</neon-animated-pages>
+<!--       arcbalance="[[arcbalance]]"
+      swtbalance="[[swtbalance]]"
+      ethbalance="[[ethbalance]]"
+ -->
+ </neon-animated-pages>
 </template>
 
 <script>
@@ -173,30 +178,66 @@
         '_onRoutePathChanged(route.path)'
       ],
 
+      checkready: function(e) {
+
+        if (!this.vaultstatus) {
+          return;
+        }
+
+        if (this.vaultstatus == 'locked') {
+          return this.transitionto('/vault/unlock');
+        }
+
+        if (this.vaultstatus == 'unlocked') {
+          if (!this.walletstatus){
+            return;
+          }
+          if (this.walletstatus == 'ready'){
+            // no NOW we can check ARC/SWT balance
+            if (this.arcbalance>0){
+              return this.transitionto('/swt/start');
+            }else{
+              return this.transitionto('/home');
+            }
+          }
+        }
+
+        if (this.vaultstatus == 'novault') {
+          return this.transitionto('/intro/welcome')
+        }
+
+      },
+
       _onRoutePathChanged: function(path) {
          console.log('ac-app -> _onRoutePathChanged',this.route.path);
          // We need to check if we have a passwd in sessionstorage.
       },
 
       enter: function(){
-        this.$.thevault.activate();
+        //this.vaultstate
+        //this.$.thevault.activate();
+
+        this.transitionto('/intro/newuser');
+
+        
       },
 
       reset: function(){
+        //console.log('reset');
         this.transitionto('/intro/welcome');
       },
 
-      vaultUnlocked: function(){
-        this.transitionto('/home');
-      },
+      // vaultUnlocked: function(){
+      //   this.transitionto('/home');
+      // },
 
-      vaultLocked: function(){
-        this.transitionto('/vault/unlock');
-      },
+      // vaultLocked: function(){
+      //   this.transitionto('/vault/unlock');
+      // },
 
-      noVault: function(){
-        this.transitionto('/intro/newuser');
-      },
+      // noVault: function(){
+      //   this.transitionto('/intro/newuser');
+      // },
 
       createNewVault: function(){
         this.transitionto('/vault/createnew');
@@ -225,7 +266,7 @@
       },
 
       attached: function() {
-         this.transitionto('/intro/welcome');
+         //this.transitionto('/intro/welcome');
           //this.$.thevault.activate();
           //console.log("OP APP...............",this.sizeview);
       },

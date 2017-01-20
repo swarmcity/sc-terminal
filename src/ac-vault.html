@@ -423,6 +423,10 @@
         currentidentity: {
           type: Object,
           notify: true
+        },
+        status: {
+          type: String,
+          notify: true
         }
       },
 
@@ -497,17 +501,6 @@
         this.entryAnimation = "slide-from-right-animation";
       },
 
-
-      activate: function(){
-        //debugger;
-        if (!this.hasVault()) {
-          return this.fire('novault');
-        };
-        if (!this.password) {
-          return this.fire('locked');
-        }
-      },
-
       uploadclick: function() {
         document.querySelector('#uploaditem').click();
       },
@@ -563,12 +556,19 @@
             this.saveVault();
             this.loadVault();
             this.creatingvault = false;
+            sessionStorage.setItem('vaultpassword', this.password);
+            this.status = 'unlocked';
             this.fire('unlocked');
           }.bind(this));
         }.bind(this));
       },
 
+     ready: function(){
+        //this.status = 'init';
+      },
+
       attached: function(){
+        var self=this;
         console.log('ac-vault attached');
         this.exitAnimation = "slide-left-animation";
         this.entryAnimation = "slide-from-right-animation";
@@ -586,6 +586,30 @@
         if (this.browser.family != 'Safari'){
           this.backup_unavailable = false;
         }
+        
+        this.password = sessionStorage.getItem('vaultpassword');
+        
+        if (!this.hasVault()) {
+          this.status = 'novault';
+          return this.fire('ready');
+        };
+        if (!this.password) {
+          this.status = 'locked';
+          return this.fire('ready');
+        }
+        // so we have a vault and a password... try to open it.
+        this.loadVault();
+        this.checkpassword(function(err, pwdcorrect) {
+          if (pwdcorrect) {
+            self.status = 'unlocked';
+            return self.fire('ready');
+          } else {
+            self.status = 'locked';
+            return self.fire('ready');
+          }
+        });
+      
+
 
       },
 
@@ -606,13 +630,15 @@
           return;
         }
         this.loadVault();
-        this.checkpassword(function(err,pwdcorrect){
-          if (pwdcorrect){
-            self.fire('unlocked');
-          }else{
+        this.checkpassword(function(err, pwdcorrect) {
+          if (pwdcorrect) {
+            sessionStorage.setItem('vaultpassword',self.password);
+            self.status = 'unlocked';
+            self.fire('ready');
+          } else {
             self.unlockpasswordwrong = true;
           }
-        })
+        });
       },
 
       // checks the password. If it's correct call cb(null,true)
@@ -705,7 +731,7 @@
         this.keystore = null;
         this.currentkeystore = null;
         this.currentidentity = null;
-        sessionStorage.removeItem('sc-password-vaultpassword');
+        sessionStorage.removeItem('vaultpassword');
       },
 
       deleteVault: function(){
@@ -749,10 +775,12 @@
       createvault: function(e){
         this.password = e.detail.password;
         this.creatingvault = true;
+        var self = this;
         this.createVault(1,function(){
-          this.creatingvault = false;
-          this.fire('unlocked');
-        }.bind(this));
+          self.creatingvault = false;
+          self.status = 'unlocked';
+          self.fire('ready');
+        });
       },
 
       _is: function(a, b) {

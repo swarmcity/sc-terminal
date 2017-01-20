@@ -3,7 +3,7 @@
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 
 <link rel="import" href="ac-sizeview.html">
-<link rel="import" href="ac-wallet.html">
+<!-- <link rel="import" href="ac-wallet.html"> -->
 <link rel="import" href="ac-avatar.html">
 <link rel="import" href="ac-ipfsupload.html">
 <link rel="import" href="ac-ipfs.html">
@@ -69,7 +69,7 @@
       /*border-right: 2px dotted rgba(0,0,0,0.05);*/
     }
 
-    .arcbalance {
+    .swtbalance {
       height: 20vh;
     }
 
@@ -133,7 +133,7 @@
 
       }
 
-      .arcbalance {
+      .swtbalance {
         width: 100%;
         height: 20vh;
       }
@@ -160,13 +160,13 @@
   </style>
 
     <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
-    <ac-wallet
+<!--     <ac-wallet
         id="wallet"
         web3="[[web3]]"
         pubkey="[[pubkey]]"
         updating="{{balanceupdating}}"
-        arcbalance="{{arcbalance}}"
-        ethbalance="{{ethbalance}}"></ac-wallet>
+        swtbalance="{{swtbalance}}"
+        ethbalance="{{ethbalance}}"></ac-wallet> -->
     
   <div class="totalwidth vertic startjust center">
 
@@ -192,10 +192,12 @@
       <div id="homebalance" class="homebalancebox vertic centercenter grey1back">
         <div id="homebalance">
           <template is="dom-if" if="{{!balanceupdating}}">
-            <div class$="arcbalance flex" on-tap="toWalletview">
-              <ac-balance
+            <div class$="swtbalance flex" on-tap="toWalletview">
+            <ac-balance
+            }
+            }
             refcur="EUR"
-            arcbalance="{{arcbalance}}"
+            swtbalance="[[swtbalance]]"
             ethbalance="{{ethbalance}}"
             on-refresh="monitorBalance"
             ></ac-balance>
@@ -203,7 +205,7 @@
           </template>
 
           <template is="dom-if" if="{{balanceupdating}}">
-            <div class$="arcbalance {{arcalign}}">
+            <div class$="swtbalance {{swtalign}}">
               <sc-spinner big></sc-spinner>
             </div>
           </template>
@@ -258,7 +260,10 @@
         type: Boolean,
         value: false
       },
-
+      balanceupdating: {
+        type: Boolean,
+        value: false
+      },
       web3: {
         type: Object
       },
@@ -271,13 +276,19 @@
         type: String,
         observer: '_sizeview'
       },
-
-
+      swtbalance: {
+        type: Number,
+      },
+      ethbalance: {
+        type: Number,
+      },
+      balanceupdating: {
+        type: Boolean,      
+      },
       pubkey: {
         type: String,
         observer: '_pubkey'
       },
-
       sharedElements: {
         type: Object,
         value: function() {
@@ -348,9 +359,9 @@
     ],
 
     _pubkey: function(){
-      if (this.pubkey){
-        this.$.wallet.updateBalance();
-      }
+      // if (this.pubkey){
+      //   this.$.wallet.updateBalance();
+      // }
     },
 
     _keystore: function(){
@@ -358,7 +369,7 @@
     },
 
     monitorBalance: function(){
-      this.$.wallet.monitorBalance();
+      //this.$.wallet.monitorBalance();
     },
 
 
