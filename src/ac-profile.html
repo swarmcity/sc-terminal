@@ -378,7 +378,7 @@ min-width: 120px;
               </div>
             </div>
             <div class="profileusername">
-              <paper-input label="username" value="{{newusername}}" on-change="usernameChange" class="usernameinput" id="usernameinput">{{newusername}}</paper-input>
+              <paper-input label="username" value="{{newusername}}" on-change="usernameChange" class="bolder usernameinput" id="usernameinput">{{newusername}}</paper-input>
               <iron-collapse id="collapse" opened="{{datachanged}}">
                 <div class="whitespace"></div>
 
@@ -509,7 +509,8 @@ min-width: 120px;
         type: Object,
         value: function() {
           return {
-            'hero': this.$.currentavatar
+            'hero': this.$.currentavatar,
+            'hero2': this.$.usernameinput
           }
         }
       },
@@ -543,6 +544,13 @@ min-width: 120px;
               toPage: this,
               timing: {
                   duration: 200
+                }
+              }, {
+              name: 'hero-animation',
+              id: 'hero2',
+              toPage: this,
+              timing: {
+                  duration: 200
               }
             }],
 
@@ -570,6 +578,13 @@ min-width: 120px;
             }, {
               name: 'hero-animation',
               id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 200
+                }
+              }, {
+              name: 'hero-animation',
+              id: 'hero2',
               fromPage: this,
               timing: {
                   duration: 200
