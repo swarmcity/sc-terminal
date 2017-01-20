@@ -42,10 +42,14 @@
     line-height: 68px;   
   }
 
-  .blueborder {
-    border: 2px dotted rgba(36,177,255,0.5);
+  .balancesbox {
+    border: 2px dotted rgba(0,0,0,0.05);
     box-sizing:border-box;
     padding: 20px 25px 20px 30px;
+    @apply(--layout-horizontal);
+    @apply(--layout-start-justified);
+    @apply(--layout-end);
+    @apply(--layout-wrap);
   }
 
 
@@ -85,10 +89,52 @@
   }
 
 
-  @media all and (min-width: 0) and (max-width: 620px) { 
-  .item {
-    margin: 2vh 0px 2vh 0px;
+  .noflex {
+        -ms-flex: none;
+        -webkit-flex: none;
+        flex: none;    
   }
+
+  .nextarrow {
+     width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;   
+    margin: 0px 10px 5px 10px;
+    -ms-transform: rotate(0deg); /* IE 9 */
+    -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
+    transform: rotate(0deg);
+  }
+
+
+  @media all and (min-width: 0) and (max-width: 620px) { 
+    .item {
+      margin: 2vh 0px 2vh 0px;
+    }
+    .swtbalance {
+      margin: 0px 0px 10px 0px;
+    }
+    .balancesbox {
+      border: 2px dotted rgba(0,0,0,0.05);
+      box-sizing:border-box;
+      padding: 20px 25px 20px 30px;
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+      -ms-flex-wrap: nowrap;
+      -webkit-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+    }
+  .nextarrow {
+     width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;   
+    margin: 0px 10px 5px 10px;
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+    transform: rotate(90deg);
+  }
+
   }
 
 </style>
@@ -131,9 +177,16 @@
 
         <template is="dom-if" if="{{needstoconvert}}">
 
-          <div class="blueborder">
-            <p class="bold blue">Your ARC-balance</p>
-            <h1 class="bold blue bigh">{{formatpong(arcbalance)}}</h1>
+          <div class="balancesbox noflex">
+            <div class="vertic start noflex">
+              <p class="blue small bold">Your current ARC-balance</p>
+              <h1 class="bold blue bigh">{{formatpong(arcbalance)}}</h1>
+            </div>
+            <iron-icon class="big nextarrow" icon="sc-icons:arrowright"></iron-icon>
+            <div class="vertic noflex">
+              <p class="yellow small bold">Your current SWT-balance</p>
+              <h1 class="bold yellow bigh">{{formatpong(arcbalance)}}</h1>
+            </div>
           </div>
           <div class="whitespace"></div>
 
@@ -230,6 +283,9 @@
             <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="startconvert" noink>convert my ARC to SWT</paper-button>
           </div>
           <div class="whitespace"></div>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
         </template>
 
           <!-- <div class="totalwidth horizont startjust start">
