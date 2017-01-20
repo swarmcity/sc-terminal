@@ -16,13 +16,18 @@
   :host {
     display: block;
     width: 100%;
-    height: 100%;
+    height: 100vh;
   }
 
   .topbar {
     padding: 40px 50px 0px 50px;
     height: 14%;
     min-height: 82px;
+  }
+
+  .big {
+    font-size: 42px;
+    line-height: 36px;
   }
 
 
@@ -35,7 +40,7 @@
 
 
   </style>
-    <div class="total whiteback">
+    <div class="total lighter">
     <div class="topbar">
       <ac-avatar
         id="currentavatar"
@@ -57,7 +62,13 @@
     <div class="total vertic start paddingsides" id="hashtaglistcontent">
       <div class="whitespace"></div>
       <div class="whitespace"></div>
-      <paper-button on-tap="toHashtag" noink class="bigbtn blue shadow"># needaride</paper-button>
+      <p on-tap="toHashtag" class="big blue bold"># needaride</p>
+
+      <div class="whitespace"></div>
+      <p on-tap="toHashtag" class="big blue bold"># bnb</p>
+
+      <div class="whitespace"></div>
+      <p on-tap="toHashtag" class="big blue bold"># dogwalking</p>
     </div>
 
   </div>

@@ -429,16 +429,16 @@
     </neon-animatable>
 
     <neon-animatable data-page="unlock">
-        <div class="total vertic centercenter">
-          <div class="topbar">
-            <span class="flex"></span>
-              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
-          </div>
+      <div class="total vertic centercenter">
+        <div class="topbar">
+          <span class="flex"></span>
+            <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+        </div>
 
-        <div class="pascanvasunderexit verticcenter">
-        <ac-password class="height" id="newuser" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
+        <div class="pascanvasunderexit vertic centercenter paddingsides">
+          <ac-password class="height" id="newuser" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
+        </div>
       </div>
-    </div>
     </neon-animatable>
 
 <!-- 
