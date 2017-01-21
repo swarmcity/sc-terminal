@@ -155,20 +155,20 @@
             <div class="whitespace"></div>
             <div class="whitespace"></div>
             <div class=""> 
-              <p class="grey4"><span class="reg">Almost done.</span> You seem to hold ARC tokens on this wallet. Swarm City needs to convert your SRC tokens before you can continue.</p>
+              <p class="grey4"><span class="reg">Almost done.</span> You seem to hold ARC tokens on this wallet. Swarm City needs to convert your ARC tokens to SWT tokens before you can continue.</p>
             </div>
-          <div class="horizontal center startjust yesnobtns">
+             <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="horizontal center startjust yesnobtns">
               <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="tostart" noink>OK - let's get started</paper-button>
             </div>
             </div>
     </neon-animatable>  
 
     <neon-animatable data-page="start">
-
       <div class="total vertic start paddingsides basestructure">
           <div class="whitespace"></div>
           <div class="whitespace"></div>
-
           <template is="dom-if" if="{{!needstoconvert}}">
             <div class="total vertic start startjust ">
             <h1 class="maxwidth grey2 bold">Oops!</h1>
@@ -183,8 +183,6 @@
             <div class="whitespace"></div>
             <div class="whitespace"></div>        
           </template>
-
-
         <template is="dom-if" if="{{needstoconvert}}">
 
           <div class="balancesbox noflex">
@@ -201,12 +199,46 @@
           <div class="whitespace"></div>
 
           <div class=""> 
-            <p class="grey4"><span class="reg">You will receive <span class="">{{formatpong(arcbalance)}} SWT</span> (conversion rate 1:1).</span><br>Converting the tokens might take a couple of minutes, don't close your browser.</p>
+            <p class="grey4"><span class="reg">You will receive <span class="">{{formatpong(arcbalance)}} SWT</span> (conversion rate 1:1).</span><br>Converting the tokens might take a couple of minutes, please be patient.</p>
           </div>
 
           <div class="whitespace"></div>
           <div class="whitespace"></div>
           <div class="totalwidth vertic">
+            <div class="totalwidth horizont centercenter item">
+              <template is="dom-if" if="{{_is(ethcheckstate,'init')}}">
+                <div class="flex">
+                  <p class="bold lightgrey">Check ETH balance before converting</p>
+                </div>
+                <div class="stateicon">
+                  <iron-icon icon="sc-icons:v" class="lightgrey big"></iron-icon>
+                </div>
+              </template>
+              <template is="dom-if" if="{{_is(ethcheckstate,'doing')}}">
+                <div class="flex" on-tap="succestest">
+                  <p class="bold">Checking ETH balance</p>
+                </div>
+                <div class="stateicon">
+                  <sc-loader color="blue"></sc-loader>
+                </div>
+              </template>
+              <template is="dom-if" if="{{_is(ethcheckstate,'succes')}}">
+                <div class="flex">
+                  <p class="bold green">Checked ETH balance</p>
+                </div>
+                <div class="stateicon">
+                  <iron-icon icon="sc-icons:v" class="green big"></iron-icon>
+                </div>
+              </template>
+              <template is="dom-if" if="{{_is(ethcheckstate,'error')}}">
+                <div class="flex">
+                  <p class="bold red">You don't have enough ETH to convert</p>
+                </div>
+                <div class="stateicon">
+                  <iron-icon icon="sc-icons:decline" class="red big"></iron-icon>
+                </div>
+              </template>
+            </div>          
             <div class="totalwidth horizont centercenter item">
               <template is="dom-if" if="{{_is(firststate,'init')}}">
                 <div class="flex">
@@ -284,14 +316,18 @@
 
           <template is="dom-if" if="{{!hasenoughgas}}">
             <div class="totalwidth gotgaz">
-            <p class="bold darkblue">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction. Send some gas to your wallet (<span>{{account}}</span>), or find @kikipluche on Slack for support.</p>
+            <p class="bold darkblue">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction.</p>
+            <p class="bold darkblue">Your wallet address is <span class="bold">{{account}}</span>. Please send 0.1 ETH to this address and try again</p>            
+            </div>
+            <div class="horizontal center startjust yesnobtns">
+              <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="checketheragain" noink>Refresh</paper-button>
             </div>
           </template>
 
           <template is="dom-if" if="{{!conversiondone}}">
             <template is="dom-if" if="{{hasenoughgas}}">
             <div class="horizontal center startjust yesnobtns">
-              <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="startconvert" noink>convert my ARC to SWT</paper-button>
+              <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="startconvert" noink>Convert my ARC to SWT</paper-button>
             </div>
             </template>
           </template>
@@ -376,9 +412,10 @@ Polymer({
     this.convertingstarted = false;
     this.firststate = 'init';
     this.secondstate = 'init';
+    this.ethcheckstate = 'init';
 
 
-    this.errormsg = "NOBODY PANIC. AAaarh!"
+//    this.errormsg = "NOBODY PANIC. AAaarh!"
 
     //this.set('route.path', '/start');
   },
@@ -387,21 +424,36 @@ Polymer({
     this.set('route.path', '/start');
   },
 
+  checketheragain: function() {
+    this.ethcheckstate = 'doing'
+    var self = this;
+    setTimeout(function() {
+      self.update();
+
+    }, 1000);
+  },
+
   update: function() {
     if (!this.account) {
       return;
     }
     var self = this;
     if (!self.SWTTokenInstance) {
-      this.importHref(this.resolveUrl('./contracts/ARCToken.json'), function(e) {
-        var contractjson = JSON.parse(e.target.import.body.innerText);
-        var MyContract = self.web3.eth.contract(contractjson.abi);
+      this.$.helpers.getjson('./contracts/ARCToken.json', function(err, tokendata) {
+      //this.importHref(this.resolveUrl('./contracts/ARCToken.json'), function(e) {
+        //var contractjson = JSON.parse(e.target.import.body.innerText);
+        var MyContract = self.web3.eth.contract(tokendata.abi);
         self.ARCTokenInstance = MyContract.at(self.config.tokencontractaddress);
         self.getARCBalance(function() {
           self.checkarc();
         });
+        this.ethcheckstate = 'doing'
         self.getETHBalance(function() {
-          self.checkgas();
+          if(self.checkgas()){
+            self.ethcheckstate = 'succes';
+          }else{
+            self.ethcheckstate = 'error';
+          }
         });
       });
     } else {
@@ -409,7 +461,11 @@ Polymer({
         self.checkarc();
       });
       self.getETHBalance(function() {
-        self.checkgas();
+        if(self.checkgas()){
+            self.ethcheckstate = 'succes';
+          }else{
+            self.ethcheckstate = 'error';
+          }
       });
     }
     if (!self.SWTConverterInstance){
@@ -438,19 +494,22 @@ Polymer({
   },
 
   checkarc: function(err, ARCbalance) {
-    if (ARCbalance == 0) {
-      this.needstoconvert = false;
-    } else {
+    if (this.arcbalance && this.arcbalance > 0) {
       this.needstoconvert = true;
+    } else {
+      this.needstoconvert = false;
     }
   },
 
   checkgas: function(err, ETHbalance) {
-    if (ETHbalance < 500000) {
-      this.hasenoughgas = false;
-    } else {
+    if (this.ETHbalance !== undefined && this.ETHbalance > 500000) {
       this.hasenoughgas = true;
+      console.log('ac-swtconversion -> You have enough ETH to perform a conversion');
+    } else {
+      this.hasenoughgas = false;
+      console.log('ac-swtconversion -> You don\'t have enough ETH to perform a conversion');
     }
+    return this.hasenoughgas;
   },
 
   tostepone: function() {
@@ -492,6 +551,14 @@ Polymer({
 
 
   startconvert: function() {
+
+//     this.ethcheckstate = 'doing';
+//     this.getETHBalance(function(err,balance){
+//       if (balance <= 0)
+// checkga
+
+//     });
+
     this.convertingstarted = true;
     this.firststate = 'doing';
     var self = this;
@@ -524,8 +591,9 @@ Polymer({
   },
 
   getETHBalance: function(cb) {
+    this.ETHbalance = this.web3.eth.getBalance(this.$.helpers.fixaddress(this.account)).toNumber();
     if (cb) {
-      cb(null, this.web3.eth.getBalance(this.$.helpers.fixaddress(this.account)).toNumber());
+      cb(null,this.ETHbalance);
     }
   },
   
@@ -663,14 +731,14 @@ Polymer({
   },
 
 
-  succestest: function() {
-    this.firststate = 'succes';
-    this.secondstate = 'doing';
-  },
+  // succestest: function() {
+  //   this.firststate = 'succes';
+  //   this.secondstate = 'doing';
+  // },
 
-  errortest: function() {
-    this.secondstate = 'error';
-  },
+  // errortest: function() {
+  //   this.secondstate = 'error';
+  // },
 
   _is: function(a, b) {
     if (b === undefined) {

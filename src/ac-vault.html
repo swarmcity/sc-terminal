@@ -3,6 +3,7 @@
 <link rel="import" href="ac-helpers.html">
 <link rel="import" href="ac-password.html">
 <link rel="import" href="sc-loader.html">
+<link rel="import" href="ac-ipfs.html">
 
 <script src="scripts/lightwallet.min.js"></script>
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
@@ -141,6 +142,7 @@
     </style>
 
   <template>
+    <ac-ipfs id="ipfs"></ac-ipfs>
     <ac-helpers id="helpers"></ac-helpers>
     <detect-js device="{{device}}" os="{{os}}" browser="{{browser}}"></detect-js>
     <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
@@ -314,14 +316,28 @@
               <p class="centertxt">You can not download your backup on this device/operating system.</p>
               <div class="whitespace"></div>
               <div class="whitespace"></div>
-
               <paper-button on-tap="backupexit" class="grey4 grey1back small shadow" noink>back to profile</paper-button>
-
             </template>
+            <paper-button on-tap="vaulttoipfs" class="grey4 bigbtn lighter centertxt">Backup to IPFS</paper-button>            
           </div>
         </div>
       </div>
+      </neon-animatable>
 
+      <neon-animatable data-page="backupipfs">
+        <div class="total vertic centercenter">
+          <div class="topbar">
+            <span class="flex"></span>
+            <iron-icon class="grey4" icon="sc-icons:decline" on-tap="backupexit">back</iron-icon>
+          </div>
+          <div>
+              <p class="centertxt">Warning make sure you have a strong password set on your vault before uploading it to IPFS.</p>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>             
+            <paper-button on-tap="vaulttoipfs" class="grey4 bigbtn lighter centertxt">Backup to IPFS</paper-button>            
+          </div>
+        </div>
+      </div>
 
       </neon-animatable>
 
@@ -356,7 +372,7 @@
           <div class="whitespace"></div>
             <div class="whitespace"></div>
             <div class="maxwidth">
-              <h1 class="bold blue">Alright!</h1>
+              <h1 class="bold blue">Allright!</h1>
               <div class="whitespace"></div>
               <p>We just need a password (min. 5 characters) to create your profile.</p>
             </div>
@@ -375,6 +391,7 @@
     </neon-animatable>
 
     <neon-animatable data-page="unlock">
+    
         <div class="total vertic centercenter">
           <div class="topbar">
             <span class="flex"></span>
@@ -552,10 +569,12 @@
         this.createVault(0, function() {
           this._getpwDerivedKey(function(err, pwDerivedKey) {
             this.keystore.importPrivateKey(this.privatekey, pwDerivedKey);
+            this._setpasswordProvider();
             this.privatekey = null;
             this.$.privatekeyinput.inputvalue = null;
             this.saveVault();
             this.loadVault();
+
             this.creatingvault = false;
             sessionStorage.setItem('vaultpassword', this.password);
             this.status = 'unlocked';
@@ -664,6 +683,27 @@
         dlAnchorElem.setAttribute("href", dataStr);
         dlAnchorElem.setAttribute("download", 'swarmCityVault-' + Date.now() + '.json');
         dlAnchorElem.click();
+      },
+
+      vaulttoipfs: function(){
+          this.vaulttoipfsstatus='uploading';
+          var vaultdata = window.localStorage.getItem('sc-vault');
+          var vaultbuffer = this.$.ipfs.ipfs.Buffer(vaultdata);
+
+        this.$.ipfs.add(vaultbuffer, function(err, result) {
+          if (err || !result || !result[0]){
+            console.log('cannot upload avatar',err);
+            this.vaulttoipfsstatus = 'error';
+          }else{
+            console.log(err, result[0].hash);
+            //var hashurl = this.$.ipfs.geturl(result[0].hash);
+            self.vaulttoipfshash = result[0].hash;
+             this.vaulttoipfsstatus='success';
+            //self.avatarurl = this.$.ipfs.geturl(result[0].hash);
+            // self.datachanged = true;
+          }
+        }.bind(this));
+
       },
 
       // Load vault from local storage
