@@ -6,7 +6,6 @@
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-whisperer.html">
 <link rel="import" href="ac-config.html">
-<link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-log.html">
 <link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-ipfs.html">
@@ -216,15 +215,10 @@
     <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
     <ac-config
       id="config"
-      web3host="{{web3host}}"
       ipfs="{{ipfs}}"
       etherscanroot="{{etherscanroot}}"
       tokencontractaddress="{{tokencontractaddress}}"
       ></ac-config>
-
-    <ac-web3
-      host="{{web3host}}"
-      web3="{{web3}}"></ac-web3>
 
     <ac-whisperer
       web3="{{web3}}"

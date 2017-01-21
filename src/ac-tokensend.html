@@ -13,7 +13,6 @@ Author : Stefaan Ponnet
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-whisperer.html">
 <link rel="import" href="ac-config.html">
-<link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-log.html">
 <link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-ipfs.html">
@@ -269,18 +268,13 @@ Author : Stefaan Ponnet
     <ac-helpers id="helpers"></ac-helpers>
     <ac-config
       id="config"
-      web3host="{{web3host}}"
       ipfs="{{ipfs}}"
       etherscanroot="{{etherscanroot}}"
       tokencontractaddress="{{tokencontractaddress}}"
       ></ac-config>
 
-    <ac-web3
-      host="{{web3host}}"
-      web3="{{web3}}"></ac-web3>
-
     <ac-whisperer
-      web3="{{web3}}"
+      web3="[[web3]]"
       topic="{{topic}}"
       progress="{{progress}}"
       listeninterval="{{listeninterval}}"
@@ -405,7 +399,9 @@ Author : Stefaan Ponnet
         identity: {
           type: Object,
         },
-
+        web3: {
+          type: Object
+        },
         account: {
           type:String,
         },

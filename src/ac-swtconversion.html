@@ -9,7 +9,6 @@
 <link rel="import" href="ac-password.html">
 <link rel="import" href="ac-statusitem.html">
 <link rel="import" href="sc-spinner.html">
-<link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-config.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
@@ -142,9 +141,7 @@
 
   <ac-config config="{{config}}"></ac-config>
   <ac-helpers id="helpers"></ac-helpers>
-   <ac-web3 web3="{{web3}}"></ac-web3>
   <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
-
 
     <div class="topbar basestructure">
       <span class="flex"></span>
@@ -152,6 +149,19 @@
     </div>
 
   <neon-animated-pages attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
+
+    <neon-animatable data-page="intro">
+        <div class="total vertic start paddingsides basestructure">
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class=""> 
+              <p class="grey4"><span class="reg">Almost done.</span> You seem to hold ARC tokens on this wallet. Swarm City needs to convert your SRC tokens before you can continue.</p>
+            </div>
+          <div class="horizontal center startjust yesnobtns">
+              <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="tostart" noink>OK - let's get started</paper-button>
+            </div>
+            </div>
+    </neon-animatable>  
 
     <neon-animatable data-page="start">
 
@@ -185,7 +195,7 @@
             <iron-icon class="big nextarrow" icon="sc-icons:arrowright"></iron-icon>
             <div class="vertic noflex">
               <p class="yellow small bold">Your current SWT-balance</p>
-              <h1 class="bold yellow bigh">{{formatpong(arcbalance)}}</h1>
+              <h1 class="bold yellow bigh">{{formatpong(swtbalance)}}</h1>
             </div>
           </div>
           <div class="whitespace"></div>
@@ -278,46 +288,24 @@
             </div>
           </template>
 
-          <template is="dom-if" if="{{hasenoughgas}}">
-          <div class="horizontal center startjust yesnobtns">
-            <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="startconvert" noink>convert my ARC to SWT</paper-button>
-          </div>
-          <div class="whitespace"></div>
-          <div class="whitespace"></div>
-          <div class="whitespace"></div>
-
-        </template>
-
-          <!-- <div class="totalwidth horizont startjust start">
-            <p class="stepnr grey4 bold">1.</p>
-            <div class="vertical totalwidth start startjust">
-              <p class="grey4 bold">Give allowance <span class="steptime">(est. time 1 min)</class>
-              <template is="dom-if" if="{{giveallowanceshow}}">
-                <span id="giveallowance" on-tap="collapseMe" class="blue">details</span>
-              </template></p>
-               <iron-collapse class="collapserz vertic start" id="giveallowancecollapser">
-                <p>details bee here</p>
-               </iron-collapse>
+          <template is="dom-if" if="{{!conversiondone}}">
+            <template is="dom-if" if="{{hasenoughgas}}">
+            <div class="horizontal center startjust yesnobtns">
+              <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="startconvert" noink>convert my ARC to SWT</paper-button>
             </div>
-          </div>
+            </template>
+          </template>
 
-          <div class="whitespace"></div>
-
-          <div class="totalwidth horizont startjust start">
-            <p class="stepnr grey4 bold">2.</p>
-            <div class="vertical totalwidth start startjust">
-              <p class="grey4 bold">Convert tokens <span class="steptime">(est. time 1 min) • </class>
-              <template is="dom-if" if="{{converttokensshow}}">
-                <span id="converttokens" on-tap="collapseMe" class="blue">details</span>
-              </template>
-              </p>
-               <iron-collapse class="collapserz vertic start" id="converttokenscollapser">
-                <p>details bee here</p>
-               </iron-collapse>
+          <template is="dom-if" if="{{conversiondone}}">
+            <div class="horizontal center startjust yesnobtns">
+              <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="toExit" noink>Get Started</paper-button>
             </div>
-          </div>
+          </template>
+        
           <div class="whitespace"></div>
-          <div class="whitespace"></div> -->
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
 
         </template>
         </div>
@@ -371,6 +359,7 @@ Polymer({
   ready: function() {
     this.hasenoughgas = false;
     this.needstoconvert = false;
+    this.conversiondone = false;
   },
 
   _account: function(){
@@ -384,8 +373,6 @@ Polymer({
 
     this.exitAnimation = "slide-left-animation";
     this.entryAnimation = "slide-from-right-animation";
-    // this.giveallowanceshow = true;
-    // this.converttokensshow = true;
     this.convertingstarted = false;
     this.firststate = 'init';
     this.secondstate = 'init';
@@ -394,6 +381,10 @@ Polymer({
     this.errormsg = "NOBODY PANIC. AAaarh!"
 
     //this.set('route.path', '/start');
+  },
+
+  tostart: function(){
+    this.set('route.path', '/start');
   },
 
   update: function() {
@@ -516,7 +507,9 @@ Polymer({
         }
         self.secondstate = 'succes';
         self.getARCBalance();
-        self.getSWTBalance(self.verify);
+        self.getSWTBalance(function(err){
+          self.verify();
+        });
       });
     });
   },
@@ -605,7 +598,7 @@ Polymer({
           return callback(err);
         }
         console.log('convert started. txhash=',result);        
-        self.waitTx(result, function() {
+        self.waitTx(result, function(success) {
           if (success){
               return callback();
             }else{
@@ -622,6 +615,13 @@ Polymer({
       console.log('your ARC balance=',this.arcbalance);
       console.log('your SWT balance=',this.swtbalance);
 
+    if (this.swtbalance > 0){
+      this.conversiondone = true;
+    }
+  },
+
+  toExit: function(){
+    this.fire('success');
   },
 
    waitTx : function(txHash, callback) {

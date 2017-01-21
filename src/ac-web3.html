@@ -30,6 +30,7 @@
       },
 
       _keystore: function(){
+        console.log('ac-web3 -> new keystore attached!')
         this.initweb3();        
       },
 
@@ -47,7 +48,7 @@
           console.log('ac-web3 -> created Web3');
         }
         if (acweb3_web3 && this.keystore && this.host){
-          //debugger;
+          console.log('ac-web3 -> Creating new HookedWeb3Provider');
           this.web3Provider = new HookedWeb3Provider({
             host: this.host,
             transaction_signer: this.keystore

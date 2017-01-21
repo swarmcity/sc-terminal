@@ -75,6 +75,7 @@
       <div id="walletcontent">
         <div class$="initbtns {{align}}">
           <ac-tokensend
+            web3="[[web3]]"
             account="[[account]]"
             identity="[[identity]]"
             on-activated="hideReceivebutton"
@@ -84,6 +85,7 @@
           </ac-tokensend>
 
         <ac-tokenreceive
+          web3="[[web3]]"
           account="[[account]]"
           identity="[[identity]]"
           keystore="[[keystore]]"
@@ -117,6 +119,9 @@
       keystore: {
         type: Object,
          //observer: '_keystore',
+      },
+      web3: {
+        type: Object
       },
       // sizeview: {
       //   type: String,

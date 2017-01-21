@@ -5,7 +5,6 @@
 <link rel="import" href="ac-helpers.html">
 <link rel="import" href="ac-config.html">
 <link rel="import" href="ac-balance.html">
-<link rel="import" href="ac-web3.html">
 
 <dom-module id="ac-wallet">
 
@@ -52,10 +51,6 @@
         }
       },
 
-      ready: function(){
-        this.arcbalance = 123; //this.status = 'init';
-      },
-
       _arc: function(){
         console.log(this.arcbalance);
       },
@@ -83,17 +78,13 @@
       },
 
       setup: function() {
-          this.arcbalance = 8;
-
         if (!this.web3 || !this.pubkey) {
           return;
         }
-          this.arcbalance = 9;
         var self = this;
         this.$.helpers.getjson('./contracts/ARCToken.json', function(err, tokendata) {
           var contract = self.web3.eth.contract(tokendata.abi);
           self.ARCTokeninstance = contract.at(self.config.tokencontractaddress);
-          self.arcbalance = 678;
           self._readARCBalance(function() {
             self.checkreadystate();
           });
@@ -127,14 +118,11 @@
 
       updateBalance: function(e) {
         var self = this;
-
         if (!this.pubkey || !self.web3 || !self.web3.eth || !this.ARCTokeninstance || !this.SWTTokeninstance) {
           return;
         }
-
         self._readARCBalance();
         self._readSWTBalance();
-    
       },
 
       _readARCBalance: function(cb) {
@@ -153,13 +141,12 @@
             cb.bind(self)();
           }
         }, 500);
-
       },
 
       _readSWTBalance: function(cb) {
         if (!this.SWTTokeninstance || !this.pubkey) {
           if (cb){
-            return cb();
+            cb();
           }
           return;
         }
@@ -168,12 +155,10 @@
           this.updating = true;
           self.swtbalance = self.SWTTokeninstance.balanceOf(self.$.helpers.fixaddress(self.pubkey)).toNumber();
           self.updating = false;
-
           console.log('SWT balance is', this.swtbalance);
           if (cb){
-            cb.bind(self)();
+            cb();
           }
-
         }, 500);
       }
 

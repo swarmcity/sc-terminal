@@ -518,15 +518,16 @@
         reader.onload = function(e) {
           var contents = e.target.result;
           //self.readwallet = contents;
-          window.setTimeout(function(){
+          //window.setTimeout(function(){
             self.uploadingwallet = false;
             if (self._parseVault(contents)){
               self.saveVault();
               self.uploadingwallet = false;
               self.pkshowpassw = true;
-              // return self.fire('locked');
+              self.status = 'locked';
+              self.fire('ready');
             }
-          },100);
+          //},100);
           // so we've read the vault file. It's locked.
 
         };
@@ -558,7 +559,7 @@
             this.creatingvault = false;
             sessionStorage.setItem('vaultpassword', this.password);
             this.status = 'unlocked';
-            this.fire('unlocked');
+            this.fire('ready');
           }.bind(this));
         }.bind(this));
       },
@@ -708,9 +709,10 @@
 
             case 1:
               this.keystore = lightwallet.keystore.deserialize(vaultdata.keystore);
-              this.currentkeystore = this.keystore;
+              this._setpasswordProvider();
+              this.set('currentkeystore',this.keystore);
               this.currentaccount = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
-              this.currentidentity = vaultdata.identity;
+              this.set('currentidentity',vaultdata.identity);
               console.log('ac-vault -> Vault loaded. Account=', this.currentaccount);
               return true;
               break;
@@ -729,8 +731,8 @@
       closeVault: function(){
         this.password = null;
         this.keystore = null;
-        this.currentkeystore = null;
-        this.currentidentity = null;
+        this.set('currentkeystore',null);
+        this.set('currentidentity',null);
         sessionStorage.removeItem('vaultpassword');
       },
 
@@ -804,13 +806,12 @@
             throw new Error(err);
           }
           self.keystore = ks;
-
+          self._setpasswordProvider();
+          
           if (amountofaccounts==0){
-
             self.currentidentity = self._creatBlankIdentity();
             self.saveVault();
             self.loadVault();
-
             if (fn) {
               fn();
             }
@@ -818,17 +819,13 @@
 
           }else{
             self.generateNewAddress(1,function() {
-
               self.currentidentity = self._creatBlankIdentity();
-
               self.saveVault();
               self.loadVault();
-
               if (fn) {
                 fn();
               }
               return;
-
             });
           }
 
@@ -845,6 +842,20 @@
 
       _password: function(){
         this.pwDerivedKey = null;
+        this._setpasswordProvider();
+        console.log('ac-vault -> new password assigned.');
+      },
+
+      _setpasswordProvider: function() {
+        if (!this.password || !this.keystore){
+          return;
+        }
+        var self=this;
+        this.set('keystore.passwordProvider', function(callback) {
+          console.log('ac-vault -> signing tx');
+          callback(null, self.password);
+        });
+        console.log('ac-vault -> new passwordProvider set.');
       },
 
       _getpwDerivedKey: function(cb){
@@ -854,11 +865,13 @@
         if (!this.password){
           throw new Error('no password set');
         }
+        console.log('ac-vault -> generating new pwDerivedKey');
         var self=this;
         self.keystore.keyFromPassword(self.password, function(err, pwDerivedKey) {
             if (err){
               return cb(err);
             }
+            console.log('ac-vault -> new pwDerivedKey set. Ready to sign transactions');
             self.pwDerivedKey = pwDerivedKey;
             cb(null,pwDerivedKey);
           });
