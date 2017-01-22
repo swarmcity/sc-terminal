@@ -20,7 +20,6 @@
 :host {
   display: block;
   width: 100%;
-  height: 100%;
 }
 
 /*  .total {
@@ -49,6 +48,12 @@
     @apply(--layout-start-justified);
     @apply(--layout-end);
     @apply(--layout-wrap);
+  }
+
+  .dotline {
+    width: 100%;
+    height: 1px;
+    border-bottom: 2px dotted rgba(0,0,0,0.085);
   }
 
 
@@ -82,9 +87,9 @@
   }
 
   .gotgaz {
-    box-sizing:border-box;
+/*    box-sizing:border-box;
     padding-top: 20px;
-    border-top: 2px dotted var(--sc-darkblue);
+    border-top: 2px dotted rgba(0,0,0,0.10);*/
   }
 
 
@@ -105,23 +110,44 @@
     transform: rotate(0deg);
   }
 
+  .accountpub {
+    word-break: break-all;
+  }
+
+  .margleft {
+    margin-left: 6px;
+  }
+
+    .itemz {
+      box-sizing:border-box;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    border-top: 2px dotted rgba(245,88,88,0.75);
+    border-bottom: 2px dotted rgba(245,88,88,0.75);
+
+    }
+
 
   @media all and (min-width: 0) and (max-width: 620px) { 
     .item {
       margin: 2vh 0px 2vh 0px;
     }
+
     .swtbalance {
       margin: 0px 0px 10px 0px;
     }
     .balancesbox {
-      border: 2px dotted rgba(0,0,0,0.05);
+      border: 2px dotted rgba(0,0,0,0.075);
       box-sizing:border-box;
-      padding: 20px 25px 20px 30px;
+      padding: 30px 25px 30px 30px;
       @apply(--layout-vertical);
       @apply(--layout-center-center);
       -ms-flex-wrap: nowrap;
       -webkit-flex-wrap: nowrap;
       flex-wrap: nowrap;
+      width: 100%;
     }
   .nextarrow {
      width: 40px;
@@ -150,7 +176,7 @@
 
   <neon-animated-pages attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimation}}" exit-animation="{{exitAnimation}}">
 
-    <neon-animatable data-page="intro">
+<!--     <neon-animatable data-page="intro">
         <div class="total vertic start paddingsides basestructure">
             <div class="whitespace"></div>
             <div class="whitespace"></div>
@@ -163,10 +189,10 @@
               <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="tostart" noink>OK - let's get started</paper-button>
             </div>
             </div>
-    </neon-animatable>  
+    </neon-animatable>   -->
 
-    <neon-animatable data-page="start">
-      <div class="total vertic start paddingsides basestructure">
+    <neon-animatable data-page="intro">
+      <div class="totalwidth vertic start paddingsides basestructure">
           <div class="whitespace"></div>
           <div class="whitespace"></div>
           <template is="dom-if" if="{{!needstoconvert}}">
@@ -199,13 +225,14 @@
           <div class="whitespace"></div>
 
           <div class=""> 
-            <p class="grey4"><span class="reg">You will receive <span class="">{{formatpong(arcbalance)}} SWT</span> (conversion rate 1:1).</span><br>Converting the tokens might take a couple of minutes, please be patient.</p>
+            <p class="grey4"><span class="reg">At conversion rate 1:1, you will receive <span class="bold">{{formatpong(arcbalance)}} SWT</span>.<br>Converting the tokens might take a couple of minutes, hang on.
+            </p>
           </div>
 
           <div class="whitespace"></div>
           <div class="whitespace"></div>
           <div class="totalwidth vertic">
-            <div class="totalwidth horizont centercenter item">
+            <div class="totalwidth horizont startjust start item">
               <template is="dom-if" if="{{_is(ethcheckstate,'init')}}">
                 <div class="flex">
                   <p class="bold lightgrey">Check ETH balance before converting</p>
@@ -232,13 +259,30 @@
               </template>
               <template is="dom-if" if="{{_is(ethcheckstate,'error')}}">
                 <div class="flex">
-                  <p class="bold red">You don't have enough ETH to convert</p>
+                  <div class="minispace"></div>          
+
+                  <p class="bold red">You don't have enough ETH.</p>
+                        <div class="minispace"></div>          
+
+                  <div class="totalwidth itemz">
+                  <p class="grey3">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction. Send 0.1 ETH to your wallet address (<span class="accountpub grey4 reg">{{account}}</span>) and try again.</p>  
+                  <div class="whitespace"></div>
+                    <paper-button class="blue whiteback shadow yesno centertxt" on-tap="checketheragain" noink>Refresh <iron-icon icon="sc-icons:refresh1" class=" margleft blue"></iron-icon></paper-button>
+                  <!-- <div class="dotline"></div> -->
+                        <div class="whitespace"></div>          
+
+                  </div>
+
+
+
+
                 </div>
                 <div class="stateicon">
                   <iron-icon icon="sc-icons:decline" class="red big"></iron-icon>
                 </div>
               </template>
             </div>          
+
             <div class="totalwidth horizont centercenter item">
               <template is="dom-if" if="{{_is(firststate,'init')}}">
                 <div class="flex">
@@ -312,18 +356,6 @@
           </div>
 
           <div class="whitespace"></div>
-          <div class="whitespace"></div>
-
-          <template is="dom-if" if="{{!hasenoughgas}}">
-            <div class="totalwidth gotgaz">
-            <p class="bold darkblue">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction.</p>
-            <p class="bold darkblue">Your wallet address is <span class="bold">{{account}}</span>. Please send 0.1 ETH to this address and try again</p>            
-            </div>
-            <div class="horizontal center startjust yesnobtns">
-              <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="checketheragain" noink>Refresh</paper-button>
-            </div>
-          </template>
-
           <template is="dom-if" if="{{!conversiondone}}">
             <template is="dom-if" if="{{hasenoughgas}}">
             <div class="horizontal center startjust yesnobtns">
