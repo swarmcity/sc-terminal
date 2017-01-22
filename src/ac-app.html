@@ -74,6 +74,7 @@
       account="[[account]]"
       on-exit="reset"
       on-success="toHome"
+      on-converted="converted"
       >
     </ac-swtconversion>
 
@@ -105,6 +106,7 @@
     </ac-vault>
 
     <ac-wallet
+        id="wallet"
         web3="[[web3]]"    
         pubkey="[[account]]"
         updating="{{balanceupdating}}"
@@ -123,7 +125,7 @@
       web3="[[web3]]"
       pubkey="[[account]]"
       swtbalance="[[swtbalance]]"
-      ethbalance="{{ethbalance}}"
+      ethbalance="[[ethbalance]]"
       balanceupdating="[[balanceupdating]]"
       on-to-profile="toProfile"
       on-to-walletview="toWalletview"
@@ -313,10 +315,9 @@
         this.$.thevault.saveVault();
       },
 
-      // toConvertSWT: function(){
-      //   debugger;
-      //   this.transitionto('/swt/intro');        
-      // }
+      converted: function(){
+        this.$.wallet.updatebalances();
+      }
 
     });
   </script>

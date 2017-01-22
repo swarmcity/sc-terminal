@@ -318,7 +318,7 @@
               <div class="whitespace"></div>
               <paper-button on-tap="backupexit" class="grey4 grey1back small shadow" noink>back to profile</paper-button>
             </template>
-            <paper-button on-tap="vaulttoipfs" class="grey4 bigbtn lighter centertxt">Backup to IPFS</paper-button>            
+            <paper-button on-tap="vaulttoipfsroute" class="grey4 bigbtn lighter centertxt">Backup to IPFS</paper-button>            
           </div>
         </div>
       </div>
@@ -485,6 +485,10 @@
         this.fire('exit');
       },
 
+      vaulttoipfsroute: function(){
+        this.set('route.path', '/backupipfs');
+      },
+
       removeall: function(){
         this.set('route.path', '/removeall');
       },
@@ -564,12 +568,13 @@
       },
 
       createvaultfrompk: function(e) {
+        debugger;
         this.creatingvault = true;
         this.password = e.detail.password;
         this.createVault(0, function() {
           this._getpwDerivedKey(function(err, pwDerivedKey) {
             this.keystore.importPrivateKey(this.privatekey, pwDerivedKey);
-            this._setpasswordProvider();
+            //this._setpasswordProvider();
             this.privatekey = null;
             this.$.privatekeyinput.inputvalue = null;
             this.saveVault();
@@ -595,7 +600,7 @@
         this.creatingvault = false;
         this.pkshowpassw = false;
         this.uploadingwallet = false;
-        this.jsonfilename = "walletfiletjé.json"
+        //this.jsonfilename = "walletfiletjé.json"
 
         this.backup_download = true;
         this.backup_unavailable = true;

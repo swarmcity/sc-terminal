@@ -116,6 +116,10 @@
         }
       },
 
+      updatebalances: function(){
+        this.updateBalance();
+      },
+
       updateBalance: function(e) {
         var self = this;
         if (!this.pubkey || !self.web3 || !self.web3.eth || !this.ARCTokeninstance || !this.SWTTokeninstance) {

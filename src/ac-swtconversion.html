@@ -440,8 +440,6 @@ Polymer({
     var self = this;
     if (!self.SWTTokenInstance) {
       this.$.helpers.getjson('./contracts/ARCToken.json', function(err, tokendata) {
-      //this.importHref(this.resolveUrl('./contracts/ARCToken.json'), function(e) {
-        //var contractjson = JSON.parse(e.target.import.body.innerText);
         var MyContract = self.web3.eth.contract(tokendata.abi);
         self.ARCTokenInstance = MyContract.at(self.config.tokencontractaddress);
         self.getARCBalance(function() {
@@ -686,6 +684,8 @@ Polymer({
     if (this.swtbalance > 0){
       this.conversiondone = true;
     }
+
+    this.fire('converted');
   },
 
   toExit: function(){
