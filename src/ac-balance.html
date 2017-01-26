@@ -3,8 +3,6 @@
 <link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
-<link rel="import" href="ac-sizeview.html">
-
 <dom-module id="ac-balance">
 <link rel="import" href="../bower_components/sc-style/sc-style.css"  type="css">
 
@@ -12,19 +10,12 @@
   <style>
   :host {
     display: block;
-    --balance-h1:50px;
-    --balance-h1-lineheight:56px;
-    --arc-h1:14px;
-    --arc-h1-lineheight:16px;
-    --prefcurr-p:22px;
-    --prefcurr-p-lineheight:24px;
-    --prefcurr-margins: 0px 0px 8px 14px;
-    min-width: 50%;
+    /*min-width: 50%;*/
 
   }
 
   .arc-balance {
-    width: 100%;
+    /*width: 100%;*/
   }
 /*
   .verticcenter {
@@ -59,27 +50,24 @@
     @apply(--layout-center-center);
   }*/
 
-  h1 {
-    /*@apply(--montserrat-hairline);
-    -webkit-margin-before: 0px;
-    -webkit-margin-after: 0px;
-    -webkit-margin-start:0em;
-    -webkit-margin-end:0em;
-    margin: 0px 0px 0px 0px;
-    padding: 0px;*/
 
-    font-size: var(--balance-h1);
-    line-height: var(--balance-h1-lineheight);
 
-/*    color: var(--ac-red);
-    text-shadow: -1px 1px 8px rgba(249,85,85,0.1), 1px -1px 18px rgba(249,85,85,0.1);
-*/
+  .normal p {
+    font-size: 22px;
+    line-height: 24px;
+    opacity: 0.75;
   }
 
-  p {
-    font-size: var(--prefcurr-p);
-    line-height: var(--prefcurr-p-lineheight);
-    opacity: 0.75;
+
+  .normal h1 {
+    font-size: 50px;
+    line-height: 56px
+  }
+
+
+  .small h1 {
+    font-size: 30px;
+    line-height: 36px;    
   }
 
   /*      .balancetotal {
@@ -96,14 +84,14 @@
   }
 
   .SWTletters {
-    font-size: var(--arc-h1);
-    line-height: var(--arc-h1-lineheight);
+    font-size: 14px;
+    line-height: 16px;
     margin-left: 6px;
   }
 
 
   .prefcurrletters {
-    margin: var(--prefcurr-margins);
+    margin: 0px 0px 8px 14px;
     opacity: 0.75;
   }
 
@@ -124,26 +112,34 @@
 
 
   </style>
-  <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+  <!-- <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview> -->
 
   <iron-ajax
   url="https://api.coinmarketcap.com/v1/ticker/arcade-token/"
   on-response="handleResponse"
   auto>
 </iron-ajax>
-
 <iron-ajax
   url="https://api.fixer.io/latest?base=USD"
   on-response="handleResponseUSDEUR"
   auto>
 </iron-ajax>
 
-<div class$="arc-balance {{align}}">
-  <div class="horizont end">
-    <h1 class="yellow bold">{{formatpong(arcbalance)}}</h1><h1 class="yellow bold"><span class="SWTletters"> SWT</span>
-    <!-- <ac-button class="refrbtn" veryverysmall icon="refresh1" txtcolor="red" bg="btncolor" on-tap="fireRefresh"></ac-button> --></h1>
+
+<!-- <div class$="arc-balance {{align}}"> -->
+  <div class$="horizont end {{viewmode}}">
+    <template is="dom-if" if="{{_is( viewmode, 'small')}}">
+      <h1 class="yellow bold">{{formatpong(arcbalance)}}</h1>
+    </template>
+    <template is="dom-if" if="{{_is( viewmode, 'normal')}}">
+      <h1 class="yellow bold">{{formatpong(arcbalance)}}</h1>
+      <h1 class="yellow bold"><span class="SWTletters"> SWT</span></h1>
+    </template>
+    <!-- <ac-button class="refrbtn" veryverysmall icon="refresh1" txtcolor="red" bg="btncolor" on-tap="fireRefresh"></ac-button> -->
   </div>
-    <template is="dom-if" if="{{wereinwallet}}">
+
+
+<!--     <template is="dom-if" if="{{wereinwallet}}">
       <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
       <div class="horizontend prefcurrletters">
           <p>({{prefcurrency}} {{balanceref}})</p>
@@ -154,9 +150,9 @@
           <p>{{prefcurrency}} {{balanceref}}</p>
         </div>
       </template>
-    </template>
+    </template> -->
 
-</div>
+<!-- </div> -->
 
 </template>
 
@@ -179,16 +175,17 @@ Polymer({
       type: String,
       value: '$',
     },
-    sizeview: {
-      type: String,
-      observer: '_sizeview'
-    },
+
     align: {
       type: String,
     },
     wereinwallet: {
       type: Boolean,
       value: false
+    },
+    viewmode: {
+      type: String,
+      value: 'normal',
     }
   },
 
@@ -238,43 +235,41 @@ Polymer({
   _sizeview: function(){
     switch(this.sizeview) {
       case 'phone':
-      this.customStyle['--balance-h1'] = '50px';
-      this.customStyle['--balance-h1-lineheight'] = '56px';
-      this.customStyle['--arc-h1'] = '14px';
-      this.customStyle['--arc-h1-lineheight'] = '16px';
-      this.customStyle['--prefcurr-p'] = '16px';
-      this.customStyle['--prefcurr-p-lineheight'] = '18px';
-      this.customStyle['--prefcurr-margins'] = '0px';
+      // this.customStyle['--balance-h1'] = '50px';
+      // this.customStyle['--balance-h1-lineheight'] = '56px';
+      // this.customStyle['--arc-h1'] = '14px';
+      // this.customStyle['--arc-h1-lineheight'] = '16px';
+      // this.customStyle['--prefcurr-p'] = '16px';
+      // this.customStyle['--prefcurr-p-lineheight'] = '18px';
+      // this.customStyle['--prefcurr-margins'] = '0px';
 
-      this.align = 'verticcenter';
+      // this.align = 'vertic centercenter';
       this.updateStyles();
       break;
       case 'desktop':
-      this.customStyle['--balance-h1'] = '60px';
-      this.customStyle['--balance-h1-lineheight'] = '70px';
-      this.customStyle['--arc-h1'] = '20px';
-      this.customStyle['--arc-h1-lineheight'] = '22px';
-      this.customStyle['--prefcurr-p'] = '24px';
-      this.customStyle['--prefcurr-p-lineheight'] = '26px';
-      this.customStyle['--prefcurr-margins'] = '0px 0px 8px 14px';
+      // this.customStyle['--balance-h1'] = '60px';
+      // this.customStyle['--balance-h1-lineheight'] = '70px';
+      // this.customStyle['--arc-h1'] = '20px';
+      // this.customStyle['--arc-h1-lineheight'] = '22px';
+      // this.customStyle['--prefcurr-p'] = '24px';
+      // this.customStyle['--prefcurr-p-lineheight'] = '26px';
+      // this.customStyle['--prefcurr-margins'] = '0px 0px 8px 14px';
 
-      this.align = 'horizontstartwrap';
+      // this.align = 'horizont start wrap';
       this.updateStyles();
       break;
       case 'xlarge':
-      this.customStyle['--balance-h1'] = '72px';
-      this.customStyle['--balance-h1-lineheight'] = '80px';
-      this.customStyle['--arc-h1'] = '20px';
-      this.customStyle['--arc-h1-lineheight'] = '22px';
-      this.customStyle['--prefcurr-p'] = '24px';
-      this.customStyle['--prefcurr-p-lineheight'] = '26px';
-      this.customStyle['--prefcurr-margins'] = '0px 0px 8px 14px';
+      // this.customStyle['--balance-h1'] = '72px';
+      // this.customStyle['--balance-h1-lineheight'] = '80px';
+      // this.customStyle['--arc-h1'] = '20px';
+      // this.customStyle['--arc-h1-lineheight'] = '22px';
+      // this.customStyle['--prefcurr-p'] = '24px';
+      // this.customStyle['--prefcurr-p-lineheight'] = '26px';
+      // this.customStyle['--prefcurr-margins'] = '0px 0px 8px 14px';
 
-      this.align = 'horizontstartwrap';
+      // this.align = 'horizont start wrap';
       this.updateStyles();
       break;
-      default:
-      console.log("!!! ** Niks");
     }
   },
 

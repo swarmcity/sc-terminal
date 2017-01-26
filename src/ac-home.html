@@ -16,6 +16,7 @@
 <link rel="import" href="ac-tokentransfer.html">
 <link rel="import" href="ac-spinner.html">
 <link rel="import" href="sc-notification.html">
+<link rel="import" href="sc-hashtaglist.html">
 
 
 <link rel="import" href="../bower_components/sc-style/sc-style.html">
@@ -33,9 +34,9 @@
   :host {
     display: block;
     width: 100%;
-    height: 100vh;
+/*    height: 100vh;*/
     /*background: var(--sc-grey1);*/
-    @apply(--base-structure);
+    /*@apply(--base-structure);*/
   }
 
     .homebalanceandavatar {
@@ -45,7 +46,7 @@
       @apply(--layout-wrap);
       box-sizing:border-box;
       padding: 14vh 10vw 12vh 10vw;
-      height: 42%;
+      /*height: 42%;*/
 
     }
 
@@ -65,7 +66,7 @@
       @apply(--layout-vertical);
       @apply(--layout-start);
       @apply(--layout-start-justified);
-      @apply(--layout-flex);
+/*      @apply(--layout-flex);*/
 
     }
     .toptoolbar {
@@ -81,11 +82,12 @@
 
     .ac-avatar-box {
       @apply(--layout-vertical);
-      @apply(--layout-start);
-      @apply(--layout-center-justified);
+      @apply(--layout-center-center);
+/*      @apply(--layout-center-justified);*/
       box-sizing: border-box;
       padding: 0px;
       margin: 0px 45px 0px 0px;
+      z-index: 9;
     }
 
 
@@ -166,8 +168,8 @@
 
     .hashtaglistbtn {
       position: fixed;
-      top: 34%;
-      right: 7vw;
+      top: 12%;
+      right: 0;
     }
 
     .hashtaglistbtn paper-icon-button {
@@ -175,9 +177,6 @@
       z-index: 9;
     }
 
-    .overflower {
-      overflow-y: scroll;
-    }
 
 
     .testblock {
@@ -190,8 +189,8 @@
     }
     .bottomhalf {
       height: 58%;
-      border-top: 1px solid rgba(0,0,0,0.05);
-
+/*      border-top: 1px solid rgba(0,0,0,0.05);
+*/
     }
 
 
@@ -207,20 +206,30 @@
 
       .ac-avatar-box {
 /*      @apply(--layout-vertical);
-      @apply(--layout-center-center);
-        width: 100%;*/
+      @apply(--layout-center-center);*/
+        width: 100%;
         box-sizing: border-box;
-        padding: 12vh 0px 0vh 0px;
+        padding: 15vh 0px 0vh 0px;
         margin: 0px;
-        height: 50%;
+/*        height: 50%;*/
 
       }
+
+      .overlayer {
+      border:1px solid green;
+    height: 52%;
+    position: fixed;
+    z-index: -1;
+
+      }
+
+
     .ac-username {
-        margin: 5px 0px 20px 0px;
+        margin: 17px 0px 40px 0px;
         -ms-flex: none;
         -webkit-flex: none;
         flex: none;
-        width: 300px;
+        width: 100%;
         text-align: center;
     }
 
@@ -228,7 +237,7 @@
         height: 100%;
       @apply(--layout-vertical);
       @apply(--layout-center-center);
-      margin-bottom: 50px;
+      margin: 0px 0px 72px 0px;
       }
 
       .tokentrans {
@@ -237,16 +246,16 @@
       }
 
       .homebalancebox {
-        height: 50%;
-        width: 100%;
+        /*height: 50%;*/
+        /*width: 100%;*/
         box-sizing: border-box;
         padding: 0px 0px 0px 0px;
       @apply(--layout-vertical);
       @apply(--layout-center);
       @apply(--layout-start-justified);
-        -ms-flex: none;
+/*        -ms-flex: none;
         -webkit-flex: none;
-        flex: none;
+        flex: none;*/
     }
 
 
@@ -255,24 +264,25 @@
         padding: 0px;
       @apply(--layout-vertical);
       @apply(--layout-center-center);
-      height: 68%;
+      /*height: 56vh;*/
       }
 
       .bottomhalf {
-        height: 32%;
+/*        height: 38%;*/
       }
 
       .hashtaglistbtn {
         position: fixed;
-        top: 62%;
-        right: 5vw;
+        top: 5%;
+        right: 0;
       }
 
       .hashtaglistbtn paper-icon-button {
-  /*      width: 88px;
-        height: 88px;
-        min-width: 88px;
-        min-height: 88px;*/
+        width: 55px;
+        height: 55px;
+        min-width: 55px;
+        min-height: 55px;
+        padding: 6px;
       }
 
     }
@@ -288,16 +298,22 @@
         updating="{{balanceupdating}}"
         arcbalance="{{arcbalance}}"
         ethbalance="{{ethbalance}}"></ac-wallet>
-    
-  <div class="total vertic startjust center">
+      <div class="total overflower">
+
+  <div class="totalwidth vertic startjust center basestructure">
 
 <!--     <div class="topbar grey1back">
       <span class="flex"></span>
       <iron-icon class="grey3" icon="sc-icons:decline" on-tap="toHashtaglist">back</iron-icon>
     </div>
  -->
+<!--     <div class="totalwidth horizont center endjust hashtaglistbtn">
+      <div class="borderbehindbtn"></div>
+      <paper-icon-button class="big whiteback blue shadow" icon="sc-icons:hashtagbolder" on-tap="toHashtaglist" noink></paper-icon-button>
+    </div> -->
 
-    <div class="totalwidth homebalanceandavatar basestructure">
+
+    <div class="totalwidth homebalanceandavatar">
 
       <div class="ac-avatar-box">
         <ac-avatar
@@ -306,9 +322,7 @@
         pubkey="[[pubkey]]"
         id="homeavatar"
         ></ac-avatar>
-      </div>
 
-      <div id="homebalance" class="homebalancebox">
         <ac-avatar
         identity="[[identity]]"
         pubkey="[[pubkey]]"
@@ -316,9 +330,16 @@
         id="avatarusername"
         class="ac-username">
         </ac-avatar>
+        <!-- <div class="overlayer totalwidth" id="avatarbox"></div> -->
+
+
+      </div>
+
+      <div class="homebalancebox" id="homebalance">
+
 
         <template is="dom-if" if="{{!balanceupdating}}">
-          <div class="arcbalance flex" on-tap="toWalletview">
+          <div class="arcbalance" on-tap="toWalletview">
             <ac-balance
           refcur="EUR"
           arcbalance="{{arcbalance}}"
@@ -338,80 +359,37 @@
     </div>
 
 
-    <div class="totalwidth horizont center endjust hashtaglistbtn">
-      <div class="borderbehindbtn"></div>
-      <paper-icon-button class="big whiteback blue shadow" icon="sc-icons:hashtagbolder" on-tap="toHashtaglist"></paper-icon-button>
-    </div>
 
-    <div class="bottomhalf totalwidth vertic start startjust overflower">
 
-      <sc-notification
-        identity="[[identity]]"
-        pubkey="[[account]]"
-        msg="You created a new offer"
-        offer="From Antwerp Meir to Marnixplaats, Antwerpen"
-        cat="rideshare">
-      </sc-notification>
+        <div id="bottomhalf" class="bottomhalf totalwidth vertic start startjust whiteback">
+          <sc-hashtaglist
+          on-hashtag="toHashtag"></sc-hashtaglist>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+    <!--       <sc-notification
+            identity="[[identity]]"
+            pubkey="[[account]]"
+            msg="You created a new offer"
+            offer="From Antwerp Meir to Marnixplaats, Antwerpen"
+            cat="rideshare">
+          </sc-notification>
 
-      <sc-notification
-        identity="[[identity]]"
-        pubkey="[[account]]"
-        msg="You reacted to "
-        offer="From Lange Leemstraat 221, Antwerp to Nieuwe Donk 28, Deurne"
-        cat="rideshare">
-      </sc-notification>
-    <div>
-
-<!-- <div class="testblock"></div>
-<div class="testblock"></div>
-<div class="testblock"></div>
-<p>The standard Lorem Ipsum passage, used since the 1500s
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-
-        Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
-
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
-
-        1914 translation by H. Rackham
-
-        "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?"
-
-        Section 1.10.33 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
-
-        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
-
-        1914 translation by H. Rackham
-
-        "On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains."</p> 
-
-        <br><br>
-        <h1>HOOOOOOOOOla zekers</h1>
-<div class="testblock"></div>
-<p>The standard Lorem Ipsum passage, used since the 1500s
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-
-        Section 1.10.32 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
-
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
-
-        1914 translation by H. Rackham
-
-        "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?"
-
-        Section 1.10.33 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
-
-        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
-
-        1914 translation by H. Rackham
-
-        "On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains."</p>  -->
-
+          <sc-notification
+            identity="[[identity]]"
+            pubkey="[[account]]"
+            msg="You reacted to "
+            offer="From Lange Leemstraat 221, Antwerp to Nieuwe Donk 28, Deurne"
+            cat="rideshare">
+          </sc-notification> -->
+        <div>
       </div>
     </div>
 
 
   </div>
 
+  </div>
 
 </template>
 
@@ -458,56 +436,56 @@
       },
 
       animationConfig: {
-        type: Object,
-        value: function() {
-          return {
-            'entry': [{
-              name: 'fade-in-animation',
-              node:this.$.homebalance,
-              toPage: this,
-              timing: {
-                duration: 200
-              }
-            // }, {
-            //   name: 'fade-in-animation',
-            //   node:this.$.avatarusername,
-            //   fromPage: this,
-            //   timing: {
-            //       duration: 200
-            //   }
-            },{
-              name: 'hero-animation',
-              id: 'hero',
-              toPage: this,
-              timing: {
-                  duration: 200
-              }
-            }],
+        // type: Object,
+        // value: function() {
+        //   return {
+        //     'entry': [{
+        //       name: 'fade-in-animation',
+        //       node:this.$.homebalance,
+        //       toPage: this,
+        //       timing: {
+        //         duration: 200
+        //       }
+        //     // }, {
+        //     //   name: 'fade-in-animation',
+        //     //   node:this.$.avatarusername,
+        //     //   fromPage: this,
+        //     //   timing: {
+        //     //       duration: 200
+        //     //   }
+        //     },{
+        //       name: 'hero-animation',
+        //       id: 'hero',
+        //       toPage: this,
+        //       timing: {
+        //           duration: 200
+        //       }
+        //     }],
 
-            'exit': [{
-              name: 'fade-out-animation',
-              node:this.$.homebalance,
-              fromPage: this,
-              timing: {
-                  duration: 200
-              }
-            // }, {
-            //   name: 'fade-out-animation',
-            //   node:this.$.avatarusername,
-            //   fromPage: this,
-            //   timing: {
-            //       duration: 200
-            //   }
-            },{
-              name: 'hero-animation',
-              id: 'hero',
-              fromPage: this,
-              timing: {
-                  duration: 200
-              }
-            }]
-          }
-        },
+        //     'exit': [{
+        //       name: 'fade-out-animation',
+        //       node:this.$.homebalance,
+        //       fromPage: this,
+        //       timing: {
+        //           duration: 200
+        //       }
+        //     // }, {
+        //     //   name: 'fade-out-animation',
+        //     //   node:this.$.avatarusername,
+        //     //   fromPage: this,
+        //     //   timing: {
+        //     //       duration: 200
+        //     //   }
+        //     },{
+        //       name: 'hero-animation',
+        //       id: 'hero',
+        //       fromPage: this,
+        //       timing: {
+        //           duration: 200
+        //       }
+        //     }]
+        //   }
+        // },
       }
 
     },
@@ -683,25 +661,36 @@
     },
 
     _datachanged: function() {
-      console.log('joooo');
+      // console.log('joooo');
     },
 
-    toHashtaglist: function() {
+    toHashtag: function(e) {
+
       this.sharedElements = {
           'hero': this.$.homeavatar,
+          'balance': this.$.homebalance
         };
 
       this.animationConfig = {
-            'entry': [{
+          'entry': [{
               name: 'fade-in-animation',
               node:this.$.homebalance,
               toPage: this,
               timing: {
-                duration: 700
+                delay: 200,
+                duration: 125
               }
-            }, {
+            },{
               name: 'fade-in-animation',
               node:this.$.avatarusername,
+              toPage: this,
+              timing: {
+                delay: 475,
+                duration: 125
+              }
+            }, {
+              name: 'slide-from-bottom-animation',
+              node:this.$.bottomhalf,
               toPage: this,
               timing: {
                 duration: 700
@@ -713,18 +702,34 @@
               timing: {
                   duration: 500
               }
+            },{
+              name: 'hero-animation',
+              id: 'balance',
+              toPage: this,
+              timing: {
+                  duration: 500
+              }
             }],
 
-            'exit': [{
+            'exit': [
+            // {
+            //   name: 'fade-out-animation',
+            //   node:this.$.homebalance,
+            //   fromPage: this,
+            //   timing: {
+            //       duration: 200
+            //   }
+            // }, 
+            {
               name: 'fade-out-animation',
-              node:this.$.homebalance,
+              node:this.$.avatarusername,
               fromPage: this,
               timing: {
                   duration: 200
               }
             }, {
               name: 'fade-out-animation',
-              node:this.$.avatarusername,
+              node:this.$.bottomhalf,
               fromPage: this,
               timing: {
                   duration: 200
@@ -732,6 +737,13 @@
             },{
               name: 'hero-animation',
               id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 500
+              }
+            },{
+              name: 'hero-animation',
+              id: 'balance',
               fromPage: this,
               timing: {
                   duration: 500
@@ -739,9 +751,8 @@
             }]
         };
 
-
-
-      this.fire('to-hashtaglist');
+      console.log(" ********* komtiieeeee!!",e.detail)
+      this.fire('to-hashtag',e.detail);
     },
 
 
@@ -757,15 +768,17 @@
               node:this.$.homebalance,
               toPage: this,
               timing: {
-                duration: 200
+                delay: 200,
+                duration: 125
+              },
+
+            }, {
+              name: 'slide-from-bottom-animation',
+              node:this.$.bottomhalf,
+              toPage: this,
+              timing: {
+                duration: 700
               }
-            // }, {
-            //   name: 'fade-in-animation',
-            //   node:this.$.avatarusername,
-            //   toPage: this,
-            //   timing: {
-            //     duration: 200
-            //   }
             },{
               name: 'hero-animation',
               id: 'hero',
@@ -773,13 +786,20 @@
               timing: {
                   duration: 600
                 }
-              },{
-              name: 'hero-animation',
-              id: 'hero2',
-              toPage: this,
-              timing: {
-                  duration: 600
-              }
+              // },{
+              // name: 'hero-animation',
+              // id: 'hero2',
+              // toPage: this,
+              // timing: {
+              //     duration: 600
+              // }
+            // },{
+            //   name: 'hero-animation',
+            //   id: 'hero3',
+            //   toPage: this,
+            //   timing: {
+            //       duration: 600
+            //   }
             }],
 
             'exit': [{
@@ -787,15 +807,22 @@
               node:this.$.homebalance,
               fromPage: this,
               timing: {
-                  duration: 200
+                  duration: 125
               }
-            // }, {
-            //   name: 'fade-out-animation',
-            //   node:this.$.avatarusername,
-            //   fromPage: this,
-            //   timing: {
-            //       duration: 200
-            //   }
+            },{
+              name: 'fade-out-animation',
+              node:this.$.avatarusername,
+              fromPage: this,
+              timing: {
+                  duration: 125
+              }
+            }, {
+              name: 'slide-down-animation',
+              node:this.$.bottomhalf,
+              fromPage: this,
+              timing: {
+                  duration: 700
+              }
             },{
               name: 'hero-animation',
               id: 'hero',
@@ -803,13 +830,20 @@
               timing: {
                   duration: 600
                 }
-              },{
-              name: 'hero-animation',
-              id: 'hero2',
-              fromPage: this,
-              timing: {
-                  duration: 600
-              }
+              // },{
+              // name: 'hero-animation',
+              // id: 'hero2',
+              // fromPage: this,
+              // timing: {
+              //     duration: 600
+              //   }
+              // },{
+              // name: 'hero-animation',
+              // id: 'hero3',
+              // fromPage: this,
+              // timing: {
+              //     duration: 600
+              // }
             }]
         };
 

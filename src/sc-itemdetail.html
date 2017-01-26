@@ -1,0 +1,670 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+
+<link rel="import" href="../bower_components/sc-style/sc-style.html">
+<link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
+
+<link rel="import" href="sc-hashtagitem.html">
+
+
+<dom-module id="sc-itemdetail">
+<link rel="import" href="../bower_components/sc-style/sc-style.css" type="css">
+
+  <!-- Defines the element's style and local DOM -->
+  <template>
+    <style>
+  :host {
+    display: block;
+    width: 100%;
+    min-height: 100%;
+/*    background-color: var(--sc-white);
+*/  }
+
+
+  .topbar {
+    height: 14%;
+    min-height: 82px;
+    box-sizing:border-box;
+    padding: 40px 50px 20px 50px;
+  }
+
+
+  .paddingsides {
+    padding-left: 12vw;
+    padding-right: 12vw;
+  }
+
+  .detailtotal {
+    box-sizing:border-box;
+    padding-top: 50px;
+  }
+
+  .offereravatar {
+    width: 62px;
+    height: 62px;
+    min-width: 62px;
+    min-height: 62px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 14px;     
+  }
+
+
+  .offereravatar img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .offer {
+    font-size: 20px;
+    line-height: 28px;
+
+  }
+
+
+
+  .rep {
+    font-size: 14px;
+  }
+
+  .amount {
+    font-size: 36px;
+  }
+
+  .swt {
+    font-size: 18px;
+  }
+
+
+
+  .responds {
+/*      border-top: 1px solid rgba(0,0,0,0.05);*/
+  }
+
+  .yourrespond {
+    box-sizing:border-box;
+    padding-top: 28px;
+    padding-bottom: 28px;
+    transition: all 1s linear;
+
+  }
+
+  .yourreplyamount {
+    width: 50%;
+/*    max-width: 80%;*/
+  }
+
+  .margbottom {
+    margin-bottom: 12px;
+  }
+
+
+  paper-input.swtamount {
+    --paper-input-container-input: {
+      @apply(--montserrat-bold);
+      font-size: 24px;
+      line-height: 24px;
+      color: var(--sc-yellow);
+    };
+    --paper-input-container-focus-color: var(--sc-yellow);
+  }
+
+
+  .otherresponds {
+
+  }
+
+  .padder {
+    box-sizing:border-box;
+    padding: 20px;    
+  }
+
+  .amountinput {
+    width: 100px;
+  }
+
+  .respondbtn {
+    width: 80%;
+  }
+
+  .swtwithoffer {
+      font-size: 12px;
+      line-height: 12px;
+/*    margin:0px 0px 12px 4px;*/
+
+  }
+
+  .replyitem {
+    box-sizing:border-box;
+    /*padding: 20px 20px 20px 20px;*/
+    margin-top: 10px;
+    /*margin-bottom: 10px;*/
+  }
+
+
+  .youravatar {
+    margin-right: 10px;
+  }
+/*  .youravatar {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;  
+    border-radius: 50%;
+    overflow: hidden;  
+  }
+  .youravatar img {
+    width: 100%;
+    height: 100%;
+  }*/
+
+  .yourname {
+    margin-bottom: 4px;
+
+  }
+  
+  .yourtxt {
+      font-size: 16px;
+      line-height: 22px;
+      margin: 15px 0px 15px 0px;
+  }
+
+
+  .youramount {
+      font-size: 22px;
+      line-height: 22px;
+  }
+
+  .youramountSWT {
+      font-size: 11px;
+      line-height: 11px;
+  }
+
+
+  .greytopborder {
+    border-top: 1px solid var(--sc-grey1);
+  }
+
+  .notopborder {
+    border-top: none;
+  }  
+/*
+
+  .paddingsides {
+    padding-left: 12vw;
+    padding-right: 12vw;
+  }
+
+
+  .hashtagtitle {
+  }
+
+  .hashtagtitle p {
+    font-size: 42px;
+    line-height: 42px;
+      margin: 0px 0px 2px 0px;
+
+  }
+  .symbol p {
+    font-size: 38px;
+    line-height: 38px;  
+      margin: 0px 0px 0px 0px;
+
+  }
+
+  .symbol {
+    min-width: 40px;
+    margin-top: 6px;
+  }
+
+  .decliner {
+  }
+
+  .margright {
+    margin:0px 6px 0px 0px;
+  }
+
+  .wordbreak {
+    word-break: keep-all;
+  }
+
+
+*/
+
+
+  @media all and (min-width: 0) and (max-width: 420px) { 
+
+
+/*  .hashtagtitle p {
+    font-size: 34px;
+    line-height: 34px;
+      margin: 0px 0px 2px 0px;
+
+  }
+  .symbol p {
+    font-size: 32px;
+    line-height: 32px;  
+      margin: 0px 0px 0px 0px;
+
+  }
+
+  .symbol {
+    min-width: 30px;
+    margin-top: 3px;
+  }
+
+  .decliner {
+    margin:0px 0px 0px 8px;
+  }
+
+  .decliner iron-icon {
+    width: 32px;
+    height: 36px;
+  }*/
+
+
+  }
+
+
+
+
+
+  </style>
+    <div class="totalwidth vertic centercenter">
+    <div class="topbar">
+       <iron-icon on-tap="toHashtag" id="backbtn" icon="sc-icons:arrowleft" class="decliner grey2 big">back</iron-icon>
+      <span class="flex"></span>
+      <ac-avatar
+        id="currentavatar"
+        identity="{{identity}}"
+        pubkey="{{account}}"
+        mode="imgonly"
+        size="small"
+        on-tap="exit">
+      </ac-avatar>
+<!--       <ac-balance
+        refcur="EUR"
+        arcbalance="{{arcbalance}}"
+        ethbalance="{{ethbalance}}">
+      </ac-balance> -->
+    </div>
+<!--       <div class="whitespace"></div>
+      <div class="whitespace"></div> -->
+
+      <div id="detailcontent" class="totalwidth flex whiteback">
+
+        <div class="detailtotal totalwidth vertic">
+
+          <div class="totalwidth horizont centercenter paddingsides">
+            <div class="offereravatar">
+              <img src="{{offereravatar}}">
+            </div>
+            <div class="vertic start startjust offertxt flex">
+              <p class="reg">{{offerer}}</p>
+              <p class="bold rep blue">{{offererrep}} REP</p>
+            </div>  
+          </div>
+          <div class="whitespace"></div>
+
+          <div class="totalwidth paddingsides">
+            <p class="offer">{{offer}}</p>
+          </div>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
+          <div class="totalwidth horizont centercenter paddingsides">
+            <div class="flex"></div>
+            <p class="bold yellow amount">{{amount}} <span class="swt">SWT</span></p>
+          </div>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
+          <div class="responds totalwidth vertic center startjust basestructure">
+
+            <div class$="{{bgcolor}} {{bordertop}} yourrespond totalwidth vertic centercenter paddingsides">
+
+              <template is="dom-if" if="{{_is(replystate,'init')}}">
+                <div class="minispace"></div>
+                <paper-button noink class="darker blue shadow respondbtn big" on-tap="replystateChanger">
+                Reply
+                </paper-button>
+                <div class="minispace"></div>
+              </template>
+
+              <template is="dom-if" if="{{_is(replystate,'replying')}}">
+              <iron-collapse class="totalwidth" id="replycoll">
+                <div class="totalwidth horizont end endjust">
+                  <iron-icon icon="sc-icons:decline" class="grey3" on-tap="backtoInit">close collapse</iron-icon>
+                </div>
+
+                <div class="total vertic centercenter">
+                  <paper-textarea label="Your reply" class="totalwidth grey2unfocus" autofocus></paper-textarea>
+                  <!-- <paper-input label="Your responds" class="totalwidth grey2unfocus" autofocus></paper-input> -->
+                  <div class="totalwidth horizont end startjust">
+                    <paper-input label="Your offer" class="yourreplyamount swtamount grey2unfocus" value="{{replyamount}}">
+                    <div suffix class="yellow bold swtwithoffer">SWT</div>
+                  </paper-input>
+<!--                   <p class="yellow bold swtwithoffer">SWT</p>
+ -->
+                  </div>
+
+                  <div class="whitespace"></div>
+<!--                   <div class="whitespace"></div> -->
+
+                  <paper-button noink class="white blueback shadow big horizont cetercenter" on-tap="replystateChanger">
+                  <paper-icon-button disabled="true" class="white" icon="sc-icons:babbles"></paper-icon-button>
+                    Reply with offer
+                  </paper-button>
+
+                </div>
+              </iron-collapse>
+              </template>
+
+
+              <template is="dom-if" if="{{_is(replystate,'replygivven')}}">
+                <template is="dom-if" if="{{loadingreply}}">
+                  <sc-loader small color="blue" class="blue" on-tap="replyLoaded">Submitting your reply</sc-loader>
+                </template>
+                <template is="dom-if" if="{{!loadingreply}}">
+                  <div class="totalwidth vertic centercenter">
+
+                    <div class="totalwidth horizont start startjust">
+
+                    <ac-avatar
+                      id="currentavatar"
+                      identity="{{identity}}"
+                      pubkey="{{account}}"
+                      mode="imgonly"
+                      size="verysmall"
+                      on-tap="exit"
+                      class="youravatar">
+                    </ac-avatar>
+<!--                       <div class="youravatar">
+                        <img src="https://blogg.binero.se/wp-content/uploads/2010/02/rick_falkvinge_1.jpg">
+                      </div> -->
+                      <div class="flex vertic centercenter">
+                        <p class="totalwidth yourname small bold grey4">Kars Rhyder</p>
+                        <p class="totalwidth yourrep small bold blue">12 REP</p>
+                      </div>
+
+                      <p class="youramount bold grey3">{{replyamount}}<span class="youramountSWT">SWT</span></p>
+
+                    </div>
+                    <p class="totalwidth yourtxt grey3">I'd love to drive you! Pick you up at 14:00?</p>
+
+
+
+                  </div>
+                </template>                
+
+              </template>
+
+            
+
+              <!-- <div class="flex">
+                <paper-input label="Your responds" class="totalwidth"></paper-input>
+              </div>
+                <paper-icon-button disabled="true" class="grey3" icon="sc-icons:babbles"></paper-icon-button> -->
+            </div>
+
+            <div class="otherresponds totalwidth vertic center startjust darker">
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+            </div>
+
+
+
+
+
+          </div>
+
+
+
+        </div>
+
+        </div>
+
+      </div>
+
+  </div>
+
+</template>
+
+<script>
+  Polymer({
+    is: 'sc-itemdetail',
+
+    behaviors: [
+      Polymer.NeonSharedElementAnimatableBehavior
+    ],
+
+    properties: {
+   
+      sharedElements: {
+        type: Object,
+        value: function() {
+          return {
+            'hero': this.$.currentavatar
+          }
+        }
+      },
+
+    
+      animationConfig: {
+        type: Object,
+        value: function() {
+          return {
+            'entry': [{
+              name: 'slide-from-right-animation',
+              node:this.$.detailcontent,
+              toPage: this,
+              timing: {
+                duration: 600
+              }
+            },{
+              name: 'fade-in-animation',
+              node:this.$.backbtn,
+              fromPage: this,
+              timing: {
+                duration: 200
+              }
+
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                  duration: 200
+              }
+            }],
+
+            'exit': [{
+              name: 'slide-right-animation',
+              node:this.$.detailcontent,
+              fromPage: this,
+              timing: {
+                duration: 600
+              }
+
+            },{
+              name: 'fade-out-animation',
+              node:this.$.backbtn,
+              fromPage: this,
+              timing: {
+                duration: 200
+              }
+
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 200
+              }
+              }]
+            }
+          },
+        }
+
+      },
+
+    ready: function() {
+
+      // THIS IS ALL DUMMY
+      this.offereravatar = 'http://www.american.edu/uploads/profiles/large/chris_palmer_profile_11.jpg';
+      this.offerer = 'Dick Richards';
+      this.offererrep = '6'
+      this.offer = 'Need a ride from August van de Wielelei 283, Antwerpen to Kempenlaan 26, Wommelgem';
+      this.timestamp = '20 january at 13:22';
+      this.amount = '1233.50';
+      this.replyamount = '1233.50';
+
+      this.loadingreply = true;
+      // UNTILL HERE
+
+
+      this.replystate = 'init';
+      this.bgcolor = "whiteback";
+      this.bordertop = "greytopborder";
+    },
+
+    attached: function(){
+    },
+
+    // back: function(){
+    //   this.fire('exit');
+    // },
+
+    exit: function(){
+
+      // this.sharedElements = {
+      //     'hero': this.$.currentavatar,
+      //   };
+
+      // this.animationConfig = {
+      //       'entry': [{
+      //         name: 'slide-from-right-animation',
+      //         node:this.$.detailcontent,
+      //         toPage: this,
+      //         timing: {
+      //           duration: 600
+      //         }
+      //       },{
+      //         name: 'fade-in-animation',
+      //         node:this.$.backbtn,
+      //         fromPage: this,
+      //         timing: {
+      //           duration: 200
+      //         }
+
+      //       }, {
+      //         name: 'hero-animation',
+      //         id: 'hero',
+      //         toPage: this,
+      //         timing: {
+      //             duration: 200
+      //         }
+      //       }],
+
+      //       'exit': [{
+      //         name: 'slide-right-animation',
+      //         node:this.$.detailcontent,
+      //         fromPage: this,
+      //         timing: {
+      //           duration: 600
+      //         }
+
+      //       },{
+      //         name: 'fade-out-animation',
+      //         node:this.$.backbtn,
+      //         fromPage: this,
+      //         timing: {
+      //           duration: 200
+      //         }
+
+      //       }, {
+      //         name: 'hero-animation',
+      //         id: 'hero',
+      //         fromPage: this,
+      //         timing: {
+      //             duration: 200
+      //         }
+      //         }]
+      //   };
+
+      this.fire('exit');
+    },
+
+    toHashtag: function(){
+      this.fire('to-hashtag');
+    },
+
+    replystateChanger: function(){
+        switch (this.replystate) {
+          case 'init':
+            this.replystate = 'replying'
+            this.bgcolor = "whiteback";
+            this.bordertop = "greytopborder";
+
+            setTimeout(function(){ 
+            var coll = document.getElementById('replycoll');
+            coll.toggle();
+             }, 50);
+            break;
+          case 'replying':
+            this.replystate = 'replygivven'
+            this.bgcolor = "basestructure";
+            this.bordertop = "notopborder";
+
+            setTimeout(function(){ 
+            // var coll = document.getElementById('replycoll');
+            // coll.toggle();
+            this.replystate = 'replygivven'
+             }, 50);
+            break;
+          case 'replygivven':
+            this.replystate = 'deletereply'
+            this.bordertop = "notopborder";
+
+            break;
+          default:
+            console.log("!!! ** Niks");
+        }
+    },
+
+    backtoInit: function(){
+        this.replystate = 'init'
+    },
+
+    replyLoaded: function(){
+            this.loadingreply = false;
+            console.log("Yeah::::",this.loadingreply);
+    },
+
+    _is: function(a, b) {
+      if (b === undefined){
+        b = true;
+      }
+      return a === b;
+    }
+
+
+    // toHome: function(){
+    //   this.fire('to-home');
+    // }
+  });
+</script>
+
+</dom-module>

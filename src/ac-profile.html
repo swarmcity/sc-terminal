@@ -292,6 +292,13 @@ min-width: 120px;
     border-bottom: 2px dotted rgba(0,0,0,0.05);
   }
 
+  .totalbox {
+    position: fixed;
+    top: 0;
+/*    border: 1px solid red;*/
+/*    height: 50%;*/
+  }
+
 
 @media all and (min-width: 0) and (max-width: 420px) { 
   .profilepic {
@@ -339,9 +346,9 @@ min-width: 120px;
 
     <ac-ipfs id="ipfs"></ac-ipfs>
 
-    <div class="total darkerer" id="totalbox">
-
-
+    <div class="total">
+      <!-- <div class="total totalbox whiteback" id="totalbox"></div> -->
+ 
 
     <div class="topbar">
       <span class="flex"></span>
@@ -377,7 +384,7 @@ min-width: 120px;
                 <paper-icon-button icon="sc-icons:upload" class="blueback white uploadicon" id="uploadbtn"></paper-icon-button>
               </div>
             </div>
-            <div class="profileusername">
+            <div class="profileusername" id="usernameinputtotal">
               <paper-input label="username" value="{{newusername}}" on-change="usernameChange" class="bolder usernameinput" id="usernameinput">{{newusername}}</paper-input>
               <iron-collapse id="collapse" opened="{{datachanged}}">
                 <div class="whitespace"></div>
@@ -397,7 +404,7 @@ min-width: 120px;
 <!--             <div class="flex">
             </div> -->
 
-            <paper-button class="darkerer blue bold logoutbtn" on-tap="logout" noink>Log out</paper-button>
+            <paper-button class="darkerer blue bold logoutbtn" on-tap="logout" noink id="logoutbtn">Log out</paper-button>
 
           </div>
 
@@ -524,34 +531,65 @@ min-width: 120px;
         type: Object,
         value: function() {
           return {
-            'entry': [{
-              name: 'fade-in-animation',
-              node:this.$.profilecontent,
-              toPage: this,
-              timing: {
-                duration: 200
-              }
-            },{
+            'entry': [
+            // {
+            //   name: 'slide-from-bottom-animation',
+            //   node:this.$.profilecontent,
+            //   toPage: this,
+            //   timing: {
+            //     duration: 1000
+            //   }
+            // },
+            {
               name: 'fade-in-animation',
               node:this.$.uploadbtn,
               toPage: this,
               timing: {
-                duration: 200
+                delay: 575,
+                duration: 125
+              }
+            },{
+              name: 'fade-in-animation',
+              node:this.$.profilecontent,
+              toPage: this,
+              timing: {
+                duration: 125
+              }
+            }, {
+              name: 'fade-in-animation',
+              node:this.$.usernameinputtotal,
+              toPage: this,
+              timing: {
+                duration: 125
+                }
+            }, {
+              name: 'fade-in-animation',
+              node:this.$.logoutbtn,
+              toPage: this,
+              timing: {
+                duration: 125
               }
             }, {
               name: 'hero-animation',
               id: 'hero',
               toPage: this,
               timing: {
-                  duration: 200
+                  duration: 600
                 }
-              }, {
-              name: 'hero-animation',
-              id: 'hero2',
-              toPage: this,
-              timing: {
-                  duration: 200
-              }
+              // }, {
+              // name: 'hero-animation',
+              // id: 'hero2',
+              // toPage: this,
+              // timing: {
+              //     duration: 200
+              //   }
+              // }, {
+              // name: 'hero-animation',
+              // id: 'hero3',
+              // toPage: this,
+              // timing: {
+              //     duration: 200
+              // }
             }],
 
             'exit': [{
@@ -559,22 +597,36 @@ min-width: 120px;
               node:this.$.profilecontent,
               fromPage: this,
               timing: {
-                duration: 200
+                duration: 125
               }
             },{
               name: 'fade-out-animation',
               node:this.$.uploadbtn,
               toPage: this,
               timing: {
-                duration: 200
+                duration: 125
               }
             },{
               name: 'fade-out-animation',
-              node:this.$.totalbox,
+              node:this.$.usernameinputtotal,
               toPage: this,
               timing: {
-                duration: 200
+                duration: 125
               }
+            },{
+              name: 'fade-out-animation',
+              node:this.$.logoutbtn,
+              toPage: this,
+              timing: {
+                duration: 125
+              }
+            // },{
+            //   name: 'slide-up-animation',
+            //   node:this.$.totalbox,
+            //   toPage: this,
+            //   timing: {
+            //     duration: 200
+            //   }
             }, {
               name: 'hero-animation',
               id: 'hero',
@@ -582,13 +634,20 @@ min-width: 120px;
               timing: {
                   duration: 200
                 }
-              }, {
-              name: 'hero-animation',
-              id: 'hero2',
-              fromPage: this,
-              timing: {
-                  duration: 200
-              }
+              // }, {
+              // name: 'hero-animation',
+              // id: 'hero2',
+              // fromPage: this,
+              // timing: {
+              //     duration: 200
+              //   }
+              // }, {
+              // name: 'hero-animation',
+              // id: 'hero3',
+              // fromPage: this,
+              // timing: {
+              //     duration: 200
+              // }
               }]
             }
           },

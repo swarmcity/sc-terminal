@@ -16,7 +16,7 @@
   :host {
     display: block;
     width: 100%;
-    height: 100vh;
+    height: 100%;
   }
 
   .topbar {
@@ -25,14 +25,95 @@
     min-height: 82px;
   }
 
-  .big {
-    font-size: 42px;
-    line-height: 36px;
+  .paddingsides {
+    padding-left: 12vw;
+    padding-right: 12vw;
+    padding-top: 12vw;
   }
 
 
 
+  .hashtag p {
+    width: 70%;
+        word-break:break-all;
+
+  }
+
+
+  .hashtag:hover p {
+    color:var(--sc-blue);
+    cursor: pointer;
+  }
+
+.big {
+      margin: 0px 0px 12px 0px;
+
+}
+
+  .big p {
+    font-size: 26px;
+    line-height: 34px;
+      margin: 0px 0px 2px 0px;
+
+  }
+  .symbol p {
+    font-size: 24px;
+    line-height: 38px;  
+      margin: 0px 0px 0px 0px;
+
+  }
+
+  .symbol {
+    min-width: 24px;
+  }
+
+/*  .symbol iron-icon {
+    width: 27px;
+
+  }*/
+ /* .medium p {
+    font-size: 32px;
+    line-height: 28px;
+    margin: 8px 0px 8px 0px;       
+
+  }
+
+  .medium.symbol p {
+    font-size: 22px;
+    line-height: 22px; 
+  }*/
+
+  .filtering {
+    margin: 0px 0px 22px 0px;       
+  }
+
+
+  .tempbalance {
+font-size: 32px;
+line-height: 32px;
+    margin-right: 12px;
+  }
+
   @media all and (min-width: 0) and (max-width: 420px) { 
+
+.big {
+      margin: 0px 0px 15px 0px;
+
+}
+
+      .paddingsides {
+    padding-left: 15vw;
+    padding-right: 15vw;
+    padding-top: 5vh;
+
+  }
+
+
+  .hashtag:hover p {
+/*    color:var(--sc-blue);
+    cursor: pointer;*/
+  }
+
   }
 
 
@@ -40,35 +121,98 @@
 
 
   </style>
-    <div class="total lighter">
-    <div class="topbar">
+    <div class="totalwidth">
+<!--     <div class="topbar">
+      <span class="flex"></span>
+
+      <p class="tempbalance bold yellow">0.00</p>
+
       <ac-avatar
         id="currentavatar"
         identity="{{identity}}"
         pubkey="{{account}}"
         mode="imgonly"
-        size="small"
+        size="medium"
         on-tap="exit">
       </ac-avatar>
-      <span class="flex"></span>
-
-<!--       <ac-balance
-        refcur="EUR"
-        arcbalance="{{arcbalance}}"
-        ethbalance="{{ethbalance}}">
-      </ac-balance> -->
     </div>
-
+ -->
     <div class="total vertic start paddingsides" id="hashtaglistcontent">
-      <div class="whitespace"></div>
-      <div class="whitespace"></div>
-      <p on-tap="toHashtag" class="big blue bold"># needaride</p>
+      <!-- <div class="whitespace"></div> -->
+      <div class="filtering totalwidth">
+        <p class="grey2">Popular in your location</p>
+      </div>
 
-      <div class="whitespace"></div>
-      <p on-tap="toHashtag" class="big blue bold"># bnb</p>
 
-      <div class="whitespace"></div>
-      <p on-tap="toHashtag" class="big blue bold"># dogwalking</p>
+    <template is="dom-repeat" items="{{hashtagzzz}}">
+      <div on-tap="toHashtag" id="{{item}}" class="hashtag big totalwidth horizont start startjust ">
+          <div class="symbol">
+<!--             <iron-icon icon="sc-icons:hashtagbolderer" class="grey2 big"></iron-icon> -->
+            <p class="semibold grey4">#</p>
+          </div>
+          <p on-tap="toHashtag" class="grey4 bold flex">
+           {{item}}
+          </p>
+      </div>
+
+    </template>
+
+      <!-- <div class="hashtag big totalwidth horizont start startjust">
+          <div class="symbol big">
+            <p class="semibold blue">#</p>
+          </div>
+          <p on-tap="toHashtag" class="blue bold flex">
+           needaride
+          </p>
+      </div>
+      <div class="hashtag big totalwidth horizont start startjust">
+          <div class="symbol big">
+            <p class="semibold blue">#</p>
+          </div>
+          <p on-tap="toHashtag" class="blue bold flex">
+           bnb
+          </p>
+      </div>
+      <div class="hashtag big totalwidth horizont start startjust">
+          <div class="symbol big">
+            <p class="semibold blue">#</p>
+          </div>
+          <p on-tap="toHashtag" class="blue bold flex">
+           testingSC
+          </p>
+      </div>
+
+
+      <div class="hashtag medium totalwidth horizont start startjust">
+          <div class="symbol medium">
+            <p class="semibold grey3">#</p>
+          </div>
+          <p on-tap="toHashtag" class="grey3 bold flex">
+           dev-ops
+          </p>
+      </div>
+
+      <div class="hashtag medium totalwidth horizont start startjust">
+          <div class="symbol medium">
+            <p class="semibold grey3">#</p>
+          </div>
+          <p on-tap="toHashtag" class="grey3 bold flex">
+           it-hive
+          </p>
+      </div>
+
+
+      <div class="hashtag medium totalwidth horizont start startjust">
+          <div class="symbol medium">
+            <p class="semibold grey3">#</p>
+          </div>
+          <p on-tap="toHashtag" class="grey3 bold flex">
+           dog-walking
+          </p>
+      </div> -->
+
+
+
     </div>
 
   </div>
@@ -100,11 +244,11 @@
         value: function() {
           return {
             'entry': [{
-              name: 'fade-in-animation',
+              name: 'slide-from-bottom-animation',
               node:this.$.hashtaglistcontent,
               toPage: this,
               timing: {
-                duration: 700
+                duration: 500
               }
             // },{
             //   name: 'fade-in-animation',
@@ -127,7 +271,7 @@
               node:this.$.hashtaglistcontent,
               fromPage: this,
               timing: {
-                duration: 300
+                duration: 100
               }
             // },{
             //   name: 'fade-out-animation',
@@ -158,8 +302,15 @@
       },
 
     ready: function() {
-    },
-
+        this.hashtagzzz = [
+            'ridesharing',
+            'dev-ops',
+            'testingSC',
+            'dogwalking',
+            'food-delivery',
+            'it-hive'
+        ];
+      },
 
 
     attached: function(){
@@ -170,45 +321,9 @@
       this.fire('exit');
     },
 
-    toHashtag: function() {
-      // this.sharedElements = {
-      //  'hero': this.$.currentavatar,
-      // };
-      this.animationConfig = {
-            'entry': [{
-              name: 'slide-from-left-animation',
-              node:this.$.hashtaglistcontent,
-              toPage: this,
-              timing: {
-                duration: 600
-              }
-            },{
-              name: 'hero-animation',
-              id: 'hero',
-              toPage: this,
-              timing: {
-                  duration: 600
-              }
-            }],
-
-            'exit': [{
-              name: 'slide-left-animation',
-              node:this.$.hashtaglistcontent,
-              fromPage: this,
-              timing: {
-                  duration: 600
-              }
-            },{
-              name: 'hero-animation',
-              id: 'hero',
-              fromPage: this,
-              timing: {
-                  duration: 600
-              }
-            }]
-        };
-
-      this.fire('to-hashtag');
+    toHashtag: function(e) {
+      var selectedhasht = e.detail.sourceEvent.target.parentElement.id;
+      this.fire('hashtag',selectedhasht);
     }
 
   });

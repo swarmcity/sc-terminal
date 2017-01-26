@@ -17,6 +17,8 @@
 
 <link rel="import" href="sc-hashtaglist.html">
 <link rel="import" href="sc-hashtag.html">
+<link rel="import" href="sc-itemdetail.html">
+
 
 <dom-module id="ac-app">
   <template>
@@ -117,7 +119,10 @@
       pubkey="[[account]]"
       on-to-profile="toProfile"
       on-to-walletview="toWalletview"
+
       on-to-hashtaglist="toHashtaglist"
+
+      on-to-hashtag="toHashtag"
       sizeview="{{sizeview}}">
     </ac-home>
 
@@ -145,14 +150,14 @@
       sizeview="{{sizeview}}">
     </ac-walletview>
 
-    <sc-hashtaglist
+<!--     <sc-hashtaglist
       data-page="hashtaglist"
       id="hashtaglist"
       identity="[[identity]]"
       pubkey="[[account]]"
       on-exit="toHome"
       on-to-hashtag="toHashtag">
-    </sc-hashtaglist>
+    </sc-hashtaglist> -->
 
     <sc-hashtag
       data-page="hashtag"
@@ -160,8 +165,20 @@
       identity="[[identity]]"
       pubkey="[[account]]"
       on-exit="toHome"
-      on-back="toHashtaglist">
+      on-to-itemdetail="toItemdetail"
+      currenthasht="{{currenthasht}}">
     </sc-hashtag>
+
+
+    <sc-itemdetail
+      data-page="itemdetail"
+      identity="[[identity]]"
+      pubkey="[[account]]"
+      on-back="backtoHashtag"
+      on-exit="toHome"
+      on-to-hashtag="toHashtag"
+      currenthasht="{{currenthasht}}">
+    </sc-itemdetail>
 
 
 </neon-animated-pages>
@@ -257,6 +274,10 @@
         this.transitionto('/home');
       },
 
+      toItemdetail: function() {
+        this.transitionto('/itemdetail');
+      },
+
       toBackup: function() {
         this.transitionto('/vault/backup');
       },
@@ -271,7 +292,12 @@
       toHashtaglist: function() {
         this.transitionto('/hashtaglist');
       },
-      toHashtag: function() {
+      toHashtag: function(e) {
+        this.currenthasht = e.detail;
+        this.transitionto('/hashtag');
+      },
+
+      backtoHashtag: function() {
         this.transitionto('/hashtag');
       },
 

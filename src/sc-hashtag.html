@@ -7,6 +7,9 @@
 <link rel="import" href="../bower_components/sc-style/sc-style.html">
 <link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
 
+<link rel="import" href="sc-hashtagitem.html">
+
+
 <dom-module id="sc-hashtag">
 <link rel="import" href="../bower_components/sc-style/sc-style.css" type="css">
 
@@ -16,23 +19,122 @@
   :host {
     display: block;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
   }
 
 
   .topbar {
-    padding: 40px 50px 0px 50px;
     height: 14%;
     min-height: 82px;
+    box-sizing:border-box;
+    padding: 40px 50px 20px 50px;
   }
 
-  .hashtagtitle {
-    font-size: 22px;
-    line-height: 24px;
+
+  .paddingsides {
+    padding-left: 4vw;
+    padding-right: 4vw;
   }
+
+
+  .hashtagtitle {
+/*    max-width: 85%;*/
+  }
+
+  .hashtagtitle p {
+    font-size: 42px;
+    line-height: 42px;
+      margin: 0px 0px 2px 0px;
+
+  }
+  .symbol p {
+    font-size: 38px;
+    line-height: 38px;  
+      margin: 0px 0px 0px 0px;
+
+  }
+
+  .symbol {
+    /*min-width: 40px;*/
+    margin-top: 6px;
+  }
+
+  .decliner {
+/*    margin:0px 0px 0px 6px;*/
+  }
+
+  .margright {
+    margin:0px 6px 0px 0px;
+  }
+
+  .wordbreak {
+    word-break: keep-all;
+  }
+
+  .backhash {
+    margin:0px 0px 4px 8px;    
+  }
+
+  sc-hashtagitem {
+    margin: 2vh 0px;
+  }
+
+
+
 
 
   @media all and (min-width: 0) and (max-width: 420px) { 
+
+    .hashtagtotal {
+      @apply(--layout-horizontal);
+      @apply(--layout-end);
+      @apply(--layout-start-justified);
+      margin: 5px 0px 0px 15px;
+     /* margin:20px 0px 10px 0px;*/
+    }
+
+  .hashtagtitle p {
+    font-size: 32px;
+    line-height: 32px;
+      margin: 0px 0px 2px 0px;
+      color: #D9D9D9;
+
+  }
+  .symbol p {
+    font-size: 26px;
+    line-height: 32px;  
+      margin: 0px 0px 0px 0px;
+
+  }
+
+  .symbol {
+    /*min-width: 30px;*/
+      margin: 6px 4px 0px 8px;
+  }
+
+  .decliner {
+    margin:0px 0px 0px 8px;
+  }
+
+  .decliner iron-icon {
+    width: 32px;
+    height: 36px;
+  }
+
+
+  .avatar-box {
+    box-sizing:border-box;
+    padding: 0px 0px 0px 15px;
+/*    background-color: var(--sc-white);*/
+
+  }
+
+  .balance-box {
+
+/*    background-color: rgba(0,0,0,0.025); */
+  }
+
+
   }
 
 
@@ -40,9 +142,22 @@
 
 
   </style>
-    <div class="total vertic centercenter whiteback">
+    <div class="totalwidth vertic centercenter">
     <div class="topbar">
-      <span class="flex"></span>
+<!--        <iron-icon on-tap="exit" id="backbtn" icon="sc-icons:arrowleft" class="decliner grey2 big">back</iron-icon> -->
+    <div class="flex"></div>
+    <div class="balance-box" id="balancebox">
+      <ac-balance
+        class=""
+        refcur="EUR"
+        arcbalance="{{arcbalance}}"
+        ethbalance="{{ethbalance}}"
+        showswt="false"
+        viewmode="small">
+      </ac-balance>
+    </div>
+
+      <div class="avatar-box">
       <ac-avatar
         id="currentavatar"
         identity="{{identity}}"
@@ -51,18 +166,46 @@
         size="small"
         on-tap="exit">
       </ac-avatar>
-<!--       <ac-balance
-        refcur="EUR"
-        arcbalance="{{arcbalance}}"
-        ethbalance="{{ethbalance}}">
-      </ac-balance> -->
     </div>
 
-      <div id="hashtagcontent" class="totalwidth paddingsides flex">
-        <div class="totalwidth horizont center startjust">
-          <iron-icon on-tap="back" icon="sc-icons:arrowleft" class="small">back</iron-icon>
-          <p class="bold hashtagtitle"># needaride</p>
+    </div>
+
+      <div id="hashtagcontent" class="totalwidth paddingsides">
+        <!-- <div class="whitespace"></div> -->
+        <div id="{{item}}" class="hashtagtotal totalwidth">
+          <div class="hashtagtitle horizont start startjust">
+            <div class="symbol">
+              <p class="semibold">#</p>
+            </div>
+            <p class="bold wordbreak">{{currenthasht}}
+            </p>
+          </div>
+          <iron-icon on-tap="exit" icon="sc-icons:decline" class="small backhash grey4">back</iron-icon>
         </div>
+
+        <div class="minispace"></div>
+
+        <template is="dom-repeat" items="{{testitemzzz}}">
+          <sc-hashtagitem
+            offereravatar="{{item.offereravatar}}"
+            offerer="{{item.offerer}}"
+            offererrep="{{item.offererrep}}"
+            offer="{{item.offer}}"
+            offertime="{{item.offertime}}"
+            offeramount="{{item.offeramount}}"
+            nrofreplies="{{item.nrofreplies}}"
+            on-tap="toItemdetail">
+          </sc-hashtagitem>
+        </template>
+
+
+<!--         <div class="totalwidth horizont center startjust">
+          <p class="bold hashtagtitle"># {{currenthasht}}</p>
+          <iron-icon on-tap="back" icon="sc-icons:decline" class="small">back</iron-icon>
+        </div>
+ -->
+
+
       </div>
 
   </div>
@@ -83,7 +226,8 @@
         type: Object,
         value: function() {
           return {
-            'hero': this.$.currentavatar
+            'hero': this.$.currentavatar,
+            'balance': this.$.balancebox
           }
         }
       },
@@ -94,12 +238,222 @@
         value: function() {
           return {
             'entry': [{
-              name: 'slide-from-right-animation',
+              name: 'slide-from-bottom-animation',
+              node:this.$.hashtagcontent,
+              toPage: this,
+              timing: {
+                duration: 700
+              }
+            },{
+              name: 'fade-in-animation',
+              node:this.$.backbtn,
+              fromPage: this,
+              timing: {
+                duration: 125
+              }
+
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                  duration: 600
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'balance',
+              toPage: this,
+              timing: {
+                  duration: 600
+              }
+            }],
+
+            'exit': [{
+              name: 'slide-down-animation',
+              node:this.$.hashtagcontent,
+              fromPage: this,
+              timing: {
+                duration: 700
+              }
+
+            },{
+              name: 'fade-out-animation',
+              node:this.$.backbtn,
+              fromPage: this,
+              timing: {
+                duration: 125
+              }
+
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 600
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'balance',
+              fromPage: this,
+              timing: {
+                  duration: 600
+              }
+              }]
+            }
+          },
+        }
+
+      },
+
+    ready: function() {
+
+        this.testitemzzz = [
+         {
+            offereravatar: 'http://www.american.edu/uploads/profiles/large/chris_palmer_profile_11.jpg',
+            offerer: 'Dick Richards',
+            offer: 'Need a ride to 5711 meadow crest and picked up at 404 6th street. Jackalope',
+            offererrep: '6',
+            offertime: 'a few minutes ago',
+            offeramount: '1233.50',
+            nrofreplies: '4'
+          },
+         {
+            offereravatar: 'http://jcket.com/stoneyroads/files/2014/10/600x/Mr-Oizo.jpg',
+            offerer: 'Mr Oizo',
+            offer: 'Need a ride from 5905 hidden valley trl to 2408 wolf run',
+            offererrep: '22',
+            offertime: 'today at 21:25',
+            offeramount: '330.00',
+            nrofreplies: '0'
+          },
+         {
+            offereravatar: 'http://vignette3.wikia.nocookie.net/southpark/images/c/c2/Butters_(Facebook).jpg/revision/latest?cb=20101010032409',
+            offerer: 'Leopold Butters',
+            offer: 'I need a pick up from 2795 pleasant vally',
+            offererrep: '398',
+            offertime: 'yesterday at 19:45',
+            offeramount: '330.00',
+            nrofreplies: '4'
+          },          
+         {
+            offereravatar: 'http://jcket.com/stoneyroads/files/2014/10/600x/Mr-Oizo.jpg',
+            offerer: 'Mr Oizo',
+            offer: 'Need a ride pick up at walmart on ben white and dropped off at 5711 meadow crest',
+            offererrep: '22',
+            offertime: '2 days ago',
+            offeramount: '330.00',
+            nrofreplies: '0'
+          },
+        ];
+    },
+
+
+    attached: function(){
+    
+    },
+
+    // back: function(){
+    //   this.fire('exit');
+    // },
+
+    exit: function(){
+
+      this.sharedElements = {
+            'hero': this.$.currentavatar,
+            'balance': this.$.balancebox
+        };
+
+      this.animationConfig = {
+           'entry': [{
+              name: 'slide-from-bottom-animation',
+              node:this.$.hashtagcontent,
+              toPage: this,
+              timing: {
+                duration: 700
+              }
+            },{
+              name: 'fade-in-animation',
+              node:this.$.backbtn,
+              fromPage: this,
+              timing: {
+                duration: 125
+              }
+
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                  duration: 600
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'balance',
+              toPage: this,
+              timing: {
+                  duration: 600
+              }
+            }],
+
+            'exit': [{
+              name: 'fade-out-animation',
+              node:this.$.hashtagcontent,
+              fromPage: this,
+              timing: {
+                duration: 125
+              }
+
+            },{
+              name: 'fade-out-animation',
+              node:this.$.backbtn,
+              fromPage: this,
+              timing: {
+                duration: 125
+              }
+
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 600
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'balance',
+              fromPage: this,
+              timing: {
+                  duration: 600
+              }
+              }]
+        };
+
+      this.fire('exit');
+    },
+
+    toItemdetail: function(e){
+
+
+      this.sharedElements = {
+          'hero': this.$.currentavatar,
+        };
+
+      this.animationConfig = {
+            'entry': [{
+              name: 'slide-from-left-animation',
               node:this.$.hashtagcontent,
               toPage: this,
               timing: {
                 duration: 600
               }
+            },{
+              name: 'fade-in-animation',
+              node:this.$.backbtn,
+              fromPage: this,
+              timing: {
+                duration: 200
+              }
+
             }, {
               name: 'hero-animation',
               id: 'hero',
@@ -110,11 +464,19 @@
             }],
 
             'exit': [{
-              name: 'slide-right-animation',
+              name: 'slide-left-animation',
               node:this.$.hashtagcontent,
               fromPage: this,
               timing: {
                 duration: 600
+              }
+
+            },{
+              name: 'fade-out-animation',
+              node:this.$.backbtn,
+              fromPage: this,
+              timing: {
+                duration: 200
               }
 
             }, {
@@ -125,25 +487,10 @@
                   duration: 200
               }
               }]
-            }
-          },
-        }
+        };
 
-      },
 
-    ready: function() {
-    },
-
-    attached: function(){
-    
-    },
-
-    back: function(){
-      this.fire('back');
-    },
-
-    exit: function(){
-      this.fire('exit');
+      this.fire('to-itemdetail');
     }
   });
 </script>
