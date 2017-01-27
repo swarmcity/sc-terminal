@@ -94,15 +94,15 @@
     }
 
   .hashtagtitle p {
-    font-size: 32px;
-    line-height: 32px;
+    font-size: 26px;
+    line-height: 34px;
       margin: 0px 0px 2px 0px;
       color: #D9D9D9;
 
   }
   .symbol p {
-    font-size: 26px;
-    line-height: 32px;  
+    font-size: 24px;
+    line-height: 26px; 
       margin: 0px 0px 0px 0px;
 
   }
@@ -134,6 +134,28 @@
 /*    background-color: rgba(0,0,0,0.025); */
   }
 
+  .addbtn {
+/*    position: fixed;
+    top: 76vh;
+    right: 7vw;*/
+    margin: 25px 0px 15px 0px; 
+    font-size: 25px;
+
+  }
+
+  .addspace {
+    box-sizing:border-box;
+    padding: 18px;
+    /*border: 3px dashed rgba(0,0,0,0.075);*/
+    border-radius: 5px;
+    margin: 20px 0px 20px 0px; 
+  }
+
+
+  .addspace p {
+    font-size: 22px;
+    margin: 0px 0px 6px 14px;
+  }
 
   }
 
@@ -183,7 +205,8 @@
           <iron-icon on-tap="exit" icon="sc-icons:decline" class="small backhash grey4">back</iron-icon>
         </div>
 
-        <div class="minispace"></div>
+        <paper-button class="bigbtn left blue lighterer totalwidth addbtn" on-tap="tonewItem" noink>+ new offer</paper-button>
+
 
         <template is="dom-repeat" items="{{testitemzzz}}">
           <sc-hashtagitem
@@ -191,6 +214,7 @@
             offerer="{{item.offerer}}"
             offererrep="{{item.offererrep}}"
             offer="{{item.offer}}"
+            offerhashtag="{{item.offerhashtag}}"
             offertime="{{item.offertime}}"
             offeramount="{{item.offeramount}}"
             nrofreplies="{{item.nrofreplies}}"
@@ -205,6 +229,7 @@
         </div>
  -->
 
+      <!-- <paper-icon-button icon="sc-icons:plus" class="big blueback white addbtn shadow" on-tap="newOffer">new offer</paper-icon-button> -->
 
       </div>
 
@@ -312,6 +337,7 @@
             offereravatar: 'http://www.american.edu/uploads/profiles/large/chris_palmer_profile_11.jpg',
             offerer: 'Dick Richards',
             offer: 'Need a ride to 5711 meadow crest and picked up at 404 6th street. Jackalope',
+            offerhashtag: '#ridesharing',
             offererrep: '6',
             offertime: 'a few minutes ago',
             offeramount: '1233.50',
@@ -321,6 +347,7 @@
             offereravatar: 'http://jcket.com/stoneyroads/files/2014/10/600x/Mr-Oizo.jpg',
             offerer: 'Mr Oizo',
             offer: 'Need a ride from 5905 hidden valley trl to 2408 wolf run',
+            offerhashtag: '#ridesharing',
             offererrep: '22',
             offertime: 'today at 21:25',
             offeramount: '330.00',
@@ -330,6 +357,7 @@
             offereravatar: 'http://vignette3.wikia.nocookie.net/southpark/images/c/c2/Butters_(Facebook).jpg/revision/latest?cb=20101010032409',
             offerer: 'Leopold Butters',
             offer: 'I need a pick up from 2795 pleasant vally',
+            offerhashtag: '#ridesharing',
             offererrep: '398',
             offertime: 'yesterday at 19:45',
             offeramount: '330.00',
@@ -339,6 +367,7 @@
             offereravatar: 'http://jcket.com/stoneyroads/files/2014/10/600x/Mr-Oizo.jpg',
             offerer: 'Mr Oizo',
             offer: 'Need a ride pick up at walmart on ben white and dropped off at 5711 meadow crest',
+            offerhashtag: '#ridesharing',
             offererrep: '22',
             offertime: '2 days ago',
             offeramount: '330.00',
@@ -431,11 +460,16 @@
       this.fire('exit');
     },
 
+    tonewItem: function(){
+      this.fire('to-newitem');
+    },
+
     toItemdetail: function(e){
 
 
       this.sharedElements = {
           'hero': this.$.currentavatar,
+          'balance': this.$.balancebox
         };
 
       this.animationConfig = {
@@ -461,6 +495,14 @@
               timing: {
                   duration: 200
               }
+            }, {
+              name: 'hero-animation',
+              id: 'balance',
+              toPage: this,
+              timing: {
+                  duration: 200
+              }
+
             }],
 
             'exit': [{
@@ -486,6 +528,14 @@
               timing: {
                   duration: 200
               }
+
+              }, {
+                name: 'hero-animation',
+                id: 'balance',
+                fromPage: this,
+                timing: {
+                    duration: 200
+                }
               }]
         };
 

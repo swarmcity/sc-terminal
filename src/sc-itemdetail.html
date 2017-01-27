@@ -192,6 +192,14 @@
   .notopborder {
     border-top: none;
   }  
+  .avatar-box {
+    box-sizing:border-box;
+    padding: 0px 0px 0px 15px;
+/*    background-color: var(--sc-white);*/
+
+  }
+
+
 /*
 
   .paddingsides {
@@ -278,6 +286,18 @@
     <div class="topbar">
        <iron-icon on-tap="toHashtag" id="backbtn" icon="sc-icons:arrowleft" class="decliner grey2 big">back</iron-icon>
       <span class="flex"></span>
+
+    <div class="balance-box" id="balancebox">
+      <ac-balance
+        refcur="EUR"
+        arcbalance="{{arcbalance}}"
+        ethbalance="{{ethbalance}}"
+        showswt="false"
+        viewmode="small">
+      </ac-balance>
+    </div>
+
+      <div class="avatar-box">
       <ac-avatar
         id="currentavatar"
         identity="{{identity}}"
@@ -286,11 +306,8 @@
         size="small"
         on-tap="exit">
       </ac-avatar>
-<!--       <ac-balance
-        refcur="EUR"
-        arcbalance="{{arcbalance}}"
-        ethbalance="{{ethbalance}}">
-      </ac-balance> -->
+    </div>
+
     </div>
 <!--       <div class="whitespace"></div>
       <div class="whitespace"></div> -->
@@ -375,7 +392,6 @@
                     <div class="totalwidth horizont start startjust">
 
                     <ac-avatar
-                      id="currentavatar"
                       identity="{{identity}}"
                       pubkey="{{account}}"
                       mode="imgonly"
@@ -456,7 +472,8 @@
         type: Object,
         value: function() {
           return {
-            'hero': this.$.currentavatar
+            'hero': this.$.currentavatar,
+            'balance': this.$.balancebox
           }
         }
       },
@@ -488,6 +505,13 @@
               timing: {
                   duration: 200
               }
+            }, {
+              name: 'hero-animation',
+              id: 'balance',
+              toPage: this,
+              timing: {
+                  duration: 200
+              }
             }],
 
             'exit': [{
@@ -509,6 +533,14 @@
             }, {
               name: 'hero-animation',
               id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 200
+              }
+
+            }, {
+              name: 'hero-animation',
+              id: 'balance',
               fromPage: this,
               timing: {
                   duration: 200
@@ -608,6 +640,78 @@
     },
 
     toHashtag: function(){
+
+      this.sharedElements = {
+            'hero': this.$.currentavatar,
+            'balance': this.$.balancebox
+        };
+
+      this.animationConfig = {
+           'entry': [{
+            //   name: 'slide-from-bottom-animation',
+            //   node:this.$.hashtagcontent,
+            //   toPage: this,
+            //   timing: {
+            //     duration: 700
+            //   }
+            // },{
+            //   name: 'fade-in-animation',
+            //   node:this.$.backbtn,
+            //   fromPage: this,
+            //   timing: {
+            //     duration: 125
+            //   }
+
+            // }, {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                  duration: 600
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'balance',
+              toPage: this,
+              timing: {
+                  duration: 600
+              }
+            }],
+
+            'exit': [{
+            //   name: 'fade-out-animation',
+            //   node:this.$.hashtagcontent,
+            //   fromPage: this,
+            //   timing: {
+            //     duration: 125
+            //   }
+
+            // },{
+            //   name: 'fade-out-animation',
+            //   node:this.$.backbtn,
+            //   fromPage: this,
+            //   timing: {
+            //     duration: 125
+            //   }
+
+            // }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 600
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'balance',
+              fromPage: this,
+              timing: {
+                  duration: 600
+              }
+              }]
+        };
+
+
       this.fire('to-hashtag');
     },
 

@@ -18,6 +18,7 @@
 <link rel="import" href="sc-hashtaglist.html">
 <link rel="import" href="sc-hashtag.html">
 <link rel="import" href="sc-itemdetail.html">
+<link rel="import" href="sc-newitem.html">
 
 
 <dom-module id="ac-app">
@@ -166,6 +167,7 @@
       pubkey="[[account]]"
       on-exit="toHome"
       on-to-itemdetail="toItemdetail"
+      on-to-newitem="toNewitem"
       currenthasht="{{currenthasht}}">
     </sc-hashtag>
 
@@ -180,6 +182,17 @@
       currenthasht="{{currenthasht}}">
     </sc-itemdetail>
 
+
+
+    <sc-newitem
+      data-page="newitem"
+      identity="[[identity]]"
+      pubkey="[[account]]"
+      on-back="backtoHashtag"
+      on-exit="toHome"
+      on-to-hashtag="toHashtag"
+      currenthasht="{{currenthasht}}">
+    </sc-newitem>
 
 </neon-animated-pages>
 </template>
@@ -301,6 +314,9 @@
         this.transitionto('/hashtag');
       },
 
+      toNewitem: function() {
+        this.transitionto('/newitem');
+      },
 
       toWalletview: function() {
         this.transitionto('/walletview');
