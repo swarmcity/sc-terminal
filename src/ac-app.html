@@ -2,11 +2,9 @@
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-avatar.html">
 <link rel="import" href="ac-balance.html">
 <link rel="import" href="ac-vault.html">
-<link rel="import" href="ac-config.html">
 <link rel="import" href="ac-web3.html">
 <link rel="import" href="ac-profile.html">
 <link rel="import" href="ac-preferences.html">
@@ -51,18 +49,15 @@
     <!-- app-location binds with the URL and produces a route for
     app-route elements to consume. -->
     <app-location route="{{route}}" use-hash-as-path></app-location>
-    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
 
     <!-- app-routes parse route paths based on the their `pattern`.
     Parameters are extracted into the `data` object. The rest of the path that
     comes after the `pattern` is put into the `tail` object, which can be
     passed to the `route` property of downstream app-routes. -->
-    <app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{pageTail}}"></app-route>
-<!-- HALLO -{{vaultstatus}}- -{{walletstatus}}- -{{swtbalance}}-
- -->
-  <ac-config web3host="{{web3host}}"></ac-config>
+    <app-route route="[[route]]" pattern="/:page" data="{{data}}" tail="{{pageTail}}"></app-route>
 
-  <ac-web3 host="{{web3host}}" web3="{{web3}}" keystore="[[keystore]]"></ac-web3>
+
+  <ac-web3 web3="{{web3}}" keystore="[[keystore]]"></ac-web3>
 
   <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[data.page]]">
 
@@ -86,7 +81,7 @@
       on-externalpk="toexternalpk"
       on-enter="enter"  
       route="[[pageTail]]"
-      sizeview="{{sizeview}}"
+      
       >
     </ac-intro>
 
@@ -100,7 +95,6 @@
       on-ready="checkready"
       status="{{vaultstatus}}"
       on-backupexit="toProfile"
-      sizeview="{{sizeview}}"
       on-exit="reset"
       >
     </ac-vault>
@@ -129,7 +123,7 @@
       balanceupdating="[[balanceupdating]]"
       on-to-profile="toProfile"
       on-to-walletview="toWalletview"
-      sizeview="{{sizeview}}">
+      >
     </ac-home>
 
 
@@ -143,7 +137,7 @@
       on-backup="toBackup"
       on-logout="logout"
       on-deletevault="deletevault"
-      sizeview="{{sizeview}}">
+      >
     </ac-profile>
 
     <ac-walletview
@@ -154,16 +148,10 @@
       identity="[[identity]]"
       account="[[account]]"
       on-exit="toHome"
-      sizeview="{{sizeview}}"
       updating="[[balanceupdating]]"
 
       >
     </ac-walletview>
-
-<!--       arcbalance="[[arcbalance]]"
-      swtbalance="[[swtbalance]]"
-      ethbalance="[[ethbalance]]"
- -->
  </neon-animated-pages>
 </template>
 
@@ -172,10 +160,6 @@
       is: 'ac-app',
 
       properties: {
-
-        sizeview: {
-          type: String
-         },
       },
 
       observers: [
@@ -233,18 +217,6 @@
         this.transitionto('/intro/welcome');
       },
 
-      // vaultUnlocked: function(){
-      //   this.transitionto('/home');
-      // },
-
-      // vaultLocked: function(){
-      //   this.transitionto('/vault/unlock');
-      // },
-
-      // noVault: function(){
-      //   this.transitionto('/intro/newuser');
-      // },
-
       createNewVault: function(){
         this.transitionto('/vault/createnew');
       },
@@ -272,9 +244,6 @@
       },
 
       attached: function() {
-         //this.transitionto('/intro/welcome');
-          //this.$.thevault.activate();
-          //console.log("OP APP...............",this.sizeview);
       },
 
       toWallet: function() {
