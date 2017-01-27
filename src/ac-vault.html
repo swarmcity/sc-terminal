@@ -138,6 +138,11 @@
     padding-bottom: 15vh;
   }
 
+  .backupbtn {
+    width: 100%;
+    max-width: 300px;
+  }
+
 
     </style>
 
@@ -308,7 +313,7 @@
           <div class="pascanvasunderexit vertic centercenter paddingsides">        
             <a id="downloadAnchorElem" style="display:none"></a>
             <template is="dom-if" if="{{backup_download}}">
-              <paper-button on-tap="downloadvault" class="grey4 bigbtn lighter centertxt">Download your backup-file</paper-button>
+              <paper-button on-tap="downloadvault" class="blue bigbtn lighter centertxt backupbtn">Download your backup-file</paper-button>
             </template>
             <template is="dom-if" if="{{backup_unavailable}}">
               <p class="bold">Oops!</p>
@@ -318,7 +323,8 @@
               <div class="whitespace"></div>
               <paper-button on-tap="backupexit" class="grey4 grey1back small shadow" noink>back to profile</paper-button>
             </template>
-            <paper-button on-tap="vaulttoipfsroute" class="grey4 bigbtn lighter centertxt">Backup to IPFS</paper-button>            
+            <div class="whitespace"></div>
+            <paper-button on-tap="vaulttoipfsroute" class="blue bigbtn lighter centertxt backupbtn">Backup to IPFS</paper-button>            
           </div>
         </div>
       </div>
@@ -330,11 +336,18 @@
             <span class="flex"></span>
             <iron-icon class="grey4" icon="sc-icons:decline" on-tap="backupexit">back</iron-icon>
           </div>
-          <div>
-              <p class="centertxt">Warning make sure you have a strong password set on your vault before uploading it to IPFS.</p>
+          <div class="pascanvasunderexit vertic centercenter paddingsides">        
+<!--               <p class="centertxt">Warning make sure you have a strong password set on your vault before uploading it to IPFS.</p>
               <div class="whitespace"></div>
-              <div class="whitespace"></div>             
-            <paper-button on-tap="vaulttoipfs" class="grey4 bigbtn lighter centertxt">Backup to IPFS</paper-button>            
+              <div class="whitespace"></div>        -->   
+
+              <p class="bold centertxt">IPFS is the Distributed Web</p><br>
+            <p class="centertxt">A peer-to-peer hypermedia protocol to make the web faster, safer, and more open.</p><br>   
+            <a href="https://ipfs.io/" target="_blank" class="centertxt blue">learn more</a>   
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <paper-button on-tap="vaulttoipfs" class="blue bigbtn lighter centertxt">Backup to IPFS</paper-button>            
           </div>
         </div>
       </div>
@@ -374,7 +387,7 @@
             <div class="maxwidth">
               <h1 class="bold blue">Allright!</h1>
               <div class="whitespace"></div>
-              <p>We just need a password (min. 5 characters) to create your profile.</p>
+              <p>We just need a password to create your profile.</p>
             </div>
             <div class="flex"></div>
  
@@ -421,7 +434,7 @@
               <p>Almost there. You need to unlock your wallet to do the conversion.</p>
             </div>
             <div class="flex"></div>
-            <ac-password id="newuser" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
+            <ac-password id="newuser" passwordlabel="Password of your AC-wallet" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
           </div>
         </div>
       <!--        

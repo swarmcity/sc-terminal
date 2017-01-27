@@ -225,7 +225,7 @@
           <div class="whitespace"></div>
 
           <div class=""> 
-            <p class="grey4"><span class="reg">At conversion rate 1:1, you will receive <span class="bold">{{formatpong(arcbalance)}} SWT</span>.<br>Converting the tokens might take a couple of minutes, hang on.
+            <p class="grey4"><span class="reg">At conversion rate 1:1, you will receive <span class="bold">{{formatpong(arcbalance)}} SWT</span>.<br>Converting the tokens might take a couple of minutes. Don't close your browser.
             </p>
           </div>
 
@@ -265,9 +265,9 @@
                         <div class="minispace"></div>          
 
                   <div class="totalwidth itemz">
-                  <p class="grey3">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction. Send 0.1 ETH to your wallet address (<span class="accountpub grey4 reg">{{account}}</span>) and try again.</p>  
+                  <p class="grey3">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction. Send 0.1 ETH to your wallet address <span class="accountpub grey4 reg">{{account}}</span> and try again.</p>  
                   <div class="whitespace"></div>
-                    <paper-button class="blue whiteback shadow yesno centertxt" on-tap="checketheragain" noink>Refresh <iron-icon icon="sc-icons:refresh1" class=" margleft blue"></iron-icon></paper-button>
+                    <paper-button class="blue whiteback shadow yesno centertxt" on-tap="checketheragain" noink>Refresh ETH balance <iron-icon icon="sc-icons:refresh1" class=" margleft blue"></iron-icon></paper-button>
                   <!-- <div class="dotline"></div> -->
                         <div class="whitespace"></div>          
 
@@ -357,10 +357,12 @@
 
           <div class="whitespace"></div>
           <template is="dom-if" if="{{!conversiondone}}">
+            <template is="dom-if" if="{{!convertingstarted}}">
             <template is="dom-if" if="{{hasenoughgas}}">
             <div class="horizontal center startjust yesnobtns">
               <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="startconvert" noink>Convert my ARC to SWT</paper-button>
             </div>
+            </template>
             </template>
           </template>
 
