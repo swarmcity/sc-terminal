@@ -415,14 +415,14 @@ Polymer({
   properties: {
     route: {
       type: Object,
-      notify: true,
     },
     web3: {
       type: Object,
+      observer: 'update'
     },
     account: {
       type: String,
-      observer: '_account'
+      observer: 'update'
     },
   },
 
@@ -432,14 +432,14 @@ Polymer({
     this.conversiondone = false;
   },
 
-  _account: function(){
-    this.update();
-  },
+  // _account: function(){
+  //   this.update();
+  // },
 
   attached: function() {
     console.log('ac-swtconversion attached');
 
-    this.update();
+    //this.update();
 
     this.exitAnimation = "slide-left-animation";
     this.entryAnimation = "slide-from-right-animation";
@@ -464,9 +464,11 @@ Polymer({
   },
 
   update: function() {
-    if (!this.account) {
+    if (!this.account || !this.web3) {
+      console.log('ac-swtconversion -> not READY',this.account,this.web3);
       return;
     }
+     console.log('ac-swtconversion -> WE ARE READY');
     var self = this;
     if (!self.SWTTokenInstance) {
       this.$.helpers.getjson('./contracts/ARCToken.json', function(err, tokendata) {

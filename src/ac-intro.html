@@ -243,11 +243,12 @@
       },
 
       exit: function(){
-        this.exitAnimationintro = "slide-right-animation";
-        this.entryAnimationintro = "slide-from-left-animation";
-        this.set('route.path', '/welcome');
+//        this.exitAnimationintro = "slide-right-animation";
+//        this.entryAnimationintro = "slide-from-left-animation";
+//        this.set('route.path', '/welcome');
         this.exitAnimationintro = "slide-left-animation";
         this.entryAnimationintro = "slide-from-right-animation";
+        this.fire('exit');
       },
 
       tonewuser: function() {

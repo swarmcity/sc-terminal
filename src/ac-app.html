@@ -67,7 +67,7 @@
       keystore="[[keystore]]"
       web3="[[web3]]"
       account="[[account]]"
-      on-exit="reset"
+      on-exit="logout"
       on-success="toHome"
       on-converted="converted"
       >
@@ -80,8 +80,8 @@
       on-importpk="toimportpk"
       on-externalpk="toexternalpk"
       on-enter="enter"  
+      on-exit="toAppStart"
       route="[[pageTail]]"
-      
       >
     </ac-intro>
 
@@ -95,7 +95,7 @@
       on-ready="checkready"
       status="{{vaultstatus}}"
       on-backupexit="toProfile"
-      on-exit="reset"
+      on-exit="toAppStart"
       >
     </ac-vault>
 
@@ -193,7 +193,7 @@
         }
 
         if (this.vaultstatus == 'novault') {
-          return this.transitionto('/intro/welcome')
+          return this.toAppStart();
         }
 
       },
@@ -212,8 +212,8 @@
         
       },
 
-      reset: function(){
-        //console.log('reset');
+      toAppStart: function(){
+        //console.log('toAppStart');
         this.transitionto('/intro/welcome');
       },
 
@@ -257,7 +257,8 @@
 
       deletevault: function(){
         this.$.thevault.deleteVault();
-        this.transitionto('/intro/welcome');
+        this.toAppStart();
+//        this.transitionto('/intro/welcome');
       },
 
       toHome: function() {
