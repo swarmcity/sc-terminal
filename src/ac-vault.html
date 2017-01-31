@@ -278,6 +278,20 @@
         </div>
       </neon-animatable>
 
+    <!-- import a keyfile -->
+      <neon-animatable data-page="importipfs">
+typt awen IPFS hash eens hiere daanke :
+        <template is="dom-if" if="{{_is(importipfsstatus,'init')}}">
+          <paper-input class="" id="importipfshash" label="repeat" type="text" value="{{importipfshash}}"></paper-input>
+          <paper-button on-tap="importipfshashuploadclick" class="blue lighter bigbtn shadow centertxt" noink>restore this</paper-button>
+        </template>
+        <template is="dom-if" if="{{_is(importipfsstatus,'downloading')}}">
+        DOWNLOADSING WALLET FROM IPFS
+        </template>
+        <template is="dom-if" if="{{_is(importipfsstatus,'error')}}">
+        ERRORZ
+        </template>
+      </neon-animatable>
 
       <!-- import a keyfile -->
       <neon-animatable data-page="importfile">
@@ -626,6 +640,14 @@
         document.querySelector('#uploaditem').click();
       },
 
+
+      importipfshashuploadclick: function(){
+        console.log('download IPFS hash',this.importipfshash);
+        self.importipfsstatus = 'downloading';
+//        self.importipfsstatus = 'error';
+
+      },
+
       readSingleFile: function(e) {
         var self = this;
         var file = e.target.files[0];
@@ -713,6 +735,7 @@
         this.pkshowpassw = false;
         this.uploadingwallet = false;
         this.vaulttoipfsstatus = 'init';
+        this.importipfsstatus = 'init';
         //this.jsonfilename = "walletfiletjé.json"
 
         this.backup_download = true;
