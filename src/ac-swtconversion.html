@@ -11,10 +11,11 @@
 <link rel="import" href="sc-spinner.html">
 <link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-config.html">
+<link rel="import" href="sc-ethereumtx.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 
 <dom-module id="ac-swtconversion">
-<link rel="import" href="../bower_components/sc-style/sc-style.css" type="css">
+
 
 <style>
 :host {
@@ -166,6 +167,7 @@
 <template>
 
   <ac-config config="{{config}}"></ac-config>
+  <sc-ethereumtx id="etx"></sc-ethereumtx>
   <ac-helpers id="helpers"></ac-helpers>
   <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
 
@@ -427,19 +429,19 @@ Polymer({
   },
 
   ready: function() {
+    this.reset();
+  },
+
+  reset: function(){
     this.hasenoughgas = false;
     this.needstoconvert = false;
     this.conversiondone = false;
   },
 
-  // _account: function(){
-  //   this.update();
-  // },
-
   attached: function() {
     console.log('ac-swtconversion attached');
 
-    //this.update();
+    this.update();
 
     this.exitAnimation = "slide-left-animation";
     this.entryAnimation = "slide-from-right-animation";
@@ -459,12 +461,11 @@ Polymer({
     var self = this;
     setTimeout(function() {
       self.update();
-
     }, 1000);
   },
 
   update: function() {
-    if (!this.account || !this.web3) {
+    if (!this.account || !this.web3 || !this.config) {
       console.log('ac-swtconversion -> not READY',this.account,this.web3);
       return;
     }
@@ -516,7 +517,9 @@ Polymer({
   },
 
   formatpong: function(val) {
-    return (0 + (val / 1e18)).toFixed(2);
+    var f = (0 + (val / 1e18)).toFixed(2);
+    debugger;
+    return f;
   },
 
   exit: function(){

@@ -608,7 +608,7 @@
       },
 
       createvaultfrompk: function(e) {
-        debugger;
+//        debugger;
         this.creatingvault = true;
         this.password = e.detail.password;
         this.createVault(0, function() {
@@ -656,10 +656,12 @@
         
         if (!this.hasVault()) {
           this.status = 'novault';
+          console.log('ac-vault: status=',this.status,'fires READY');
           return this.fire('ready');
         };
         if (!this.password) {
           this.status = 'locked';
+          console.log('ac-vault: status=',this.status,'fires READY');
           return this.fire('ready');
         }
         // so we have a vault and a password... try to open it.
@@ -667,9 +669,11 @@
         this.checkpassword(function(err, pwdcorrect) {
           if (pwdcorrect) {
             self.status = 'unlocked';
+            console.log('ac-vault: status=',self.status,'fires READY');
             return self.fire('ready');
           } else {
             self.status = 'locked';
+            console.log('ac-vault: status=',self.status,'fires READY');
             return self.fire('ready');
           }
         });

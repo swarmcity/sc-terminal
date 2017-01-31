@@ -1,7 +1,14 @@
 {
   "entrypoint": "index.html",
   "shell": "src/ac-app.html",
-  "fragments": [   
+  "fragments": [
+    "src/ac-vault.html",
+    "src/ac-web3.html",
+    "src/ac-profile.html",
+    "src/ac-wallet.html",
+    "src/ac-walletview.html",
+    "src/ac-home.html",
+    "src/ac-swtconversion.html"
   ],
   "sourceGlobs": [
    "src/**/*",

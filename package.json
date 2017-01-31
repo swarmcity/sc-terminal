@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "polymer build && ipfs add -r build/bundled"
+    "deploy": "polymer build && ipfs add -r build/unbundled"
   },
   "repository": {
     "type": "git",

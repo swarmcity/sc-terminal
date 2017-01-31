@@ -2,17 +2,14 @@
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="ac-avatar.html">
-<link rel="import" href="ac-balance.html">
-<link rel="import" href="ac-vault.html">
-<link rel="import" href="ac-web3.html">
-<link rel="import" href="ac-profile.html">
-<link rel="import" href="ac-preferences.html">
-<link rel="import" href="ac-wallet.html">
-<link rel="import" href="ac-walletview.html">
+<!-- <link rel="import" href="ac-vault.html"> -->
+<!-- <link rel="import" href="ac-web3.html"> -->
+<!-- <link rel="import" href="ac-profile.html"> -->
+<!-- <link rel="import" href="ac-wallet.html"> -->
+<!-- <link rel="import" href="ac-walletview.html"> -->
 <link rel="import" href="ac-intro.html">
-<link rel="import" href="ac-home.html">
-<link rel="import" href="ac-swtconversion.html">
+<!-- <link rel="import" href="ac-home.html"> -->
+<!-- <link rel="import" href="ac-swtconversion.html"> -->
 
 <dom-module id="ac-app">
   <template>
@@ -46,23 +43,33 @@
 
 
   </style>
-    <!-- app-location binds with the URL and produces a route for
-    app-route elements to consume. -->
     <app-location route="{{route}}" use-hash-as-path></app-location>
+    <app-route route="[[route]]" pattern="/:page" data="{{routedata}}" tail="{{pageTail}}"></app-route>
+    <ac-web3 web3="{{web3}}" keystore="[[keystore]]"></ac-web3>
+    <ac-wallet
+        id="wallet"
+        web3="[[web3]]"    
+        pubkey="[[account]]"
+        updating="{{balanceupdating}}"
+        arcbalance="{{arcbalance}}"
+        swtbalance="{{swtbalance}}"
+        ethbalance="{{ethbalance}}"
+        status="{{walletstatus}}"
+        on-ready="checkready"
+        >
+    </ac-wallet>
 
-    <!-- app-routes parse route paths based on the their `pattern`.
-    Parameters are extracted into the `data` object. The rest of the path that
-    comes after the `pattern` is put into the `tail` object, which can be
-    passed to the `route` property of downstream app-routes. -->
-    <app-route route="[[route]]" pattern="/:page" data="{{data}}" tail="{{pageTail}}"></app-route>
+  <neon-animated-pages attr-for-selected="data-page" selected="[[parsedpage]]">
 
-
-  <ac-web3 web3="{{web3}}" keystore="[[keystore]]"></ac-web3>
-
-  <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[data.page]]">
+    <div
+        data-page="loading"
+    >--LOADING--
+      
+    </div>
 
     <ac-swtconversion
       data-page="swt"
+      id="swt"
       route="[[pageTail]]"
       keystore="[[keystore]]"
       web3="[[web3]]"
@@ -86,7 +93,7 @@
     </ac-intro>
 
     <ac-vault
-      id="thevault"
+      id="vault"
       data-page="vault"
       route="[[pageTail]]"
       currentkeystore="{{keystore}}"
@@ -98,21 +105,9 @@
       on-exit="toAppStart"
       >
     </ac-vault>
-
-    <ac-wallet
-        id="wallet"
-        web3="[[web3]]"    
-        pubkey="[[account]]"
-        updating="{{balanceupdating}}"
-        arcbalance="{{arcbalance}}"
-        swtbalance="{{swtbalance}}"
-        ethbalance="{{ethbalance}}"
-        status="{{walletstatus}}"
-        on-ready="checkready"
-        >
-    </ac-wallet>
  
     <ac-home
+      id="home"
       data-page="home"
       keystore="[[keystore]]"
       identity="[[identity]]"
@@ -163,11 +158,11 @@
       },
 
       observers: [
-        '_onRoutePathChanged(route.path)'
+        '_onRoutePathChanged(route.path)',
+        '_onRouteDataChanged(routedata.page)'
       ],
 
       checkready: function(e) {
-
         if (!this.vaultstatus) {
           return;
         }
@@ -193,21 +188,73 @@
         }
 
         if (this.vaultstatus == 'novault') {
-          return this.toAppStart();
+          return  this.transitionto('/intro/newuser');
         }
 
       },
 
       _onRoutePathChanged: function(path) {
          console.log('ac-app -> _onRoutePathChanged',this.route.path);
+
+
          // We need to check if we have a passwd in sessionstorage.
+      },
+
+      _onRouteDataChanged: function(page) {
+
+        if (!page){
+          this.parsedpage = 'loading';
+          this.lazyLoad('web3', 'ac-web3.html');             
+          this.lazyLoad('wallet', 'ac-wallet.html');
+          this.lazyLoad('vault', 'ac-vault.html');
+        }else{
+          this.parsedpage = page;
+        }
+
+        if (page == 'vault') {
+          this.lazyLoad('vault', 'ac-vault.html');
+          this.lazyLoad('web3', 'ac-web3.html');
+          this.lazyLoad('wallet', 'ac-wallet.html');
+          this.lazyLoad('profile', 'ac-profile.html');
+        }
+        if (page == 'home') {
+          this.lazyLoad('vault', 'ac-vault.html');
+          this.lazyLoad('web3', 'ac-web3.html');
+          this.lazyLoad('wallet', 'ac-wallet.html');
+          this.lazyLoad('profile', 'ac-profile.html');          
+          this.lazyLoad('home', 'ac-home.html');
+        }
+        if (page == 'swt') {
+          this.lazyLoad('vault', 'ac-vault.html');
+          this.lazyLoad('web3', 'ac-web3.html');
+          this.lazyLoad('wallet', 'ac-wallet.html');          
+          this.lazyLoad('swt', 'ac-swtconversion.html');
+        }
+      },
+
+      lazyLoad: function(elementid, filename) {
+
+        if (Polymer.isInstance(this.$[elementid])) {
+          if (this.$[elementid].reset){
+            this.$[elementid].reset();
+          }
+          return;
+        }
+        var url = this.resolveUrl(filename);
+        Polymer.Base.importHref(
+          url, function(){
+            console.log('LAZYLOADER --> ',elementid, 'loaded');
+          }, function() {
+            console.log('Something failed!');
+          }, true
+        );
       },
 
       enter: function(){
         //this.vaultstate
-        //this.$.thevault.activate();
-
-        this.transitionto('/intro/newuser');
+        //this.$.vault.activate();
+        //this.lazyLoad('vault','ac-vault.html');
+        this.transitionto('/');
 
         
       },
@@ -251,12 +298,12 @@
       },
 
       logout: function() {
-        this.$.thevault.closeVault();
+        this.$.vault.closeVault();
         this.transitionto('/vault/unlock');
       },
 
       deletevault: function(){
-        this.$.thevault.deleteVault();
+        this.$.vault.deleteVault();
         this.toAppStart();
 //        this.transitionto('/intro/welcome');
       },
@@ -282,7 +329,7 @@
 
       saveIdentity: function(e) {
         this.identity = e.detail;
-        this.$.thevault.saveVault();
+        this.$.vault.saveVault();
       },
 
       converted: function(){
