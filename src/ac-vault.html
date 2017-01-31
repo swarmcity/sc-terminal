@@ -280,10 +280,30 @@
 
     <!-- import a keyfile -->
       <neon-animatable data-page="importipfs">
-typt awen IPFS hash eens hiere daanke :
+
+        <div class="total vertic centercenter">
+          <div class="topbar">
+            <span class="flex"></span>
+              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+          </div>
+
+          <div class="pascanvasunderexit vertic start paddingsides">
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="maxwidth">
+              <h1 class="bold yellow">Restore a backup from IPFS</h1>
+              <div class="whitespace"></div>
+            </div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+
+
+
         <template is="dom-if" if="{{_is(importipfsstatus,'init')}}">
-          <paper-input class="" id="importipfshash" label="repeat" type="text" value="{{importipfshash}}"></paper-input>
-          <paper-button on-tap="importipfshashuploadclick" class="blue lighter bigbtn shadow centertxt" noink>restore this</paper-button>
+
+          <p class="reg grey4 maxwidth">Enter your IPFS-hash</p>
+          <paper-input class="" id="importipfshash" label="Your ipfs-hash" type="text" value="{{importipfshash}}"></paper-input>
+          <paper-button on-tap="importipfshashuploadclick" class="blue lighter bigbtn shadow centertxt" noink>restore</paper-button>
         </template>
         <template is="dom-if" if="{{_is(importipfsstatus,'downloading')}}">
         DOWNLOADSING WALLET FROM IPFS
@@ -291,6 +311,9 @@ typt awen IPFS hash eens hiere daanke :
         <template is="dom-if" if="{{_is(importipfsstatus,'error')}}">
         ERRORZ
         </template>
+
+          </div>
+
       </neon-animatable>
 
       <!-- import a keyfile -->
@@ -643,7 +666,7 @@ typt awen IPFS hash eens hiere daanke :
 
       importipfshashuploadclick: function(){
         console.log('download IPFS hash',this.importipfshash);
-        self.importipfsstatus = 'downloading';
+        this.importipfsstatus = 'downloading';
 //        self.importipfsstatus = 'error';
 
       },
