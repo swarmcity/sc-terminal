@@ -664,11 +664,22 @@
       },
 
 
-      importipfshashuploadclick: function(){
-        console.log('download IPFS hash',this.importipfshash);
-        this.importipfsstatus = 'downloading';
-//        self.importipfsstatus = 'error';
+      importipfshashuploadclick: function() {
+        console.log('download IPFS hash', this.importipfshash);
 
+        this.importipfsstatus = 'downloading';
+        this.$.ipfs.cat(this.importipfshash, function(err, data) {
+          if (err) {
+            this.importipfsstatus = 'error';
+            this.importipfserrormessage = 'Error downloading IPFS hash: ' + err;
+            return;
+          }
+          if (self._parseVault(data)) {
+            self.saveVault();
+            self.status = 'locked';
+            this.set('route.path', '/uploadunlock');
+          }
+        });
       },
 
       readSingleFile: function(e) {
