@@ -44,14 +44,14 @@
   }
 
   .yesnobtns {
-    width: 100%;
-    max-width: 300px;    
+   
   }
 
 
   .yesno {
     margin: 5px 5px 5px 0px;
     width: 100%;
+    max-width: 250px; 
     text-align: left;
   }
 
@@ -91,6 +91,10 @@
     max-width:420px;
   }
 
+    .tomyethwallet {
+      border-bottom: 2px dotted var(--sc-grey2);
+    padding-bottom: 8px;
+    }
   @media all and (min-width: 0) and (max-width: 420px) { 
   .findyourhive {
       text-align: center;
@@ -104,6 +108,7 @@
       font-size: 44px;
       line-height: 42px;
     }
+
   }
 
     </style>
@@ -172,9 +177,9 @@
           <p class="reg white">Do you own Arcade-tokens (ARC) you want to convert to Swarm City-tokens (SWT)?</p>
         </div>
           <div class="flex"></div>
-          <div class="vertic yesnobtns">
-            <paper-button class="white lighter yesno shadow" on-tap="toimportwallet" noink>Yes, convert my tokens!</paper-button>
-            <paper-button class="white lighter yesno shadow" on-tap="tocreatewallet" noink>Nope, don't have any.</paper-button>
+          <div class="vertic yesnobtns start startjust">
+            <paper-button class="white lighter yesno shadow centertxt" on-tap="toimportwallet" noink>Yes, convert my tokens!</paper-button>
+            <paper-button class="white lighter yesno shadow centertxt" on-tap="tocreatewallet" noink>Nope, don't have any.</paper-button>
           </div>
         </div>
       </neon-animatable>
@@ -191,8 +196,12 @@
           </div>
           <div class="flex"></div>
           <div class="vertic yesnobtns">
-            <paper-button class="blue darker shadow yesno" on-tap="touploadjson" noink>I have a json-file</paper-button>
-            <paper-button class="blue darker shadow yesno" on-tap="toprivatekey" noink>I have a private key</paper-button>
+            <paper-button class="blue darker shadow yesno" on-tap="touploadjson" noink>as a json-file</paper-button>
+            <paper-button class="blue darker shadow yesno" on-tap="toprivatekey" noink>as a print / pdf</paper-button>
+            <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
+            <p on-tap="tomyethwallet" class="semibold grey3 small tomyethwallet">I have Arcade-tokens in a MyEther-Wallet</p>
           </div>
         </div>
       </neon-animatable>
@@ -271,6 +280,10 @@
 
       toprivatekey: function() {
         this.fire('importpk');
+      },
+
+      tomyethwallet: function() {
+        this.fire('importethwallet');
       },
 
       toexternalkey: function() {
