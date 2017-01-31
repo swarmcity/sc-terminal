@@ -192,6 +192,42 @@
       </div>
       </neon-animatable>
 
+
+
+
+      <neon-animatable data-page="importethwallet">
+        <div class="total vertic centercenter">
+          <div class="topbar">
+            <span class="flex"></span>
+              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="deleteVault">back</iron-icon>
+          </div>
+
+          <div class="pascanvasunderexit vertic start paddingwithouttop">
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="maxwidth">
+              <h1 class="bold blue">ARC-tokens<br>in a MyEtherwallet</h1>
+              <div class="whitespace"></div>
+              <p class="reg grey4">Enter the private key you'll find on your wallet.</p>
+            </div>
+            <div class="flex"></div>
+            <div class="totalwidth horizont end startjust maxwidth">
+              <paper-input id="privatekeyinput" label="Private key" type="password" bind-value="{{privatekey::input}}"></paper-input>
+              <paper-icon-button icon="sc-icons:looky" class="grey1back grey4 saveyourwidth" on-tap="pktoggle" noink>show</paper-icon-button>
+            </div>
+            <div class="whitespace"></div>
+            <template is="dom-if" if="{{invalidpk}}">
+              <p class="red bold"><span class="oops">You didn't enter a valid key.</span></p>
+            </template>  
+            <div class="totalwidth horizont center endjust">
+            <paper-icon-button icon="sc-icons:arrowright" class="big whiteback shadow blue" on-tap="pkreceived" noink>next</paper-icon-button>
+            </div>
+          </div>
+      </div>
+      </neon-animatable>
+
+
+
       <!-- second stage in importing PK -->
       <neon-animatable data-page="importpkmakewallet">
         <div class="total vertic centercenter">

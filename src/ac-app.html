@@ -84,6 +84,7 @@
       data-page="intro"
       on-newvault="createNewVault"
       on-importfile="toimportfile"
+      on-importethwallet="toimportethwallet"
       on-importpk="toimportpk"
       on-externalpk="toexternalpk"
       on-enter="enter"  
@@ -284,6 +285,10 @@
 
       toimportfile: function(){
         this.transitionto('/vault/importfile');
+      },
+
+      toimportethwallet: function(){
+        this.transitionto('/vault/importethwallet');
       },
 
       transitionto: function(target){
