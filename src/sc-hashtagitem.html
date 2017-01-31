@@ -166,7 +166,6 @@
           </div>
 
           <div class="flex vertic end centerjust">
-          <p class="small grey2">{{offertime}}</p>
 
           <template is="dom-if" if="{{showreplies}}">
             <div class="nrofreplies horizont centercenter">
@@ -184,7 +183,11 @@
 
 
         </div>
-        <p class="totalwidth offer grey4">{{offer}} <span class="semibold">{{offerhashtag}}</span></p>
+        <p class="totalwidth offer grey4"> 
+          <small class="small grey3">{{offertime}}</small><br>
+          {{offer}} 
+          <span class="semibold"> 
+            {{offerhashtag}}</span></p>
         <div class="totalwidth horizont centercenter">
                     <div class="flex"></div>
           <p class="offeramount bold yellow">{{offeramount}}<span class="offeramountSWT">SWT</span></p>

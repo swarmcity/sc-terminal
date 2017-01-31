@@ -27,7 +27,7 @@
     height: 14%;
     min-height: 82px;
     box-sizing:border-box;
-    padding: 40px 50px 20px 50px;
+    padding: 30px 30px 20px 50px;
   }
 
 
@@ -72,7 +72,7 @@
   }
 
   .backhash {
-    margin:0px 0px 4px 8px;    
+    margin:0px 0px 3px 8px;    
   }
 
   sc-hashtagitem {
@@ -89,27 +89,33 @@
       @apply(--layout-horizontal);
       @apply(--layout-end);
       @apply(--layout-start-justified);
-      margin: 5px 0px 0px 15px;
+      box-sizing:border-box;
+      padding: 5px 15px 0px 15px;
      /* margin:20px 0px 10px 0px;*/
     }
 
+  .hashtagtitle {
+      margin: 0px 0px 10px 0px;
+  }
+
   .hashtagtitle p {
-    font-size: 26px;
-    line-height: 34px;
-      margin: 0px 0px 2px 0px;
-      color: #D9D9D9;
+    font-size: 20px;
+    line-height: 24px;
+/*      margin: 0px 0px 2px 0px;*/
+      color: var(--sc-grey4);
+
 
   }
   .symbol p {
-    font-size: 24px;
-    line-height: 26px; 
+font-size: 19px;
+    line-height: 28px;
       margin: 0px 0px 0px 0px;
 
   }
 
   .symbol {
     /*min-width: 30px;*/
-      margin: 6px 4px 0px 8px;
+      margin: 0px 3px 0px 6px;
   }
 
   .decliner {
@@ -134,12 +140,20 @@
 /*    background-color: rgba(0,0,0,0.025); */
   }
 
-  .addbtn {
-/*    position: fixed;
-    top: 76vh;
-    right: 7vw;*/
-    margin: 25px 0px 15px 0px; 
+  paper-icon-button.addbtn {
+    position: fixed;
+    top: 84vh;
+    right: 7vw;
+/*    margin: 25px 0px 15px 0px; */
     font-size: 25px;
+    padding: 5px;
+    z-index: 99;
+    box-shadow: 0px 1px 5px -1px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0px 1px 5px -1px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 1px 5px -1px rgba(0,0,0,0.5);
+    -o-box-shadow: 0px 1px 5px -1px rgba(0,0,0,0.5);
+    width: 65px;
+    height: 65px;
 
   }
 
@@ -164,6 +178,8 @@
 
 
   </style>
+        <paper-icon-button icon="sc-icons:plus" class="left grey1back grey5 shadow medium addbtn" on-tap="tonewItem" noink>+ new offer</paper-icon-button>
+
     <div class="totalwidth vertic centercenter">
     <div class="topbar">
 <!--        <iron-icon on-tap="exit" id="backbtn" icon="sc-icons:arrowleft" class="decliner grey2 big">back</iron-icon> -->
@@ -194,18 +210,22 @@
 
       <div id="hashtagcontent" class="totalwidth paddingsides">
         <!-- <div class="whitespace"></div> -->
-        <div id="{{item}}" class="hashtagtotal totalwidth">
+        <div id="{{item}}" class="hashtagtotal totalwidth horizont centercenter">
+
           <div class="hashtagtitle horizont start startjust">
             <div class="symbol">
               <p class="semibold">#</p>
             </div>
-            <p class="bold wordbreak">{{currenthasht}}
-            </p>
-          </div>
+            <p class="bold wordbreak">{{currenthasht}}</p>
+
           <iron-icon on-tap="exit" icon="sc-icons:decline" class="small backhash grey4">back</iron-icon>
+          </div>
+
+          <div class="flex"></div>
+
+
         </div>
 
-        <paper-button class="bigbtn left blue lighterer totalwidth addbtn" on-tap="tonewItem" noink>+ new offer</paper-button>
 
 
         <template is="dom-repeat" items="{{testitemzzz}}">
@@ -341,7 +361,7 @@
             offererrep: '6',
             offertime: 'a few minutes ago',
             offeramount: '1233.50',
-            nrofreplies: '4'
+            nrofreplies: '2'
           },
          {
             offereravatar: 'http://jcket.com/stoneyroads/files/2014/10/600x/Mr-Oizo.jpg',

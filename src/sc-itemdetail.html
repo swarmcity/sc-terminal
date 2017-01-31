@@ -108,15 +108,17 @@
       @apply(--montserrat-bold);
       font-size: 24px;
       line-height: 24px;
-      color: var(--sc-yellow);
+      color: var(--sc-darkblue);
     };
-    --paper-input-container-focus-color: var(--sc-yellow);
+    --paper-input-container-focus-color: var(--sc-darkblue);
   }
 
 
   .otherresponds {
 
   }
+
+
 
   .padder {
     box-sizing:border-box;
@@ -134,33 +136,17 @@
   .swtwithoffer {
       font-size: 12px;
       line-height: 12px;
-/*    margin:0px 0px 12px 4px;*/
-
   }
 
   .replyitem {
-    box-sizing:border-box;
-    /*padding: 20px 20px 20px 20px;*/
     margin-top: 10px;
-    /*margin-bottom: 10px;*/
   }
 
 
   .youravatar {
     margin-right: 10px;
   }
-/*  .youravatar {
-    width: 30px;
-    height: 30px;
-    min-width: 30px;
-    min-height: 30px;  
-    border-radius: 50%;
-    overflow: hidden;  
-  }
-  .youravatar img {
-    width: 100%;
-    height: 100%;
-  }*/
+
 
   .yourname {
     margin-bottom: 4px;
@@ -170,7 +156,7 @@
   .yourtxt {
       font-size: 16px;
       line-height: 22px;
-      margin: 15px 0px 15px 0px;
+      margin: 12px 0px 0px 0px;
   }
 
 
@@ -185,96 +171,126 @@
   }
 
 
+
+  .responditem {
+    box-sizing:border-box;
+    padding-top: 28px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(0,0,0,0.075);
+
+  }
+
+  .replyeravatar {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;  
+    border-radius: 50%;
+    margin-right: 10px;
+    overflow: hidden;  
+  }
+  .replyeravatar img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .replyername {
+    margin-bottom: 4px;
+  }
+  
+  .reply {
+      margin: 12px 0px 0px 0px;
+      font-size: 16px;
+      line-height: 22px;
+  }
+
+/*  .replyamountfontsize {
+      font-size: 12.5px;
+      line-height: 16px;
+  }*/
+
+
+  .replyeramount {
+      font-size: 22px;
+      line-height: 22px;
+  }
+
+  .replyeramountSWT {
+      font-size: 11px;
+      line-height: 11px;
+  }
+
+
   .greytopborder {
     border-top: 1px solid var(--sc-grey1);
   }
 
   .notopborder {
     border-top: none;
+  }
+
+  .bluebottomborder {
+    border-bottom: 2px solid var(--sc-blue);
   }  
+
   .avatar-box {
     box-sizing:border-box;
     padding: 0px 0px 0px 15px;
-/*    background-color: var(--sc-white);*/
 
   }
 
-
-/*
-
-  .paddingsides {
-    padding-left: 12vw;
-    padding-right: 12vw;
-  }
-
-
-  .hashtagtitle {
-  }
-
-  .hashtagtitle p {
-    font-size: 42px;
-    line-height: 42px;
-      margin: 0px 0px 2px 0px;
-
-  }
-  .symbol p {
-    font-size: 38px;
-    line-height: 38px;  
-      margin: 0px 0px 0px 0px;
+  .acceptsfor p {
+    font-size: 18px;
+/*    box-sizing:border-box;
+    padding: 10px 0px 0px 0px;
+    border-top: 2px dotted var(--sc-grey2); */   
+      margin: 0px 4px 2px 0px;
 
   }
 
-  .symbol {
-    min-width: 40px;
-    margin-top: 6px;
+  .replySWT {
+    font-size: 11px;
+    line-height: 11px;
   }
 
-  .decliner {
+/*  .acceptsfor iron-icon {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
   }
-
-  .margright {
-    margin:0px 6px 0px 0px;
-  }
-
-  .wordbreak {
-    word-break: keep-all;
-  }
-
-
 */
 
 
+
+.rightmarg {
+  margin-right: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+/*  YOU ARE USER ???*/
+
+  .detailtotal_yau {
+/*    box-sizing:border-box;
+    padding-top: 50px;*/
+
+  }
+
+  .responds_yau {
+    border-top: 1px solid rgba(0,0,0,0.075);
+
+  }
+
+
   @media all and (min-width: 0) and (max-width: 420px) { 
-
-
-/*  .hashtagtitle p {
-    font-size: 34px;
-    line-height: 34px;
-      margin: 0px 0px 2px 0px;
-
-  }
-  .symbol p {
-    font-size: 32px;
-    line-height: 32px;  
-      margin: 0px 0px 0px 0px;
-
-  }
-
-  .symbol {
-    min-width: 30px;
-    margin-top: 3px;
-  }
-
-  .decliner {
-    margin:0px 0px 0px 8px;
-  }
-
-  .decliner iron-icon {
-    width: 32px;
-    height: 36px;
-  }*/
-
-
   }
 
 
@@ -283,37 +299,41 @@
 
   </style>
     <div class="totalwidth vertic centercenter">
-    <div class="topbar">
-       <iron-icon on-tap="toHashtag" id="backbtn" icon="sc-icons:arrowleft" class="decliner grey2 big">back</iron-icon>
-      <span class="flex"></span>
 
-    <div class="balance-box" id="balancebox">
-      <ac-balance
-        refcur="EUR"
-        arcbalance="{{arcbalance}}"
-        ethbalance="{{ethbalance}}"
-        showswt="false"
-        viewmode="small">
-      </ac-balance>
-    </div>
 
-      <div class="avatar-box">
-      <ac-avatar
-        id="currentavatar"
-        identity="{{identity}}"
-        pubkey="{{account}}"
-        mode="imgonly"
-        size="small"
-        on-tap="exit">
-      </ac-avatar>
-    </div>
+<!--
+          ///////////////////
+          ///////////////////
+          ///////////////////
 
-    </div>
-<!--       <div class="whitespace"></div>
-      <div class="whitespace"></div> -->
+          Detail if you are the owner of the item -->
 
+     <template is="dom-if" if="{{!youareowner}}">
+      <div class="topbar">
+        <iron-icon on-tap="toHashtag" id="backbtn" icon="sc-icons:arrowleft" class="decliner grey2 big">back</iron-icon>
+        <span class="flex"></span>
+        <div class="balance-box" id="balancebox">
+          <ac-balance
+            refcur="EUR"
+            arcbalance="{{arcbalance}}"
+            ethbalance="{{ethbalance}}"
+            showswt="false"
+            viewmode="small">
+          </ac-balance>
+        </div>
+
+        <div class="avatar-box">
+        <ac-avatar
+          id="currentavatar"
+          identity="{{identity}}"
+          pubkey="{{account}}"
+          mode="imgonly"
+          size="small"
+          on-tap="exit">
+        </ac-avatar>
+        </div>
+      </div>
       <div id="detailcontent" class="totalwidth flex whiteback">
-
         <div class="detailtotal totalwidth vertic">
 
           <div class="totalwidth horizont centercenter paddingsides">
@@ -328,7 +348,7 @@
           <div class="whitespace"></div>
 
           <div class="totalwidth paddingsides">
-            <p class="offer">{{offer}}</p>
+            <p class="offer"><span class="small grey3">{{timestamp}}</span><br>{{offer}}<span class="bold">{{offerhashtag}}</span></p>
           </div>
           <div class="whitespace"></div>
           <div class="whitespace"></div>
@@ -342,7 +362,7 @@
 
           <div class="responds totalwidth vertic center startjust basestructure">
 
-            <div class$="{{bgcolor}} {{bordertop}} yourrespond totalwidth vertic centercenter paddingsides">
+            <div class$="{{bgcolor}} {{borderz}} yourrespond totalwidth vertic centercenter paddingsides">
 
               <template is="dom-if" if="{{_is(replystate,'init')}}">
                 <div class="minispace"></div>
@@ -360,20 +380,15 @@
 
                 <div class="total vertic centercenter">
                   <paper-textarea label="Your reply" class="totalwidth grey2unfocus" autofocus></paper-textarea>
-                  <!-- <paper-input label="Your responds" class="totalwidth grey2unfocus" autofocus></paper-input> -->
                   <div class="totalwidth horizont end startjust">
                     <paper-input label="Your offer" class="yourreplyamount swtamount grey2unfocus" value="{{replyamount}}">
                     <div suffix class="yellow bold swtwithoffer">SWT</div>
                   </paper-input>
-<!--                   <p class="yellow bold swtwithoffer">SWT</p>
- -->
+
                   </div>
 
                   <div class="whitespace"></div>
-<!--                   <div class="whitespace"></div> -->
-
                   <paper-button noink class="white blueback shadow big horizont cetercenter" on-tap="replystateChanger">
-                  <paper-icon-button disabled="true" class="white" icon="sc-icons:babbles"></paper-icon-button>
                     Reply with offer
                   </paper-button>
 
@@ -388,9 +403,7 @@
                 </template>
                 <template is="dom-if" if="{{!loadingreply}}">
                   <div class="totalwidth vertic centercenter">
-
                     <div class="totalwidth horizont start startjust">
-
                     <ac-avatar
                       identity="{{identity}}"
                       pubkey="{{account}}"
@@ -399,35 +412,47 @@
                       on-tap="exit"
                       class="youravatar">
                     </ac-avatar>
-<!--                       <div class="youravatar">
-                        <img src="https://blogg.binero.se/wp-content/uploads/2010/02/rick_falkvinge_1.jpg">
-                      </div> -->
                       <div class="flex vertic centercenter">
-                        <p class="totalwidth yourname small bold grey4">Kars Rhyder</p>
+                        <p class="totalwidth yourname small bold grey4">You</p>
                         <p class="totalwidth yourrep small bold blue">12 REP</p>
                       </div>
-
-                      <p class="youramount bold grey3">{{replyamount}}<span class="youramountSWT">SWT</span></p>
-
+                    <div class="horizont end endjust acceptsfor">
+                      <p class="bold grey4">1300.00 <span class="replySWT">SWT</span></p>
+                      <iron-icon class="grey4 small" icon="sc-icons:v">checked</iron-icon>
                     </div>
-                    <p class="totalwidth yourtxt grey3">I'd love to drive you! Pick you up at 14:00?</p>
-
-
-
+                    </div>
+                    <p class="totalwidth yourtxt grey4">
+                      <small class="grey3 small">a few seconds ago</small><br>
+                      I'd love to drive you! Pick you up at 14:00?</p>
                   </div>
                 </template>                
+              </template>
+            </div>
+            <div class="otherresponds totalwidth vertic center startjust darker">
+              <template is="dom-repeat" items="{{replies}}">
+                <div class="responditem totalwidth vertic centercenter paddingsides">
+                  <div class="totalwidth vertic start centerjust">
+                    <div class="totalwidth horizont start startjust">
+                      <div class="replyeravatar">
+                        <img src="{{item.replyeravatar}}">
+                      </div>
+                      <div class="flex vertic centercenter">
+                        <p class="totalwidth replyername small bold grey3">{{item.replyername}}</p>
+                        <p class="totalwidth replyerrep small bold blue">{{item.replyerrep}} REP</p>
+                      </div>
+                    <div class="horizont end endjust acceptsfor">
+                      <p class="bold grey4">{{item.replyamount}} <span class="replySWT">SWT</span></p>
+                      <iron-icon class="grey4 small" icon="sc-icons:v">checked</iron-icon>
+                    </div>
+                    </div>
+                    <p class="totalwidth reply grey4">
+                      <small class="grey3 small">{{item.replytime}}</small><br>
+                      {{item.reply}}
+                    </p>
+                  </div>
+                </div>
 
               </template>
-
-            
-
-              <!-- <div class="flex">
-                <paper-input label="Your responds" class="totalwidth"></paper-input>
-              </div>
-                <paper-icon-button disabled="true" class="grey3" icon="sc-icons:babbles"></paper-icon-button> -->
-            </div>
-
-            <div class="otherresponds totalwidth vertic center startjust darker">
               <div class="whitespace"></div>
               <div class="whitespace"></div>
               <div class="whitespace"></div>
@@ -439,22 +464,125 @@
               <div class="whitespace"></div>
               <div class="whitespace"></div>
             </div>
-
-
-
-
-
           </div>
-
-
-
         </div>
+      </div>
+    </template> 
 
-        </div>
 
+
+
+
+
+
+<!--
+          ///////////////////
+          ///////////////////
+          ///////////////////
+
+        Detail if you are NOT the owner of the item -->
+
+    <!-- <template is="dom-if" if="{{youareowner}}">
+
+      <div class="topbar whiteback">
+        <span class="flex"></span>
+        <iron-icon on-tap="toHashtag" id="backbtn" icon="sc-icons:decline" class="decliner grey2 big">back</iron-icon>
       </div>
 
+
+
+      <div id="detailcontent" class="totalwidth flex whiteback">
+        <div class="detailtotal_yau totalwidth vertic">
+
+          <div class="totalwidth horizont centercenter paddingsides">
+
+
+        <div class="avatar-box">
+        <ac-avatar
+          id="currentavatar"
+          identity="{{identity}}"
+          pubkey="{{account}}"
+          mode="imgonly"
+          size="small"
+          on-tap="exit"
+          class="rightmarg">
+        </ac-avatar>
+        </div>
+            <div class="vertic start startjust offertxt flex">
+              <p class="bold">You</p>
+              <p class="bold rep blue">{{offererrep}} REP</p>
+            </div>  
+          </div>
+          <div class="whitespace"></div>
+
+          <div class="totalwidth paddingsides">
+            <p class="offer"><span class="small grey3">{{timestamp}}</span><br>{{offer}}<span class="bold">{{offerhashtag}}</span></p>
+          </div>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
+          <div class="totalwidth horizont centercenter paddingsides">
+            <div class="flex"></div>
+            <p class="bold yellow amount">{{amount}} <span class="swt">SWT</span></p>
+          </div>
+          <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
+          <div class="responds_yau totalwidth vertic center startjust basestructure">
+
+            <div class="otherresponds totalwidth vertic center startjust darker">
+              <template is="dom-repeat" items="{{replies}}">
+
+                <div class="responditem totalwidth vertic centercenter paddingsides whiteback">
+                  <div class="totalwidth vertic start centerjust">
+                    <div class="totalwidth horizont start startjust">
+                      <div class="replyeravatar">
+                        <img src="{{item.replyeravatar}}">
+                      </div>
+                      <div class="flex vertic centercenter">
+                        <p class="totalwidth replyername small bold grey3">{{item.replyername}}</p>
+                        <p class="totalwidth replyerrep small bold blue">{{item.replyerrep}} REP</p>
+                      </div>
+                    <div class="horizont end endjust acceptsfor">
+                      <p class="bold grey4">{{item.replyamount}} <span class="replySWT">SWT</span></p>
+                      <iron-icon class="grey4 small" icon="sc-icons:v">checked</iron-icon>
+                    </div>
+                    </div>
+                    <p class="totalwidth reply grey4">
+                      <small class="grey3 small">{{item.replytime}}</small><br>
+                      {{item.reply}}
+                    </p>
+                  </div>
+                  <div class="minispace"></div>
+                  <div class="totalwidth horizont center endjust">
+                    <paper-icon-button icon="sc-icons:babble" class="medium blueback white"></paper-icon-button>
+                  </div>
+                </div>
+
+              </template>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </template> -->
+
+
+
+
+
   </div>
+
 
 </template>
 
@@ -558,18 +686,41 @@
       this.offereravatar = 'http://www.american.edu/uploads/profiles/large/chris_palmer_profile_11.jpg';
       this.offerer = 'Dick Richards';
       this.offererrep = '6'
-      this.offer = 'Need a ride from August van de Wielelei 283, Antwerpen to Kempenlaan 26, Wommelgem';
-      this.timestamp = '20 january at 13:22';
+      this.offer = 'Need a ride to 5711 meadow crest and picked up at 404 6th street. Jackalope';
+      this.offerhashtag = '#ridesharing';
+      this.timestamp = 'today at 16:22';
       this.amount = '1233.50';
-      this.replyamount = '1233.50';
+
+      this.yourreplyamount = '1233.50';
+
+      this.replies = [
+         {
+            replyeravatar: 'https://blogg.binero.se/wp-content/uploads/2010/02/rick_falkvinge_1.jpg',
+            replyername: 'De Falky',
+            replyerrep: '6',
+            reply: 'I can be there in 5?',
+            replytime: 'today at 16:33',
+            replyamount: '1233.50'
+          },
+
+         {
+            replyeravatar: 'http://jcket.com/stoneyroads/files/2014/10/600x/Mr-Oizo.jpg',
+            replyername: 'Mr Oizo',
+            replyerrep: '22',
+            reply: 'Just around the corner. Pick u up in 2min?',
+            replytime: 'a few seconds ago',
+            replyamount: '1235.50'
+          },
+      ];
 
       this.loadingreply = true;
+      this.youareowner = false;
       // UNTILL HERE
 
 
       this.replystate = 'init';
       this.bgcolor = "whiteback";
-      this.bordertop = "greytopborder";
+      this.borderz = "greytopborder";
     },
 
     attached: function(){
@@ -720,7 +871,7 @@
           case 'init':
             this.replystate = 'replying'
             this.bgcolor = "whiteback";
-            this.bordertop = "greytopborder";
+            this.borderz = "greytopborder";
 
             setTimeout(function(){ 
             var coll = document.getElementById('replycoll');
@@ -730,18 +881,16 @@
           case 'replying':
             this.replystate = 'replygivven'
             this.bgcolor = "basestructure";
-            this.bordertop = "notopborder";
-
+            this.borderz = "notopborder";
+            var coll = document.getElementById('replycoll');
+            coll.toggle();
             setTimeout(function(){ 
-            // var coll = document.getElementById('replycoll');
-            // coll.toggle();
             this.replystate = 'replygivven'
              }, 50);
             break;
           case 'replygivven':
             this.replystate = 'deletereply'
-            this.bordertop = "notopborder";
-
+            this.borderz = "notopborder";
             break;
           default:
             console.log("!!! ** Niks");
