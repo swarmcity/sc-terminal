@@ -309,7 +309,7 @@
         <sc-loader small color="blue">Downloading from IPFS</sc-loader>
         </template>
         <template is="dom-if" if="{{_is(importipfsstatus,'error')}}">
-        <p class="red bold">Something went wrong. Please try again.</p>
+        <p class="red bold">Something went wrong. {{importipfserrormessage}}</p>
         </template>
 
           </div>
@@ -667,18 +667,18 @@
 
       importipfshashuploadclick: function() {
         console.log('download IPFS hash', this.importipfshash);
-
+        var self= this;
         this.importipfsstatus = 'downloading';
         this.$.ipfs.cat(this.importipfshash, function(err, data) {
           if (err) {
-            this.importipfsstatus = 'error';
-            this.importipfserrormessage = 'Error downloading IPFS hash: ' + err;
+            self.importipfsstatus = 'error';
+            self.importipfserrormessage = 'Error downloading IPFS hash: ' + err;
             return;
           }
           if (self._parseVault(data)) {
             self.saveVault();
             self.status = 'locked';
-            this.set('route.path', '/uploadunlock');
+            self.set('route.path', '/uploadunlock');
           }
         });
       },
@@ -748,8 +748,6 @@
 
      ready: function(){
       this.reset();
-
-        //this.status = 'init';
       },
 
 
@@ -758,23 +756,26 @@
         this.vaulterror = null;
         this.invalidpk = false;
         this.pkshowpassw = false;
-      },
-
-
-      attached: function(){
-        var self=this;
-        console.log('ac-vault attached');
-        this.exitAnimation = "slide-left-animation";
-        this.entryAnimation = "slide-from-right-animation";
+        this.importipfsstatus = 'init';
+        
         this.creatingvault = false;
         this.pkshowpassw = false;
         this.uploadingwallet = false;
         this.vaulttoipfsstatus = 'init';
         this.importipfsstatus = 'init';
-        //this.jsonfilename = "walletfiletjé.json"
 
         this.backup_download = true;
         this.backup_unavailable = true;
+
+
+      },
+
+
+      attached: function(){
+        console.log('ac-vault attached');
+
+        var self=this;
+
 
         if (this.browser.family == 'Safari'){
           this.backup_download = false;
@@ -782,6 +783,10 @@
         if (this.browser.family != 'Safari'){
           this.backup_unavailable = false;
         }
+
+        this.exitAnimation = "slide-left-animation";
+        this.entryAnimation = "slide-from-right-animation";
+      
         
         this.password = sessionStorage.getItem('vaultpassword');
         
