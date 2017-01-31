@@ -513,9 +513,18 @@
           <span class="flex"></span>
             <iron-icon class="grey4" icon="sc-icons:decline" on-tap="vaultAway">back</iron-icon>
         </div>
+        <template is="dom-if" if="{{!tappedunlockbtn}}">
         <div class="pascanvasunderexit vertic centercenter paddingwithouttop">
-          <ac-password class="height" id="newuser" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password> 
+          <ac-password class="height" id="newuser" sessionname="vaultpassword" on-btn-tapped="unlockBtnbool" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password> 
         </div>
+
+        </template>
+        <template is="dom-if" if="{{tappedunlockbtn}}">
+        <div class="pascanvasunderexit vertic centercenter paddingwithouttop">
+          <sc-loader small color="blue" class="blue">Unlocking</sc-loader>
+        </div>
+        </template>
+
       </div>    
     </neon-animatable>
 
@@ -760,6 +769,8 @@
         this.vaulterror = null;
         this.invalidpk = false;
         this.pkshowpassw = false;
+        this.tappedunlockbtn = false;
+
       },
 
 
@@ -1122,7 +1133,13 @@
         if (addr.length>0){
           this.currentaccount = self.fixaddress(addr[0]);
         }
-      }
+      },
+
+
+      unlockBtnbool: function(){
+        this.tappedunlockbtn =! this.tappedunlockbtn;
+      },
+
     });
   </script>
 </dom-module>
