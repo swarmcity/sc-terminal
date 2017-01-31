@@ -312,7 +312,7 @@
               </template>
               <template is="dom-if" if="{{_is(firststate,'error')}}">
                 <div class="flex">
-                  <p class="bold red">Something went wrong. {{errormsg}}</p>
+                  <p class="bold red">Something went wrong. {{firststateerrormsg}}</p>
                 </div>
                 <div class="stateicon">
                   <iron-icon icon="sc-icons:decline" class="red big"></iron-icon>
@@ -347,7 +347,7 @@
               </template>
               <template is="dom-if" if="{{_is(secondstate,'error')}}">
                 <div class="flex">
-                  <p class="bold red">Something went wrong. {{errormsg}}</p>
+                  <p class="bold red">Something went wrong. {{secondstateerrormsg}}</p>
                 </div>
                 <div class="stateicon">
                   <iron-icon icon="sc-icons:decline" class="red big"></iron-icon>
@@ -597,12 +597,14 @@ Polymer({
        
         this.createAllowance(function(err) {
           if (err) {
+            this.firststateerrormsg = err;
             return this.firststate = 'error';
           }
           this.firststate = 'succes';
           this.secondstate = 'doing';
           this.convertTokens(function(err) {
             if (err) {
+              this.secondstateerrormsg = err;
               return this.secondstate = 'error';
             }
             this.secondstate = 'succes';
