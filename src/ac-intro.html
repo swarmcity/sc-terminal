@@ -157,7 +157,7 @@
           <div class="flex"></div>
           <paper-button on-tap="totokenquestion" class="grey4 lighter bigbtn" noink>I’m a new user</paper-button>
           <div class="whitespace"></div>
-          <!-- <a href="" class="grey3 small">sync with a device / backup-file</a> -->
+          <p on-tap="torestore" class="grey3 small">restore a backup-file</p>
         </div>
       </neon-animatable>
 
@@ -260,14 +260,13 @@
         this.set('route.path', '/first');
       },
 
+      torestore: function() {
+        this.fire('restoreipfs'); 
+      },
+
       toimportwallet: function() {
         this.set('route.path', '/importwallet');
       },
-
-      topaperorexternal: function() {
-        this.set('route.path', '/paperorexternal');
-      },
-
 
       toprivatekey: function() {
         this.fire('importpk');

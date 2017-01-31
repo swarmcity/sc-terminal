@@ -88,6 +88,7 @@
       on-externalpk="toexternalpk"
       on-enter="enter"  
       on-exit="toAppStart"
+      on-restoreipfs="torestoreipfs"
       route="[[pageTail]]"
       >
     </ac-intro>
@@ -270,6 +271,10 @@
 
       toimportpk: function(){
         this.transitionto('/vault/importpk');
+      },
+
+      torestoreipfs: function(){
+        this.transitionto('/vault/importipfs');
       },
 
       toexternalpk: function(){

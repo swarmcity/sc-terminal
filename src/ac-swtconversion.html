@@ -216,12 +216,12 @@
           <div class="balancesbox noflex">
             <div class="vertic start noflex">
               <p class="blue small bold">Your current ARC-balance</p>
-              <h1 class="bold blue bigh">{{formatpong(arcbalance)}}</h1>
+              <h1 class="bold centertxt blue bigh">{{formatpong(arcbalance)}}</h1>
             </div>
             <iron-icon class="big nextarrow" icon="sc-icons:arrowright"></iron-icon>
             <div class="vertic noflex">
               <p class="yellow small bold">Your current SWT-balance</p>
-              <h1 class="bold yellow bigh">{{formatpong(swtbalance)}}</h1>
+              <h1 class="bold centertxt yellow bigh">{{formatpong(swtbalance)}}</h1>
             </div>
           </div>
           <div class="whitespace"></div>
@@ -445,12 +445,11 @@ Polymer({
   attached: function() {
     console.log('ac-swtconversion attached');
 
-    //this.update();
-
     this.exitAnimation = "slide-left-animation";
     this.entryAnimation = "slide-from-right-animation";
     
     this.reset();
+    this.update();
 
   },
 
@@ -459,11 +458,12 @@ Polymer({
   },
 
   checketheragain: function() {
-    this.ethcheckstate = 'doing'
-    var self = this;
-    setTimeout(function() {
-      self.update();
-    }, 1000);
+    this.startconvert();
+    // this.ethcheckstate = 'doing'
+    // var self = this;
+    // setTimeout(function() {
+    //   self.update();
+    // }, 1000);
   },
 
   update: function() {
@@ -588,7 +588,7 @@ Polymer({
 
     this.ethcheckstate = 'doing'
     this.getETHBalance(function() {
-debugger;
+
       if (this.checkgas()) {
         this.ethcheckstate = 'succes';
 
