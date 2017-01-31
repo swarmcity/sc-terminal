@@ -84,6 +84,7 @@
 
   .enterbtn {
       font-size: 20px;
+
 /*      padding: 14px 24px 14px 24px;*/
   }
 
@@ -95,6 +96,14 @@
       border-bottom: 2px dotted var(--sc-grey2);
     padding-bottom: 8px;
     }
+
+    .logoalign {
+      @apply(--layout-vertical);
+      @apply(--layout-end);
+      @apply(--layout-center-justified);
+    }
+
+
   @media all and (min-width: 0) and (max-width: 420px) { 
   .findyourhive {
       text-align: center;
@@ -108,7 +117,10 @@
       font-size: 44px;
       line-height: 42px;
     }
-
+    .logoalign {
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+    }
   }
 
     </style>
@@ -126,7 +138,7 @@
 
     <neon-animated-pages id="createwalletpgs" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimationintro}}" exit-animation="{{exitAnimationintro}}">
       <neon-animatable data-page="welcome">
-        <div class$="totalwidth vertic {{logoalign}} paddingsides yellowback">
+        <div class="totalwidth logoalign paddingsides yellowback">
           <div class="whitespace"></div>
           <h1 class="white findyourhive bold">Find your <template is="dom-if" if="{{!phoneview}}"><br></template>hive.</h1>
           <div class="flex"></div>
@@ -226,7 +238,7 @@
       },
 
       observers: [
-          '_onRoutePathChanged(data.page)',
+          '_onRoutePathChanged(data.page)'
         ],
 
         toon: function(a){
@@ -304,6 +316,7 @@
         }
         return a === b;
       },
+
 
     });
   </script>

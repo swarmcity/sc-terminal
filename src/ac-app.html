@@ -8,6 +8,7 @@
 <!-- <link rel="import" href="ac-wallet.html"> -->
 <!-- <link rel="import" href="ac-walletview.html"> -->
 <link rel="import" href="ac-intro.html">
+<link rel="import" href="sc-loadview.html">
 <!-- <link rel="import" href="ac-home.html"> -->
 <!-- <link rel="import" href="ac-swtconversion.html"> -->
 
@@ -61,11 +62,10 @@
 
   <neon-animated-pages attr-for-selected="data-page" selected="[[parsedpage]]">
 
-    <div
+    <sc-loadview
         data-page="loading"
-    >--LOADING--
-      
-    </div>
+        msg="">
+    </sc-loadview>
 
     <ac-swtconversion
       data-page="swt"
