@@ -15,7 +15,7 @@
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 
 <dom-module id="ac-swtconversion">
-
+<link rel="import" href="../bower_components/sc-style/sc-style.css" type="css">
 
 <style>
 :host {
@@ -360,11 +360,11 @@
           <div class="whitespace"></div>
           <template is="dom-if" if="{{!conversiondone}}">
             <template is="dom-if" if="{{!convertingstarted}}">
-            <template is="dom-if" if="{{hasenoughgas}}">
+            <!-- <template is="dom-if" if="{{hasenoughgas}}"> -->
             <div class="horizontal center startjust yesnobtns">
               <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="startconvert" noink>Convert my ARC to SWT</paper-button>
             </div>
-            </template>
+            <!-- </template> -->
             </template>
           </template>
 
@@ -420,7 +420,7 @@ Polymer({
     },
     web3: {
       type: Object,
-      observer: 'update'
+     observer: 'update'
     },
     account: {
       type: String,
@@ -429,26 +429,28 @@ Polymer({
   },
 
   ready: function() {
-    this.reset();
   },
 
-  reset: function(){
+  reset: function() {
     this.hasenoughgas = false;
     this.needstoconvert = false;
     this.conversiondone = false;
+
+    this.firststate = 'init';
+    this.secondstate = 'init';
+    this.ethcheckstate = 'init';
+    this.convertingstarted = false;
   },
 
   attached: function() {
     console.log('ac-swtconversion attached');
 
-    this.update();
+    //this.update();
 
     this.exitAnimation = "slide-left-animation";
     this.entryAnimation = "slide-from-right-animation";
-    this.convertingstarted = false;
-    this.firststate = 'init';
-    this.secondstate = 'init';
-    this.ethcheckstate = 'init';
+    
+    this.reset();
 
   },
 
@@ -478,26 +480,26 @@ Polymer({
         self.getARCBalance(function() {
           self.checkarc();
         });
-        this.ethcheckstate = 'doing'
-        self.getETHBalance(function() {
-          if(self.checkgas()){
-            self.ethcheckstate = 'succes';
-          }else{
-            self.ethcheckstate = 'error';
-          }
-        });
+        // this.ethcheckstate = 'doing'
+        // self.getETHBalance(function() {
+        //   if(self.checkgas()){
+        //     self.ethcheckstate = 'succes';
+        //   }else{
+        //     self.ethcheckstate = 'error';
+        //   }
+        // });
       });
     } else {
       self.getARCBalance(function() {
         self.checkarc();
       });
-      self.getETHBalance(function() {
-        if(self.checkgas()){
-            self.ethcheckstate = 'succes';
-          }else{
-            self.ethcheckstate = 'error';
-          }
-      });
+      // self.getETHBalance(function() {
+      //   if(self.checkgas()){
+      //       self.ethcheckstate = 'succes';
+      //     }else{
+      //       self.ethcheckstate = 'error';
+      //     }
+      // });
     }
     if (!self.SWTConverterInstance){
        this.$.helpers.getjson('./contracts/SWTConverter.json', function(err, tokendata) {
@@ -518,7 +520,6 @@ Polymer({
 
   formatpong: function(val) {
     var f = (0 + (val / 1e18)).toFixed(2);
-    debugger;
     return f;
   },
 
@@ -585,33 +586,44 @@ Polymer({
 
   startconvert: function() {
 
-//     this.ethcheckstate = 'doing';
-//     this.getETHBalance(function(err,balance){
-//       if (balance <= 0)
-// checkga
+    //     this.ethcheckstate = 'doing';
+    //     this.getETHBalance(function(err,balance){
+    //       if (balance <= 0)
+    // checkga
 
-//     });
+    //     });
 
-    this.convertingstarted = true;
-    this.firststate = 'doing';
-    var self = this;
-    this.createAllowance(function(err) {
-      if (err){
-        return self.firststate = 'error';
-      }
-      self.firststate = 'succes';
-      self.secondstate = 'doing';
-      self.convertTokens(function(err) {
-        if (err){
-          return self.secondstate = 'error';
-        }
-        self.secondstate = 'succes';
-        self.getARCBalance();
-        self.getSWTBalance(function(err){
-          self.verify();
+
+    this.ethcheckstate = 'doing'
+    self.getETHBalance(function() {
+      if (self.checkgas()) {
+        self.ethcheckstate = 'succes';
+
+        this.convertingstarted = true;
+        this.firststate = 'doing';
+        var self = this;
+        this.createAllowance(function(err) {
+          if (err) {
+            return self.firststate = 'error';
+          }
+          self.firststate = 'succes';
+          self.secondstate = 'doing';
+          self.convertTokens(function(err) {
+            if (err) {
+              return self.secondstate = 'error';
+            }
+            self.secondstate = 'succes';
+            self.getARCBalance();
+            self.getSWTBalance(function(err) {
+              self.verify();
+            });
+          });
         });
-      });
+      } else {
+        self.ethcheckstate = 'error';
+      }
     });
+
   },
 
   // fetches coinbalance

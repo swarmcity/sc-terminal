@@ -404,8 +404,6 @@
     </neon-animatable>
 
     <neon-animatable data-page="unlock">
-      <!--        
-      DIT MOET EIGENLIJK OP DEZE ROUTE
           <div class="total vertic centercenter">
             <div class="topbar">
               <span class="flex"></span>
@@ -415,9 +413,9 @@
               <ac-password class="height" id="newuser" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password> 
             </div>
           </div>    
-      -->
-
-
+  
+  </neon-animatable>
+   <neon-animatable data-page="uploadunlock">
       <!--  
       VANAF HIER ALLES OP DIE NIEUWE ROUTE  -->
         <div class="total vertic centercenter">
@@ -586,7 +584,8 @@
               self.uploadingwallet = false;
               self.pkshowpassw = true;
               self.status = 'locked';
-              self.fire('ready');
+//              self.fire('ready');
+              this.set('route.path', '/uploadunlock');
             }
           //},100);
           // so we've read the vault file. It's locked.
