@@ -233,7 +233,7 @@
       properties: {
         route: {
           type: Object,
-          notify: true
+          //notify: true
         },
       },
 
@@ -241,12 +241,8 @@
           '_onRoutePathChanged(data.page)'
         ],
 
-        toon: function(a){
-          return JSON.stringify(a);
-        },
-
-      _onRoutePathChanged: function(page) {
-
+      _onRoutePathChanged: function(page,oldpage) {
+        console.log('ac-intro _onRoutePathChanged',oldpage,'->',page);
         switch (page) {
           case 'welcome':
             this.topbarbg = "yellowback";

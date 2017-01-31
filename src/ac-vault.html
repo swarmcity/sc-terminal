@@ -746,13 +746,14 @@
         }.bind(this));
       },
 
-     ready: function(){
-      this.reset();
+      ready: function(){
+     
       },
 
-
-
       reset: function() {
+        
+        var self=this;
+
         this.vaulterror = null;
         this.invalidpk = false;
         this.pkshowpassw = false;
@@ -767,27 +768,6 @@
         this.backup_download = true;
         this.backup_unavailable = true;
 
-
-      },
-
-
-      attached: function(){
-        console.log('ac-vault attached');
-
-        var self=this;
-
-
-        if (this.browser.family == 'Safari'){
-          this.backup_download = false;
-        }
-        if (this.browser.family != 'Safari'){
-          this.backup_unavailable = false;
-        }
-
-        this.exitAnimation = "slide-left-animation";
-        this.entryAnimation = "slide-from-right-animation";
-      
-        
         this.password = sessionStorage.getItem('vaultpassword');
         
         if (!this.hasVault()) {
@@ -813,9 +793,27 @@
             return self.fire('ready');
           }
         });
+
+      },
+
+
+      attached: function(){
+        console.log('ac-vault attached');
+
+        this.reset();
+
+        if (this.browser.family == 'Safari'){
+          this.backup_download = false;
+        }
+        if (this.browser.family != 'Safari'){
+          this.backup_unavailable = false;
+        }
+
+        this.exitAnimation = "slide-left-animation";
+        this.entryAnimation = "slide-from-right-animation";
       
-
-
+        
+       
       },
 
       _currentidentity: function(){
@@ -967,6 +965,7 @@
         this.$.privatekeyinput.inputvalue = null;
         this.closeVault();
         window.localStorage.removeItem('sc-vault');
+        this.reset();
         return this.fire('novault');
       },
 

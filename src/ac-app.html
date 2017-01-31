@@ -81,6 +81,7 @@
     </ac-swtconversion>
 
     <ac-intro
+      id="intro"
       data-page="intro"
       on-newvault="createNewVault"
       on-importfile="toimportfile"
@@ -195,20 +196,37 @@
 
       },
 
-      _onRoutePathChanged: function(path) {
-         console.log('ac-app -> _onRoutePathChanged',this.route.path);
+      _onRoutePathChanged: function(path,oldpath) {
+         //console.log('ac-app -> _onRoutePathChanged',oldpath,'->',path);
 
 
          // We need to check if we have a passwd in sessionstorage.
       },
 
-      _onRouteDataChanged: function(page) {
+      _onRouteDataChanged: function(page,oldpage) {
+
+         console.log('ac-app -> _onRouteDataChanged',oldpage,'->',page);
+
+         // var transition = oldpage + '-' + page;
+         // switch(transition){
+         //    case 'undefined-undefined':
+         //      // entering via root
+         //      debugger;
+         //      this.transitionto('/intro/welcome');
+         //      //this.lazyLoad('intro', 'ac-intro.html');     
+         //      break;
+         //    case 'undefined-intro':
+         //       break;            
+         //    default: 
+         //      console.log('unknown transition',transition);
+         //      break;
+         // }
 
         if (!page){
           this.parsedpage = 'loading';
           this.lazyLoad('web3', 'ac-web3.html');             
           this.lazyLoad('wallet', 'ac-wallet.html');
-          this.lazyLoad('vault', 'ac-vault.html');
+          this.lazyLoad('vault', 'ac-vault.html','reset');
         }else{
           this.parsedpage = page;
         }
@@ -234,19 +252,25 @@
         }
       },
 
-      lazyLoad: function(elementid, filename) {
+      lazyLoad: function(elementid, filename, method) {
 
         if (Polymer.isInstance(this.$[elementid])) {
-          if (this.$[elementid].reset){
-            this.$[elementid].reset();
+          if (method && this.$[elementid][method]) {
+            this.$[elementid][method]();
           }
           return;
         }
         var url = this.resolveUrl(filename);
+        
         Polymer.Base.importHref(
-          url, function(){
-            console.log('LAZYLOADER --> ',elementid, 'loaded');
-          }, function() {
+          url,
+          function(e) {
+            console.log('LAZYLOADER --> ', elementid, 'loaded');
+            if (method && this.$[elementid][method]) {
+              this.$[elementid][method]();
+            }
+          }.bind(this),
+          function() {
             console.log('Something failed!');
           }, true
         );
@@ -255,7 +279,7 @@
       enter: function(){
         //this.vaultstate
         //this.$.vault.activate();
-        //this.lazyLoad('vault','ac-vault.html');
+        this.lazyLoad('vault','ac-vault.html');
         this.transitionto('/');
 
         
