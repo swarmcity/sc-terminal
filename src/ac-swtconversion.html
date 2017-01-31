@@ -586,43 +586,36 @@ Polymer({
 
   startconvert: function() {
 
-    //     this.ethcheckstate = 'doing';
-    //     this.getETHBalance(function(err,balance){
-    //       if (balance <= 0)
-    // checkga
-
-    //     });
-
-
     this.ethcheckstate = 'doing'
-    self.getETHBalance(function() {
-      if (self.checkgas()) {
-        self.ethcheckstate = 'succes';
+    this.getETHBalance(function() {
+debugger;
+      if (this.checkgas()) {
+        this.ethcheckstate = 'succes';
 
         this.convertingstarted = true;
         this.firststate = 'doing';
-        var self = this;
+       
         this.createAllowance(function(err) {
           if (err) {
-            return self.firststate = 'error';
+            return this.firststate = 'error';
           }
-          self.firststate = 'succes';
-          self.secondstate = 'doing';
-          self.convertTokens(function(err) {
+          this.firststate = 'succes';
+          this.secondstate = 'doing';
+          this.convertTokens(function(err) {
             if (err) {
-              return self.secondstate = 'error';
+              return this.secondstate = 'error';
             }
-            self.secondstate = 'succes';
-            self.getARCBalance();
-            self.getSWTBalance(function(err) {
-              self.verify();
-            });
+            this.secondstate = 'succes';
+            this.getARCBalance();
+            this.getSWTBalance(function(err) {
+              this.verify();
+            }.bind(this));
           });
-        });
+        }.bind(this));
       } else {
-        self.ethcheckstate = 'error';
+        this.ethcheckstate = 'error';
       }
-    });
+    }.bind(this));
 
   },
 
@@ -636,10 +629,16 @@ Polymer({
   },
 
   getETHBalance: function(cb) {
-    this.ETHbalance = this.web3.eth.getBalance(this.$.helpers.fixaddress(this.account)).toNumber();
-    if (cb) {
-      cb(null,this.ETHbalance);
-    }
+    var self = this;
+    this.web3.eth.getBalance(this.$.helpers.fixaddress(this.account), function(err, balance) {
+      if (cb) {
+        if (err) {
+          return cb(err);
+        }
+        self.ETHbalance = balance.toNumber();
+        cb(null, self.ETHbalance);
+      }
+    });
   },
   
   getSWTBalance: function(cb) {
