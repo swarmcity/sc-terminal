@@ -297,21 +297,22 @@
             <div class="whitespace"></div>
             <div class="whitespace"></div>
 
-
-
         <template is="dom-if" if="{{_is(importipfsstatus,'init')}}">
 
           <p class="reg grey4 maxwidth">Enter your IPFS-hash</p>
           <paper-input class="" id="importipfshash" label="Your ipfs-hash" type="text" value="{{importipfshash}}"></paper-input>
+            <div class="whitespace"></div>
+
           <paper-button on-tap="importipfshashuploadclick" class="blue lighter bigbtn shadow centertxt" noink>restore</paper-button>
         </template>
         <template is="dom-if" if="{{_is(importipfsstatus,'downloading')}}">
-        DOWNLOADSING WALLET FROM IPFS
+        <sc-loader small color="blue">Downloading from IPFS</sc-loader>
         </template>
         <template is="dom-if" if="{{_is(importipfsstatus,'error')}}">
-        ERRORZ
+        <p class="red bold">Something went wrong. Please try again.</p>
         </template>
 
+          </div>
           </div>
 
       </neon-animatable>
