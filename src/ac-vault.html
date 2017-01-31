@@ -148,6 +148,10 @@
     word-break: break-all;
   }
 
+  h1 {
+        word-wrap: break-word;
+  }
+
 
     </style>
 
@@ -206,7 +210,7 @@
             <div class="whitespace"></div>
             <div class="whitespace"></div>
             <div class="maxwidth">
-              <h1 class="bold blue">ARC-tokens<br>in a MyEtherwallet</h1>
+              <h1 class="bold blue">ARC-tokens<br>in a MyEther-wallet</h1>
               <div class="whitespace"></div>
               <p class="reg grey4">Enter the private key you'll find on your wallet.</p>
             </div>
@@ -956,11 +960,13 @@
       },
 
       deleteVault: function(){
+        debugger;
         this.privatekey = null;
         this.$.privatekeyinput.inputvalue = null;
         this.closeVault();
         window.localStorage.removeItem('sc-vault');
         return this.fire('novault');
+
       },
 
       importPrivateKey: function(pk) {
