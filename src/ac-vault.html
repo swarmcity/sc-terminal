@@ -248,39 +248,19 @@
               <p>A profile will be created with the private key you provided. You just need a password and you're all set.</p>
             </div>
             <div class="flex"></div>
- 
-<!--           <template is="dom-if" if="{{!creatingvault}}"> -->
-            <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
-<!--           </template>
- -->
+             <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+
           </template>
 
 
           <template is="dom-if" if="{{creatingvault}}">
                 <sc-loader color="blue" small>Creating wallet</sc-loader>
             </template>
-
-<!--             <div class="smallio vertic centercenter">
-             <template is="dom-if" if="{{!creatingvault}}">
-              <p class="grey2 maxwidth">A profile will be created with the private key you provided.</p>
-              <div class="whitespace"></div>
-
-              <p class="centertxt">Enter a password (min. 5 characters) and repeat.</p>
-              <div class="whitespace"></div>
-              <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
-            </template>
-            <template is="dom-if" if="{{creatingvault}}">
-                <sc-loader color="blue" big>Creating wallet...</sc-loader>
-            </template>
-
-            </div> -->
           </div>
         </div>
       </neon-animatable>
 
-    <!-- import a keyfile -->
       <neon-animatable data-page="importipfs">
-
         <div class="total vertic centercenter">
           <div class="topbar">
             <span class="flex"></span>
@@ -467,12 +447,32 @@
             <div class="whitespace"></div>
 
             <div class="vertic yesnobtns center">
-              <paper-button class="yesno bigbtn centertxt" on-tap="deleteVault">Yes</paper-button>
-              <paper-button class="yesno bigbtn centertxt" on-tap="toimportpk" >No</paper-button>
+              <paper-button class="yesno bigbtn centertxt lighter" on-tap="deleteVault">Yes</paper-button>
+              <paper-button class="yesno bigbtn centertxt lighter" on-tap="toimportpk" >No</paper-button>
             </div>
           </div>
         </neon-animatable>
 
+
+        <neon-animatable data-page="completeclearvault">
+        <div class="total vertic centercenter">
+          <div class="totalwidth vertic centercenter">
+            <p class="centertxt smallio grey5 bold caution">Forgot your password?</p>
+            <div class="whitespace"></div>
+            <p class="centertxt smallio">The only thing you can do, is completely remove the user from this device and start over. <br><span class="bold">This can not be undone.</span></p>
+          </div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+
+            <div class="vertic yesnobtns center">
+              <paper-button class="yesno bigbtn centertxt redback white shadow" on-tap="">Remove the user from this device</paper-button>
+            <div class="minispace"></div>
+
+              <paper-button class="yesno bigbtn centertxt lighter shadow" on-tap="cancel">Cancel</paper-button>
+            </div>
+          </div>
+        </neon-animatable>
 
       <neon-animatable data-page="createnew">
         <div class="total vertic centercenter">
@@ -504,20 +504,18 @@
     </neon-animatable>
 
     <neon-animatable data-page="unlock">
-          <div class="total vertic centercenter">
-            <div class="topbar">
-              <span class="flex"></span>
-                <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
-            </div>
-            <div class="pascanvasunderexit vertic centercenter paddingwithouttop">
-              <ac-password class="height" id="newuser" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password> 
-            </div>
-          </div>    
-  
-  </neon-animatable>
-   <neon-animatable data-page="uploadunlock">
-      <!--  
-      VANAF HIER ALLES OP DIE NIEUWE ROUTE  -->
+      <div class="total vertic centercenter">
+        <div class="topbar">
+          <span class="flex"></span>
+            <iron-icon class="grey4" icon="sc-icons:decline" on-tap="vaultAway">back</iron-icon>
+        </div>
+        <div class="pascanvasunderexit vertic centercenter paddingwithouttop">
+          <ac-password class="height" id="newuser" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password> 
+        </div>
+      </div>    
+    </neon-animatable>
+
+    <neon-animatable data-page="uploadunlock">
         <div class="total vertic centercenter">
           <div class="topbar">
             <span class="flex"></span>
@@ -1107,6 +1105,10 @@
           self.keystore.generateNewAddress(pwDerivedKey, amount || 1);
           cb();
         });
+      },
+
+      vaultAway: function(){
+        this.set('route.path', '/completeclearvault');
       },
 
       _currentAccount: function(){
