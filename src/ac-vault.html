@@ -494,14 +494,18 @@
               <div class="whitespace"></div>
               <p>We just need a password to create your profile.</p>
             </div>
-            <div class="flex"></div>
  
           <template is="dom-if" if="{{!creatingvault}}">
+            <div class="flex"></div>
+
             <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
           </template>
 
 
           <template is="dom-if" if="{{creatingvault}}">
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+
                 <sc-loader color="blue" small>Creating wallet</sc-loader>
             </template>
           </div> 
@@ -598,7 +602,8 @@
       },
 
       observers: [
-          '_onRoutePathChanged(data.page,data)'
+          '_onRoutePathChanged(data.page,data)',
+          '_logThis(creatingvault)'
       ],
 
       _onRoutePathChanged: function(page,d) {
@@ -1036,13 +1041,13 @@
 
       createvault: function(e){
         this.password = e.detail.password;
-        this.creatingvault = true;
         var self = this;
         this.createVault(1,function(){
-          self.creatingvault = false;
+          // self.creatingvault = false;
           self.status = 'unlocked';
           self.fire('ready');
         });
+        this.creatingvault = true;
       },
 
       _is: function(a, b) {
@@ -1163,6 +1168,10 @@
       unlockBtnbool: function(){
         this.tappedunlockbtn =! this.tappedunlockbtn;
       },
+
+      _logThis: function(){
+        console.log("is die vault nu eig creating????",this.creatingvault);
+      }
 
     });
   </script>
