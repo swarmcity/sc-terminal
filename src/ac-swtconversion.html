@@ -201,7 +201,7 @@
       <div class="totalwidth vertic start paddingsides basestructure">
           <div class="whitespace"></div>
           <div class="whitespace"></div>
-<!--           <template is="dom-if" if="{{!needstoconvert}}"> -->
+          <template is="dom-if" if="{{!needstoconvert}}">
             <div class="total vertic start startjust ">
             <h1 class="maxwidth grey1 bold">Oops!</h1>
             <div class="whitespace"></div>
@@ -327,7 +327,7 @@
             <div class="totalwidth horizont centercenter item">
               <template is="dom-if" if="{{_is(secondstate,'init')}}">
                 <div class="flex">
-                  <p class="bold lightgrey">Issueing your new SWT and sending them to you</p>
+                  <p class="bold lightgrey">Issuing your new SWT and sending them to you</p>
                 </div>
                 <div class="stateicon">
                   <iron-icon icon="sc-icons:v" class="lightgrey big"></iron-icon>
@@ -335,7 +335,7 @@
               </template>
               <template is="dom-if" if="{{_is(secondstate,'doing')}}">
                 <div class="flex" on-tap="errortest">
-                  <p class="bold">Issueing your new SWT and sending them to you</p>
+                  <p class="bold">Issuing your new SWT and sending them to you</p>
                 </div>
                 <div class="stateicon">
                   <sc-loader color="blue"></sc-loader>
@@ -616,7 +616,7 @@ Polymer({
             this.getSWTBalance(function(err) {
               this.verify();
             }.bind(this));
-          });
+          }.bind(this));
         }.bind(this));
       } else {
         this.ethcheckstate = 'error';
@@ -702,7 +702,7 @@ Polymer({
   },
 
   convertTokens: function(callback) {
-    debugger;
+    //debugger;
     var self = this;
     self.web3.eth.getGasPrice(function(err, result) {
       var gasPrice = result.toNumber(10) * 1.1;
@@ -801,7 +801,8 @@ Polymer({
   },
 
   back: function(){
-    console.log("Kunde gij efkes MAKE DA GE TERUGGA?");
+    this.fire('exit');
+//    console.log("Kunde gij efkes MAKE DA GE TERUGGA?");
   }
 
 });

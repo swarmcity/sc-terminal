@@ -741,6 +741,12 @@
         var self= this;
         this.importipfsstatus = 'downloading';
         this.$.ipfs.cat(this.importipfshash, function(err, data) {
+          try{
+            data = JSON.parse(data);
+          }catch(e){
+            err= e;
+          }
+
           if (err) {
             self.importipfsstatus = 'error';
             self.importipfserrormessage = 'Error downloading IPFS hash: ' + err;
@@ -775,7 +781,7 @@
               self.pkshowpassw = true;
               self.status = 'locked';
 //              self.fire('ready');
-              this.set('route.path', '/uploadunlock');
+              self.set('route.path', '/uploadunlock');
             }
           //},100);
           // so we've read the vault file. It's locked.

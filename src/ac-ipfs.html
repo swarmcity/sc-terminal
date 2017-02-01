@@ -31,11 +31,12 @@
       },
 
       initipfs: function() {
-        if (this.config && !this.ipfs){
+        if (this.config && !this.ipfs) {
           this.ipfs = window.IpfsApi(this.config);
-          this.baseurl = 'https://' + this.config.host + ':8080/ipfs/';
-          //this.ipfs._add = this.ipfs.add;
-          //this.add = this.add;
+          if (this.config.port === undefined){
+            this.config.port = 8080;
+          }
+          this.baseurl = this.config.protocol + '://' + this.config.host + ':' + this.config.port + '/ipfs/';
         }
       },
 

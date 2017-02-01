@@ -46,7 +46,7 @@
   </style>
     <app-location route="{{route}}" use-hash-as-path></app-location>
     <app-route route="[[route]]" pattern="/:page" data="{{routedata}}" tail="{{pageTail}}"></app-route>
-    <ac-web3 web3="{{web3}}" keystore="[[keystore]]"></ac-web3>
+    <ac-web3 id="web3" web3="{{web3}}" keystore="[[keystore]]"></ac-web3>
     <ac-wallet
         id="wallet"
         web3="[[web3]]"    
@@ -171,7 +171,10 @@
         }
 
         if (this.vaultstatus == 'locked') {
-          return this.transitionto('/vault/unlock');
+          // TODO this is a patch for when we uploaded a JSON file. Should be part of larger router...
+          if (this.route.path != '/vault/importfile' ){
+            return this.transitionto('/vault/unlock');
+          }
         }
 
         if (this.vaultstatus == 'unlocked') {
@@ -191,6 +194,7 @@
         }
 
         if (this.vaultstatus == 'novault') {
+//          if (this.route != 'vault/importfile')
           return  this.transitionto('/intro/newuser');
         }
 
@@ -226,7 +230,9 @@
           this.parsedpage = 'loading';
           this.lazyLoad('web3', 'ac-web3.html');             
           this.lazyLoad('wallet', 'ac-wallet.html');
-          this.lazyLoad('vault', 'ac-vault.html','reset');
+          this.lazyLoad('vault', 'ac-vault.html',function(err,element){
+            element.reset();
+          });
         }else{
           this.parsedpage = page;
         }
@@ -252,11 +258,13 @@
         }
       },
 
-      lazyLoad: function(elementid, filename, method) {
+      lazyLoad: function(elementid, filename, cb) {
 
         if (Polymer.isInstance(this.$[elementid])) {
-          if (method && this.$[elementid][method]) {
-            this.$[elementid][method]();
+          if (cb) {
+            cb(null,this.$[elementid]);
+            //} && this.$[elementid][method]) {
+            //this.$[elementid][method]();
           }
           return;
         }
@@ -266,9 +274,12 @@
           url,
           function(e) {
             console.log('LAZYLOADER --> ', elementid, 'loaded');
-            if (method && this.$[elementid][method]) {
-              this.$[elementid][method]();
-            }
+            if (cb) {
+              cb(null,this.$[elementid]);
+            }            
+            // if (method && this.$[elementid][method]) {
+            //   this.$[elementid][method]();
+            // }
           }.bind(this),
           function() {
             console.log('Something failed!');
