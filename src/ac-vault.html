@@ -154,6 +154,11 @@
         word-wrap: break-word;
   }
 
+  .hrefpadding {
+    box-sizing:border-box;
+    padding: 15px;
+  }
+
 
     </style>
 
@@ -453,7 +458,7 @@
 <!--               <paper-input label="Your e-mailadres" value="{{emailadress}}"></paper-input>
               <div class="whitespace"></div>
               <div class="whitespace"></div> -->
-              <a href="mailto:?subject=Your Swarm City IPFS Backup&body=Your backup is at {{vaulttoipfshash}}" class="blue lighter centertxt shadow">Mail this hash to me</paper-button>
+              <a href="mailto:?subject=Your Swarm City IPFS Backup&body=Your backup is at {{vaulttoipfshash}}" class="blue lighter centertxt shadow hrefpadding">Mail this hash to me</paper-button>
             </template>   
 
             <template is="dom-if" if="{{_is(vaulttoipfsstatus,'error')}}">
