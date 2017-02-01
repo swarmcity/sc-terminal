@@ -902,6 +902,8 @@
       },
 
       unlockvault: function(e) {
+
+
         var self=this;
         self.unlockpasswordwrong = false;
         if (!this.hasVault()) {
@@ -916,6 +918,8 @@
         this.loadVault();
         this.checkpassword(function(err, pwdcorrect) {
           if (pwdcorrect) {
+            this.tappedunlockbtn =! this.tappedunlockbtn;
+
             sessionStorage.setItem('vaultpassword',self.password);
             self.status = 'unlocked';
             self.fire('ready');
@@ -1212,9 +1216,8 @@
       },
 
 
-      unlockBtnbool: function(){
-        this.tappedunlockbtn =! this.tappedunlockbtn;
-      },
+      // unlockBtnbool: function(){
+      // },
 
       _logThis: function(){
         // console.log("is die vault nu eig creating????",this.creatingvault);

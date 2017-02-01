@@ -88,8 +88,10 @@
   }
 
   .errorsymbol {
-    width: 100%;
-    height: 100%;
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    min-height: 30px;
 
   }
 
@@ -289,11 +291,10 @@
 
 
                 </div>
-                <div class="stateicon">
+                <div class="stateicon horizont centercenter">
                   <div class="errorsymbol horizont centercenter redback">
-                    <p class="white">!</p>
+                    <p class="white bold">!</p>
                   </div>
-                  <iron-icon icon="sc-icons:decline" class="red big"></iron-icon>
                 </div>
               </template>
             </div>          
@@ -328,7 +329,9 @@
                   <p class="bold red">Something went wrong. {{firststateerrormsg}}</p>
                 </div>
                 <div class="stateicon">
-                  <iron-icon icon="sc-icons:decline" class="red big"></iron-icon>
+                  <div class="errorsymbol horizont centercenter redback">
+                    <p class="white bold">!</p>
+                  </div>
                 </div>
               </template>
             </div>
@@ -363,7 +366,9 @@
                   <p class="bold red">Something went wrong. {{secondstateerrormsg}}</p>
                 </div>
                 <div class="stateicon">
-                  <iron-icon icon="sc-icons:decline" class="red big"></iron-icon>
+                  <div class="errorsymbol horizont centercenter redback">
+                    <p class="white bold">!</p>
+                  </div>
                 </div>
               </template>
             </div>
@@ -549,7 +554,7 @@ Polymer({
   },
 
   checkgas: function(err, ETHbalance) {
-    if (this.ETHbalance !== undefined && this.ETHbalance > 500000 * 22000000000) {
+    if (this.ETHbalance !== undefined && this.ETHbalance > 500000) {
       this.hasenoughgas = true;
       console.log('ac-swtconversion -> You have enough ETH to perform a conversion');
     } else {
