@@ -673,7 +673,7 @@ Polymer({
       }
 
       self.web3.eth.getGasPrice(function(err, result) {
-        var gasPrice = result.toNumber(10);
+        var gasPrice = result.toNumber(10) * 1.1;
         console.log('gasprice: ', gasPrice);
         self.ARCTokenInstance.approve.sendTransaction(self.config.swtconversioncontractaddress, self.arcbalance, {
           from: self.$.helpers.fixaddress(self.account),
@@ -698,9 +698,10 @@ Polymer({
   },
 
   convertTokens: function(callback) {
+    debugger;
     var self = this;
     self.web3.eth.getGasPrice(function(err, result) {
-      var gasPrice = result.toNumber(10);
+      var gasPrice = result.toNumber(10) * 1.1;
       console.log('gasprice: ', gasPrice);
       self.SWTConverterInstance.convert.sendTransaction(1e18, {
         from: self.$.helpers.fixaddress(self.account),

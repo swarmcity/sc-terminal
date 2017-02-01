@@ -470,7 +470,7 @@
             <div class="whitespace"></div>
 
             <div class="vertic yesnobtns center">
-              <paper-button class="yesno bigbtn centertxt redback white shadow" on-tap="">Remove the user from this device</paper-button>
+              <paper-button class="yesno bigbtn centertxt redback white shadow" on-tap="removevault">Remove the user from this device</paper-button>
             <div class="minispace"></div>
 
               <paper-button class="yesno bigbtn centertxt lighter shadow" on-tap="cancel">Cancel</paper-button>
@@ -970,8 +970,12 @@
         sessionStorage.removeItem('vaultpassword');
       },
 
+      removevault: function(){
+        this.deleteVault();
+      },
+
       deleteVault: function(){
-        debugger;
+        //debugger;
         this.privatekey = null;
         this.$.privatekeyinput.inputvalue = null;
         this.closeVault();
@@ -1089,7 +1093,7 @@
         }
         var self=this;
         this.set('keystore.passwordProvider', function(callback) {
-          console.log('ac-vault -> signing tx');
+          console.log('ac-vault -> passwordProvider : signing tx');
           callback(null, self.password);
         });
         console.log('ac-vault -> new passwordProvider set.');
