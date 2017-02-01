@@ -347,7 +347,7 @@
  
               <template is="dom-if" if="{{pkshowpassw}}">
 
-               <p class="reg grey4">Unlock your AC-wallet with its password.</p>
+               <p class="reg grey4">Unlock your ARC-wallet with its password.</p>
              </template>
 
             </div>
@@ -373,7 +373,7 @@
               <p class="grey4 semibold blueborder">{{jsonfilename}}</p>
               <div class="whitespace"></div>
               <div class="totalwidth horizont end startjust maxwidth">
-                <paper-input id="acwalletpassw" label="Password AC-Wallet" type="password" bind-value="{{wallletpassword}}"></paper-input>
+                <paper-input id="acwalletpassw" label="Password ARC-Wallet" type="password" bind-value="{{wallletpassword}}"></paper-input>
 
                 <paper-icon-button icon="sc-icons:looky" class="grey1back grey4 saveyourwidth" on-tap="psswrdtoggle" noink>show</paper-icon-button>
               </div>
@@ -587,7 +587,7 @@
               <p>Almost there. You need to unlock your wallet to do the conversion.</p>
             </div>
             <div class="flex"></div>
-            <ac-password id="newuser" passwordlabel="Password of your AC-wallet" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
+            <ac-password id="newuser" passwordlabel="Password of your ARC-wallet" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
           </div>
           <div class="tenspace"></div>
           <div class="tenspace"></div>
