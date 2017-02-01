@@ -549,7 +549,7 @@ Polymer({
   },
 
   checkgas: function(err, ETHbalance) {
-    if (this.ETHbalance !== undefined && this.ETHbalance > 500000) {
+    if (this.ETHbalance !== undefined && this.ETHbalance > 500000 * 22000000000) {
       this.hasenoughgas = true;
       console.log('ac-swtconversion -> You have enough ETH to perform a conversion');
     } else {
