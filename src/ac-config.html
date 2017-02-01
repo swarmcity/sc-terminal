@@ -49,12 +49,19 @@
             break;
           case 'livenet':
             
+            // this.set('ipfs', {
+            //   host: 'ipfs.swarm.city',
+            //   protocol: 'https'
+            // });
+
+            // this.web3host = 'https://eth.swarm.city/';
+
             this.set('ipfs', {
-              host: 'ipfs.swarm.city',
-              protocol: 'https'
+              host: 'faucet.ma.cx',
+              protocol: 'http'
             });
 
-            this.web3host = 'https://eth.swarm.city/';
+            this.web3host = 'http://faucet.ma.cx:8546/';            
             this.etherscanroot = 'https://etherscan.io/';
             this.tokencontractaddress = '0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5';
             this.swtconversioncontractaddress = '0x69e5da6904f73dfa845648e1991ad1dcc780f874';
