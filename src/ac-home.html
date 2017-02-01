@@ -194,6 +194,34 @@
     }
 
 
+    .notifcounter {
+
+/*    height: 28px;
+    max-width: 40%;
+    min-height: 28px;
+    min-width: 22px;
+    border-radius: 14px;
+    margin-top: 14px;
+    margin-bottom: 28px;*/
+    box-sizing:border-box;
+
+    padding: 50px;
+      border-top: 2px dotted rgba(0,0,0,0.15);
+
+    }
+
+    .notifcounter p {
+    margin: 0px 5.3px 0px 5.3px;
+
+
+    }
+
+
+    iron-icon.smallericon {
+      width: 22px;
+      height: 22px;
+
+    }
 
 
 
@@ -225,11 +253,10 @@
 
 
     .ac-username {
-        margin: 17px 0px 40px 0px;
+        margin: 12px 0px 16px 0px;
         -ms-flex: none;
         -webkit-flex: none;
         flex: none;
-        width: 100%;
         text-align: center;
     }
 
@@ -323,16 +350,13 @@
         id="homeavatar"
         ></ac-avatar>
 
-        <ac-avatar
-        identity="[[identity]]"
-        pubkey="[[pubkey]]"
-        mode="txtonly"
-        id="avatarusername"
-        class="ac-username">
-        </ac-avatar>
-        <!-- <div class="overlayer totalwidth" id="avatarbox"></div> -->
-
-
+          <ac-avatar
+          identity="[[identity]]"
+          pubkey="[[pubkey]]"
+          mode="txtonly"
+          id="avatarusername"
+          class="ac-username">
+          </ac-avatar>
       </div>
 
       <div class="homebalancebox" id="homebalance">
@@ -356,6 +380,11 @@
         </template>
 
       </div>
+
+    <div class="notifcounter totalwidth blue centertxt horizont centercenter">
+      <p class="bold">4 </p><iron-icon icon="sc-icons:babble" class="blue smallericon"></iron-icon>
+    </div>
+
     </div>
 
 
