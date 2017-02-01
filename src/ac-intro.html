@@ -104,7 +104,7 @@
     }
 
 
-  @media all and (min-width: 0) and (max-width: 420px) { 
+  @media all and (min-width: 0px) and (max-width: 420px) { 
   .findyourhive {
       text-align: center;
     width: 100%;
@@ -164,9 +164,11 @@
       </neon-animatable>
 
       <neon-animatable data-page="newuser">
-        <div class="totalwidth vertic start paddingwithouttop basestructure">
+        <div class="totalwidth vertic start paddingsides basestructure">
           <div class="whitespace"></div>
-          <div class="whitespace"></div>
+          <template is="dom-if" if="{{!phoneview}}">
+            <div class="whitespace"></div>
+          </template>
 
           <h1 class="bold yellow">You must bee<br>new here</h1>
           <div class="whitespace"></div>
@@ -176,14 +178,19 @@
           <div class="whitespace"></div>
             <p on-tap="torestore" class="reg grey3 small underliner">restore a backup-file</p>
 <!--           <p on-tap="torestore" class="grey3 small"></p> -->
+          <div class="tenspace"></div>
+          <div class="fivespace"></div>
+          <div class="fivespace"></div>
+
         </div>
       </neon-animatable>
 
       <neon-animatable data-page="first">
-        <div class="totalwidth vertic start paddingwithouttop blueback">
+        <div class="totalwidth vertic start paddingsides blueback">
           <div class="whitespace"></div>
-          <div class="whitespace"></div>
-
+          <template is="dom-if" if="{{!phoneview}}">
+            <div class="whitespace"></div>
+          </template>
           <div class="maxwidth">
           <h1 class="bold white">Let's talk tokens first...</h1>
           <div class="whitespace"></div>
@@ -194,14 +201,19 @@
             <paper-button class="white lighter yesno shadow centertxt" on-tap="toimportwallet" noink>Yes, convert my tokens!</paper-button>
             <paper-button class="white lighter yesno shadow centertxt" on-tap="tocreatewallet" noink>Nope, don't have any.</paper-button>
           </div>
+          <div class="tenspace"></div>
+          <div class="fivespace"></div>
+          <div class="fivespace"></div>
         </div>
       </neon-animatable>
 
 
       <neon-animatable data-page="importwallet">
-        <div class="totalwidth vertic start paddingwithouttop basestructure">
+        <div class="totalwidth vertic start paddingsides basestructure">
           <div class="whitespace"></div>
-          <div class="whitespace"></div>
+          <template is="dom-if" if="{{!phoneview}}">
+            <div class="whitespace"></div>
+          </template>
           <div class="maxwidth">
           <h1 class="bold blue">We bee converting!</h1>
           <div class="whitespace"></div>
@@ -211,11 +223,14 @@
           <div class="vertic yesnobtns">
             <paper-button class="blue darker shadow yesno" on-tap="touploadjson" noink>as a json-file</paper-button>
             <paper-button class="blue darker shadow yesno" on-tap="toprivatekey" noink>as a print / pdf</paper-button>
-            <div class="whitespace"></div>
           <div class="whitespace"></div>
 
             <p on-tap="tomyethwallet" class="semibold grey3 small underliner">I have Arcade-tokens in a MyEther-Wallet</p>
           </div>
+          <div class="tenspace"></div>
+          <div class="fivespace"></div>
+          <div class="fivespace"></div>
+
         </div>
       </neon-animatable>
 

@@ -1,5 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+
 <link rel="import" href="ac-helpers.html">
 <link rel="import" href="ac-password.html">
 <link rel="import" href="sc-loader.html">
@@ -155,6 +157,8 @@
 
     </style>
 
+<iron-media-query query="(min-width:0px) and (max-width: 420px)" query-matches="{{phoneview}}"></iron-media-query>
+
   <template>
     <ac-ipfs id="ipfs"></ac-ipfs>
     <ac-helpers id="helpers"></ac-helpers>
@@ -172,9 +176,11 @@
               <iron-icon class="grey4" icon="sc-icons:decline" on-tap="deleteVault">back</iron-icon>
           </div>
 
-          <div class="pascanvasunderexit vertic start paddingwithouttop">
+          <div class="pascanvasunderexit vertic start paddingsides">
             <div class="whitespace"></div>
-            <div class="whitespace"></div>
+          <template is="dom-if" if="{{!phoneview}}">
+              <div class="whitespace"></div>
+            </template>
             <div class="maxwidth">
               <h1 class="bold blue">ARC-wallet<br>as a print / pdf</h1>
               <div class="whitespace"></div>
@@ -193,6 +199,9 @@
             <paper-icon-button icon="sc-icons:arrowright" class="big whiteback shadow blue" on-tap="pkreceived" noink>next</paper-icon-button>
             </div>
           </div>
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
+
       </div>
       </neon-animatable>
 
@@ -206,9 +215,11 @@
               <iron-icon class="grey4" icon="sc-icons:decline" on-tap="deleteVault">back</iron-icon>
           </div>
 
-          <div class="pascanvasunderexit vertic start paddingwithouttop">
+          <div class="pascanvasunderexit vertic start paddingsides">
             <div class="whitespace"></div>
-            <div class="whitespace"></div>
+            <template is="dom-if" if="{{!phoneview}}">
+              <div class="whitespace"></div>
+            </template>
             <div class="maxwidth">
               <h1 class="bold blue">ARC-tokens<br>in a MyEther-wallet</h1>
               <div class="whitespace"></div>
@@ -227,6 +238,8 @@
             <paper-icon-button icon="sc-icons:arrowright" class="big whiteback shadow blue" on-tap="pkreceived" noink>next</paper-icon-button>
             </div>
           </div>
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
       </div>
       </neon-animatable>
 
@@ -239,20 +252,23 @@
             <span class="flex"></span>
               <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
           </div>
-          <div class="pascanvasunderexit vertic start paddingwithouttop">
+          <div class="pascanvasunderexit vertic start paddingsides">
 
 
              <template is="dom-if" if="{{!creatingvault}}">
 
           <div class="whitespace"></div>
-            <div class="whitespace"></div>
-            <div class="maxwidth">
-              <h1 class="bold blue">Alright!</h1>
+          <template is="dom-if" if="{{!phoneview}}">
               <div class="whitespace"></div>
-              <p>A profile will be created with the private key you provided. You just need a password and you're all set.</p>
-            </div>
-            <div class="flex"></div>
-             <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+            </template>
+
+          <div class="maxwidth">
+            <h1 class="bold blue">Alright!</h1>
+            <div class="whitespace"></div>
+            <p>A profile will be created with the private key you provided. You just need a password and you're all set.</p>
+          </div>
+          <div class="flex"></div>
+           <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
 
           </template>
 
@@ -261,6 +277,8 @@
                 <sc-loader color="blue" small>Creating wallet</sc-loader>
             </template>
           </div>
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
         </div>
       </neon-animatable>
 
@@ -278,8 +296,7 @@
               <h1 class="bold yellow">Restore a backup from IPFS</h1>
               <div class="whitespace"></div>
             </div>
-            <div class="whitespace"></div>
-            <div class="whitespace"></div>
+            <div class="flex"></div>
 
         <template is="dom-if" if="{{_is(importipfsstatus,'init')}}">
 
@@ -297,6 +314,8 @@
         </template>
 
           </div>
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
           </div>
 
       </neon-animatable>
@@ -311,7 +330,9 @@
 
           <div class="pascanvasunderexit vertic start paddingsides">
             <div class="whitespace"></div>
-            <div class="whitespace"></div>
+          <template is="dom-if" if="{{!phoneview}}">
+              <div class="whitespace"></div>
+            </template>
             <div class="maxwidth">
               <h1 class="bold blue">ARC-wallet as a json-file</h1>
               <div class="whitespace"></div>
@@ -364,6 +385,11 @@
           </template>
 
         </div>
+
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
+
+
       </div>
 
       </neon-animatable>
@@ -486,9 +512,12 @@
               <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
           </div>
 
-          <div class="pascanvasunderexit vertic start paddingwithouttop">
+          <div class="pascanvasunderexit vertic start paddingsides">
           <div class="whitespace"></div>
+          <template is="dom-if" if="{{!phoneview}}">
             <div class="whitespace"></div>
+          </template>
+
             <div class="maxwidth">
               <h1 class="bold blue">Alright!</h1>
               <div class="whitespace"></div>
@@ -509,6 +538,8 @@
                 <sc-loader color="blue" small>Creating wallet</sc-loader>
             </template>
           </div> 
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
         </div>
     </neon-animatable>
 
@@ -539,9 +570,12 @@
             <span class="flex"></span>
               <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
           </div>
-          <div class="pascanvasunderexit vertic start paddingwithouttop">
+          <div class="pascanvasunderexit vertic start paddingsides">
             <div class="whitespace"></div>
-            <div class="whitespace"></div>
+            <template is="dom-if" if="{{!phoneview}}">
+              <div class="whitespace"></div>
+            </template>
+
             <div class="maxwidth">
               <h1 class="bold blue">Great!</h1>
               <div class="whitespace"></div>
@@ -550,6 +584,8 @@
             <div class="flex"></div>
             <ac-password id="newuser" passwordlabel="Password of your AC-wallet" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
           </div>
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
         </div>
       <!--        
         TOT HIER
@@ -1170,7 +1206,7 @@
       },
 
       _logThis: function(){
-        console.log("is die vault nu eig creating????",this.creatingvault);
+        // console.log("is die vault nu eig creating????",this.creatingvault);
       }
 
     });
