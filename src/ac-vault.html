@@ -216,8 +216,8 @@
             </div>
             <div class="flex"></div>
             <div class="totalwidth horizont end startjust maxwidth">
-              <paper-input id="privatekeyinput" label="Private key" type="password" bind-value="{{privatekey::input}}"></paper-input>
-              <paper-icon-button icon="sc-icons:looky" class="grey1back grey4 saveyourwidth" on-tap="pktoggle" noink>show</paper-icon-button>
+              <paper-input id="privatekeyethinput" label="Private key" type="password" bind-value="{{privatekey::input}}"></paper-input>
+              <paper-icon-button icon="sc-icons:looky" class="grey1back grey4 saveyourwidth" on-tap="pkethtoggle" noink>show</paper-icon-button>
             </div>
             <div class="whitespace"></div>
             <template is="dom-if" if="{{invalidpk}}">
@@ -321,7 +321,7 @@
  
               <template is="dom-if" if="{{pkshowpassw}}">
 
-               <p class="reg grey4">Unlock your AC-vault with its password.</p>
+               <p class="reg grey4">Unlock your AC-wallet with its password.</p>
              </template>
 
             </div>
@@ -347,8 +347,9 @@
               <p class="grey4 semibold blueborder">{{jsonfilename}}</p>
               <div class="whitespace"></div>
               <div class="totalwidth horizont end startjust maxwidth">
-                <paper-input label="Password AC-Vault" type="password" value=""></paper-input>
-                <paper-icon-button icon="sc-icons:looky" class="grey1back grey4 saveyourwidth" on-tap="pktoggle" noink>show</paper-icon-button>
+                <paper-input id="acwalletpassw" label="Password AC-Wallet" type="password" bind-value="{{wallletpassword}}"></paper-input>
+
+                <paper-icon-button icon="sc-icons:looky" class="grey1back grey4 saveyourwidth" on-tap="psswrdtoggle" noink>show</paper-icon-button>
               </div>
               <div class="whitespace"></div> 
               <div class="totalwidth horizont center endjust">
@@ -489,7 +490,7 @@
           <div class="whitespace"></div>
             <div class="whitespace"></div>
             <div class="maxwidth">
-              <h1 class="bold blue">Allright!</h1>
+              <h1 class="bold blue">Alright!</h1>
               <div class="whitespace"></div>
               <p>We just need a password to create your profile.</p>
             </div>
@@ -651,6 +652,24 @@
           this.$.privatekeyinput.setAttribute('type','password');
         }else{
           this.$.privatekeyinput.setAttribute('type','text');
+        }
+      },
+
+      pkethtoggle: function(){
+        if (this.$.privatekeyethinput.getAttribute('type') == 'text'){
+          this.$.privatekeyethinput.setAttribute('type','password');
+        }else{
+          this.$.privatekeyethinput.setAttribute('type','text');
+        }
+      },
+
+
+      psswrdtoggle: function(){
+        var acwalletpassw = document.querySelector('#acwalletpassw');
+        if (acwalletpassw.getAttribute('type') == 'text'){
+          acwalletpassw.setAttribute('type','password');
+        }else{
+          acwalletpassw.setAttribute('type','text');
         }
       },
 
