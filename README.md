@@ -40,3 +40,5 @@ The user can transfer SWT tokens straight from any other wallet into the SWT ter
 A user that opens the app, has the option to click on the button to upload the backup or sync with another device.
 The user can upload the json file, enter the password and the user account gets imported.
 The user can also choose to sync two devices. To do so he needs the device where the terminal is already active (device A) and the new device, that he wants to sync (new device). The user is asked to get the new device and device A ready. On the new device he is asked to enter a shortcode to sync. The user gets this shortcode on device A, in his profile view. When the shortcode is entered on new device, a dialogue pops up on device A, asking for permission to sync the account on a new device. If permission is granted, the user account is imported on the new device.
+
+![Minion](https://ipfs.io/ipfs/QmcsLDtyyg5yWYS3J4FgLzudnaMAqMDCoH1VryT6P9ErMG =600x400)
