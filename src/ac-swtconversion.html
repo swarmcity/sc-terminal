@@ -130,6 +130,10 @@
 
     }
 
+    .account {
+      word-break:break-all;
+    }
+
 
   @media all and (min-width: 0) and (max-width: 620px) { 
     .item {
@@ -197,11 +201,11 @@
       <div class="totalwidth vertic start paddingsides basestructure">
           <div class="whitespace"></div>
           <div class="whitespace"></div>
-          <template is="dom-if" if="{{!needstoconvert}}">
+<!--           <template is="dom-if" if="{{!needstoconvert}}"> -->
             <div class="total vertic start startjust ">
-            <h1 class="maxwidth grey2 bold">Oops!</h1>
+            <h1 class="maxwidth grey1 bold">Oops!</h1>
             <div class="whitespace"></div>
-            <p class="reg maxwidth">No ARC-balance was found on <span class="bold">{{account}}</span>. Make sure you are trying to import the right wallet and try again.</p>
+            <p class="reg maxwidth">No ARC-balance was found on <span class="bold account">{{account}}</span>. Make sure you are trying to import the right wallet and try again.</p>
             <div class="flex"></div>
             <paper-icon-button noink icon="sc-icons:arrowleft" class="shadow big grey1back" on-tap="back">Back</paper-icon-button>   
             <div class="whitespace"></div>

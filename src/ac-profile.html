@@ -144,9 +144,6 @@
     font-size: 13px;
     line-height: 15px;
     @apply(--montserrat-reg);
-    color: var(--sc-grey2);
-    @apply(--sc-font-nowrap);
-
     text-align: center;
   } 
 
@@ -154,13 +151,17 @@
     width: 60px;
   }
   .pubhidden p {
-    @apply(--ac-font-nowrap);
+    color: var(--sc-grey2);
+
+    @apply(--sc-font-nowrap);
   }
   .pubshown {
     width: 70%;
   }
   .pubshown p {
     word-break: break-all;
+    color: var(--sc-grey3);
+
   }
 
   paper-button.logoutbtn {
