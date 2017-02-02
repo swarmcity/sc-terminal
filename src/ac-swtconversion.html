@@ -143,17 +143,9 @@
     }
 
     .congrats {
-      @apply(--layout-horizontal);
-      @apply(--layout-center);
-      @apply(--layout-start-justified);
       box-sizing:border-box;
       padding-top: 4vh;
       border-top: 2px dotted var(--sc-blue);
-    }
-
-    .congratstxt {
-
-      @apply(--layout-flex);
     }
 
     .congratswish {
@@ -191,20 +183,6 @@
     transform: rotate(90deg);
   }
 
-
-    .congrats {
-      @apply(--layout-vertical);
-      @apply(--layout-start);
-      @apply(--layout-start-justified);
-    }
-
-    .congratstxt {
-      width: 100%;
-    margin: 0px 0px 25px 0px;
-        -ms-flex: none;
-        -webkit-flex: none;
-        flex: none;
-    }
 
   }
 
@@ -428,14 +406,12 @@
           </template>
 
           <template is="dom-if" if="{{!conversiondone}}">
-            <div class="totalwidth congrats">
-              <div class="congratstxt vertic start startjust">
-                <p class="semibold congratswish blue">Congratulations!</p>
-                <div class="minispace"></div>
-                <p>You successfully converted your ARC-tokens in SWT-tokens. Welcome to Swarm City!</p>
-              </div>
-              
-              <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="toExit" noink>Get started</paper-button>
+            <div class="totalwidth congrats vertic start startjust totalwidth">
+              <p class="semibold congratswish blue">Congratulations!</p>
+              <div class="minispace"></div>
+              <p>You successfully converted your ARC-tokens in SWT-tokens. Welcome to Swarm City!</p>
+              <div class="whitespace"></div>
+              <paper-button class="blueback white shadow yesno getstartedbtn centertxt" on-tap="toExit" noink>Get started</paper-button>
             </div>
           </template>
         
