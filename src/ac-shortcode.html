@@ -83,9 +83,11 @@
   <template is="dom-if" if="{{_is(topic,0)}}">
 
     <template is="dom-if" if="{{!txtlink}}">
-
-      <paper-button on-tap="fireshowshortcode" class="sender bigbtn grey1back grey4">        <content></content>
-</paper-button>
+      <div class="vertic centercenter totalwidth">
+        <paper-button on-tap="fireshowshortcode" class="sender bigbtn grey1back grey4">
+        <content></content>
+        </paper-button>
+      </div>
 
       <!-- <ac-button txtbtn on-tap="fireshowshortcode" txtcolor="red" bg="btncolor" class="sender"> -->
       </ac-button>
@@ -115,7 +117,7 @@
   <template is="dom-if" if="{{topic}}">
     <div class="codeandbtn">
       <p>{{topic}} {{progress}}</p>
-      <ac-button small on-tap="cancel" txtcolor$="{{txtcolor}}" bg$="{{bg}}" icon="ac-decline"></ac-button>
+      <paper-icon-button small on-tap="cancel" class$="{{txtcolor}} {{bg}}" icon="sc-icons:decline"></paper-icon-button>
     </div>
   </template>
 
@@ -155,7 +157,7 @@
         bg: {
           type: String,
           value: 'btncolor',
-          observer: '_type'
+          observer: '_bg'
         },
 
         txtcolor: {
@@ -185,9 +187,15 @@
       // },
 
       _txtcolor: function(){
-        var txtcolorz = 'var(--ac-'+ this.txtcolor + ')';
-        this.customStyle['--txtcolorz-code'] = txtcolorz;
+        // var txtcolorz = 'var(--sc-'+ this.txtcolor + ')';
+        this.customStyle['--txtcolorz-code'] = this.txtcolor;
         this.updateStyles();
+      },
+
+      _bg: function(){
+        // var bgcolorz = 'var(--sc-'+ this.txtcolor + ')';
+        // this.customStyle['--txtcolorz-code'] = txtcolorz;
+        // this.updateStyles();
       },
 
       _type: function(){

@@ -312,28 +312,28 @@ Author : Stefaan Ponnet
           <template is="dom-if" if="{{_is(sendcoinstate,'balancelow')}}">
             <div class="announce">
               <p>Your balance is too low for this transaction.</p>
-              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:decline" on-tap="togglesendcoins"></paper-icon-button>
             </div>
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'notvalidcode')}}">
             <div class="announce">
               <p>The givven shortcode is not valid.</p>
-              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:decline" on-tap="togglesendcoins"></paper-icon-button>
             </div>
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'searchingforpeer')}}">
             <div class="announce">
               <ac-loader small color="blue">Searching for your peer</ac-loader>
-              <ac-button verysmall bg="btncolor" txtcolor="blue" icon="ac-decline" confirmsmall on-tap="cancelsend" class="closebtn"></ac-button>
+              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:decline" on-tap="cancelsend"></paper-icon-button>
             </div>
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'nopeer')}}">
             <div class="announce">
               <p>We can not find your peer.</p>
-              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:decline" on-tap="togglesendcoins"></paper-icon-button>
             </div>
           </template>
 
@@ -354,8 +354,13 @@ Author : Stefaan Ponnet
                   </div>
                 </div>
                 <div class="confirmbtnsmobile">
-                  <ac-button verysmall bg="btncolor" txtcolor="red" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
-                  <ac-button on-tap="tosendcoins" bg="red" txtcolor="base" icon="ac-v" small></ac-button>
+
+              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:decline" on-tap="togglesendcoins"></paper-icon-button>
+
+              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:v" on-tap="tosendcoins"></paper-icon-button>
+
+                  <!-- <ac-button verysmall bg="btncolor" txtcolor="red" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+                  <ac-button on-tap="tosendcoins" bg="red" txtcolor="base" icon="ac-v" small></ac-button> -->
                 </div>
             <div class="whitespace"></div>    
             </div>
@@ -367,7 +372,8 @@ Author : Stefaan Ponnet
           <template is="dom-if" if="{{_is(sendcoinstate,'sendcoins')}}">
             <div class="announce">
               <p>Your transaction is being executed.</p>
-              <ac-button verysmall bg="btncolor" txtcolor="yellow" icon="ac-decline" confirmsmall on-tap="togglesendcoins" class="closebtn"></ac-button>
+              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:decline" on-tap="togglesendcoins"></paper-icon-button>
+
             </div>
           </template>
 
