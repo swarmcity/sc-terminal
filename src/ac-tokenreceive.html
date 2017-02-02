@@ -393,10 +393,10 @@
 
             this.fire('addlog',
               {
-                avatarhash:transactiondetails.avatarhash,
-                fromusername:transactiondetails.username,
-                amount:transactiondetails.amount,
-                txhash:transactiondetails.txhash,
+                avatarhash:self.transactiondetails.avatarhash,
+                fromusername:self.transactiondetails.username,
+                amount:self.transactiondetails.amount,
+                txhash:self.transactiondetails.txhash,
                 status:'pending'
               });
 
