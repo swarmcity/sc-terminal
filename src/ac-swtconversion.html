@@ -142,6 +142,24 @@
       word-break:break-all;
     }
 
+    .congrats {
+      @apply(--layout-horizontal);
+      @apply(--layout-center);
+      @apply(--layout-start-justified);
+      box-sizing:border-box;
+      padding-top: 4vh;
+      border-top: 2px dotted var(--sc-blue);
+    }
+
+    .congratstxt {
+
+      @apply(--layout-flex);
+    }
+
+    .congratswish {
+      font-size: 22px;
+      line-height: 22px;
+    }
 
   @media all and (min-width: 0) and (max-width: 620px) { 
     .item {
@@ -172,6 +190,21 @@
     -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
     transform: rotate(90deg);
   }
+
+
+    .congrats {
+      @apply(--layout-vertical);
+      @apply(--layout-start);
+      @apply(--layout-start-justified);
+    }
+
+    .congratstxt {
+      width: 100%;
+    margin: 0px 0px 25px 0px;
+        -ms-flex: none;
+        -webkit-flex: none;
+        flex: none;
+    }
 
   }
 
@@ -211,10 +244,10 @@
           <div class="whitespace"></div>
           <template is="dom-if" if="{{!needstoconvert}}">
             <div class="total vertic start startjust ">
-            <h1 class="maxwidth grey1 bold">Oops!</h1>
+            <h1 class="maxwidth white bold">Oops!</h1>
             <div class="whitespace"></div>
             <p class="reg maxwidth">No ARC-balance was found on <span class="bold account">{{account}}</span>. Make sure you are trying to import the right wallet and try again.</p>
-            <div class="flex"></div>
+            <div class="tenspace"></div>
             <paper-icon-button noink icon="sc-icons:arrowleft" class="shadow big grey1back" on-tap="back">Back</paper-icon-button>   
             <div class="whitespace"></div>
             <div class="whitespace"></div>
@@ -279,7 +312,7 @@
                         <div class="minispace"></div>          
 
                   <div class="totalwidth itemz">
-                  <p class="grey3">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction. Send 0.1 ETH to your wallet address <span class="accountpub grey4 reg">{{account}}</span> and try again.</p>  
+                  <p class="grey3">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction. Send 0.1 ETH to your wallet address <span class="accountpub grey4 reg">{{account}}</span>.</p>  
                   <div class="whitespace"></div>
                     <paper-button class="blue whiteback shadow yesno centertxt" on-tap="checketheragain" noink>Refresh ETH balance <iron-icon icon="sc-icons:refresh1" class=" margleft blue"></iron-icon></paper-button>
                   <!-- <div class="dotline"></div> -->
@@ -325,14 +358,22 @@
                 </div>
               </template>
               <template is="dom-if" if="{{_is(firststate,'error')}}">
-                <div class="flex">
-                  <p class="bold red">Something went wrong. {{firststateerrormsg}}</p>
-                </div>
-                <div class="stateicon">
-                  <div class="errorsymbol horizont centercenter redback">
-                    <p class="white bold">!</p>
+                <div class="totalwidth vertic start startjust">
+
+                <div class="totalwidth horizont start startjust">
+                  <div class="flex">
+                    <p class="bold red">{{firststateerrormsg}}</p>
+                  </div>
+                  <div class="stateicon">
+                    <div class="errorsymbol horizont centercenter redback">
+                      <p class="white bold">!</p>
+                    </div>
                   </div>
                 </div>
+
+                <paper-button class="blue whiteback shadow yesno centertxt" on-tap="checketheragain" noink>Restart the process</paper-button>
+
+              </div>
               </template>
             </div>
 
@@ -363,7 +404,7 @@
               </template>
               <template is="dom-if" if="{{_is(secondstate,'error')}}">
                 <div class="flex">
-                  <p class="bold red">Something went wrong. {{secondstateerrormsg}}</p>
+                  <p class="bold red">{{secondstateerrormsg}}</p>
                 </div>
                 <div class="stateicon">
                   <div class="errorsymbol horizont centercenter redback">
@@ -376,7 +417,7 @@
           </div>
 
           <div class="whitespace"></div>
-          <template is="dom-if" if="{{!conversiondone}}">
+          <template is="dom-if" if="{{conversiondone}}">
             <template is="dom-if" if="{{!convertingstarted}}">
             <!-- <template is="dom-if" if="{{hasenoughgas}}"> -->
             <div class="horizontal center startjust yesnobtns">
@@ -386,9 +427,15 @@
             </template>
           </template>
 
-          <template is="dom-if" if="{{conversiondone}}">
-            <div class="horizontal center startjust yesnobtns">
-              <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="toExit" noink>Get Started</paper-button>
+          <template is="dom-if" if="{{!conversiondone}}">
+            <div class="totalwidth congrats">
+              <div class="congratstxt vertic start startjust">
+                <p class="semibold congratswish blue">Congratulations!</p>
+                <div class="minispace"></div>
+                <p>You successfully converted your ARC-tokens in SWT-tokens. Welcome to Swarm City!</p>
+              </div>
+              
+              <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="toExit" noink>Get started</paper-button>
             </div>
           </template>
         
