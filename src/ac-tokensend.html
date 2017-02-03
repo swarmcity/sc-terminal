@@ -389,7 +389,7 @@ Author : Stefaan Ponnet
             </div>
           </template>
 
-          <template is="dom-if" if="{{_is(sendcoinstate,'sendcoins')}}">
+          <template is="dom-if" if="{{_is(sendcoinstate,'sending')}}">
             <div class="announce">
               <sc-loader>Your transaction is being executed.</sc-loader>
               <template is="dom-if" if="{{phoneview}}">
@@ -399,7 +399,7 @@ Author : Stefaan Ponnet
             </div>
           </template>
 
-          <template is="dom-if" if="{{_is(sendcoinstate,'coinssent')}}">
+          <template is="dom-if" if="{{_is(sendcoinstate,'sent')}}">
             <div class="announce">
               <div class="item">
                 <p>You have successfully send <span class="bold">{{amount}} SWT</span> to
@@ -549,7 +549,7 @@ Author : Stefaan Ponnet
             'username': self.identity.username,
             'txhash': result
           }));
-          self.sendcoinstate = 'coinssent';
+          self.sendcoinstate = 'sent';
 
         });
       },
@@ -564,7 +564,7 @@ Author : Stefaan Ponnet
             this.receiver = message;
             this.receiver.avatarurl = this.$.ipfs.geturl(this.receiver.avatarhash);
             this.receiver.from = m.detail.from;
-            this.sendcoinstate = 'confirmtx';
+            this.sendcoinstate = 'sendcoins';
             break;
           // case 'confirmtransfer':
           //   // TODO : show transfer in history...
@@ -607,7 +607,7 @@ Author : Stefaan Ponnet
     transfer: function(amount, pubkey, cb) {
 
       var self = this;
-
+      this.sendcoinstate = 'sending';
       this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
       this.importHref(this.contracturl, function(e) {
         this.contractjson = JSON.parse(e.target.import.body.innerText);
@@ -639,11 +639,11 @@ Author : Stefaan Ponnet
         });
       });
 
-      this.clearInputs();
-      var sendcoins = self.$.sendcoins;
-      sendcoins.toggle();
-      this.collsclosed = !this.collsclosed;
-      this.sendcoinstate = 'first';
+      //this.clearInputs();
+      //var sendcoins = self.$.sendcoins;
+      //sendcoins.toggle();
+      //this.collsclosed = !this.collsclosed;
+      //this.sendcoinstate = 'first';
     },
 
     waitTx: function(txHash, callback) {

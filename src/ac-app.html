@@ -255,6 +255,12 @@
           this.lazyLoad('wallet', 'ac-wallet.html');          
           this.lazyLoad('swt', 'ac-swtconversion.html');
         }
+        if (page == 'walletview') {
+          this.lazyLoad('vault', 'ac-vault.html');
+          this.lazyLoad('web3', 'ac-web3.html');
+          this.lazyLoad('wallet', 'ac-wallet.html');          
+          this.lazyLoad('swt', 'ac-swtconversion.html');
+        }        
       },
 
       lazyLoad: function(elementid, filename, cb) {

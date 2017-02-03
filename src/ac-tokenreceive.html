@@ -247,6 +247,7 @@
             this.transactiondetails = message;
             this.transactiondetails.avatarurl = this.$.ipfs.geturl(this.transactiondetails.avatarhash);
             this.receivecoinstate = 'txconfirmed';
+            this.receivedamount = self.transactiondetails.amount;
 
             this.fire('addlog',
               {
@@ -286,6 +287,11 @@
         b = true;
       }
       return a === b;
+    },
+
+    
+    formatpong: function(val){
+      return (0 + (val / 1e18)).toFixed(2);
     },
 
 
