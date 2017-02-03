@@ -276,6 +276,13 @@
             //   }.bind(this), 50 * 1000);
 
             break;
+          case 'transfererror':
+            this.receivecoinstate = 'transfererror';
+            this.receivecoinstateerror = message.error;
+
+
+            break;
+
           default:
             console.log('unknown message', message);
         }

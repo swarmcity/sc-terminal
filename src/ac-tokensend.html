@@ -424,6 +424,16 @@ Author : Stefaan Ponnet
             </div>
           </template>
 
+          <template is="dom-if" if="{{_is(sendcoinstate,'transfererror')}}">
+            <div class="announce">
+              <p class="bold">Error transferring: {{transfererrormessage}}</p>
+              <template is="dom-if" if="{{phoneview}}">
+                <div class="minispace"></div>
+              </template>
+              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+            </div>
+          </template>
+
 
       </div>
 
@@ -542,14 +552,25 @@ Author : Stefaan Ponnet
         var self = this;
         this.sendcoinstate = 'sendcoins';
         this.transfer(this.amount * 1e18, this.$.helpers.fixaddress(self.receiver.account), function(err, result) {
-          self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
-            'command': 'confirmtransfer',
-            'amount': self.amount,
-            'avatarhash': self.identity.avatarhash,
-            'username': self.identity.username,
-            'txhash': result
-          }));
-          self.sendcoinstate = 'sent';
+          if (err) {
+            self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
+              'command': 'transfererror',
+              'error': err
+            }));
+            self.sendcoinstate = 'transfererror';
+            self.transfererrormessage = err;
+
+          } else {
+
+            self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
+              'command': 'confirmtransfer',
+              'amount': self.amount,
+              'avatarhash': self.identity.avatarhash,
+              'username': self.identity.username,
+              'txhash': result
+            }));
+            self.sendcoinstate = 'sent';
+          }
 
         });
       },
@@ -623,6 +644,11 @@ Author : Stefaan Ponnet
             gasPrice: gasPrice,
             gas: 200000
           }, function(err, result) {
+            if (err){
+              if (cb) {
+                return cb(err);
+              }
+            }
             console.log(err, result);
             console.log('waiting for TX to happen');
             self.waitTx(result, function(success) {
