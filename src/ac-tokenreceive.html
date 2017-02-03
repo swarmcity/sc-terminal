@@ -229,6 +229,7 @@
 
       deactivatereceivecoins: function(){
         this.fire('deactivated');
+        this.receivecoinstate = 'init';
         this.listeninterval = 0;
       },
 
