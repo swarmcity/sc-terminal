@@ -16,6 +16,8 @@ Author : Stefaan Ponnet
 <link rel="import" href="ac-log.html">
 <link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-ipfs.html">
+<link rel="import" href="sc-loader.html">
+
 
 <dom-module id="ac-tokensend">
 <link rel="import" href="../bower_components/sc-style/sc-style.css" type="css">
@@ -103,7 +105,7 @@ Author : Stefaan Ponnet
 
      }
 
-
+/*
 
      .announce {
       width: 100%;
@@ -118,7 +120,7 @@ Author : Stefaan Ponnet
 
     .announce ac-button {
       margin-left: 10px;
-    }
+    }*/
 
      .marginbtm {
       margin-left: 15px;
@@ -155,7 +157,7 @@ Author : Stefaan Ponnet
       }
 
 
-      .amount {
+/*      .amount {
         width: 100%;
         @apply(--layout-horizontal);
         @apply(--layout-end-justified);
@@ -171,26 +173,26 @@ Author : Stefaan Ponnet
         font-size: 11px;
         padding:0px 10px;
       }
-
+*/
       .sendinputter {
         width: 60%;
       }
 
 
       .item {
-        width: 100%;
+/*        width: 100%;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
-        /*@apply(--layout-horizontal);
+        @apply(--layout-horizontal);
         @apply(--layout-wrap);
         @apply(--layout-center-justified);
-        @apply(--layout-end);*/
+        @apply(--layout-end);
         text-align: center;
         box-sizing: border-box;
         padding: 2vh 0px 2vh 0px;
 
         border-top: 2px dotted rgba(255,255,255,0.05);
-        border-bottom: 2px dotted rgba(255,255,255,0.05);
+        border-bottom: 2px dotted rgba(255,255,255,0.05);*/
       }
 
 
@@ -226,9 +228,11 @@ Author : Stefaan Ponnet
       }
 
       .pubkey {
-        opacity: 0.5;
+        width: 60px;
+        @apply(--sc-font-nowrap);
+/*        opacity: 0.5;
         font-size: 12px;
-        line-height: 14px;
+        line-height: 14px;*/
       }
 
 
@@ -236,6 +240,13 @@ Author : Stefaan Ponnet
 
         .sender {
           margin: 5px 5px 5px 5px;
+        }
+
+        .announce {
+          width: 100%;
+          box-sizing: border-box;
+          @apply(--layout-vertical);
+          @apply(--layout-center-center);          
         }
   
 
@@ -292,9 +303,9 @@ Author : Stefaan Ponnet
       id="whisper"></ac-whisperer>
 
     <div class="total vertic centercenter">
-      <template is="dom-if" if="{{_is(sendcoinstate,'init')}}">
-          <paper-button on-tap="tosendform" class="sender bigbtn grey1back grey4">send SWT</paper-button>
-      </template>
+        <template is="dom-if" if="{{_is(sendcoinstate,'init')}}">
+            <paper-button on-tap="tosendform" class="sender bigbtn grey1back grey4">send SWT</paper-button>
+        </template>
       <div class="sendcoiners">
 
           <template is="dom-if" if="{{_is(sendcoinstate,'sendform')}}">
@@ -307,7 +318,7 @@ Author : Stefaan Ponnet
             <div class="whitespace"></div>
             <div class="confirmbtns">
               <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
-              <paper-icon-button icon="sc-icons:v" class="blue whiteback shadow big" on-tap="tosearchingforpeer"></paper-icon-button>
+              <paper-icon-button icon="sc-icons:arrowright" class="blue whiteback shadow big" on-tap="tosearchingforpeer"></paper-icon-button>
             </div>
             <div class="whitespace"></div>
             <div class="whitespace"></div>
@@ -315,39 +326,48 @@ Author : Stefaan Ponnet
 
           <template is="dom-if" if="{{_is(sendcoinstate,'balancelow')}}">
             <div class="announce">
-              <p>Your balance is too low for this transaction.</p>
-              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:decline" on-tap="closetokensendcollapser"></paper-icon-button>
+              <p class="bold">Your balance is too low for this transaction.</p>
+              <template is="dom-if" if="{{phoneview}}">
+                <div class="minispace"></div>
+              </template>
+              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
             </div>
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'notvalidcode')}}">
             <div class="announce">
-              <p>The givven shortcode is not valid.</p>
-              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:decline" on-tap="closetokensendcollapser"></paper-icon-button>
+              <p class="bold">The givven shortcode is not valid.</p>
+              <template is="dom-if" if="{{phoneview}}">
+                <div class="minispace"></div>
+              </template>
+              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
             </div>
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'searchingforpeer')}}">
             <div class="announce">
               <sc-loader small color="blue">Searching for your peer</sc-loader>
-              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:decline" on-tap="cancelsend"></paper-icon-button>
+              <template is="dom-if" if="{{phoneview}}">
+                <div class="minispace"></div>
+              </template>
+              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="cancelsend">decline</iron-icon>
             </div>
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'nopeer')}}">
             <div class="announce">
-              <p>We can not find your peer.</p>
-              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:decline" on-tap="closetokensendcollapser"></paper-icon-button>
+              <p class="bold">We can not find your peer.</p>
+              <template is="dom-if" if="{{phoneview}}">
+                <div class="minispace"></div>
+              </template>
+              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
             </div>
           </template>
 
-          <template is="dom-if" if="{{_is(sendcoinstate,'confirmtx')}}">
+          <template is="dom-if" if="{{_is(sendcoinstate,'sendcoins')}}">
             <div class="announce">
-              <div class="item red">
-                <p>You're sending</p>
-                <p>
-                  <span class="amount">{{amount}} ARC</span>
-                  to
+              <div class="item">
+                <p>You're sending <span class="bold">{{amount}} SWT</span> to
                 </p>
                 <div class="receiver">
                   <div class="receiveravatar">
@@ -357,15 +377,15 @@ Author : Stefaan Ponnet
                     <p class="pubkey">{{receiver.account}}</p>
                   </div>
                 </div>
-                <div class="confirmbtnsmobile">
 
-              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:decline" on-tap="closetokensendcollapser"></paper-icon-button>
+            <div class="confirmbtns">
+              <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+              <paper-icon-button icon="sc-icons:v" class="blue whiteback shadow big" on-tap="tosendcoins"></paper-icon-button>
+            </div>
 
-              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:v" on-tap="tosendcoins"></paper-icon-button>
 
-                  <!-- <ac-button verysmall bg="btncolor" txtcolor="red" icon="ac-decline" confirmsmall on-tap="closetokensendcollapser" class="closebtn"></ac-button>
-                  <ac-button on-tap="tosendcoins" bg="red" txtcolor="base" icon="ac-v" small></ac-button> -->
-                </div>
+
+
             <div class="whitespace"></div>    
             </div>
             <div class="whitespace"></div>
@@ -486,6 +506,7 @@ Author : Stefaan Ponnet
 
       cancelsend: function(){
         this.sendcoinstate = 'init';
+        this.fire('deactivated');
         this.reset();
       },
 
