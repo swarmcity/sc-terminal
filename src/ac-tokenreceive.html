@@ -1,5 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+
 <link rel="import" href="../bower_components/sc-style/sc-style.html">
 <link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
 <link rel="import" href="ac-helpers.html">
@@ -27,32 +29,6 @@
         --btn-width: 200px;
 
       }
-/*
-      h1 {
-        @apply(--ac-font-h1);
-        text-align: center;
-        font-size: var(--balance-h1);
-        line-height: var(--balance-lineheight);
-      }
-
-
-      h2 {
-        @apply(--ac-font-h2);
-        @apply(--opensans-semibold);
-        font-size: var(--code-h2);
-        line-height: var(--code-lineheight);
-      }
-
-      p {
-        @apply(--ac-font-body1);
-      }
-
-      small {
-        @apply(--ac-font-small);
-        @apply(--opensans-semibold);
-        font-size: var(--code-small);
-      }
-*/
 
       .total {
         width: 100%;
@@ -107,11 +83,9 @@
 
      }
 
-
-
      .announce {
       width: 100%;
-      max-width: 500px;
+      height: 75px;
       box-sizing: border-box;
       @apply(--layout-vertical);
       @apply(--layout-center-center);
@@ -126,80 +100,10 @@
       margin: var(--coin-margins);
      }
 
-/*
-      .initbtns {
-        @apply(--layout-vertical);
-        @apply(--layout-center-center);
-
-      }
-
-      .initbtns paper-button {
-        width: 200px;
-      }
-
-      ac-shortcode {
-        width: 200px;
-      }
-
-      .initbtns p {
-        color: var(--ac-yellow);
-        @apply(--montserrat-semibold);
-        margin-top:10px;
-        border-bottom: 1px dashed var(--ac-yellow);
-        font-size: 16px;
-      }
-
-      .confirmbtns {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        @apply(--layout-end-justified);
-        margin-top: 15px;
-      }
-
-      .confirmbtnsmobile {
-        @apply(--layout-horizontal);
-        @apply(--layout-center-center);
-        margin-top: 15px;
-      }
-
-        .confirmbtn {
-          margin: 0px 2px 0px 2px;
-        }*/
 
         .sender {
           margin: 0px 0px 5px 0px;
         }
-/*
-      .verticcenter {
-        @apply(--layout-vertical);
-        @apply(--layout-center-center);
-      }
-
-      .verticstart {
-        @apply(--layout-vertical);
-        @apply(--layout-start);
-        @apply(--layout-center-justified);
-      }
-      .horizontcenter {
-        @apply(--layout-horizontal);
-        @apply(--layout-center-center);
-      }
-      .horizontend {
-        @apply(--layout-horizontal);
-        @apply(--layout-center-justified);
-        @apply(--layout-end);
-      }
-
-      .horizontcenterwrap {
-        @apply(--layout-horizontal);
-        @apply(--layout-wrap);
-        @apply(--layout-center-center);
-      }
-      .horizontstartwrap {
-        @apply(--layout-horizontal);
-        @apply(--layout-wrap);
-        @apply(--layout-start-justified);
-      }*/
 
       .sendinput {
         width: 100%;
@@ -207,6 +111,9 @@
       }
 
     </style>
+
+    <iron-media-query query="(min-width:0px) and (max-width: 420px)" query-matches="{{phoneview}}"></iron-media-query>
+
     <ac-ipfs id="ipfs"></ac-ipfs>
     <ac-helpers id="helpers"></ac-helpers>
     <ac-config
@@ -232,11 +139,25 @@
 
         <template is="dom-if" if="{{_is(receivecoinstate,'userinfosent')}}">
           <div class="announce">
-            <div class="item red">
-              <p>Sending user info for payment</p>
-            </div>
+            <p class="semibold">Sending your info to requesting party</p>
+              <template is="dom-if" if="{{phoneview}}">
+                <div class="minispace"></div>
+              </template>
+            <sc-loader small color="blue"></sc-loader>
           </div>
         </template>
+
+        <template is="dom-if" if="{{_is(receivecoinstate,'txconfirmed')}}">
+          <div class="announce">
+            <p class="bold">You received xxx tokens.</p>
+
+              <template is="dom-if" if="{{phoneview}}">
+                <div class="minispace"></div>
+              </template>
+              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+          </div>
+        </template>
+
       </div>
   </div>
 </template>
