@@ -426,7 +426,7 @@ Author : Stefaan Ponnet
 
           <template is="dom-if" if="{{_is(sendcoinstate,'transfererror')}}">
             <div class="announce">
-              <p class="bold">Error transferring: {{transfererrormessage}}</p>
+              <p class="bold red">{{transfererrormessage}}</p>
               <template is="dom-if" if="{{phoneview}}">
                 <div class="minispace"></div>
               </template>
