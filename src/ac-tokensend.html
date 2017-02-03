@@ -506,6 +506,7 @@ Author : Stefaan Ponnet
             'username': self.identity.username,
             'txhash': result
           }));
+          self.sendcoinstate = 'coinssent';
 
         });
       },
@@ -522,10 +523,10 @@ Author : Stefaan Ponnet
             this.receiver.from = m.detail.from;
             this.sendcoinstate = 'confirmtx';
             break;
-          case 'confirmtransfer':
-            // TODO : show transfer in history...
-            console.log('transfer confirmed...', message.amount, 'received');
-            break;
+          // case 'confirmtransfer':
+          //   // TODO : show transfer in history...
+          //   console.log('transfer confirmed...', message.amount, 'received');
+          //   break;
           default:
             console.log('unknown message', message);
         }
@@ -560,42 +561,84 @@ Author : Stefaan Ponnet
     },
 
 
-      transfer: function(amount,pubkey,cb){
+    transfer: function(amount, pubkey, cb) {
 
-        var self = this;
+      var self = this;
 
-        this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
-        this.importHref(this.contracturl, function(e) {
-          this.contractjson = JSON.parse(e.target.import.body.innerText);
-             self.web3.eth.getGasPrice(function(err, result){
-            var gasPrice = result.toNumber(10);
+      this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
+      this.importHref(this.contracturl, function(e) {
+        this.contractjson = JSON.parse(e.target.import.body.innerText);
+        self.web3.eth.getGasPrice(function(err, result) {
+          var gasPrice = result.toNumber(10);
           console.log('gasprice: ', gasPrice);
 
           var MyContract = self.web3.eth.contract(self.contractjson.abi);
           var myContractInstance = MyContract.at(self.config.swttokencontractaddress);
-            console.log('doing transfer of ',amount,' LC to: ', pubkey, 'from: ', self.account);
-            myContractInstance.transfer.sendTransaction(pubkey, amount, {
-              from: self.$.helpers.fixaddress(self.account),
-              gasPrice: gasPrice,
-              gas: 200000
-            }, function(err, result){
-              console.log(err, result);
+          console.log('doing transfer of ', amount, ' LC to: ', pubkey, 'from: ', self.account);
+          myContractInstance.transfer.sendTransaction(pubkey, amount, {
+            from: self.$.helpers.fixaddress(self.account),
+            gasPrice: gasPrice,
+            gas: 200000
+          }, function(err, result) {
+            console.log(err, result);
+
+            self.waitTx(result, function(success) {
               var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(self.account));
-                self.arcbalance = coinbalance;
-                if (cb){
-                  cb(err,result);
-                }
+              self.arcbalance = coinbalance;
+              if (cb) {
+                cb(err, result);
+              }
             });
-
+            
           });
-        });
 
-        this.clearInputs();
-        var sendcoins = self.$.sendcoins;
-        sendcoins.toggle();
-        this.collsclosed=!this.collsclosed;
-        this.sendcoinstate = 'first';
-      },
+        });
+      });
+
+      this.clearInputs();
+      var sendcoins = self.$.sendcoins;
+      sendcoins.toggle();
+      this.collsclosed = !this.collsclosed;
+      this.sendcoinstate = 'first';
+    },
+
+    waitTx: function(txHash, callback) {
+      /*
+       * Watch for a particular transaction hash and call the awaiting function when done;
+       * Ether-pudding uses another method, with web3.eth.getTransaction(...) and checking the txHash;
+       * on https://github.com/ConsenSys/ether-pudding/blob/master/index.js
+       */
+      var self = this;
+      var blockCounter = 15;
+      // Wait for tx to be finished
+      var filter = this.web3.eth.filter('latest').watch(function(err, blockHash) {
+        if (blockCounter <= 0) {
+          filter.stopWatching();
+          filter = null;
+          console.warn('!! Tx expired !!');
+          if (callback)
+            return callback(false);
+          else
+            return false;
+        }
+        // Get info about latest Ethereum block
+        var block = self.web3.eth.getBlock(blockHash);
+        --blockCounter;
+        // Found tx hash?
+        if (block.transactions.indexOf(txHash) > -1) {
+          // Tx is finished
+          filter.stopWatching();
+          filter = null;
+          if (callback)
+            return callback(true);
+          else
+            return true;
+          // Tx hash not found yet?
+        } else {
+          // console.log('Waiting tx..', blockCounter);
+        }
+      });
+    },
 
 
 
