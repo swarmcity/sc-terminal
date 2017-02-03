@@ -141,20 +141,28 @@
           <div class="announce">
             <p class="semibold">Sending your info to requesting party</p>
               <template is="dom-if" if="{{phoneview}}">
-                <div class="minispace"></div>
+                <div class="whitespace"></div>
               </template>
             <sc-loader small color="blue"></sc-loader>
+
+            <template is="dom-if" if="{{probablytimedout}}">
+              <template is="dom-if" if="{{phoneview}}">
+                <div class="minispace"></div>
+              </template>
+              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="deactivatereceivecoins">decline</iron-icon>
+            </template>
+
           </div>
         </template>
 
         <template is="dom-if" if="{{_is(receivecoinstate,'txconfirmed')}}">
           <div class="announce">
-            <p class="bold">You received xxx tokens.</p>
+            <p class="bold">You received {{formatpong(receivedamount)}} tokens.</p>
 
               <template is="dom-if" if="{{phoneview}}">
                 <div class="minispace"></div>
               </template>
-              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="deactivatereceivecoins">decline</iron-icon>
           </div>
         </template>
 
@@ -211,6 +219,7 @@
       ready: function(){
         var self = this;
         this.receivecoinstate = 'init';
+        this.probablytimedout = 'true';
       },
 
       activatereceivecoins: function(){
