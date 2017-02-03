@@ -322,10 +322,10 @@
             break;
           case 'confirmtransfer':
             // TODO : show transfer in history...
-            //console.log('transfer confirmed...', message.amount, 'received');
+            console.log('transfer confirmed...', message.amount, 'received');
             this.transactiondetails = message;
             this.transactiondetails.avatarurl = this.$.ipfs.geturl(this.transactiondetails.avatarhash);
-//            this.receivecoinstate = 'waittx';
+            this.receivecoinstate = 'txconfirmed';
 
             this.fire('addlog',
               {
@@ -339,10 +339,10 @@
 
             // TODO : wait for the transactionID... now we just fake this , allemaal voor dat den BAN voortkan he. achteraf vervangen we dit door een transaction monitor.
 
-            setTimeout(function() {
-                this.receivecoinstate = 'init';
-                this.listeninterval = 0;
-              }.bind(this), 50 * 1000);
+            // setTimeout(function() {
+            //     this.receivecoinstate = 'init';
+            //     this.listeninterval = 0;
+            //   }.bind(this), 50 * 1000);
 
             break;
           default:
