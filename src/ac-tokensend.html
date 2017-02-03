@@ -552,10 +552,12 @@ Author : Stefaan Ponnet
         var self = this;
         this.sendcoinstate = 'sendcoins';
         this.transfer(this.amount * 1e18, this.$.helpers.fixaddress(self.receiver.account), function(err, result) {
+
           if (err) {
+            console.log('tx in error...');
             self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
               'command': 'transfererror',
-              'error': err
+              'error': err.toString()
             }));
             self.sendcoinstate = 'transfererror';
             self.transfererrormessage = err;

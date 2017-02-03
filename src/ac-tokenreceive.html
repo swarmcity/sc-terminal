@@ -166,6 +166,17 @@
           </div>
         </template>
 
+        <template is="dom-if" if="{{_is(receivecoinstate,'transfererror')}}">
+          <div class="announce">
+            <p class="bold">Transaction failed {{receivecoinstateerror}}.</p>
+
+              <template is="dom-if" if="{{phoneview}}">
+                <div class="minispace"></div>
+              </template>
+              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="deactivatereceivecoins">decline</iron-icon>
+          </div>
+        </template>
+        
       </div>
   </div>
 </template>
@@ -278,6 +289,7 @@
 
             break;
           case 'transfererror':
+          debugger;
             this.receivecoinstate = 'transfererror';
             this.receivecoinstateerror = message.error;
 
