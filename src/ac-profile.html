@@ -78,7 +78,7 @@
     padding: 0vh 0px 0px 0px;
     @apply(--layout-vertical);
     @apply(--layout-center-center);
-    border-bottom: 2px dotted rgba(255,255,255,0.05);
+    border-bottom: 2px dotted rgba(0,0,0,0.05);
   }
 
 
@@ -308,7 +308,7 @@ min-width: 120px;
     @apply(--layout-vertical);
     @apply(--layout-center-center);
     box-sizing:border-box;
-    padding-bottom: 6vh;
+    padding-bottom: 0vh;
 
   }
   .usernameinput {
@@ -346,7 +346,7 @@ min-width: 120px;
       <neon-animated-pages selected="{{datastate}}" attr-for-selected="data-state" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
 
         <neon-animatable data-state="view">
-        <div class="totalwidth vertical centercenter view">
+        <div class="totalwidth vertic centercenter view">
 
           <div class="totalwidth toppart">
 
@@ -390,8 +390,6 @@ min-width: 120px;
 <!--             <div class="flex">
             </div> -->
 
-            <paper-button class="darkerer blue bold logoutbtn" on-tap="logout" noink>Log out</paper-button>
-
           </div>
 
           <div class="profilecontent" id="profilecontent">
@@ -417,7 +415,7 @@ min-width: 120px;
               </div>
 
               <div class="vertic centercenter">
-                <p class="bold red centertxt">You're about to remove this user. <br>This can not be undone.</p>
+                <p class="bold red centertxt">You're about to remove the complete useraccount of this device. <br><br>This can not be undone.</p>
                 <div class="whitespace"></div>
                 <paper-button class="redback white bold" on-tap="deletevault">continue</paper-button>
                 <div class="whitespace"></div>
@@ -428,6 +426,10 @@ min-width: 120px;
             </iron-collapse>
 
           </div>
+          <div class="fivespace"></div>
+
+            <paper-button class="darkerer blue bold logoutbtn" on-tap="logout" noink>Log out</paper-button>
+
         </div>
 
       </neon-animatable>

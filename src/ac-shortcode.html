@@ -2,6 +2,10 @@
 <link rel="import" href="../bower_components/sc-style/sc-style.html">
 <link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
+
 
 <dom-module id="ac-shortcode">
 <link rel="import" href="../bower_components/sc-style/sc-style.css" type="css">
@@ -13,111 +17,90 @@
         --txtcolorz-code: var(--ac-yellow);
       }
 
-      h1 {
-        @apply(--ac-font-h1);
-        color: white;
-      }
-
-      h2 {
-        @apply(--ac-font-h2);
-      }
-
-      p {
-        @apply(--ac-font-body1);
-      }
-
-      small {
-        @apply(--ac-font-small);
-      }
-
-      ac-button {
-        @apply(--base-shadow-and-inset);
-        width: 100%;
-      }
-
       .code {
         min-height: 56px;
         @apply(--layout-horizontal);
         @apply(--layout-center-center);
       }
 
-      .code p {
-        @apply(--montserrat-reg);
-        font-size: 16px;
-        line-height: 20px;
-        color: var(--txtcolorz-code);
-        padding-bottom:4px;
-        border-bottom: 1px dashed var(--txtcolorz-code);
+      .cancelbtn {
       }
 
-      .code small {
-        @apply(--montserrat-reg);
-        font-size: 12px;
-        line-height: 16px;
-        color: var(--txtcolorz-code);
-        padding-bottom:2px;
-        border-bottom: 1px dashed var(--txtcolorz-code);
+      .topic {
+        font-size: 32px;
+        line-height: 32px;
       }
 
-      .codeandbtn {
-        height: 100%;
-        @apply(--layout-horizontal);
-        @apply(--layout-center-center);
-        box-sizing: border-box;
-        padding: 0px 15px 0px 15px;
+      .topictotal {
+        box-sizing:border-box;
+        padding: 15px 30px 15px 30px; 
+        margin-top: 1vh;
       }
 
-      .codeandbtn p {
-        @apply(--montserrat-semibold);
-        font-size: 20px;
-        line-height: 22px;
-        color: var(--txtcolorz-code);
+
+      paper-progress.normal {
+        --paper-progress-active-color: rgba(0,0,0,0.075);
+        --paper-progress-container-color: rgba(0,0,0,0.05);
+        height: 3px;
       }
 
-      .codeandbtn ac-button {
-        margin-left: 14px;
+      paper-progress.urgent {
+        --paper-progress-active-color: var(--sc-blue);
+        --paper-progress-container-color: rgba(0,0,0,0.05);
+        height: 3px;
+
       }
+
 
     </style>
 
   <template is="dom-if" if="{{_is(topic,0)}}">
-
-    <template is="dom-if" if="{{!txtlink}}">
-      <div class="vertic centercenter totalwidth">
+      <div class="vertic centercenter">
         <paper-button on-tap="fireshowshortcode" class="sender bigbtn grey1back grey4">
         <content></content>
         </paper-button>
       </div>
-
-      <!-- <ac-button txtbtn on-tap="fireshowshortcode" txtcolor="red" bg="btncolor" class="sender"> -->
-      </ac-button>
-    </template>
-
-    <template is="dom-if" if="{{txtlink}}">
-
-      <template is="dom-if" if="{{!small}}">
-        <div class="code" on-tap="fireshowshortcode">
-          <p>
-            <content></content>
-          </p>
-        </div>
-      </template>
-      <template is="dom-if" if="{{small}}">
-        <div class="code" on-tap="fireshowshortcode">
-          <small>
-            <content></content>
-          </small>
-        </div>
-      </template>
-
-    </template>
-
   </template>
 
   <template is="dom-if" if="{{topic}}">
-    <div class="codeandbtn">
-      <p>{{topic}} {{progress}}</p>
-      <paper-icon-button small on-tap="cancel" class$="{{txtcolor}} {{bg}}" icon="sc-icons:decline"></paper-icon-button>
+    <div class="totalwidth vertic centercenter topictotal">
+      <div class="totalwidth vertic centercenter">
+          <p class="small grey3 centertxt">Temporary shortcode</p>
+          <div class="minispace"></div>
+        <p class="bold blue topic">{{topic}}</p>
+      </div>
+
+
+
+      <!-- <template is="dom-if" if="{{showcounter}}"> -->
+        <template is="dom-if" if="{{countdownurgent}}">
+          <div class="whitespace"></div>
+
+          <div class="totalwidth vertic centercenter ">
+            <paper-progress value="{{progress}}" min="0" max="30" class="urgent"></paper-progress>
+            <div class="whitespace"></div>
+            <p class="blue centertxt bold">This shortcode is active for another {{progress}} seconds.</p>
+          </div>
+        </template>
+        <template is="dom-if" if="{{!countdownurgent}}">
+<!--           <div class="whitespace"></div>
+          <div class="whitespace"></div>
+
+          <div class="totalwidth vertic centercenter ">
+            <paper-progress value="{{progress}}" min="0" max="100" class="normal"></paper-progress
+            <div class="whitespace"></div>>
+            <p class="grey2 centertxt">This shortcode remains active for 100 secondes.</p>
+          </div> -->
+        </template>
+      <!-- </template> -->
+          <div class="whitespace"></div>
+
+      <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="cancel">decline</iron-icon>
+
+
+<!--       <paper-icon-button icon="sc-icons:decline" class="grey4 grey1back shadow medium" on-tap="cancel"></paper-icon-button> -->
+
+      <div class="whitespace"></div>
     </div>
   </template>
 
@@ -141,44 +124,15 @@
         progress: {
           type: Number
         },
-
-        txtlink: {
-          type:Boolean,
-          value: true,
-          observer: '_type'
-        },
-
-        btn: {
-          type: Boolean,
-          value: false,
-          observer: '_type'
-        },
-
-        bg: {
-          type: String,
-          value: 'btncolor',
-          observer: '_bg'
-        },
-
-        txtcolor: {
-          type: String,
-          observer: '_txtcolor'
-        },
-
-        // shortcodeshown: {
-        //   type:Boolean,
-        //   value: false
-        // },
-
-        small: {
-          type:Boolean,
-          value: false
-        }
       },
 
       listeners: {
         'tap': 'toggleVisibility'
       },
+
+      observers: [
+        'progressTracker(progress)'
+      ],
 
       // _txtlink: function(){
       //   if (this.txtlink){
@@ -186,10 +140,15 @@
       //   }
       // },
 
+      ready: function(){
+        this.showcounter = false;
+        this.countdownurgent = false;
+      },
+
       _txtcolor: function(){
         // var txtcolorz = 'var(--sc-'+ this.txtcolor + ')';
-        this.customStyle['--txtcolorz-code'] = this.txtcolor;
-        this.updateStyles();
+        // this.customStyle['--txtcolorz-code'] = this.txtcolor;
+        // this.updateStyles();
       },
 
       _bg: function(){
@@ -200,11 +159,11 @@
 
       _type: function(){
         // console.log("button?",this.btn, 'Of txtlink?', this.txtlink);
-        if (this.btn){
-        this.txtlink = false;
-        } else {
-        this.txtlink = true;
-        }
+        // if (this.btn){
+        // this.txtlink = false;
+        // } else {
+        // this.txtlink = true;
+        // }
       },
 
       cancel: function(){
@@ -224,25 +183,17 @@
       },
 
       toggleVisibility: function() {
-        // var collapser = document.getElementById('collapsecode');
-        // collapser.toggle();
-      }
+      },
 
-      // toggleCode: function(){
-      //   var collapser = document.getElementById('collapsecode');
-      //   collapser.toggle();
+      progressTracker: function() {
+        console.log(this.progress);
+        if (this.progress < 30){
+          this.countdownurgent = true;
+        } else {
+          this.countdownurgent = false;
+        };
+      },
 
-      //   console.log(this.shortcodeshown);
-
-      //   if(this.shortcodeshown){
-      //     setTimeout(function(){
-      //       this.shortcodeshown=!this.shortcodeshown;
-      //     }.bind(this), 280);
-      //   } else {
-      //     this.shortcodeshown=!this.shortcodeshown;
-      //   };
-
-      // }
 
     });
   </script>

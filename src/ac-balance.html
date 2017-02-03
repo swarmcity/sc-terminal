@@ -93,7 +93,12 @@
     <h1 class="yellow bold">{{formatpong(swtbalance)}}</h1><h1 class="yellow bold"><span class="SWTletters"> SWT</span>
     <!-- <ac-button class="refrbtn" veryverysmall icon="refresh1" txtcolor="red" bg="btncolor" on-tap="fireRefresh"></ac-button> --></h1>
   </div>
-    <template is="dom-if" if="{{wereinwallet}}">
+
+
+<!--
+    PREF CURRENCY STUFF : Don't delete, this worked!
+
+     <template is="dom-if" if="{{wereinwallet}}">
       <template is="dom-if" if="{{!_is(sizeview,'phone')}}">
       <div class="horizontend prefcurrletters">
           <p>({{prefcurrency}} {{balanceref}})</p>
@@ -104,7 +109,7 @@
           <p>{{prefcurrency}} {{balanceref}}</p>
         </div>
       </template>
-    </template>
+    </template> -->
 
 </div>
 
@@ -121,8 +126,7 @@ Polymer({
       observer: '_swtbalance'
     },
     balanceref: {
-      type: Number,
-      value: 44,
+      type: Number
     },
     prefcurrency: {
       type: String,
@@ -195,7 +199,7 @@ Polymer({
       this.customStyle['--prefcurr-p-lineheight'] = '18px';
       this.customStyle['--prefcurr-margins'] = '0px';
 
-      this.align = 'verticcenter';
+      this.align = 'vertic centercenter';
       this.updateStyles();
       break;
       case 'desktop':
@@ -203,11 +207,12 @@ Polymer({
       this.customStyle['--balance-h1-lineheight'] = '70px';
       this.customStyle['--arc-h1'] = '20px';
       this.customStyle['--arc-h1-lineheight'] = '22px';
-      this.customStyle['--prefcurr-p'] = '24px';
-      this.customStyle['--prefcurr-p-lineheight'] = '26px';
-      this.customStyle['--prefcurr-margins'] = '0px 0px 8px 14px';
+      this.customStyle['--prefcurr-p'] = '16px';
+      this.customStyle['--prefcurr-p-lineheight'] = '18px';
+      this.customStyle['--prefcurr-margins'] = '0px 0px 8px 0px';
+      this.align = 'vertic start startjust';
 
-      this.align = 'horizontstartwrap';
+      // this.align = 'horizont start wrap';
       this.updateStyles();
       break;
       case 'xlarge':
@@ -215,11 +220,12 @@ Polymer({
       this.customStyle['--balance-h1-lineheight'] = '80px';
       this.customStyle['--arc-h1'] = '20px';
       this.customStyle['--arc-h1-lineheight'] = '22px';
-      this.customStyle['--prefcurr-p'] = '24px';
-      this.customStyle['--prefcurr-p-lineheight'] = '26px';
-      this.customStyle['--prefcurr-margins'] = '0px 0px 8px 14px';
+      this.customStyle['--prefcurr-p'] = '16px';
+      this.customStyle['--prefcurr-p-lineheight'] = '18px';
+      this.customStyle['--prefcurr-margins'] = '0px 0px 8px 0px';
+      this.align = 'vertic start startjust';
 
-      this.align = 'horizontstartwrap';
+      // this.align = 'horizont start wrap';
       this.updateStyles();
       break;
       default:

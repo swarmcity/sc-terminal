@@ -20,16 +20,33 @@
     display: block;
     width: 100%;
     height: 100%;
+    background-color: var(--sc-grey1);
   }
 
-  .total {
+/*  .total {
     display: block;
     overflow-y: scroll;
   }
+*/
 
+  .initbtns {
+    width: 100%;
+    @apply(--layout-horizontal);
+    @apply(--layout-start);
+    @apply(--layout-start-justified);
+    border-top: 2px dotted rgba(0,0,0,0.05);
+    box-sizing:border-box;
+    padding-top: 5vh;
+
+  }
 
   .balancebox {
     height: 25vh;
+    @apply(--layout-vertical);
+    @apply(--layout-start);
+    @apply(--layout-center-justified);
+    box-sizing:border-box;
+    padding-left: 10vw;
   }
 
   #walletcontent {
@@ -40,22 +57,41 @@
   }
 
 
+  @media all and (min-width: 0) and (max-width: 500px) { 
+
+    .balancebox {
+      height: 25vh;
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+      box-sizing:border-box;
+      padding-left: 0vw;
+      width: 100%;
+    }
+
+    .initbtns {
+      width: 100%;
+      @apply(--layout-vertical);
+      @apply(--layout-center);
+      @apply(--layout-start-justified);
+    }
+  }
+
   </style>
 
 
 
-  <div class="total">
+  <div class="total vertic start startjust">
 
     <div class="topbar">
       <span class="flex"></span>
       <iron-icon class="grey3" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
     </div>
 
-      <div class="balancebox vertic centercenter">
-        <div id="balance">
+
+      <div id="balance" class="balancebox">
 
           <!-- <template is="dom-if" if="{{!balanceupdating}}"> -->
-            <div class="arcbalance flex" on-tap="monitorBalance">
+            <div class="arcbalance" on-tap="monitorBalance">
               <ac-balance
               refcur="EUR"
               swtbalance="[[swtbalance]]"
@@ -70,11 +106,10 @@
               <sc-spinner big></sc-spinner>
             </div>
           </template> -->
-        </div>
       </div>
       <div class="whitespace"></div>
-      <div id="walletcontent">
-        <div class$="initbtns {{align}}">
+        <div class="initbtns flex grey1back" id="walletcontent">
+        <template is="dom-if" if="{{sendshown}}">
           <ac-tokensend
             web3="[[web3]]"
             account="[[account]]"
@@ -84,27 +119,22 @@
             on-addlog="receivelog"
             sizeview="{{sizeview}}">
           </ac-tokensend>
-
-        <ac-tokenreceive
-          web3="[[web3]]"
-          account="[[account]]"
-          identity="[[identity]]"
-          keystore="[[keystore]]"
-        ></ac-tokenreceive>
+        </template>
+        <template is="dom-if" if="{{receiveshown}}">
+          <ac-tokenreceive
+            web3="[[web3]]"
+            account="[[account]]"
+            identity="[[identity]]"
+            keystore="[[keystore]]"
+            on-activated="hideSendbutton"
+            on-deactivated="showSendbutton"
+          ></ac-tokenreceive>
+        </template>
         </div>
+      <div class="whitespace"></div>
 
-      <div class="whitespace"></div>
-      <div class="whitespace"></div>
-      <div class="whitespace"></div>
-      <div class="whitespace"></div>
-      <div class="whitespace"></div>
-      <div class="whitespace"></div>
-      <ac-log id="log" account="[[account]]"></ac-log>
+<!--         <ac-log id="log" account="[[account]]"></ac-log> -->
       </div>
-
-
-
-  </div>
 
 
 
@@ -160,8 +190,8 @@
               node:this.$.walletcontent,
               toPage: this,
               timing: {
-                duration: 350,
-                delay: 500
+                duration: 250,
+                delay: 100
               }
             }, {
               name: 'hero-animation',
@@ -177,7 +207,7 @@
               node:this.$.walletcontent,
               fromPage: this,
               timing: {
-                  duration: 150,
+                duration: 150,
                 delay: 0
 
               }
@@ -220,6 +250,8 @@
 
 
     ready: function() {
+      this.receiveshown = true;
+      this.sendshown = true;
     },
 
     attached: function(){
@@ -261,6 +293,24 @@
 
     _swtbalance: function(){
       console.log("dit issem jonges!", this.swtbalance);
+    },
+
+    hideReceivebutton: function(){
+      console.log("Hide it!!!!!!!!");
+      this.receiveshown = false;
+    },
+
+    showReceivebutton: function(){
+      console.log("Show it it!!!!!!!!");
+      this.receiveshown = true;
+    },
+
+    hideSendbutton: function(){
+      this.sendshown = false;
+    },
+
+    showSendbutton: function(){
+      this.sendshown = true;
     }
 
   });

@@ -26,7 +26,8 @@
     "polymer-detect-js": "^1.0.3",
     "browser-builds": "https://github.com/ethereumjs/browser-builds.git",
     "web3": "^0.18.2",
-    "ethereum-tx": "*"
+    "ethereum-tx": "*",
+    "paper-progress": "^1.0.11"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

@@ -30,7 +30,7 @@
 
     .homebalanceandavatar {
       box-sizing:border-box;
-      padding: 14vh 0px 14vh 0px;
+      padding: 17vh 0px 18vh 0px;
     }
 
     #homecontent {
@@ -45,7 +45,12 @@
 /*      width: 100%;*/
       box-sizing: border-box;
         /*padding: 0px 0px 30px 3.5vw;*/
-    padding: 0px 10vw 30px 4vw;
+    padding: 0px 10vw 30px 20px;
+    @apply(--layout-flex);
+      @apply(--layout-vertical);
+      @apply(--layout-start);
+
+      @apply(--layout-center-justified);
     }
     .toptoolbar {
       width: 100%;
@@ -63,7 +68,7 @@
       @apply(--layout-start);
       @apply(--layout-center-justified);
       box-sizing: border-box;
-      padding: 0px 4vw 0px 10vw;
+      padding: 0px 30px 0px 10vw;
       /*border-right: 2px dotted rgba(0,0,0,0.05);*/
     }
 
@@ -142,6 +147,8 @@
       }
 
       .homebalancebox {
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
         height: 25vh;
         width: 100%;
         box-sizing: border-box;
@@ -172,11 +179,12 @@
         mode="txtonly"
         viewmode="center"
         id="avatarpubkey"
+        size="small"
         ></ac-avatar>
         </div>
       </div>
-      <div class="flex"></div>
-      <div id="homebalance" class="homebalancebox vertic centercenter grey1back">
+      <!-- <div class="flex"></div> -->
+      <div id="homebalance" class="homebalancebox grey1back">
         <div id="homebalance">
           <template is="dom-if" if="{{!balanceupdating}}">
             <div class$="swtbalance flex" on-tap="toWalletview">
@@ -469,7 +477,7 @@
     toWalletview: function() {
 
       this.sharedElements = {
-        'hero': this.$.homebalance,
+        'hero': this.$.homebalance
         };
       this.animationConfig = {
             'entry': [{
@@ -477,21 +485,28 @@
               node:this.$.homebalance,
               toPage: this,
               timing: {
-                duration: 200
+                duration: 125
+              }
+            }, {
+              name: 'fade-in-animation',
+              node:this.$.homeavatar,
+              toPage: this,
+              timing: {
+                duration: 125
               }
             }, {
               name: 'fade-in-animation',
               node:this.$.avatarpubkey,
               toPage: this,
               timing: {
-                duration: 200
+                duration: 125
               }
             },{
               name: 'hero-animation',
               id: 'hero',
               toPage: this,
               timing: {
-                  duration: 600
+                  duration: 300
               }
             }],
 
@@ -500,21 +515,35 @@
               node:this.$.homebalance,
               fromPage: this,
               timing: {
-                  duration: 200
+                  duration: 125
+              }
+            }, {
+              name: 'fade-out-animation',
+              node:this.$.homeavatar,
+              fromPage: this,
+              timing: {
+                  duration: 125
               }
             }, {
               name: 'fade-out-animation',
               node:this.$.avatarpubkey,
               fromPage: this,
               timing: {
-                  duration: 200
+                  duration: 125
+              }
+            }, {
+              name: 'fade-out-animation',
+              node:this.$.homebalanceandavatar,
+              fromPage: this,
+              timing: {
+                  duration: 125
               }
             },{
               name: 'hero-animation',
               id: 'hero',
               fromPage: this,
               timing: {
-                  duration: 600
+                  duration: 300
               }
             }]
         };
