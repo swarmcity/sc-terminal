@@ -377,17 +377,13 @@ Author : Stefaan Ponnet
                     <p class="pubkey">{{receiver.account}}</p>
                   </div>
                 </div>
+                <div class="confirmbtns">
+                  <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+                  <paper-icon-button icon="sc-icons:v" class="blue whiteback shadow big" on-tap="tosendcoins"></paper-icon-button>
+                </div>
+                <div class="whitespace"></div>    
+              </div>
 
-            <div class="confirmbtns">
-              <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
-              <paper-icon-button icon="sc-icons:v" class="blue whiteback shadow big" on-tap="tosendcoins"></paper-icon-button>
-            </div>
-
-
-
-
-            <div class="whitespace"></div>    
-            </div>
             <div class="whitespace"></div>
 
             </div>
@@ -395,12 +391,38 @@ Author : Stefaan Ponnet
 
           <template is="dom-if" if="{{_is(sendcoinstate,'sendcoins')}}">
             <div class="announce">
-              <p>Your transaction is being executed.</p>
-              <paper-icon-button  class="yellow small closebtn" icon="sc-icons:decline" on-tap="closetokensendcollapser"></paper-icon-button>
-
+              <sc-loader>Your transaction is being executed.</sc-loader>
+              <template is="dom-if" if="{{phoneview}}">
+                <div class="minispace"></div>
+              </template>
+              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
             </div>
           </template>
 
+          <template is="dom-if" if="{{_is(sendcoinstate,'coinssent')}}">
+            <div class="announce">
+              <div class="item">
+                <p>You have successfully send <span class="bold">{{amount}} SWT</span> to
+                </p>
+                <div class="receiver">
+                  <div class="receiveravatar">
+                    <img src="{{receiver.avatarurl}}"></div>
+                  <div class="receiverusername">
+                    <p>{{receiver.username}}</p>
+                    <p class="pubkey">{{receiver.account}}</p>
+                  </div>
+                </div>
+              <template is="dom-if" if="{{phoneview}}">
+                <div class="minispace"></div>
+              </template>
+              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+
+
+                <div class="whitespace"></div>    
+              </div>
+
+            </div>
+          </template>
 
 
       </div>
