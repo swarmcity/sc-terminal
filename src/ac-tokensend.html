@@ -581,8 +581,9 @@ Author : Stefaan Ponnet
             gas: 200000
           }, function(err, result) {
             console.log(err, result);
-
+            console.log('waiting for TX to happen');
             self.waitTx(result, function(success) {
+              console.log('TX mined!');
               var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(self.account));
               self.arcbalance = coinbalance;
               if (cb) {
