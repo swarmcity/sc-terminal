@@ -277,11 +277,11 @@ Author : Stefaan Ponnet
     <ac-ipfs id="ipfs"></ac-ipfs>
     <ac-helpers id="helpers"></ac-helpers>
     <ac-config
+      config="{{config}}"
       id="config"
       ipfs="{{ipfs}}"
       etherscanroot="{{etherscanroot}}"
       tokencontractaddress="{{tokencontractaddress}}"></ac-config>
-
     <ac-whisperer
       web3="[[web3]]"
       topic="{{topic}}"
@@ -517,32 +517,19 @@ Author : Stefaan Ponnet
         console.log('incoming tokentransfer msg: ', message);
         switch (message.command) {
           case 'userinfo':
-//            var transferamount = this.amount;
-
             this.receiver = message;
             this.receiver.avatarurl = this.$.ipfs.geturl(this.receiver.avatarhash);
             this.receiver.from = m.detail.from;
             this.sendcoinstate = 'confirmtx';
-            // this.transfer(transferamount, this.$.helpers.fixaddress(message.pubkey), function(err, result) {
-            //   console.log('Transfer started. Sending confirmation to ',m.detail.from);
-            //   self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
-            //     'command': 'confirmtransfer',
-            //     'amount': transferamount,
-            //   }));
-            // });
-
             break;
           case 'confirmtransfer':
             // TODO : show transfer in history...
             console.log('transfer confirmed...', message.amount, 'received');
-
             break;
           default:
             console.log('unknown message', message);
         }
       },
-
-
 
       tosearchingforpeer: function(){
         var self = this;
@@ -585,13 +572,12 @@ Author : Stefaan Ponnet
           console.log('gasprice: ', gasPrice);
 
           var MyContract = self.web3.eth.contract(self.contractjson.abi);
-          var myContractInstance = MyContract.at(self.$.config.tokencontractaddress);
+          var myContractInstance = MyContract.at(self.config.swttokencontractaddress);
             console.log('doing transfer of ',amount,' LC to: ', pubkey, 'from: ', self.account);
             myContractInstance.transfer.sendTransaction(pubkey, amount, {
               from: self.$.helpers.fixaddress(self.account),
               gasPrice: gasPrice,
-              gasLimit: 3000000,
-              gas: 2000000
+              gas: 200000
             }, function(err, result){
               console.log(err, result);
               var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(self.account));
