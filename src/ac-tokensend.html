@@ -141,7 +141,7 @@ Author : Stefaan Ponnet
         padding: 0px;
         @apply(--layout-horizontal);
         @apply(--layout-center);
-        @apply(--layout-end-justified);
+        @apply(--layout-start-justified);
       }
 
       .startjuster {
@@ -184,7 +184,8 @@ Author : Stefaan Ponnet
       }
 */
       .sendinputter {
-        width: 60%;
+        width: 80%;
+        max-width: 600px;
       }
 
 
@@ -212,7 +213,7 @@ Author : Stefaan Ponnet
         @apply(--layout-center);
         @apply(--layout-start-just);
 
-        margin: 2vh 0px 2vh 0px;
+        margin: 2vh 0px 3vh 0px;
 
       }
 
@@ -418,10 +419,11 @@ Author : Stefaan Ponnet
                 </p>
                 <div class="receiver">
                   <div class="receiveravatar">
-                    <img src="{{receiver.avatarurl}}"></div>
+                    <img src="{{receiver.avatarurl}}">
+                  </div>
                   <div class="receiverusername">
-                    <p>{{receiver.username}}</p>
-                    <p class="pubkey">{{receiver.account}}</p>
+                    <p class="bold">{{receiver.username}}</p>
+                    <p class="pubkey small grey3">{{receiver.account}}</p>
                   </div>
                 </div>
                 <div class="confirmbtns">
@@ -455,8 +457,8 @@ Author : Stefaan Ponnet
                   <div class="receiveravatar">
                     <img src="{{receiver.avatarurl}}"></div>
                   <div class="receiverusername">
-                    <p>{{receiver.username}}</p>
-                    <p class="pubkey">{{receiver.account}}</p>
+                    <p class="bold">{{receiver.username}}</p>
+                    <p class="pubkey grey3 small">{{receiver.account}}</p>
                   </div>
                 </div>
               <template is="dom-if" if="{{phoneview}}">
@@ -632,8 +634,9 @@ Author : Stefaan Ponnet
         switch (message.command) {
           case 'userinfo':
             this.receiver = message;
-            this.receiver.avatarurl = this.$.ipfs.geturl(this.receiver.avatarhash);
-            this.receiver.from = m.detail.from;
+            this.set('receiver.avatarurl',this.$.ipfs.geturl(this.receiver.avatarhash));
+            this.set('receiver.from',m.detail.from);
+            // this.receiver.from = m.detail.from;
             this.sendcoinstate = 'sendcoins';
             
             self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
