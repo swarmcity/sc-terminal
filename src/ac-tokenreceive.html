@@ -155,6 +155,27 @@
           </div>
         </template>
 
+        <template is="dom-if" if="{{_is(receivecoinstate,'waitforconfirmation')}}">
+            <p class="semibold">Waiting for confirmation from</p>
+              <div class="receiver">
+                <div class="receiveravatar">
+                  <img src="{{sender.avatarurl}}"></div>
+                <div class="receiverusername">
+                  <p>{{sender.username}}</p>
+                </div>
+              </div>
+        </template>
+
+       <template is="dom-if" if="{{_is(receivecoinstate,'txdeclined')}}">
+          <div class="announce">
+            <p class="bold">Transaction aborted by other party</p>
+              <template is="dom-if" if="{{phoneview}}">
+                <div class="minispace"></div>
+              </template>
+              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="deactivatereceivecoins">decline</iron-icon>
+          </div>
+        </template>
+
         <template is="dom-if" if="{{_is(receivecoinstate,'txconfirmed')}}">
           <div class="announce">
             <p class="bold">You received {{formatpong(receivedamount)}} tokens.</p>
@@ -169,7 +190,6 @@
         <template is="dom-if" if="{{_is(receivecoinstate,'transfererror')}}">
           <div class="announce">
             <p class="bold">Transaction failed {{receivecoinstateerror}}.</p>
-
               <template is="dom-if" if="{{phoneview}}">
                 <div class="minispace"></div>
               </template>
@@ -262,6 +282,17 @@
             }));
             this.receivecoinstate = 'userinfosent';
             break;
+          case 'waitforconfirmation':
+            // peer is deciding to send your tokens or not
+            this.receivecoinstate = 'waitforconfirmation';
+            this.sender = {
+              avatarurl: this.transactiondetails.avatarhash,
+              username: this.transactiondetails.username
+            };
+            break;
+          case 'txdeclined':
+            this.receivecoinstate = 'txdeclined';
+            break;
           case 'confirmtransfer':
             // TODO : show transfer in history...
             console.log('transfer confirmed...', message.amount, 'received');
@@ -289,7 +320,7 @@
 
             break;
           case 'transfererror':
-          debugger;
+         
             this.receivecoinstate = 'transfererror';
             this.receivecoinstateerror = message.error;
 
