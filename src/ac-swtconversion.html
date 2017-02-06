@@ -748,7 +748,7 @@ Polymer({
       self.SWTConverterInstance.convert.sendTransaction(self.arcbalance, {
         from: self.$.helpers.fixaddress(self.account),
         gasPrice: gasPrice,
-        gas: 200000
+        gas: 400000
       }, function(err, result) {
         console.log(err, result);
         if(err){

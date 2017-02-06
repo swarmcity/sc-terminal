@@ -161,6 +161,7 @@
       listeninterval="{{listeninterval}}"
       decimals="5"
       on-message-received="handlewhispermessage"
+      debug="true"
       id="whisper"></ac-whisperer>
 
     <div class="totalwidth vertic centercenter">
@@ -341,6 +342,7 @@
             break;
           case 'txdecline':
             this.receivecoinstate = 'txdeclined';
+            this.$.whisper.closeallchannels();
             break;
           case 'waitfortx':
             this.receivecoinstate = 'waitfortx';
@@ -364,7 +366,8 @@
                 txhash:self.transactiondetails.txhash,
                 status:'pending'
               });
-
+            // clean up channels
+            self.$.whisper.closeallchannels();
 
             // TODO : wait for the transactionID... now we just fake this , allemaal voor dat den BAN voortkan he. achteraf vervangen we dit door een transaction monitor.
 

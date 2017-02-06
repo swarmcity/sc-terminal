@@ -688,6 +688,9 @@ Author : Stefaan Ponnet
             self.sendcoinstate = 'sent';
           }
 
+          // clean up channels
+          self.$.whisper.closeallchannels();
+
         });
       },
 

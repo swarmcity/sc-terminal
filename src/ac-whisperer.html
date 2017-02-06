@@ -100,6 +100,21 @@ Polymer({
     console.log('---/channels---');
   },
 
+  closeallchannels: function(){
+    if (this.localchannels){
+      console.log('closing local channels');
+      for (var key in this.localchannels) {
+        this.closelocalchannel(key);
+      }
+    }
+    if (this.remotechannels){
+     console.log('closing remote channels');
+      for (var key in this.remotechannels) {
+        this.closeremotechannel(key);
+      }
+    }    
+  },
+
   // creates a random pincode with decimals numbers
   _getpincode: function(decimals) {
 
