@@ -274,6 +274,8 @@
         console.log('incoming tokentransfer msg: ', message);
         switch (message.command) {
           case 'requestuserinfo':
+            // topic listening on the main channel
+            this.listeninterval = 0;
             self.$.whisper.whisperpost(m.detail.from, JSON.stringify({
               'command': 'userinfo',
               'account': self.account,
@@ -286,8 +288,8 @@
             // peer is deciding to send your tokens or not
             this.receivecoinstate = 'waitforconfirmation';
             this.sender = {
-              avatarurl: this.transactiondetails.avatarhash,
-              username: this.transactiondetails.username
+              avatarurl: this.$.ipfs.geturl(this.message.avatarhash),
+              username: this.message.username
             };
             break;
           case 'txdeclined':
