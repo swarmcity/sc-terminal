@@ -33,10 +33,25 @@
 
       .topictotal {
         box-sizing:border-box;
-        padding: 15px 30px 15px 30px; 
+        padding: 15px 0px 15px 0px; 
         margin-top: 1vh;
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        @apply(--layout-start);
       }
 
+      .topicintern {
+         @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        @apply(--layout-start);       
+      }
+
+      paper-button.sender {
+        margin: 0px 5px 5px 0px;
+        box-sizing: border-box;
+        padding: 20px 30px 20px 30px;
+        font-size: 18px;
+      }
 
       paper-progress.normal {
         --paper-progress-active-color: rgba(0,0,0,0.075);
@@ -48,10 +63,39 @@
         --paper-progress-active-color: var(--sc-blue);
         --paper-progress-container-color: rgba(0,0,0,0.05);
         height: 3px;
+      }
+
+      .countdown {
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        @apply(--layout-start);
 
       }
 
+      @media all and (min-width: 0) and (max-width: 500px) { 
 
+          paper-button.sender {
+            margin: 5px 5px 5px 5px;
+          }
+
+          .countdown {
+            @apply(--layout-vertical);
+            @apply(--layout-center-center);
+          }
+
+          .topictotal {
+            box-sizing:border-box;
+            padding: 15px 30px 15px 30px; 
+            margin-top: 1vh;
+            @apply(--layout-vertical);
+            @apply(--layout-center-center);
+          }
+
+          .topicintern {
+            @apply(--layout-vertical);
+            @apply(--layout-center-center);       
+          }
+        }
     </style>
 
   <template is="dom-if" if="{{_is(topic,0)}}">
@@ -63,8 +107,8 @@
   </template>
 
   <template is="dom-if" if="{{topic}}">
-    <div class="totalwidth vertic centercenter topictotal">
-      <div class="totalwidth vertic centercenter">
+    <div class="totalwidth topictotal">
+      <div class="totalwidth topicintern">
           <p class="small grey3 centertxt">Temporary shortcode</p>
           <div class="minispace"></div>
         <p class="bold blue topic">{{topic}}</p>
@@ -76,7 +120,7 @@
         <template is="dom-if" if="{{countdownurgent}}">
           <div class="whitespace"></div>
 
-          <div class="totalwidth vertic centercenter ">
+          <div class="totalwidth countdown">
             <paper-progress value="{{progress}}" min="0" max="30" class="urgent"></paper-progress>
             <div class="whitespace"></div>
             <p class="blue centertxt bold">This shortcode is active for another {{progress}} seconds.</p>
@@ -192,6 +236,11 @@
         } else {
           this.countdownurgent = false;
         };
+
+        if (this.progress < 1){
+        this.fire('cancel');
+        }
+
       },
 
 
