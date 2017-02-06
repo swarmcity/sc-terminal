@@ -213,7 +213,7 @@ Author : Stefaan Ponnet
         @apply(--layout-center);
         @apply(--layout-start-just);
 
-        margin: 2vh 0px 3vh 0px;
+        margin: 3vh 0px 3vh 0px;
 
       }
 
@@ -262,6 +262,13 @@ Author : Stefaan Ponnet
 
           @apply(--layout-center-justified);          
         }
+
+
+      .topmsg {
+        @apply(--montserrat-ultralight);
+        font-size: 30px;
+        line-height: 32px;
+      }
   
 
       @media all and (min-width: 0) and (max-width: 500px) { 
@@ -376,9 +383,10 @@ Author : Stefaan Ponnet
             <div class="announce">
               <p class="bold">Your balance is too low for this transaction.</p>
               <template is="dom-if" if="{{phoneview}}">
-                <div class="minispace"></div>
+                <div class="whitespace"></div>
               </template>
-              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+              <div class="minispace"></div>
+              <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
             </div>
           </template>
 
@@ -386,9 +394,10 @@ Author : Stefaan Ponnet
             <div class="announce">
               <p class="bold">The given shortcode is not valid.</p>
               <template is="dom-if" if="{{phoneview}}">
-                <div class="minispace"></div>
+                <div class="whitespace"></div>
               </template>
-              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+              <div class="minispace"></div>
+              <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
             </div>
           </template> -->
 
@@ -396,9 +405,10 @@ Author : Stefaan Ponnet
             <div class="announce">
               <sc-loader small color="blue">Searching for your peer</sc-loader>
               <template is="dom-if" if="{{phoneview}}">
-                <div class="minispace"></div>
+                <div class="whitespace"></div>
               </template>
-              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="cancelsend">decline</iron-icon>
+              <div class="minispace"></div>
+              <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="cancelsend">decline</iron-icon>
             </div>
           </template>
 
@@ -406,18 +416,20 @@ Author : Stefaan Ponnet
             <div class="announce">
               <p class="bold">We can not find your peer.</p>
               <template is="dom-if" if="{{phoneview}}">
-                <div class="minispace"></div>
+                <div class="whitespace"></div>
               </template>
-              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+              <div class="minispace"></div>
+              <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
             </div>
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'sendcoins')}}">
+
             <div class="announce">
               <div class="item totalwidth">
-                <p>You're sending <span class="bold">{{amount}} SWT</span> to
+                <p class="topmsg grey3 hairline">You're sending <span class="ultralight">{{amount}} SWT</span> to
                 </p>
-                <div class="receiver">
+                <div class="receiver shadow lighter">
                   <div class="receiveravatar">
                     <img src="{{receiver.avatarurl}}">
                   </div>
@@ -442,18 +454,19 @@ Author : Stefaan Ponnet
             <div class="announce">
               <sc-loader>Your transaction is being executed.</sc-loader>
               <template is="dom-if" if="{{phoneview}}">
-                <div class="minispace"></div>
+                <div class="whitespace"></div>
               </template>
-              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+              <div class="minispace"></div>
+              <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
             </div>
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'sent')}}">
             <div class="announce">
               <div class="item totalwidth">
-                <p>You have successfully send <span class="bold">{{amount}} SWT</span> to
+                <p class="topmsg grey3 hairline">You have successfully send <span class="ultralight">{{amount}} SWT</span>
                 </p>
-                <div class="receiver">
+                <div class="receiver shadow lighter">
                   <div class="receiveravatar">
                     <img src="{{receiver.avatarurl}}"></div>
                   <div class="receiverusername">
@@ -462,9 +475,10 @@ Author : Stefaan Ponnet
                   </div>
                 </div>
               <template is="dom-if" if="{{phoneview}}">
-                <div class="minispace"></div>
+                <div class="whitespace"></div>
               </template>
-              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+              <div class="minispace"></div>
+              <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
 
 
                 <div class="whitespace"></div>    
@@ -477,9 +491,10 @@ Author : Stefaan Ponnet
             <div class="announce">
               <p class="bold red">{{transfererrormessage}}</p>
               <template is="dom-if" if="{{phoneview}}">
-                <div class="minispace"></div>
+                <div class="whitespace"></div>
               </template>
-              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+              <div class="minispace"></div>
+              <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
             </div>
           </template>
 
