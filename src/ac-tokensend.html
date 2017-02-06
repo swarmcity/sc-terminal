@@ -736,7 +736,7 @@ Author : Stefaan Ponnet
             console.log('waiting for TX to happen');
             self.waitTx(result, function(success) {
               console.log('TX mined!');
-              this.fire('tokenssent');
+              self.fire('tokenssent');
 //              var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(self.account));
 //              self.arcbalance = coinbalance;
               if (cb) {
