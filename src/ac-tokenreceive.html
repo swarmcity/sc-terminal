@@ -208,6 +208,21 @@
           </div>
         </template>
 
+        <!-- nieuwe state : waiting for TX -->
+        <template is="dom-if" if="{{_is(receivecoinstate,'waitfortx')}}">
+            <p class="semibold">Waiting for transaction from</p>
+              <div class="sender">
+                <div class="senderavatar">
+                  <img src="{{sender.avatarurl}}"></div>
+                <div class="senderusername">
+                  <p>{{sender.username}}</p>
+                </div>
+              </div>
+            <p>Txhash = {{currenttxhash}}</p>
+        </template>
+
+        
+
         <template is="dom-if" if="{{_is(receivecoinstate,'txconfirmed')}}">
           <div class="announce">
             <p class="bold">You received {{formatpong(receivedamount)}} tokens.</p>
@@ -326,6 +341,10 @@
             break;
           case 'txdecline':
             this.receivecoinstate = 'txdeclined';
+            break;
+          case 'waitfortx':
+            this.receivecoinstate = 'waitfortx';
+            this.currenttxhash = message.txhash;
             break;
           case 'confirmtransfer':
             // TODO : show transfer in history...

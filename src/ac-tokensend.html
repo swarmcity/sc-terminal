@@ -453,6 +453,7 @@ Author : Stefaan Ponnet
           <template is="dom-if" if="{{_is(sendcoinstate,'sending')}}">
             <div class="announce">
               <sc-loader>Your transaction is being executed.</sc-loader>
+              <p class="topmsg grey3 hairline">TxHash = {{currenttxhash}}</p>
               <template is="dom-if" if="{{phoneview}}">
                 <div class="whitespace"></div>
               </template>
@@ -734,9 +735,20 @@ Author : Stefaan Ponnet
             }
             console.log(err, result);
             console.log('waiting for TX to happen');
+            self.currenttxhash = result;
+            self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
+              'command': 'waitfortx',
+              //'amount': self.amount,
+              'txhash': result,
+//              'username': self.identity.username,
+              //'txhash': result
+            }));   
+
+
             self.waitTx(result, function(success) {
               console.log('TX mined!');
               self.fire('tokenssent');
+              self.currenttxhash = '';
 //              var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(self.account));
 //              self.arcbalance = coinbalance;
               if (cb) {
