@@ -30,6 +30,38 @@
 
       }
 
+      .sender {
+        display: inline-block;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-start-just);
+
+        margin: 2vh 0px 2vh 0px;
+
+      }
+
+      .senderavatar {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .senderavatar img {
+        width: 100%;
+        height: 100%;
+      }
+
+      .senderusername {
+        @apply(--layout-vertical);
+        @apply(--layout-start);
+        @apply(--layout-center-justified);
+        max-width: 80%;
+        margin-left: 10px;
+      }
+
       .total {
         width: 100%;
 
@@ -157,10 +189,10 @@
 
         <template is="dom-if" if="{{_is(receivecoinstate,'waitforconfirmation')}}">
             <p class="semibold">Waiting for confirmation from</p>
-              <div class="receiver">
-                <div class="receiveravatar">
+              <div class="sender">
+                <div class="senderavatar">
                   <img src="{{sender.avatarurl}}"></div>
-                <div class="receiverusername">
+                <div class="senderusername">
                   <p>{{sender.username}}</p>
                 </div>
               </div>
@@ -288,11 +320,11 @@
             // peer is deciding to send your tokens or not
             this.receivecoinstate = 'waitforconfirmation';
             this.sender = {
-              avatarurl: this.$.ipfs.geturl(this.message.avatarhash),
-              username: this.message.username
+              avatarurl: this.$.ipfs.geturl(message.avatarhash),
+              username: message.username
             };
             break;
-          case 'txdeclined':
+          case 'txdecline':
             this.receivecoinstate = 'txdeclined';
             break;
           case 'confirmtransfer':

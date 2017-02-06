@@ -169,7 +169,7 @@ Polymer({
     if (fromTimer){
       console.log('timeout on remotechannel ',_pin);
     }
-    if (this.remotechannels[_pin]){
+    if (this.remotechannels[_pin] && this.remotechannels[_pin].filter){
        this.remotechannels[_pin].filter.stopWatching();
     }
   },

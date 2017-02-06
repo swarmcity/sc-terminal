@@ -613,7 +613,7 @@ Author : Stefaan Ponnet
 
             self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
               'command': 'confirmtransfer',
-              'amount': self.amount,
+              'amount': self.amount* 1e18,
               'avatarhash': self.identity.avatarhash,
               'username': self.identity.username,
               'txhash': result
