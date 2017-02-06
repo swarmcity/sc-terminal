@@ -335,6 +335,8 @@
             this.receivecoinstate = 'txconfirmed';
             this.receivedamount = self.transactiondetails.amount;
 
+            this.fire('tokensreceived');
+
             this.fire('addlog',
               {
                 avatarhash:self.transactiondetails.avatarhash,

@@ -146,6 +146,7 @@
       identity="[[identity]]"
       account="[[account]]"
       on-exit="toHome"
+      on-refreshneeded="refreshwallet"
       updating="[[balanceupdating]]"
       swtbalance="[[swtbalance]]">
     </ac-walletview>
@@ -380,6 +381,10 @@
       saveIdentity: function(e) {
         this.identity = e.detail;
         this.$.vault.saveVault();
+      },
+
+      refreshwallet: function(){
+        this.$.wallet.updatebalances();
       },
 
       converted: function(){
