@@ -152,8 +152,11 @@ Author : Stefaan Ponnet
         margin-right: 4px;
       }
 
-      .sender {
+      paper-button.sender {
         margin: 0px 5px 5px 0px;
+        box-sizing: border-box;
+        padding: 20px 30px 20px 30px;
+        font-size: 18px;
       }
 
 
@@ -238,7 +241,7 @@ Author : Stefaan Ponnet
 
       @media all and (min-width: 0) and (max-width: 500px) { 
 
-        .sender {
+        paper-button.sender {
           margin: 5px 5px 5px 5px;
         }
 
@@ -304,7 +307,9 @@ Author : Stefaan Ponnet
 
     <div class="total vertic centercenter">
         <template is="dom-if" if="{{_is(sendcoinstate,'init')}}">
+          <div class="totalwidth horizont startjust center">
             <paper-button on-tap="tosendform" class="sender bigbtn grey1back grey4">send SWT</paper-button>
+          </div>
         </template>
       <div class="sendcoiners">
 

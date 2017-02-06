@@ -555,7 +555,7 @@
             <iron-icon class="grey4" icon="sc-icons:decline" on-tap="vaultAway">back</iron-icon>
         </div>
         <template is="dom-if" if="{{!tappedunlockbtn}}">
-        <div class="pascanvasunderexit vertic centercenter paddingwithouttop">
+        <div class="pascanvasunderexit vertic centercenter paddingsides">
           <ac-password class="height" id="newuser" sessionname="vaultpassword" on-btn-tapped="unlockBtnbool" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password> 
         </div>
 
