@@ -286,8 +286,8 @@
             // peer is deciding to send your tokens or not
             this.receivecoinstate = 'waitforconfirmation';
             this.sender = {
-              avatarurl: this.transactiondetails.avatarhash,
-              username: this.transactiondetails.username
+              avatarurl: this.$.ipfs.geturl(this.message.avatarhash),
+              username: this.message.username
             };
             break;
           case 'txdeclined':
