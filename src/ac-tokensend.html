@@ -633,6 +633,7 @@ Author : Stefaan Ponnet
       self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
         'command': 'txdecline',
       }));
+      this.closetokensendcollapser();
     },
 
     closetokensendcollapser: function() {
