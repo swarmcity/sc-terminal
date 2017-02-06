@@ -217,6 +217,8 @@
     </neon-animatable>   -->
 
     <neon-animatable data-page="intro">
+      <template is="dom-if" if="{{!disclaimer}}">
+
       <div class="totalwidth vertic start paddingsides basestructure">
           <div class="whitespace"></div>
           <div class="whitespace"></div>
@@ -290,9 +292,9 @@
                         <div class="minispace"></div>          
 
                   <div class="totalwidth itemz">
-                  <p class="grey3">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction. Send 0.1 ETH to your wallet address <span class="accountpub grey4 reg">{{account}}</span>.</p>  
-                  <div class="whitespace"></div>
-                    <paper-button class="blue whiteback shadow yesno centertxt" on-tap="checketheragain" noink>Refresh ETH balance <iron-icon icon="sc-icons:refresh1" class=" margleft blue"></iron-icon></paper-button>
+                  <p class="grey3">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction. Send 0.1 ETH to your wallet address <span class="accountpub grey4 reg">{{account}}</span> and try again.</p>  
+<!--                   <div class="whitespace"></div>
+                    <paper-button class="blue whiteback shadow yesno centertxt" on-tap="checketheragain" noink>Refresh ETH balance <iron-icon icon="sc-icons:refresh1" class=" margleft blue"></iron-icon></paper-button> -->
                   <!-- <div class="dotline"></div> -->
                         <div class="whitespace"></div>          
 
@@ -398,11 +400,13 @@
 
           <template is="dom-if" if="{{!conversiondone}}">
             <template is="dom-if" if="{{!convertingstarted}}">
-            <!-- <template is="dom-if" if="{{hasenoughgas}}"> -->
             <div class="horizontal center startjust yesnobtns">
+
+<!--             <template is="dom-if" if="{{!hasenoughgas}}"> -->
               <paper-button class="blueback white shadow yesno bigbtn centertxt" on-tap="startconvert" noink>Convert my ARC to SWT</paper-button>
+<!--             </template> -->
+
             </div>
-            <!-- </template> -->
             </template>
           </template>
 
@@ -422,29 +426,23 @@
 
 
         </template>
+      </div>
+
+      </template>
+
+      <template is="dom-if" if="{{disclaimer}}">
+        <div class="total vertic centercenter paddingwithouttop basestructure">
+          <p class="blue reg centertxt">Using this token swap functionality comes with a risk. Read this important information to fully understand what you are about to do.</p>
+          <div class="whitespace"></div>
+
+          <a class="blue bold" href="">Read the full document</a>
+          <div class="fivespace"></div>
+          <paper-button class="blueback white centertxt" on-tap="understood" noink>I fully understand what i'm doing</paper-button>
         </div>
+      </template>
     </neon-animatable>
 
     <neon-animatable data-page="confirm">
-      <!-- <div class="total vertic">
-      <h2 class="red">ARC to SWT process</h2>
-      <div class="whitespace"></div>
-
-      <ol class="white">
-        <li><ac-statusitem id="s1" status="inactive">Asking permission to transfer ARC</ac-statusitem></li>
-        <li><ac-statusitem id="s2" status="inactive">Permission to transfer ARC granted</ac-statusitem></li>
-        <li><ac-statusitem id="s3" status="inactive">Sending ARC to SWT contract</ac-statusitem></li>
-        <li><ac-statusitem id="s4" status="inactive">SWT received</ac-statusitem></li>
-      </ol>
-
-      <div class="whitespace"></div>
-      <div class="whitespace"></div>
-      <div class="yesnobtns vertic">
-        <ac-button big id="startbtn" class="yesno" bg="btncolor" txtcolor="red" on-tap="startconversion" txtbtn>Start</ac-button>
-        <sc-spinner hidden id="processspinner" big>spinning</sc-spinner>
-        <ac-button big hidden id="continuebtn" class="yesno" bg="btncolor" txtcolor="red" on-tap="startconversion" txtbtn>All set.</ac-button>
-      </div>
-    </div> -->
     </neon-animatable>
 
 
@@ -468,6 +466,10 @@ Polymer({
       type: String,
       observer: 'update'
     },
+    convertingstarted: {
+      type: Boolean,
+      observer: '_convertingstarted'
+    },
   },
 
   ready: function() {
@@ -482,6 +484,8 @@ Polymer({
     this.secondstate = 'init';
     this.ethcheckstate = 'init';
     this.convertingstarted = false;
+
+    this.disclaimer = true;
   },
 
   attached: function() {
@@ -841,6 +845,14 @@ Polymer({
   back: function(){
     this.fire('exit');
 //    console.log("Kunde gij efkes MAKE DA GE TERUGGA?");
+  },
+
+  understood: function(){
+    this.disclaimer = false;
+  },
+
+  _convertingstarted: function(){
+    console.log("yaaaatochhh, ", this.convertingstarted);
   }
 
 });
