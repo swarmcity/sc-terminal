@@ -217,6 +217,8 @@ Author : Stefaan Ponnet
         box-sizing:border-box;
         padding: 15px 20px 15px 20px;
         max-width: 300px;
+        border-top: 2px dotted rgba(0,0,0,0.05);
+        border-bottom: 2px dotted rgba(0,0,0,0.05);
       }
 
       .receiveravatar {
@@ -466,7 +468,7 @@ Author : Stefaan Ponnet
               <div class="item totalwidth">
                 <p class="topmsg grey4 hairline">You're sending <span class="ultralight">{{amount}} SWT</span> to
                 </p>
-                <div class="receiver shadow lighter">
+                <div class="receiver">
                   <div class="receiveravatar">
                     <img src="{{receiver.avatarurl}}">
                   </div>
@@ -515,7 +517,7 @@ Author : Stefaan Ponnet
                 <p class="topmsgz bold blue">Yes!</p>
                 <p class="topmsg grey4 hairline">You have successfully send <span class="ultralight">{{amount}} SWT </span> to
                 </p>
-                <div class="receiver shadow lighter">
+                <div class="receiver">
                   <div class="receiveravatar">
                     <img src="{{receiver.avatarurl}}"></div>
                   <div class="receiverusername">
