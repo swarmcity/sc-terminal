@@ -203,7 +203,9 @@ Author : Stefaan Ponnet
       .receiver {
         display: inline-block;
         @apply(--layout-horizontal);
-        @apply(--layout-center-center);
+        @apply(--layout-center);
+        @apply(--layout-start-just);
+
         margin: 2vh 0px 2vh 0px;
 
       }
@@ -245,19 +247,23 @@ Author : Stefaan Ponnet
       }
 
 
+        .announce {
+          width: 100%;
+          box-sizing: border-box;
+          @apply(--layout-vertical);
+          @apply(--layout-start);
+
+          @apply(--layout-center-justified);          
+        }
+  
+
       @media all and (min-width: 0) and (max-width: 500px) { 
 
         paper-button.sender {
           margin: 5px 5px 5px 5px;
         }
 
-        .announce {
-          width: 100%;
-          box-sizing: border-box;
-          @apply(--layout-vertical);
-          @apply(--layout-center-center);          
-        }
-  
+
 
         .sendcoiners {
           width: 100%;
@@ -291,6 +297,26 @@ Author : Stefaan Ponnet
             @apply(--layout-horizontal);
             @apply(--layout-center-center);  
         }
+
+      
+        .announce {
+          width: 100%;
+          box-sizing: border-box;
+          @apply(--layout-vertical);
+          @apply(--layout-center-center);          
+        }
+        .receiver {
+          display: inline-block;
+          @apply(--layout-horizontal);
+          @apply(--layout-center-center);
+          margin: 2vh 0px 2vh 0px;
+
+        }
+
+        .item p {
+          text-align: center;
+        }
+
       }
 
 
@@ -316,11 +342,11 @@ Author : Stefaan Ponnet
       id="whisper"></ac-whisperer>
 
     <div class="total vertic centercenter">
-        <template is="dom-if" if="{{_is(sendcoinstate,'init')}}">
+<!--         <template is="dom-if" if="{{_is(sendcoinstate,'init')}}">
           <div class="totalwidth sendbox">
             <paper-button on-tap="tosendform" class="sender bigbtn grey1back grey4">send SWT</paper-button>
           </div>
-        </template>
+        </template> -->
       <div class="sendcoiners">
 
           <template is="dom-if" if="{{_is(sendcoinstate,'sendform')}}">
@@ -379,9 +405,9 @@ Author : Stefaan Ponnet
             </div>
           </template>
 
-          <template is="dom-if" if="{{_is(sendcoinstate,'sendcoins')}}">
+          <template is="dom-if" if="{{_is(sendcoinstate,'init')}}">
             <div class="announce">
-              <div class="item">
+              <div class="item totalwidth">
                 <p>You're sending <span class="bold">{{amount}} SWT</span> to
                 </p>
                 <div class="receiver">
@@ -416,7 +442,7 @@ Author : Stefaan Ponnet
 
           <template is="dom-if" if="{{_is(sendcoinstate,'sent')}}">
             <div class="announce">
-              <div class="item">
+              <div class="item totalwidth">
                 <p>You have successfully send <span class="bold">{{amount}} SWT</span> to
                 </p>
                 <div class="receiver">
