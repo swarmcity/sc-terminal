@@ -339,15 +339,15 @@ Author : Stefaan Ponnet
             </div>
           </template>
 
-          <template is="dom-if" if="{{_is(sendcoinstate,'notvalidcode')}}">
+         <!--  <template is="dom-if" if="{{_is(sendcoinstate,'notvalidcode')}}">
             <div class="announce">
-              <p class="bold">The givven shortcode is not valid.</p>
+              <p class="bold">The given shortcode is not valid.</p>
               <template is="dom-if" if="{{phoneview}}">
                 <div class="minispace"></div>
               </template>
               <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="closetokensendcollapser">decline</iron-icon>
             </div>
-          </template>
+          </template> -->
 
           <template is="dom-if" if="{{_is(sendcoinstate,'searchingforpeer')}}">
             <div class="announce">
@@ -383,7 +383,7 @@ Author : Stefaan Ponnet
                   </div>
                 </div>
                 <div class="confirmbtns">
-                  <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+                  <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="txdecline">decline</iron-icon>
                   <paper-icon-button icon="sc-icons:v" class="blue whiteback shadow big" on-tap="tosendcoins"></paper-icon-button>
                 </div>
                 <div class="whitespace"></div>    
@@ -555,7 +555,7 @@ Author : Stefaan Ponnet
 
       tosendcoins: function() {
         var self = this;
-        this.sendcoinstate = 'sendcoins';
+        //this.sendcoinstate = 'sendcoins';
         this.transfer(this.amount * 1e18, this.$.helpers.fixaddress(self.receiver.account), function(err, result) {
 
           if (err) {
@@ -593,6 +593,14 @@ Author : Stefaan Ponnet
             this.receiver.avatarurl = this.$.ipfs.geturl(this.receiver.avatarhash);
             this.receiver.from = m.detail.from;
             this.sendcoinstate = 'sendcoins';
+            
+            self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
+              'command': 'waitforconfirmation',
+              //'amount': self.amount,
+              'avatarhash': self.identity.avatarhash,
+              'username': self.identity.username,
+              //'txhash': result
+            }));            
             break;
           // case 'confirmtransfer':
           //   // TODO : show transfer in history...
@@ -623,6 +631,13 @@ Author : Stefaan Ponnet
         b = true;
       }
       return a === b;
+    },
+
+    txdecline: function() {
+      var self = this;
+      self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
+        'command': 'txdecline',
+      }));
     },
 
     closetokensendcollapser: function() {
