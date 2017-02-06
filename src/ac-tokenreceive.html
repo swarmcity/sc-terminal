@@ -1,5 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 
 <link rel="import" href="../bower_components/sc-style/sc-style.html">
@@ -36,8 +38,10 @@
         @apply(--layout-center);
         @apply(--layout-start-just);
 
-        margin: 2vh 0px 2vh 0px;
-
+        margin: 3vh 0px 3vh 0px;
+        box-sizing:border-box;
+        padding: 15px 20px 15px 20px;
+        max-width: 300px;
       }
 
       .senderavatar {
@@ -117,7 +121,6 @@
 
      .announce {
       width: 100%;
-      height: 75px;
       box-sizing: border-box;
       @apply(--layout-vertical);
       @apply(--layout-center-center);
@@ -141,6 +144,84 @@
         width: 100%;
         overflow: hidden;
       }
+       .announce {
+          width: 100%;
+          box-sizing: border-box;
+          @apply(--layout-vertical);
+          @apply(--layout-start);
+
+          @apply(--layout-center-justified);          
+        }
+
+
+        .item {
+          width: 100%;
+          box-sizing: border-box;
+          @apply(--layout-vertical);
+          @apply(--layout-start);
+
+          @apply(--layout-center-justified);      
+        }
+
+      .topmsg {
+        @apply(--montserrat-ultralight);
+        font-size: 28px;
+        line-height: 32px;
+        max-width: 500px;
+
+      }
+
+      .topmsgz {
+        font-size: 34px;
+        line-height: 38px;        
+      }
+
+      .txhash {
+    word-break: break-all;
+      }
+        .item {
+          width: 100%;
+          box-sizing: border-box;
+          @apply(--layout-vertical);
+          @apply(--layout-start);
+
+          @apply(--layout-center-justified);      
+        }
+
+     @media all and (min-width: 0) and (max-width: 500px) { 
+
+        .announce {
+          width: 100%;
+          box-sizing: border-box;
+          @apply(--layout-vertical);
+          @apply(--layout-center-center);          
+        }
+        .announce p {
+          text-align: center;
+       
+        }
+
+        .sender {
+          display: inline-block;
+          @apply(--layout-horizontal);
+          @apply(--layout-center-center);
+          margin: 2vh 0px 2vh 0px;
+
+        }
+
+        .item {
+          width: 100%;
+          box-sizing: border-box;
+          @apply(--layout-vertical);
+          @apply(--layout-center-center);          
+        }
+
+        .item p {
+          text-align: center;
+        }
+
+      }
+
 
     </style>
 
@@ -165,32 +246,36 @@
       id="whisper"></ac-whisperer>
 
     <div class="totalwidth vertic centercenter">
-      <div class="initbtns totalwidth">
+<!--       <div class="initbtns totalwidth"> -->
         <template is="dom-if" if="{{_is(receivecoinstate,'init')}}">
           <ac-shortcode class="totalwidth" on-cancel="deactivatereceivecoins" bg="btncolor" txtcolor="red" topic="[[topic]]" progress="[[progress]]" on-showshortcode="activatereceivecoins" btn>shortcode</ac-shortcode>
         </template>
 
         <template is="dom-if" if="{{_is(receivecoinstate,'userinfosent')}}">
+        <!-- done -->
+
           <div class="announce">
-            <p class="semibold">Sending your info to requesting party</p>
+              <p class="topmsg grey4 hairline">Your info is being send to requesting party</p>
               <template is="dom-if" if="{{phoneview}}">
                 <div class="whitespace"></div>
               </template>
-            <sc-loader small color="blue"></sc-loader>
+<!--             <template is="dom-if" if="{{probablytimedout}}">
+              <p class="blue bold">The action probably timed out.</p>
+            </template> -->
 
-            <template is="dom-if" if="{{probablytimedout}}">
-              <template is="dom-if" if="{{phoneview}}">
-                <div class="minispace"></div>
-              </template>
-              <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="deactivatereceivecoins">decline</iron-icon>
-            </template>
+              <div class="minispace"></div>
+              <div class="minispace"></div>
+
+              <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
 
           </div>
         </template>
 
         <template is="dom-if" if="{{_is(receivecoinstate,'waitforconfirmation')}}">
-            <p class="semibold">Waiting for confirmation from</p>
-              <div class="sender">
+          <!-- done -->
+            <div class="item totalwidth">
+              <p class="topmsg grey4 hairline">Waiting for confirmation from</p>
+              <div class="sender shadow lighter">
                 <div class="senderavatar">
                   <img src="{{sender.avatarurl}}"></div>
                 <div class="senderusername">
@@ -201,16 +286,37 @@
 
        <template is="dom-if" if="{{_is(receivecoinstate,'txdeclined')}}">
           <div class="announce">
-            <p class="bold">Transaction aborted by other party</p>
+
+            <div class="item totalwidth">
+              <p class="topmsg grey4 hairline">Transaction aborted by other party</p>
               <template is="dom-if" if="{{phoneview}}">
                 <div class="minispace"></div>
               </template>
               <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="deactivatereceivecoins">decline</iron-icon>
+            </div>
           </div>
         </template>
 
         <!-- nieuwe state : waiting for TX -->
         <template is="dom-if" if="{{_is(receivecoinstate,'waitfortx')}}">
+            <div class="item totalwidth">
+              <p class="topmsg grey4 hairline">Waiting for confirmation from</p>
+              <div class="whitespace"></div>
+
+              <div class="sender shadow lighter">
+                <div class="senderavatar">
+                  <img src="{{sender.avatarurl}}"></div>
+                <div class="senderusername">
+                  <p>{{sender.username}}</p>
+                </div>
+              </div>
+              <div class="whitespace"></div>
+
+              <p class="small reg grey2 txhash">TxHash: {{currenttxhash}}</p>
+
+<!-- 
+
+
             <p class="semibold">Waiting for transaction from</p>
               <div class="sender">
                 <div class="senderavatar">
@@ -219,33 +325,41 @@
                   <p>{{sender.username}}</p>
                 </div>
               </div>
-            <p>Txhash = {{currenttxhash}}</p>
+            <p>Txhash = {{currenttxhash}}</p> -->
         </template>
 
         
 
         <template is="dom-if" if="{{_is(receivecoinstate,'txconfirmed')}}">
+
           <div class="announce">
-            <p class="bold">You received {{formatpong(receivedamount)}} tokens.</p>
+            <div class="item totalwidth">
+              <p class="topmsg grey4 hairline">You received {{formatpong(receivedamount)}} tokens.</p>
 
               <template is="dom-if" if="{{phoneview}}">
                 <div class="minispace"></div>
               </template>
               <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="deactivatereceivecoins">decline</iron-icon>
           </div>
+        </div>
         </template>
 
         <template is="dom-if" if="{{_is(receivecoinstate,'transfererror')}}">
+
           <div class="announce">
-            <p class="bold">Transaction failed {{receivecoinstateerror}}.</p>
+            
+          <div class="item totalwidth">
+              <p class="topmsg grey4 hairline">
+            Transaction failed {{receivecoinstateerror}}.</p>
               <template is="dom-if" if="{{phoneview}}">
                 <div class="minispace"></div>
               </template>
               <iron-icon icon="sc-icons:decline" class="grey3 medium" on-tap="deactivatereceivecoins">decline</iron-icon>
           </div>
+          </div>
         </template>
         
-      </div>
+<!--       </div> -->
   </div>
 </template>
 <script>
