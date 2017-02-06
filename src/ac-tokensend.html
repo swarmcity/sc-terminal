@@ -238,6 +238,12 @@ Author : Stefaan Ponnet
         line-height: 14px;*/
       }
 
+      .sendbox {
+          @apply(--layout-horizontal);
+          @apply(--layout-start-justified);  
+          @apply(--layout-center);
+      }
+
 
       @media all and (min-width: 0) and (max-width: 500px) { 
 
@@ -277,10 +283,14 @@ Author : Stefaan Ponnet
           margin-right: 4px;
         }
 
-      .sendinputter {
-        width: 80%;
-      }
+        .sendinputter {
+          width: 80%;
+        }
 
+        .sendbox {
+            @apply(--layout-horizontal);
+            @apply(--layout-center-center);  
+        }
       }
 
 
@@ -307,7 +317,7 @@ Author : Stefaan Ponnet
 
     <div class="total vertic centercenter">
         <template is="dom-if" if="{{_is(sendcoinstate,'init')}}">
-          <div class="totalwidth horizont startjust center">
+          <div class="totalwidth sendbox">
             <paper-button on-tap="tosendform" class="sender bigbtn grey1back grey4">send SWT</paper-button>
           </div>
         </template>
