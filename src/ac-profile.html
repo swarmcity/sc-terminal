@@ -286,6 +286,12 @@ min-width: 120px;
     border-bottom: 2px dotted rgba(0,0,0,0.05);
   }
 
+  .edit {
+    border: 1px solid red;
+    min-height: 360px;
+    width: 250px;
+  }
+
 
 @media all and (min-width: 0) and (max-width: 420px) { 
   .profilepic {
@@ -435,8 +441,8 @@ min-width: 120px;
       </neon-animatable>
 
       <neon-animatable data-state="edit">
-        <div class="profilepic">
-          <div class="profilepicinner">
+        <div class="profilepic vertic centercenter">
+          <div class="profilepicinner edit">
             <div id="croppie"></div>
             <div class="croppiecontrols totalwidth horizont centercenter">
               <p class="blue small bold txtshadow">Scroll to zoom</p>
