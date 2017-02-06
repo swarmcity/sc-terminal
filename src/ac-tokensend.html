@@ -214,7 +214,9 @@ Author : Stefaan Ponnet
         @apply(--layout-start-just);
 
         margin: 3vh 0px 3vh 0px;
-
+        box-sizing:border-box;
+        padding: 15px 20px 15px 20px;
+        max-width: 300px;
       }
 
       .receiveravatar {
@@ -264,10 +266,30 @@ Author : Stefaan Ponnet
         }
 
 
+        .item {
+          width: 100%;
+          box-sizing: border-box;
+          @apply(--layout-vertical);
+          @apply(--layout-start);
+
+          @apply(--layout-center-justified);      
+        }
+
       .topmsg {
         @apply(--montserrat-ultralight);
-        font-size: 30px;
+        font-size: 28px;
         line-height: 32px;
+        max-width: 500px;
+
+      }
+
+      .topmsgz {
+        font-size: 34px;
+        line-height: 38px;        
+      }
+
+      .txhash {
+    word-break: break-all;
       }
   
 
@@ -319,12 +341,24 @@ Author : Stefaan Ponnet
           @apply(--layout-vertical);
           @apply(--layout-center-center);          
         }
+        .announce p {
+          text-align: center;
+       
+        }
+
         .receiver {
           display: inline-block;
           @apply(--layout-horizontal);
           @apply(--layout-center-center);
           margin: 2vh 0px 2vh 0px;
 
+        }
+
+        .item {
+          width: 100%;
+          box-sizing: border-box;
+          @apply(--layout-vertical);
+          @apply(--layout-center-center);          
         }
 
         .item p {
@@ -356,14 +390,15 @@ Author : Stefaan Ponnet
       id="whisper"></ac-whisperer>
 
     <div class="total vertic centercenter">
-        <template is="dom-if" if="{{_is(sendcoinstate,'init')}}">
+<!--         <template is="dom-if" if="{{_is(sendcoinstate,'init')}}">
           <div class="totalwidth sendbox">
             <paper-button on-tap="tosendform" class="sender bigbtn grey1back grey4">send SWT</paper-button>
           </div>
-        </template>
+        </template> -->
       <div class="sendcoiners">
 
           <template is="dom-if" if="{{_is(sendcoinstate,'sendform')}}">
+            <!-- done -->
               <paper-input class="sendinputter" autofocus type="number" label="Amount" value="{{amount}}">
                 <div suffix>SWT</div>
               </paper-input>
@@ -381,7 +416,7 @@ Author : Stefaan Ponnet
 
           <template is="dom-if" if="{{_is(sendcoinstate,'balancelow')}}">
             <div class="announce">
-              <p class="bold">Your balance is too low for this transaction.</p>
+              <p class="topmsg grey4 hairline">Your balance is too low for this transaction.</p>
               <template is="dom-if" if="{{phoneview}}">
                 <div class="whitespace"></div>
               </template>
@@ -402,8 +437,9 @@ Author : Stefaan Ponnet
           </template> -->
 
           <template is="dom-if" if="{{_is(sendcoinstate,'searchingforpeer')}}">
+            <!-- done -->
             <div class="announce">
-              <sc-loader small color="blue">Searching for your peer</sc-loader>
+              <p class="topmsg grey4 hairline">Searching for your peer</p>
               <template is="dom-if" if="{{phoneview}}">
                 <div class="whitespace"></div>
               </template>
@@ -413,8 +449,9 @@ Author : Stefaan Ponnet
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'nopeer')}}">
+            <!-- DONE -->
             <div class="announce">
-              <p class="bold">We can not find your peer.</p>
+              <p class="topmsg grey4 hairline">We can not find your peer.</p>
               <template is="dom-if" if="{{phoneview}}">
                 <div class="whitespace"></div>
               </template>
@@ -424,10 +461,10 @@ Author : Stefaan Ponnet
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'sendcoins')}}">
-
+            <!-- done -->
             <div class="announce">
               <div class="item totalwidth">
-                <p class="topmsg grey3 hairline">You're sending <span class="ultralight">{{amount}} SWT</span> to
+                <p class="topmsg grey4 hairline">You're sending <span class="ultralight">{{amount}} SWT</span> to
                 </p>
                 <div class="receiver shadow lighter">
                   <div class="receiveravatar">
@@ -451,21 +488,32 @@ Author : Stefaan Ponnet
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'sending')}}">
+            <!-- DONE -->
             <div class="announce">
-              <sc-loader>Your transaction is being executed.</sc-loader>
-              <p class="topmsg grey3 hairline">TxHash = {{currenttxhash}}</p>
+              <p class="topmsg grey4 hairline">Your transaction is being executed on the blockchain. </p>
+                <div class="minispace"></div>
+                <div class="minispace"></div>
+
+              <p class="reg">This could take a few moments. Don't close your browser.</p>
+                <div class="minispace"></div>
+                <div class="minispace"></div>
+                <div class="minispace"></div>
+
+              <p class="small reg grey2 txhash">TxHash: {{currenttxhash}}</p>
               <template is="dom-if" if="{{phoneview}}">
                 <div class="whitespace"></div>
               </template>
-              <div class="minispace"></div>
+              <div class="whitespace"></div>
               <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
             </div>
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'sent')}}">
+            <!-- done -->
             <div class="announce">
               <div class="item totalwidth">
-                <p class="topmsg grey3 hairline">You have successfully send <span class="ultralight">{{amount}} SWT</span>
+                <p class="topmsgz bold blue">Yes!</p>
+                <p class="topmsg grey4 hairline">You have successfully send <span class="ultralight">{{amount}} SWT </span> to
                 </p>
                 <div class="receiver shadow lighter">
                   <div class="receiveravatar">
@@ -489,6 +537,7 @@ Author : Stefaan Ponnet
           </template>
 
           <template is="dom-if" if="{{_is(sendcoinstate,'transfererror')}}">
+            <!-- done -->
             <div class="announce">
               <p class="bold red">{{transfererrormessage}}</p>
               <template is="dom-if" if="{{phoneview}}">
