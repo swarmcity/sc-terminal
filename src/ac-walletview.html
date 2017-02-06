@@ -116,6 +116,7 @@
             identity="[[identity]]"
             on-activated="hideReceivebutton"
             on-deactivated="showReceivebutton"
+            on-tokenssent="refreshbalance"
             on-addlog="receivelog"
             sizeview="{{sizeview}}">
           </ac-tokensend>
@@ -128,6 +129,7 @@
             keystore="[[keystore]]"
             on-activated="hideSendbutton"
             on-deactivated="showSendbutton"
+            on-tokensreceived="refreshbalance"
           ></ac-tokenreceive>
         </template>
         </div>
@@ -233,6 +235,11 @@
     observers: [
         '_checkSize(sizeview)'
       ],
+
+    refreshbalance: function(){
+      debugger;
+      this.fire('refreshneeded');
+    },
 
     _account: function(){
     //   if (this.account){
