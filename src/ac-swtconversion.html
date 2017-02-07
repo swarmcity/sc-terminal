@@ -217,7 +217,6 @@
     </neon-animatable>   -->
 
     <neon-animatable data-page="intro">
-      <template is="dom-if" if="{{!disclaimer}}">
 
       <div class="totalwidth vertic start paddingsides basestructure">
           <div class="whitespace"></div>
@@ -428,18 +427,6 @@
         </template>
       </div>
 
-      </template>
-
-      <template is="dom-if" if="{{disclaimer}}">
-        <div class="total vertic centercenter paddingwithouttop basestructure">
-          <p class="blue reg centertxt maxwidth">Using this token swap functionality comes with a risk. Read this important information to fully understand what you are about to do.</p>
-          <div class="whitespace"></div>
-
-          <a class="blue bold" href="">Read the full document</a>
-          <div class="fivespace"></div>
-          <paper-button class="blueback white centertxt" on-tap="understood" noink>I fully understand what i'm doing</paper-button>
-        </div>
-      </template>
     </neon-animatable>
 
     <neon-animatable data-page="confirm">
@@ -485,7 +472,6 @@ Polymer({
     this.ethcheckstate = 'init';
     this.convertingstarted = false;
 
-    this.disclaimer = true;
   },
 
   attached: function() {
@@ -847,9 +833,6 @@ Polymer({
 //    console.log("Kunde gij efkes MAKE DA GE TERUGGA?");
   },
 
-  understood: function(){
-    this.disclaimer = false;
-  },
 
   _convertingstarted: function(){
     console.log("yaaaatochhh, ", this.convertingstarted);
