@@ -102,6 +102,7 @@
       currentkeystore="{{keystore}}"
       currentidentity="{{identity}}"
       currentaccount="{{account}}"
+      lastbackup="{{lastbackup}}"
       on-ready="checkready"
       status="{{vaultstatus}}"
       on-backupexit="toProfile"
@@ -114,6 +115,7 @@
       data-page="home"
       keystore="[[keystore]]"
       identity="[[identity]]"
+      lastbackup=[[lastbackup]]
       web3="[[web3]]"
       pubkey="[[account]]"
       swtbalance="[[swtbalance]]"
@@ -129,6 +131,7 @@
       data-page="profile"
       id="profile"
       identity="[[identity]]"
+      lastbackup=[[lastbackup]]
       pubkey="[[account]]"
       on-exit="toHome"
       on-identity-update="saveIdentity"

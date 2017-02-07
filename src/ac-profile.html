@@ -408,7 +408,7 @@ min-width: 120px;
 
         <neon-animatable data-state="view">
         <div class="totalwidth vertic centercenter view">
-          <template is="dom-if" if="{{!warningread}}">
+          <template is="dom-if" if="{{!lastbackup}}">
             <div class="whitespace"></div>
             <div class="warning">
               <div class="warningsign vertic centercenter"><p class="bold white">!</p></div>
@@ -557,6 +557,10 @@ min-width: 120px;
         type: String
       },
 
+      lastbackup: {
+        type: Number,
+      },
+
       pubwhat: {
         type: String,
         value: 'pubhidden'
@@ -666,7 +670,6 @@ min-width: 120px;
       var colly = document.getElementById('deletemyvaultcollapser');
       colly.closed = true;
 
-      this.warningread = false;
     },
 
     init: function(cb){

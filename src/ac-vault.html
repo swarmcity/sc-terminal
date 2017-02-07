@@ -636,6 +636,10 @@
           type: Object,
           notify: true
         },
+        lastbackup: {
+          type: Number,
+          notify: true          
+        },
         status: {
           type: String,
           notify: true
@@ -894,6 +898,7 @@
         this.entryAnimation = "slide-from-right-animation";
       
         
+       this.getvaultDownloaded();
        
       },
 
@@ -951,6 +956,21 @@
         dlAnchorElem.setAttribute("href", dataStr);
         dlAnchorElem.setAttribute("download", 'swarmCityVault-' + Date.now() + '.json');
         dlAnchorElem.click();
+        this.setvaultDownloaded();
+      },
+
+      setvaultDownloaded: function(){
+        var timestamp =  Date.now();
+        window.localStorage.setItem('sc-vault-downloaded',timestamp);
+        this.getvaultDownloaded();
+      },
+
+      getvaultDownloaded: function(){
+        this.lastbackup = window.localStorage.getItem('sc-vault-downloaded');
+        if (this.lastbackup === undefined){
+          debugger;
+          this.lastbackup = null;
+        }
       },
 
       vaulttoipfs: function(){
@@ -965,11 +985,9 @@
             this.vaulttoipfsstatus = 'error';
           }else{
             console.log(err, result[0].hash);
-            //var hashurl = this.$.ipfs.geturl(result[0].hash);
             this.vaulttoipfshash = result[0].hash;
-             this.vaulttoipfsstatus='success';
-            //self.avatarurl = this.$.ipfs.geturl(result[0].hash);
-            // self.datachanged = true;
+            this.vaulttoipfsstatus='success';
+            this.setvaultDownloaded();
           }
         }.bind(this));
 
@@ -1055,6 +1073,7 @@
         this.$.privatekeyinput.inputvalue = null;
         this.closeVault();
         window.localStorage.removeItem('sc-vault');
+        window.localStorage.removeItem('sc-vault-downloaded');
         this.reset();
         return this.fire('novault');
 

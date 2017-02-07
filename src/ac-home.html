@@ -193,7 +193,9 @@
           id="avatarpubkey"
           size="small"
           ></ac-avatar>
-          <div class="warningbackup blue vertic centercenter"><p class="bold blue">!</p></div>
+          <template is="dom-if" if="{{!lastbackup}}">
+            <div class="warningbackup blue vertic centercenter"><p class="bold blue">!</p></div>
+          </template>
         </div>
         </div>
       </div>
@@ -259,6 +261,9 @@
         type: String,
         observer: '_pubkey'
       },
+      lastbackup: {
+        type: Number,
+      },      
       sharedElements: {
         type: Object,
         value: function() {
