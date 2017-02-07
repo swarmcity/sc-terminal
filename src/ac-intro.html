@@ -121,6 +121,11 @@
       @apply(--layout-vertical);
       @apply(--layout-center-center);
     }
+
+    .mobileverysmall {
+      font-size: 12px;
+      line-height: 14px;
+    }
   }
 
     </style>
@@ -170,11 +175,23 @@
             <div class="whitespace"></div>
           </template>
 
-          <h1 class="bold yellow">You must bee<br>new here</h1>
+          <h1 class="bold yellow">You must bee
+          <template is="dom-if" if="{{!phoneview}}">
+            <br>
+          </template>
+            new here</h1>
           <div class="whitespace"></div>
-          <p class="reg maxwidth">There’s no user found on this device.</p><p>When creating a new user, you declare being aware of the <a href="" class="reg blue">legal aspect of swarm.city</a>.</p>
+          <p class="reg maxwidth">There’s no user found on this device.
+            <br>
+            <span class="light mobileverysmall grey3">When creating a new user, you declare being aware of the </span><a href="" class="reg blue mobileverysmall">legal aspect of swarm.city</a>.</p>
           <div class="flex"></div>
-          <paper-button on-tap="totokenquestion" class="grey4 lighter bigbtn" noink>Create new user</paper-button>
+          <template is="dom-if" if="{{phoneview}}">
+          <paper-button on-tap="totokenquestion" class="grey4 lighter shadow" noink>Create new user</paper-button>
+          </template>
+          <template is="dom-if" if="{{!phoneview}}">
+          <paper-button on-tap="totokenquestion" class="grey4 lighter bigbtn shadow" noink>Create new user</paper-button>
+          </template>
+
           <div class="whitespace"></div>
             <p on-tap="torestore" class="reg grey3 small underliner">restore a backup-file</p>
 <!--           <p on-tap="torestore" class="grey3 small"></p> -->
