@@ -236,37 +236,57 @@
           });
         }else{
           this.parsedpage = page;
+
+          switch (this.parsedpage){
+            case 'vault':
+              this.lazyLoad('vault', 'ac-vault.html');
+              this.lazyLoad('web3', 'ac-web3.html');
+              this.lazyLoad('shh', 'ac-shh.html');             
+              this.lazyLoad('wallet', 'ac-wallet.html');
+              this.lazyLoad('profile', 'ac-profile.html');
+              break;
+            default:
+              this.lazyLoad('vault', 'ac-vault.html');
+              this.lazyLoad('web3', 'ac-web3.html');
+              this.lazyLoad('shh', 'ac-shh.html');             
+              this.lazyLoad('wallet', 'ac-wallet.html');
+              this.lazyLoad('profile', 'ac-profile.html');          
+              this.lazyLoad('home', 'ac-home.html');
+              break;
+          }
+
+
         }
 
-        if (page == 'vault') {
-          this.lazyLoad('vault', 'ac-vault.html');
-          this.lazyLoad('web3', 'ac-web3.html');
-          this.lazyLoad('shh', 'ac-shh.html');             
-          this.lazyLoad('wallet', 'ac-wallet.html');
-          this.lazyLoad('profile', 'ac-profile.html');
-        }
-        if (page == 'home') {
-          this.lazyLoad('vault', 'ac-vault.html');
-          this.lazyLoad('web3', 'ac-web3.html');
-          this.lazyLoad('shh', 'ac-shh.html');             
-          this.lazyLoad('wallet', 'ac-wallet.html');
-          this.lazyLoad('profile', 'ac-profile.html');          
-          this.lazyLoad('home', 'ac-home.html');
-        }
-        if (page == 'swt') {
-          this.lazyLoad('vault', 'ac-vault.html');
-          this.lazyLoad('web3', 'ac-web3.html');
-          this.lazyLoad('shh', 'ac-shh.html');             
-          this.lazyLoad('wallet', 'ac-wallet.html');          
-          this.lazyLoad('swt', 'ac-swtconversion.html');
-        }
-        if (page == 'walletview') {
-          this.lazyLoad('vault', 'ac-vault.html');
-          this.lazyLoad('web3', 'ac-web3.html');
-          this.lazyLoad('shh', 'ac-shh.html');             
-          this.lazyLoad('wallet', 'ac-wallet.html');          
-          this.lazyLoad('swt', 'ac-swtconversion.html');
-        }        
+        // if (page == 'vault') {
+        //   this.lazyLoad('vault', 'ac-vault.html');
+        //   this.lazyLoad('web3', 'ac-web3.html');
+        //   this.lazyLoad('shh', 'ac-shh.html');             
+        //   this.lazyLoad('wallet', 'ac-wallet.html');
+        //   this.lazyLoad('profile', 'ac-profile.html');
+        // }
+        // if (page == 'home') {
+        //   this.lazyLoad('vault', 'ac-vault.html');
+        //   this.lazyLoad('web3', 'ac-web3.html');
+        //   this.lazyLoad('shh', 'ac-shh.html');             
+        //   this.lazyLoad('wallet', 'ac-wallet.html');
+        //   this.lazyLoad('profile', 'ac-profile.html');          
+        //   this.lazyLoad('home', 'ac-home.html');
+        // }
+        // if (page == 'swt') {
+        //   this.lazyLoad('vault', 'ac-vault.html');
+        //   this.lazyLoad('web3', 'ac-web3.html');
+        //   this.lazyLoad('shh', 'ac-shh.html');             
+        //   this.lazyLoad('wallet', 'ac-wallet.html');          
+        //   this.lazyLoad('swt', 'ac-swtconversion.html');
+        // }
+        // if (page == 'walletview') {
+        //   this.lazyLoad('vault', 'ac-vault.html');
+        //   this.lazyLoad('web3', 'ac-web3.html');
+        //   this.lazyLoad('shh', 'ac-shh.html');             
+        //   this.lazyLoad('wallet', 'ac-wallet.html');          
+        //   this.lazyLoad('swt', 'ac-swtconversion.html');
+        //}        
       },
 
       lazyLoad: function(elementid, filename, cb) {
