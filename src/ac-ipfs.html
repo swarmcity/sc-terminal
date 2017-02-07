@@ -33,10 +33,10 @@
       initipfs: function() {
         if (this.config && !this.ipfs) {
           this.ipfs = window.IpfsApi(this.config);
-          if (this.config.port === undefined){
-            this.config.port = 8080;
+          if (this.config.gatewayport === undefined){
+            this.config.gatewayport = 8080;
           }
-          this.baseurl = this.config.protocol + '://' + this.config.host + ':' + this.config.port + '/ipfs/';
+          this.baseurl = this.config.protocol + '://' + this.config.host + ':' + this.config.gatewayport + '/ipfs/';
         }
       },
 
