@@ -570,6 +570,32 @@
       </div>    
     </neon-animatable>
 
+    <neon-animatable data-page="unlockipfs">
+        <div class="total vertic centercenter">
+          <div class="topbar">
+            <span class="flex"></span>
+              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+          </div>
+          <div class="pascanvasunderexit vertic start paddingsides">
+            <div class="whitespace"></div>
+            <template is="dom-if" if="{{!phoneview}}">
+              <div class="whitespace"></div>
+            </template>
+
+            <div class="maxwidth">
+              <h1 class="bold blue">Great!</h1>
+              <div class="whitespace"></div>
+              <p>Found your user on IPFS. You need to unlock it with its password.</p>
+            </div>
+            <div class="flex"></div>
+            <ac-password id="newuser" passwordlabel="Password of your user" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
+          </div>
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
+        </div>         
+    </neon-animatable>
+
+
     <neon-animatable data-page="uploadunlock">
         <div class="total vertic centercenter">
           <div class="topbar">
@@ -592,12 +618,7 @@
           </div>
           <div class="tenspace"></div>
           <div class="tenspace"></div>
-        </div>
-      <!--        
-        TOT HIER
-           -->
-
-           
+        </div>         
     </neon-animatable>
 
   </neon-animated-pages>
@@ -765,7 +786,7 @@
           if (self._parseVault(data)) {
             self.saveVault();
             self.status = 'locked';
-            self.set('route.path', '/uploadunlock');
+            self.set('route.path', '/unlockipfs');
           }
         });
       },
