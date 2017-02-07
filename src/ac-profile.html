@@ -328,6 +328,10 @@ min-width: 120px;
     line-height: 24px;
   }
 
+  .disapp {
+    opacity: 0.5;
+  }
+
 
 @media all and (min-width: 0) and (max-width: 420px) { 
   .profilepic {
@@ -370,7 +374,7 @@ min-width: 120px;
     width: 80%;
     border: 2px dashed var(--sc-blue);
     box-sizing:border-box;
-    padding: 50px 50px 40px 50px;
+    padding: 30px 30px 40px 30px;
 
     @apply(--layout-vertical);
     @apply(--layout-center-center);
@@ -416,7 +420,7 @@ min-width: 120px;
               <paper-button class="bold shadow white lighter" on-tap="backupvault">Create a backup</paper-button>
               <div class="whitespace"></div>
 
-              <paper-checkbox>Don't show this message again</paper-checkbox>
+              <p class="small bold white disapp">This message will disappear when you create your backup.</p>
             </div>
           </template>
 
