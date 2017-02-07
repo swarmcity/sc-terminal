@@ -54,17 +54,12 @@
           case 'livenet':
             
             this.set('ipfs', {
-              host: 'ipfs.swarm.city',
+              host: 'ipfsapi.swarm.city',
               protocol: 'https',
-              gatewayport: 443
+              port : 443
             });
 
-            // // this.web3host = 'https://eth.swarm.city/';
-
-            // this.set('ipfs', {
-            //   host: 'faucet.ma.cx',
-            //   protocol: 'http'
-            // });
+            this.ipfsgateway = 'https://ipfs.swarm.city/ipfs/';
 
             this.web3host = 'https://eth.swarm.city/';            
             this.shhhost = 'https://eth.swarm.city/';            

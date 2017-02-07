@@ -6,7 +6,7 @@
 
 <dom-module id="ac-ipfs">
   <template>
-    <ac-config ipfs="{{config}}"></ac-config>
+    <ac-config ipfs="{{config}}" ipfsgateway="{{baseurl}}"></ac-config>
   </template>
   <!-- Creates the element's prototype and registers it -->
   <script>
@@ -33,10 +33,10 @@
       initipfs: function() {
         if (this.config && !this.ipfs) {
           this.ipfs = window.IpfsApi(this.config);
-          if (this.config.gatewayport === undefined){
-            this.config.gatewayport = 8080;
-          }
-          this.baseurl = this.config.protocol + '://' + this.config.host + ':' + this.config.gatewayport + '/ipfs/';
+          // if (this.config.gatewayport === undefined){
+          //   this.config.gatewayport = 8080;
+          // }
+          //this.baseurl = this.config.protocol + '://' + this.config.host + ':' + this.config.gatewayport + '/ipfs/';
         }
       },
 
