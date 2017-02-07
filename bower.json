@@ -27,7 +27,8 @@
     "browser-builds": "https://github.com/ethereumjs/browser-builds.git",
     "web3": "^0.18.2",
     "ethereum-tx": "*",
-    "paper-progress": "^1.0.11"
+    "paper-progress": "^1.0.11",
+    "paper-checkbox": "^1.4.2"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

@@ -124,6 +124,14 @@
       border-top: 3px solid var(--sc-blue);
     }
 
+    .warningbackup {
+      margin-left: 10px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--sc-blue);
+    }
+
     @media all and (min-width: 0) and (max-width: 500px) { 
 
 
@@ -176,14 +184,17 @@
         id="homeavatar"
         ></ac-avatar>
         <div class="whitespace"></div>
-        <ac-avatar
-        identity="[[identity]]"
-        pubkey="[[pubkey]]"
-        mode="txtonly"
-        viewmode="center"
-        id="avatarpubkey"
-        size="small"
-        ></ac-avatar>
+        <div class="horizont centercenter">
+          <ac-avatar
+          identity="[[identity]]"
+          pubkey="[[pubkey]]"
+          mode="txtonly"
+          viewmode="center"
+          id="avatarpubkey"
+          size="small"
+          ></ac-avatar>
+          <div class="warningbackup blue vertic centercenter"><p class="bold blue">!</p></div>
+        </div>
         </div>
       </div>
       <!-- <div class="flex"></div> -->
