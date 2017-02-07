@@ -452,13 +452,13 @@
             </template>   
 
             <template is="dom-if" if="{{_is(vaulttoipfsstatus,'success')}}">
-              <p>Your IPFS-hash <br><span class="bold ipfshash">{{vaulttoipfshash}}</span></p>
+              <p class="centertxt">Your IPFS-hash <br><span class="bold ipfshash">{{vaulttoipfshash}}</span></p>
               <div class="whitespace"></div>
               <div class="whitespace"></div>
 <!--               <paper-input label="Your e-mailadres" value="{{emailadress}}"></paper-input>
               <div class="whitespace"></div>
               <div class="whitespace"></div> -->
-              <a href="mailto:?subject=Your%20Swarm%20City%20IPFS%20Backup&body=Your%20backup%20is%20at%20{{vaulttoipfshash}}" class="blue lighter centertxt shadow">Mail this hash to me</paper-button>
+              <a href="mailto:?subject=Your%20Swarm%20City%20IPFS%20Backup&body=Your%20backup%20is%20at%20{{vaulttoipfshash}}" class="blue centertxt">Mail this hash to me</paper-button>
             </template>   
 
             <template is="dom-if" if="{{_is(vaulttoipfsstatus,'error')}}">
