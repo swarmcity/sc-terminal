@@ -369,7 +369,7 @@
           </template>
 
 
-            <template is="dom-if" if="{{pkshowpassw}}">
+<!--             <template is="dom-if" if="{{pkshowpassw}}">
               <p class="grey4 semibold blueborder">{{walletfilename}}</p>
               <div class="whitespace"></div>
               <div class="totalwidth horizont end startjust maxwidth">
@@ -382,7 +382,7 @@
               <paper-icon-button icon="sc-icons:arrowright" class="big whiteback shadow blue" on-tap="pkreceived" noink>next</paper-icon-button>
               </div>
 
-            </template>
+            </template> -->
 
 
           <template is="dom-if" if="{{uploadingwallet}}">
@@ -407,16 +407,17 @@
           </div>
           <div class="pascanvasunderexit vertic centercenter paddingsides">        
             <a id="downloadAnchorElem" style="display:none"></a>
-            <template is="dom-if" if="{{backup_download}}">
+            <template is="dom-if" if="{{!backup_unavailable}}">
+
+<!--             <template is="dom-if" if="{{backup_download}}"> -->
               <paper-button on-tap="downloadvault" class="blue bigbtn lighter centertxt backupbtn" noink>Download your backup-file</paper-button>
-            </template>
-            <template is="dom-if" if="{{backup_unavailable}}">
-              <p class="bold">Oops!</p>
+<!--             </template> -->
+              <!-- <p class="bold">Oops!</p>
               <div class="whitespace"></div>
               <p class="centertxt">You can not download your backup on this device/operating system.</p>
               <div class="whitespace"></div>
-              <div class="whitespace"></div>
-              <paper-button on-tap="backupexit" class="grey4 grey1back small shadow" noink>back to profile</paper-button>
+              <div class="whitespace"></div> -->
+<!--               <paper-button on-tap="backupexit" class="grey4 grey1back small shadow" noink>back to profile</paper-button> -->
             </template>
             <div class="whitespace"></div>
             <paper-button on-tap="vaulttoipfsroute" class="blue bigbtn lighter centertxt backupbtn" noink>Backup to IPFS</paper-button>            
@@ -569,6 +570,32 @@
       </div>    
     </neon-animatable>
 
+    <neon-animatable data-page="unlockipfs">
+        <div class="total vertic centercenter">
+          <div class="topbar">
+            <span class="flex"></span>
+              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+          </div>
+          <div class="pascanvasunderexit vertic start paddingsides">
+            <div class="whitespace"></div>
+            <template is="dom-if" if="{{!phoneview}}">
+              <div class="whitespace"></div>
+            </template>
+
+            <div class="maxwidth">
+              <h1 class="bold blue">Great!</h1>
+              <div class="whitespace"></div>
+              <p>Found your user on IPFS. You need to unlock it with its password.</p>
+            </div>
+            <div class="flex"></div>
+            <ac-password id="newuser" passwordlabel="Password of your user" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
+          </div>
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
+        </div>         
+    </neon-animatable>
+
+
     <neon-animatable data-page="uploadunlock">
         <div class="total vertic centercenter">
           <div class="topbar">
@@ -591,12 +618,7 @@
           </div>
           <div class="tenspace"></div>
           <div class="tenspace"></div>
-        </div>
-      <!--        
-        TOT HIER
-           -->
-
-           
+        </div>         
     </neon-animatable>
 
   </neon-animated-pages>
@@ -764,7 +786,7 @@
           if (self._parseVault(data)) {
             self.saveVault();
             self.status = 'locked';
-            self.set('route.path', '/uploadunlock');
+            self.set('route.path', '/unlockipfs');
           }
         });
       },
