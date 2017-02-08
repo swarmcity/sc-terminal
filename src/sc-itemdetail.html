@@ -486,7 +486,7 @@
 
       <div class="topbar whiteback">
         <span class="flex"></span>
-        <iron-icon on-tap="toHashtag" id="backbtn" icon="sc-icons:decline" class="decliner grey2 big">back</iron-icon>
+        <iron-icon on-tap="toHashtag" id="backbtn" icon="sc-icons:decline" class="decliner grey2">back</iron-icon>
       </div>
 
 
@@ -555,7 +555,7 @@
                   </div>
                   <div class="minispace"></div>
                   <div class="totalwidth horizont center endjust">
-                    <paper-icon-button icon="sc-icons:arrowright" class="medium blueback white"></paper-icon-button>
+                    <paper-icon-button icon="sc-icons:arrowright" class="medium blueback white" on-tap="toMakedeal"></paper-icon-button>
                   </div>
                 </div>
 
@@ -865,6 +865,83 @@
 
       this.fire('to-hashtag');
     },
+
+
+  toMakedeal: function(){
+      // this.sharedElements = {
+      //       'hero': this.$.currentavatar,
+      //       'balance': this.$.balancebox
+      //   };
+
+      // this.animationConfig = {
+      //      'entry': [{
+      //       //   name: 'slide-from-bottom-animation',
+      //       //   node:this.$.hashtagcontent,
+      //       //   toPage: this,
+      //       //   timing: {
+      //       //     duration: 700
+      //       //   }
+      //       // },{
+      //       //   name: 'fade-in-animation',
+      //       //   node:this.$.backbtn,
+      //       //   fromPage: this,
+      //       //   timing: {
+      //       //     duration: 125
+      //       //   }
+
+      //       // }, {
+      //         name: 'hero-animation',
+      //         id: 'hero',
+      //         toPage: this,
+      //         timing: {
+      //             duration: 600
+      //         }
+      //       }, {
+      //         name: 'hero-animation',
+      //         id: 'balance',
+      //         toPage: this,
+      //         timing: {
+      //             duration: 600
+      //         }
+      //       }],
+
+      //       'exit': [{
+      //       //   name: 'fade-out-animation',
+      //       //   node:this.$.hashtagcontent,
+      //       //   fromPage: this,
+      //       //   timing: {
+      //       //     duration: 125
+      //       //   }
+
+      //       // },{
+      //       //   name: 'fade-out-animation',
+      //       //   node:this.$.backbtn,
+      //       //   fromPage: this,
+      //       //   timing: {
+      //       //     duration: 125
+      //       //   }
+
+      //       // }, {
+      //         name: 'hero-animation',
+      //         id: 'hero',
+      //         fromPage: this,
+      //         timing: {
+      //             duration: 600
+      //         }
+      //       }, {
+      //         name: 'hero-animation',
+      //         id: 'balance',
+      //         fromPage: this,
+      //         timing: {
+      //             duration: 600
+      //         }
+      //         }]
+      //   };
+
+      this.fire('to-makedeal');
+    },
+
+
 
     replystateChanger: function(){
         switch (this.replystate) {

@@ -19,6 +19,7 @@
 <link rel="import" href="sc-hashtag.html">
 <link rel="import" href="sc-itemdetail.html">
 <link rel="import" href="sc-newitem.html">
+<link rel="import" href="sc-makedeal.html">
 
 
 <dom-module id="ac-app">
@@ -180,6 +181,7 @@
       on-back="backtoHashtag"
       on-exit="toHome"
       on-to-hashtag="toHashtag"
+      on-to-makedeal="toMakedeal"
       currenthasht="{{currenthasht}}">
     </sc-itemdetail>
 
@@ -194,6 +196,17 @@
       on-to-hashtag="toHashtag"
       currenthasht="{{currenthasht}}">
     </sc-newitem>
+
+
+
+    <sc-makedeal
+      data-page="makedeal"
+      identity="[[identity]]"
+      pubkey="[[account]]"
+      on-back="backtoHashtag"
+      on-exit="toHome"
+      on-to-hashtag="toHashtag">
+    </sc-makedeal>
 
 </neon-animated-pages>
 </template>
@@ -322,6 +335,11 @@
       toWalletview: function() {
         this.transitionto('/walletview');
       },
+
+      toMakedeal: function() {
+        this.transitionto('/makedeal');
+      },
+
 
       saveIdentity: function(e) {
         this.identity = e.detail;

@@ -147,10 +147,10 @@ font-size: 19px;
     font-size: 45px;
     padding: 3px;
     z-index: 99;
-    box-shadow: 0px 1px 15px -1px rgba(0,0,0,0.1), 0px 1px 5px -1px rgba(0,0,0,1);
-    -webkit-box-shadow: 0px 1px 15px -1px rgba(0,0,0,0.1), 0px 1px 5px -1px rgba(0,0,0,1);
-    -moz-box-shadow: 0px 1px 15px -1px rgba(0,0,0,0.1), 0px 1px 5px -1px rgba(0,0,0,1);
-    -o-box-shadow: 0px 1px 15px -1px rgba(0,0,0,0.1), 0px 1px 5px -1px rgba(0,0,0,1);
+    box-shadow: 0px 1px 15px -1px rgba(0,0,0,0.1), 0px 1px 3px -1px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 1px 15px -1px rgba(0,0,0,0.1), 0px 1px 3px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 1px 15px -1px rgba(0,0,0,0.1), 0px 1px 3px -1px rgba(0,0,0,0.75);
+    -o-box-shadow: 0px 1px 15px -1px rgba(0,0,0,0.1), 0px 1px 3px -1px rgba(0,0,0,0.75);
     width: 75px;
     height: 75px;
     box-sizing:border-box;
@@ -179,7 +179,7 @@ font-size: 19px;
 
 
   </style>
-        <paper-icon-button icon="sc-icons:plus" class="left whiteback shadow medium addbtn" on-tap="tonewItem" noink>+ new offer</paper-icon-button>
+        <paper-icon-button id="addbtn" icon="sc-icons:plus" class="left whiteback shadow medium addbtn" on-tap="tonewItem" noink>+ new offer</paper-icon-button>
 
     <div class="totalwidth vertic centercenter">
     <div class="topbar">
@@ -504,7 +504,14 @@ font-size: 19px;
             },{
               name: 'fade-in-animation',
               node:this.$.backbtn,
-              fromPage: this,
+              toPage: this,
+              timing: {
+                duration: 200
+              }
+            },{
+              name: 'fade-in-animation',
+              node:this.$.addbtn,
+              toPage: this,
               timing: {
                 duration: 200
               }
@@ -541,7 +548,13 @@ font-size: 19px;
               timing: {
                 duration: 200
               }
-
+            },{
+              name: 'fade-out-animation',
+              node:this.$.addbtn,
+              fromPage: this,
+              timing: {
+                duration: 200
+              }
             }, {
               name: 'hero-animation',
               id: 'hero',
