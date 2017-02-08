@@ -221,19 +221,21 @@
       <div class="totalwidth vertic start paddingsides basestructure">
           <div class="whitespace"></div>
           <div class="whitespace"></div>
-          <template is="dom-if" if="{{!needstoconvert}}">
-            <div class="total vertic start startjust ">
-            <h1 class="maxwidth white bold">Oops!</h1>
-            <div class="whitespace"></div>
-            <p class="reg maxwidth">No ARC-balance was found on <span class="bold account">{{account}}</span>. Make sure you are trying to import the right wallet and try again.</p>
-            <div class="tenspace"></div>
-            <paper-icon-button noink icon="sc-icons:arrowleft" class="shadow big grey1back" on-tap="back">Back</paper-icon-button>   
-            <div class="whitespace"></div>
-            <div class="whitespace"></div>
-            <div class="whitespace"></div>
-            <div class="whitespace"></div>
-            <div class="whitespace"></div>
-            <div class="whitespace"></div>        
+          <template is="dom-if" if="{{arcbalance}}">
+            <template is="dom-if" if="{{!needstoconvert}}">
+              <div class="total vertic start startjust ">
+              <h1 class="maxwidth white bold">Oops!</h1>
+              <div class="whitespace"></div>
+              <p class="reg maxwidth">No ARC-balance was found on <span class="bold account">{{account}}</span>. Make sure you are trying to import the right wallet and try again.</p>
+              <div class="tenspace"></div>
+              <paper-icon-button noink icon="sc-icons:arrowleft" class="shadow big grey1back" on-tap="back">Back</paper-icon-button>   
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>        
+            </template>
           </template>
         <template is="dom-if" if="{{needstoconvert}}">
 
@@ -653,19 +655,19 @@ Polymer({
     }
 
     this.getAllowance(function(err, allowance) {
-
-      if (false && allowance > self.arcbalance) {
-        console.log('allowance is OK (', allowance.toString(10), '>=', self.arcbalance.toString(10), ')');
+      console.log('allowance=', allowance.toString(10), ' ARC balance=', self.arcbalance.toString(10), ')');
+      if (allowance >= self.arcbalance) {
+        console.log('allowance is OK');
         return callback();
       }
+      console.log('need to get allowance');
 
-      var requiredallowance = 0; //self.arcbalanceBN + 1;
+      var requiredallowance = self.arcbalance;
 
       self.gasforapprove = self.ARCTokenInstance.approve.estimateGas(self.config.swtconversioncontractaddress, requiredallowance, {
         from: self.$.helpers.fixaddress(self.account),
-        //gasPrice: self.gasPrice,
-        //gas: 100000
       });
+      console.log('gas needed for approval=',self.gasforapprove);
 
       self.ARCTokenInstance.approve.sendTransaction(self.config.swtconversioncontractaddress, requiredallowance, {
         from: self.$.helpers.fixaddress(self.account),
@@ -697,9 +699,8 @@ Polymer({
 
     this.gasforconvert = this.SWTConverterInstance.convert.estimateGas(this.arcbalance, {
       from: this.$.helpers.fixaddress(this.account),
-      //gasPrice: this.gasPrice,
-      //gas: 100000
     });
+    console.log('gas needed for convert=',self.gasforconvert);
 
     self.SWTConverterInstance.convert.sendTransaction(self.arcbalance, {
       from: self.$.helpers.fixaddress(self.account),

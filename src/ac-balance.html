@@ -122,7 +122,7 @@ Polymer({
 
   properties: {
     swtbalance: {
-      type: Number,
+      type: Object,
       observer: '_swtbalance'
     },
     balanceref: {
@@ -147,7 +147,7 @@ Polymer({
 
 
   formatpong: function(val){
-    return (0 + (val / 1e18)).toFixed(2);
+    return val.dividedBy(1e18).toFormat(2);
   },
 
   ready: function() {

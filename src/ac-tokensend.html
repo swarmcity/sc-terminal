@@ -602,6 +602,10 @@ Author : Stefaan Ponnet
           value: true
         },
 
+        swtbalance:{
+          type: Object          
+        },
+
         receivecollsclosed: {
           type: Boolean,
           value: true
@@ -616,40 +620,26 @@ Author : Stefaan Ponnet
       },
 
       _pincode: function() {
-        // console.log(this.pincode);
       },
 
       ready: function(){
-//        this._getARCbalance();
         var self = this;
-
-        // window.setInterval(function(){
-        //   self._getARCbalance();
-        // }, 5000);
-
-
         this.sendcoinstate = 'init';
         this.password = sessionStorage.getItem('ac-password');
       },
 
 
       tosendform: function(){
-        this.sendcoinstate = 'sendform';
-        this.fire('activated');
+        if (this.swtbalance){
+          this.sendcoinstate = 'sendform';
+          console.log('you haz',this.swtbalance.toString(10),'coiners');
+          this.fire('activated');          
+        }else{
+          console.log('no swt balance available yet.');
+        }
       },
 
-      // activatereceivecoins: function(){
-      //   this.listeninterval = 60;
-      // },
-
-      // deactivatereceivecoins: function(){
-      //   this.listeninterval = 0;
-      // },
-
       attached: function(){
-//        var self=this;
-        // console.log('ac-tokensend attached');
-        // console.log('my account',this.account);
       },
 
       cancelsend: function(){
@@ -662,11 +652,11 @@ Author : Stefaan Ponnet
         this.amount = '';
         this.pincode = '';
         this.receiver = null;
+        this.$.whisper.closeallchannels();
       },
 
       tosendcoins: function() {
         var self = this;
-        //this.sendcoinstate = 'sendcoins';
         this.transfer(this.amount * 1e18, this.$.helpers.fixaddress(self.receiver.account), function(err, result) {
 
           if (err) {
@@ -727,6 +717,45 @@ Author : Stefaan Ponnet
       },
 
       tosearchingforpeer: function(){
+
+        // Verify amount syntax
+        var amount;
+        try{
+          amount = new this.web3.BigNumber(this.amount).times(1e18);
+        }catch(e){
+          return console.log('amount unreadable',this.amount);
+          amount = new this.web3.BigNumber(0);
+        }
+
+        if (amount.equals(0)){
+          return console.log('amount = 0');
+        }
+
+        // Verify sufficient funds
+        if (amount.greaterThan(this.swtbalance)){
+          this.sendcoinstate = 'balancelow';
+          return;
+        }else{
+//          console.log('amount=',amount.toString(10),'balance=',this.swtbalance.toString(10));
+        }
+
+        if (!this.pincode || this.pincode.length !== 5){
+          console.log('pincode too short.');
+          return;
+        }
+
+        try{
+          this.pincode = parseInt(this.pincode);
+        }catch(e){
+          console.log('pincode incorrect.');
+          return;
+        }
+
+
+        console.log(amount.toString(10));
+        console.log(this.swtbalance.toString(10));
+        //debugger;        
+
         var self = this;
         this.$.whisper.whisperpost(this.pincode, JSON.stringify({
                 'command': 'requestuserinfo',
@@ -738,8 +767,6 @@ Author : Stefaan Ponnet
         this.pincode = '';
         this.amount = '';
       },
-
-
 
     _is: function(a, b) {
       if (b === undefined){
@@ -759,12 +786,10 @@ Author : Stefaan Ponnet
     closetokensendcollapser: function() {
         this.sendcoinstate= 'init';
         this.fire('deactivated');
-
     },
 
 
     transfer: function(amount, pubkey, cb) {
-
       var self = this;
       this.sendcoinstate = 'sending';
       this.contracturl = this.resolveUrl('./contracts/ARCToken.json');
@@ -792,34 +817,20 @@ Author : Stefaan Ponnet
             self.currenttxhash = result;
             self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
               'command': 'waitfortx',
-              //'amount': self.amount,
               'txhash': result,
-//              'username': self.identity.username,
-              //'txhash': result
             }));   
-
 
             self.waitTx(result, function(success) {
               console.log('TX mined!');
               self.fire('tokenssent');
               self.currenttxhash = '';
-//              var coinbalance = myContractInstance.balanceOf(self.$.helpers.fixaddress(self.account));
-//              self.arcbalance = coinbalance;
               if (cb) {
                 cb(err, result);
               }
             });
-            
           });
-
         });
       });
-
-      //this.clearInputs();
-      //var sendcoins = self.$.sendcoins;
-      //sendcoins.toggle();
-      //this.collsclosed = !this.collsclosed;
-      //this.sendcoinstate = 'first';
     },
 
     waitTx: function(txHash, callback) {
