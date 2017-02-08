@@ -33,7 +33,7 @@
   .topbar {
     transition: all 0.25s linear;
   }
- 
+
   .topbar ac-button {
     @apply(--base-shadow);
     opacity: 0.9;
@@ -44,14 +44,14 @@
   }
 
   .yesnobtns {
-   
+
   }
 
 
   .yesno {
     margin: 5px 5px 5px 0px;
     width: 100%;
-    max-width: 250px; 
+    max-width: 250px;
     text-align: left;
   }
 
@@ -61,7 +61,7 @@
   .fullyellow {
     width: 100%;
     height: 100%;
-    padding-top: 
+    padding-top:
   }
 
 
@@ -104,7 +104,7 @@
     }
 
 
-  @media all and (min-width: 0px) and (max-width: 420px) { 
+  @media all and (min-width: 0px) and (max-width: 420px) {
   .findyourhive {
       text-align: center;
     width: 100%;
@@ -182,8 +182,6 @@
             new here</h1>
           <div class="whitespace"></div>
           <p class="reg maxwidth">There’s no user found on this device.
-            <br>
-            <span class="light mobileverysmall grey3">When creating a new user, you understand the </span><a href="https://legal.swarm.city" target="_blank" class="reg blue mobileverysmall">legal aspects</a><span class="light mobileverysmall grey3"> of Swarm City.</span></p>
           <div class="flex"></div>
           <template is="dom-if" if="{{phoneview}}">
           <paper-button on-tap="totokenquestion" class="grey4 lighter shadow" noink>Create new user</paper-button>
@@ -212,6 +210,9 @@
           <h1 class="bold white">Let's talk tokens first...</h1>
           <div class="whitespace"></div>
           <p class="reg white">Do you own Arcade-tokens (ARC) you want to convert to Swarm City-tokens (SWT)?</p>
+          <br />
+          <p><span class="light mobileverysmall white">Using this token swap functionality comes with great risks. Read this </span><a href="https://legal.swarm.city" target="_blank" class="reg yellow mobileverysmall">important information</a><span class="light mobileverysmall white"> to fully understand what you are about to do. </span></p>
+
         </div>
           <div class="flex"></div>
           <div class="vertic yesnobtns start startjust">
@@ -311,7 +312,7 @@
       },
 
       torestore: function() {
-        this.fire('restoreipfs'); 
+        this.fire('restoreipfs');
       },
 
       toimportwallet: function() {
