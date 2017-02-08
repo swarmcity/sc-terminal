@@ -97,7 +97,7 @@
   .offer {
       font-size: 16px;
       line-height: 22px;
-      margin: 15px 0px 15px 0px;
+      margin: 15px 0px 5px 0px;
   }
 
 
@@ -114,7 +114,7 @@
   .nrofreplies {
     box-sizing:border-box;
 /*    padding: 0px 4px 3px 8px;*/
-    margin-top: 2px;
+    margin: 2px 0px 10px 0px;
 /*    height: 35px;
     width: 35px;
     min-height: 35px;
@@ -132,7 +132,7 @@
   .nrofreplies iron-icon {
     width: 17px;
     height: 13px;
-    margin-top: 2px;
+    margin-bottom: 2px;
 
   }
 
@@ -153,7 +153,7 @@
 
   </style>
 
-      <div class="totalwidth vertic centercenter">
+      <div class="totalwidth vertic start startjust">
 
         <div class="totalwidth horizont start startjust">
           <div class="offereravatar">
@@ -165,33 +165,37 @@
             <p class="totalwidth yourrep small bold blue">{{offererrep}} REP</p>
           </div>
 
-          <div class="flex vertic end centerjust">
+<!--         <div class="totalwidth horizont centercenter">
+          <div class="flex"></div> -->
+          <p class="offeramount bold yellow">{{offeramount}}<span class="offeramountSWT">SWT</span></p>
+<!--         </div> -->
 
-          <template is="dom-if" if="{{showreplies}}">
-            <div class="nrofreplies horizont centercenter">
-              <p class="small reg grey4">{{nrofreplies}}</p>
-              <iron-icon icon="sc-icons:babble" class="grey4">replies</iron-icon>
-            </div>
-          </template>
-          <template is="dom-if" if="{{!showreplies}}">
-            <div class="nrofreplies noneyet horizont centercenter">
-              <!-- <p class="small reg grey2">{{nrofreplies}}</p> -->
-              <iron-icon icon="sc-icons:babble" class="grey2">replies</iron-icon>
-            </div>
-          </template>
-          </div>
+
 
 
         </div>
+
         <p class="totalwidth offer grey4"> 
           <small class="small grey3">{{offertime}}</small><br>
           {{offer}} 
           <span class="semibold"> 
-            {{offerhashtag}}</span></p>
-        <div class="totalwidth horizont centercenter">
-                    <div class="flex"></div>
-          <p class="offeramount bold yellow">{{offeramount}}<span class="offeramountSWT">SWT</span></p>
-        </div>
+            {{offerhashtag}}</span>
+        </p>
+
+
+          <template is="dom-if" if="{{showreplies}}">
+            <div class="nrofreplies horizont start startjust">
+              <p class="small reg grey3">{{nrofreplies}}</p>
+              <iron-icon icon="sc-icons:babble" class="grey3">replies</iron-icon>
+            </div>
+          </template>
+          <template is="dom-if" if="{{!showreplies}}">
+            <div class="nrofreplies noneyet horizont start startjust">
+              <p class="small reg grey2">0</p>
+              <iron-icon icon="sc-icons:babble" class="grey2">replies</iron-icon>
+            </div>
+          </template>
+
       </div>
 
 
