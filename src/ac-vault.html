@@ -821,6 +821,7 @@
             //this._setpasswordProvider();
             this.privatekey = null;
             this.$.privatekeyinput.inputvalue = null;
+            this.$.privatekeyethinput.inputvalue = null;
             this.saveVault();
             this.loadVault();
 
@@ -1071,6 +1072,7 @@
         //debugger;
         this.privatekey = null;
         this.$.privatekeyinput.inputvalue = null;
+        this.$.privatekeyethinput.inputvalue = null;
         this.closeVault();
         window.localStorage.removeItem('sc-vault');
         window.localStorage.removeItem('sc-vault-downloaded');

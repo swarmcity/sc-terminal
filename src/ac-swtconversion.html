@@ -291,17 +291,13 @@
                         <div class="minispace"></div>          
 
                   <div class="totalwidth itemz">
-                  <p class="grey3">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction. Send 0.1 ETH to your wallet address <span class="accountpub grey4 reg">{{account}}</span> and try again.</p>  
+                  <p class="grey3">To convert your tokens, you need a small amount of Ether to pay the gas of this transaction. Send 0.01 ETH to your wallet address <span class="accountpub grey4 reg">{{account}}</span> and try again.</p>  
 <!--                   <div class="whitespace"></div>
                     <paper-button class="blue whiteback shadow yesno centertxt" on-tap="checketheragain" noink>Refresh ETH balance <iron-icon icon="sc-icons:refresh1" class=" margleft blue"></iron-icon></paper-button> -->
                   <!-- <div class="dotline"></div> -->
                         <div class="whitespace"></div>          
 
                   </div>
-
-
-
-
                 </div>
                 <div class="stateicon horizont centercenter">
                   <div class="errorsymbol horizont centercenter redback">
@@ -491,11 +487,6 @@ Polymer({
 
   checketheragain: function() {
     this.startconvert();
-    // this.ethcheckstate = 'doing'
-    // var self = this;
-    // setTimeout(function() {
-    //   self.update();
-    // }, 1000);
   },
 
   update: function() {
@@ -503,7 +494,7 @@ Polymer({
       console.log('ac-swtconversion -> not READY',this.account,this.web3);
       return;
     }
-     console.log('ac-swtconversion -> WE ARE READY');
+    console.log('ac-swtconversion -> WE ARE READY');
     var self = this;
     if (!self.SWTTokenInstance) {
       this.$.helpers.getjson('./contracts/ARCToken.json', function(err, tokendata) {
@@ -512,26 +503,11 @@ Polymer({
         self.getARCBalance(function() {
           self.checkarc();
         });
-        // this.ethcheckstate = 'doing'
-        // self.getETHBalance(function() {
-        //   if(self.checkgas()){
-        //     self.ethcheckstate = 'succes';
-        //   }else{
-        //     self.ethcheckstate = 'error';
-        //   }
-        // });
       });
     } else {
       self.getARCBalance(function() {
         self.checkarc();
       });
-      // self.getETHBalance(function() {
-      //   if(self.checkgas()){
-      //       self.ethcheckstate = 'succes';
-      //     }else{
-      //       self.ethcheckstate = 'error';
-      //     }
-      // });
     }
     if (!self.SWTConverterInstance){
        this.$.helpers.getjson('./contracts/SWTConverter.json', function(err, tokendata) {
@@ -548,6 +524,7 @@ Polymer({
     }else{
       self.getSWTBalance();
     }
+    
   },
 
   formatpong: function(val) {
@@ -568,12 +545,16 @@ Polymer({
   },
 
   checkgas: function(err, ETHbalance) {
-    if (this.ETHbalance !== undefined && this.ETHbalance > 500000) {
+
+    var ethrequired = this.gasPrice * 200000;
+
+    if (this.ETHbalance !== undefined && this.ETHbalance > ethrequired) {
       this.hasenoughgas = true;
       console.log('ac-swtconversion -> You have enough ETH to perform a conversion');
     } else {
       this.hasenoughgas = false;
       console.log('ac-swtconversion -> You don\'t have enough ETH to perform a conversion');
+      this.ethshort = (ethrequired || 0) - this.ETHbalance;
     }
     return this.hasenoughgas;
   },
@@ -582,84 +563,56 @@ Polymer({
     this.set('route.path', '/stepone');
   },
 
-  collapseMe: function(e) {
-    var item = e.target.parentNode.id;
-
-    var itemp = e.target.id;
-    var collapsid = itemp + 'collapser';
-    var collapsdis = document.getElementById(collapsid);
-    collapsdis.toggle();
-
-    var showbool = itemp + 'show';
-
-    if (showbool == 'giveallowanceshow') {
-      this.giveallowanceshow = !this.giveallowanceshow;
-    }
-
-    if (showbool == 'converttokensshow') {
-      this.converttokensshow = !this.converttokensshow;
-    }
-
-
-    // this.itemshow =! this.itemshow;
-    //console.log("*******", this.giveallowanceshow, "**************showbool", showbool);
-
-
-    // var itemtotal = document.getElementById(item);
-    // if (itemtotal){
-    //   if (collapsdis.opened){
-    //    itemtotal.classList.add("openedcoll");
-    //   } else {
-    //    itemtotal.classList.remove("openedcoll");
-    //   }
-    // }
-  },
-
-
   startconvert: function() {
 
     this.ethcheckstate = 'doing'
-    this.getETHBalance(function() {
 
-      if (this.checkgas()) {
-        this.ethcheckstate = 'succes';
+    this.web3.eth.getGasPrice(function(err, result) {
+      this.gasPrice = result.toNumber(10) * 1.105;
 
-        this.convertingstarted = true;
-        this.firststate = 'doing';
-       
-        this.createAllowance(function(err) {
-          if (err) {
-            this.firststateerrormsg = err;
-            return this.firststate = 'error';
-          }
-          this.firststate = 'succes';
-          this.secondstate = 'doing';
-          this.convertTokens(function(err) {
+      this.getETHBalance(function() {
+
+        if (this.checkgas()) {
+          this.ethcheckstate = 'succes';
+
+          this.convertingstarted = true;
+          this.firststate = 'doing';
+
+          this.createAllowance(function(err) {
             if (err) {
-              this.secondstateerrormsg = err;
-              return this.secondstate = 'error';
+              this.firststateerrormsg = err;
+              return this.firststate = 'error';
             }
-            this.secondstate = 'succes';
-            this.getARCBalance();
-            this.getSWTBalance(function(err) {
-              this.verify();
+            this.firststate = 'succes';
+            this.secondstate = 'doing';
+            this.convertTokens(function(err) {
+              if (err) {
+                this.secondstateerrormsg = err;
+                return this.secondstate = 'error';
+              }
+              this.secondstate = 'succes';
+              this.getARCBalance();
+              this.getSWTBalance(function(err) {
+                this.verify();
+              }.bind(this));
             }.bind(this));
           }.bind(this));
-        }.bind(this));
-      } else {
-        this.ethcheckstate = 'error';
-      }
+        } else {
+          this.ethcheckstate = 'error';
+        }
+      }.bind(this));
     }.bind(this));
-
   },
 
   // fetches coinbalance
   getARCBalance: function(cb) {
-    var coinbalance = this.ARCTokenInstance.balanceOf(this.$.helpers.fixaddress(this.account));
-    this.arcbalance = coinbalance.toNumber();
-    if (cb) {
-      cb(null, this.arcbalance);
-    }
+    var self = this;
+    var coinbalance = this.ARCTokenInstance.balanceOf(this.$.helpers.fixaddress(this.account), function(err, balance) {
+      self.arcbalance = balance;
+      if (cb) {
+        cb(null, self.arcbalance);
+      }
+    });
   },
 
   getETHBalance: function(cb) {
@@ -669,24 +622,26 @@ Polymer({
         if (err) {
           return cb(err);
         }
-        self.ETHbalance = balance.toNumber();
+        self.ETHbalance = balance;
         cb(null, self.ETHbalance);
       }
     });
   },
   
   getSWTBalance: function(cb) {
-    var coinbalance = this.SWTTokenInstance.balanceOf(this.$.helpers.fixaddress(this.account));
-    this.swtbalance = coinbalance.toNumber();
-    if (cb) {
-      cb(null, this.swtbalance);
-    }
+    var self = this;
+    var coinbalance = this.SWTTokenInstance.balanceOf(this.$.helpers.fixaddress(this.account), function(err, balance) {
+      self.swtbalance = balance;
+      if (cb) {
+        cb(null, self.swtbalance);
+      }      
+    });
   },
 
   // returns the current allowance for the configured account
   getAllowance: function(cb) {
-    var coinbalance = this.ARCTokenInstance.allowance(this.$.helpers.fixaddress(this.account), this.config.swtconversioncontractaddress, function(err, remaining) {
-      cb(null, remaining.toNumber());
+    this.ARCTokenInstance.allowance(this.$.helpers.fixaddress(this.account), this.config.swtconversioncontractaddress, function(err, remaining) {
+      cb(null, remaining);
     });
   },
 
@@ -698,60 +653,70 @@ Polymer({
     }
 
     this.getAllowance(function(err, allowance) {
-    
-      if (allowance >= self.arcbalance){
-        console.log('allowance is OK');
+
+      if (false && allowance > self.arcbalance) {
+        console.log('allowance is OK (', allowance.toString(10), '>=', self.arcbalance.toString(10), ')');
         return callback();
       }
 
-      self.web3.eth.getGasPrice(function(err, result) {
-        var gasPrice = result.toNumber(10) * 1.1;
-        console.log('gasprice: ', gasPrice);
-        self.ARCTokenInstance.approve.sendTransaction(self.config.swtconversioncontractaddress, self.arcbalance, {
-          from: self.$.helpers.fixaddress(self.account),
-          gasPrice: gasPrice,
-          gas: 100000
-        }, function(err, result) {
-          console.log(err, result);
-          if(err){
-            return callback(err);
-          }
-          console.log('approval started. txhash=',result);
-          self.waitTx(result,function(success){
-            if (success){
+      var requiredallowance = 0; //self.arcbalanceBN + 1;
+
+      self.gasforapprove = self.ARCTokenInstance.approve.estimateGas(self.config.swtconversioncontractaddress, requiredallowance, {
+        from: self.$.helpers.fixaddress(self.account),
+        //gasPrice: self.gasPrice,
+        //gas: 100000
+      });
+
+      self.ARCTokenInstance.approve.sendTransaction(self.config.swtconversioncontractaddress, requiredallowance, {
+        from: self.$.helpers.fixaddress(self.account),
+        gasPrice: self.gasPrice,
+        gas: self.gasforapprove
+      }, function(err, result) {
+        console.log(err, result);
+        if (err) {
+          return callback(err);
+        }
+        console.log('approval started. txhash=', result);
+        self.waitTx(result, function(success) {
+          if (success) {
+            self.getAllowance(function(err, allowance) {
+              console.log('allowance given (Allowance = ', allowance, ' balance=', self.arcbalance, ')');
               return callback();
-            }else{
-              return callback(new Error('tx failed'));
-            }
-          });
+            });
+          } else {
+            return callback(new Error('tx failed'));
+          }
         });
       });
     });
+    // });
   },
 
   convertTokens: function(callback) {
-    //debugger;
     var self = this;
-    self.web3.eth.getGasPrice(function(err, result) {
-      var gasPrice = result.toNumber(10) * 1.1;
-      console.log('gasprice: ', gasPrice);
-      self.SWTConverterInstance.convert.sendTransaction(self.arcbalance, {
-        from: self.$.helpers.fixaddress(self.account),
-        gasPrice: gasPrice,
-        gas: 400000
-      }, function(err, result) {
-        console.log(err, result);
-        if(err){
-          return callback(err);
+
+    this.gasforconvert = this.SWTConverterInstance.convert.estimateGas(this.arcbalance, {
+      from: this.$.helpers.fixaddress(this.account),
+      //gasPrice: this.gasPrice,
+      //gas: 100000
+    });
+
+    self.SWTConverterInstance.convert.sendTransaction(self.arcbalance, {
+      from: self.$.helpers.fixaddress(self.account),
+      gasPrice: self.gasPrice,
+      gas: self.gasforconvert
+    }, function(err, result) {
+      console.log(err, result);
+      if (err) {
+        return callback(err);
+      }
+      console.log('convert started. txhash=', result);
+      self.waitTx(result, function(success) {
+        if (success) {
+          return callback();
+        } else {
+          return callback(new Error('tx failed'));
         }
-        console.log('convert started. txhash=',result);        
-        self.waitTx(result, function(success) {
-          if (success){
-              return callback();
-            }else{
-              return callback(new Error('tx failed'));
-            }
-        });
       });
     });
   },
@@ -811,15 +776,6 @@ Polymer({
     });
   },
 
-
-  // succestest: function() {
-  //   this.firststate = 'succes';
-  //   this.secondstate = 'doing';
-  // },
-
-  // errortest: function() {
-  //   this.secondstate = 'error';
-  // },
 
   _is: function(a, b) {
     if (b === undefined) {
