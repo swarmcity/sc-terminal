@@ -73,11 +73,14 @@
       },
 
       translateEthErrors: function(err){
+        if (!err){
+          return;
+        }
         var e = err.toString();
         if (err && err.toString().startsWith('Error: Insufficient gas')){
           return('something went wrong, try again.');
         }
-        return err;
+        return err.toString();
       },
 
 
