@@ -76,11 +76,13 @@
         if (!err){
           return;
         }
-        var e = err.toString();
-        if (err && err.toString().startsWith('Error: Insufficient gas')){
-          return('something went wrong, try again.');
+        if (err.toString().startsWith('Error: Insufficient')){
+          return('Something went wrong, try again.');
         }
-        return err.toString();
+        if (err.message){
+          return err.message; 
+        }
+        return err;
       },
 
 

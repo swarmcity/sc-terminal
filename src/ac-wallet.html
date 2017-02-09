@@ -45,11 +45,18 @@
         status: {
           type: String,
           notify: true
-        }
+        },
+        lowgas: {
+          type: Boolean,
+          notify: true
+        },
+        emptygas: {
+          type: Boolean,
+          notify: true
+        },
       },
 
       _arc: function(){
-        console.log(this.arcbalance);
       },
 
       attached: function() {
@@ -134,10 +141,21 @@
         this.debounce('_readARCBalance', function() {
           self.updating = true;
           self.ethbalance = self.web3.eth.getBalance(self.$.helpers.fixaddress(self.pubkey));
+          if (self.ethbalance.equals(0)){
+            self.emptygas = true;
+            self.lowgas = false;
+          }else{
+            self.emptygas = false;
+            if (self.ethbalance.lessThanOrEqualTo(100000)){
+                self.lowgas = true;
+            }else{
+                self.lowgas = false;
+            }
+          }
           self.arcbalance = self.ARCTokeninstance.balanceOf(self.$.helpers.fixaddress(self.pubkey));
           self.updating = false;
-          console.log('ETH balance is', self.ethbalance);
-          console.log('ARC balance is', self.arcbalance);
+          console.log('ETH balance is', self.ethbalance.toFormat(2));
+          console.log('ARC balance is', self.arcbalance.toFormat(2));
           if (cb){
             cb.bind(self)();
           }
@@ -156,7 +174,7 @@
           this.updating = true;
           self.swtbalance = self.SWTTokeninstance.balanceOf(self.$.helpers.fixaddress(self.pubkey));
           self.updating = false;
-          console.log('SWT balance is', this.swtbalance);
+          console.log('SWT balance is', self.swtbalance.toFormat(2));
           if (cb){
             cb();
           }

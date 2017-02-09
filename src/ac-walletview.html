@@ -98,7 +98,19 @@
               on-refresh="monitorBalance"
               wereinwallet
               ></ac-balance>
+
+<!--
+<template is="dom-if" if="{{lowgas}}">
+You are low on gas.
+</template>
+
+<template is="dom-if" if="{{emptygas}}">
+You are out of gas.
+</template>
+-->
+
             </div>
+
           <!-- </template> -->
 
 <!--           <template is="dom-if" if="{{balanceupdating}}">
@@ -162,20 +174,16 @@
         type: Number, 
          observer: '_swtbalance',
       },
-      // sizeview: {
-      //   type: String,
-      //   observer: '_sizeview'
-      // },
-
-      // arcalign: {
-      //   type: String,
-      // },
-
+      lowgas: {
+        type: Boolean
+      },
+      emptygas: {
+        type: Boolean
+      },
       account: {
         type: String,
         observer: '_account'
       },
-
       sharedElements: {
         type: Object,
         value: function() {
@@ -301,7 +309,6 @@
     },
 
     _swtbalance: function(){
-      console.log("dit issem jonges!", this.swtbalance);
     },
 
     hideReceivebutton: function(){

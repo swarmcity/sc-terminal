@@ -56,6 +56,8 @@
         swtbalance="{{swtbalance}}"
         ethbalance="{{ethbalance}}"
         status="{{walletstatus}}"
+        lowgas="{{lowgas}}"
+        emptygas="{{emptygas}}"
         on-ready="checkready"
         >
     </ac-wallet>
@@ -148,6 +150,8 @@
       keystore="[[keystore]]"
       identity="[[identity]]"
       account="[[account]]"
+      lowgas="[[lowgas]]" 
+      emptygas="[[emptygas]]"      
       on-exit="toHome"
       on-refreshneeded="refreshwallet"
       updating="[[balanceupdating]]"
