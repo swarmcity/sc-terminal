@@ -836,20 +836,18 @@
       },
 
       createvaultfrompk: function(e) {
-//        debugger;
         this.creatingvault = true;
         this.password = e.detail.password;
         this.createVault(0, function() {
           this._getpwDerivedKey(function(err, pwDerivedKey) {
             this.keystore.importPrivateKey(this.privatekey, pwDerivedKey);
-            //this._setpasswordProvider();
             this.privatekey = null;
+            this.$.privatekeyinput.value = null;
             this.$.privatekeyinput.inputvalue = null;
+            this.$.privatekeyethinput.value = null;
             this.$.privatekeyethinput.inputvalue = null;
             this.saveVault();
             this.loadVault();
-
-            //this.creatingvault = false;
             sessionStorage.setItem('vaultpassword', this.password);
             this.status = 'unlocked';
             this.fire('ready');
