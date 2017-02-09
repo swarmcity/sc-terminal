@@ -357,7 +357,7 @@
             <div class="totalwidth horizont centercenter item">
               <template is="dom-if" if="{{_is(secondstate,'init')}}">
                 <div class="flex">
-                  <p class="bold lightgrey">Issuing your new SWT and sending them to you</p>
+                  <p class="bold lightgrey">Create your new SWT and sending them to you</p>
                 </div>
                 <div class="stateicon">
                   <iron-icon icon="sc-icons:v" class="lightgrey big"></iron-icon>
@@ -365,7 +365,7 @@
               </template>
               <template is="dom-if" if="{{_is(secondstate,'doing')}}">
                 <div class="flex" on-tap="errortest">
-                  <p class="bold">Issuing your new SWT and sending them to you</p>
+                  <p class="bold">Creating your new SWT and sending them to you</p>
                 </div>
                 <div class="stateicon">
                   <sc-loader color="blue"></sc-loader>
@@ -373,7 +373,7 @@
               </template>
               <template is="dom-if" if="{{_is(secondstate,'succes')}}">
                 <div class="flex">
-                  <p class="bold green">Issued your new SWT and sended them to you</p>
+                  <p class="bold green">Created your new SWT and sent them to you</p>
                 </div>
                 <div class="stateicon">
                   <iron-icon icon="sc-icons:v" class="green big"></iron-icon>
