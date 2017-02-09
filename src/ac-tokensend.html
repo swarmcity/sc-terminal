@@ -663,10 +663,10 @@ Author : Stefaan Ponnet
             console.log('tx in error...');
             self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
               'command': 'transfererror',
-              'error': err.toString()
+              'error': self.$.helpers.translateEthErrors(err)
             }));
             self.sendcoinstate = 'transfererror';
-            self.transfererrormessage = err;
+            self.transfererrormessage = self.$.helpers.translateEthErrors(err);
 
           } else {
 

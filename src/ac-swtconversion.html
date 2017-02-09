@@ -589,7 +589,8 @@ Polymer({
             this.secondstate = 'doing';
             this.convertTokens(function(err) {
               if (err) {
-                this.secondstateerrormsg = err;
+                this.secondstateerrormsg = this.$.helpers.translateEthErrors(err);
+                this.convertingstarted = false;
                 return this.secondstate = 'error';
               }
               this.secondstate = 'succes';

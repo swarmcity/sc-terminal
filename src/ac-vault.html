@@ -797,12 +797,13 @@
         if (!file) {
           return;
         }
+    
         this.walletfilename = file.name;
 
         self.uploadingwallet = true;
         var reader = new FileReader();
-        reader.onload = function(e) {
-          var contents = e.target.result;
+        reader.onload = function(readere) {
+          var contents = readere.target.result;
           //self.readwallet = contents;
           //window.setTimeout(function(){
             self.uploadingwallet = false;
@@ -811,7 +812,8 @@
               self.uploadingwallet = false;
               self.pkshowpassw = true;
               self.status = 'locked';
-//              self.fire('ready');
+              // reset file
+              e.target.value = null;
               self.set('route.path', '/uploadunlock');
             }
           //},100);
