@@ -201,37 +201,17 @@
         }
 
         if (this.vaultstatus == 'novault') {
-//          if (this.route != 'vault/importfile')
-          return  this.transitionto('/intro/newuser');
+          return  this.transitionto('/intro/welcome');
         }
 
       },
 
       _onRoutePathChanged: function(path,oldpath) {
-         //console.log('ac-app -> _onRoutePathChanged',oldpath,'->',path);
-
-
-         // We need to check if we have a passwd in sessionstorage.
       },
 
       _onRouteDataChanged: function(page,oldpage) {
 
          console.log('ac-app -> _onRouteDataChanged',oldpage,'->',page);
-
-         // var transition = oldpage + '-' + page;
-         // switch(transition){
-         //    case 'undefined-undefined':
-         //      // entering via root
-         //      debugger;
-         //      this.transitionto('/intro/welcome');
-         //      //this.lazyLoad('intro', 'ac-intro.html');     
-         //      break;
-         //    case 'undefined-intro':
-         //       break;            
-         //    default: 
-         //      console.log('unknown transition',transition);
-         //      break;
-         // }
 
         if (!page){
           this.parsedpage = 'loading';
@@ -243,7 +223,6 @@
           });
         }else{
           this.parsedpage = page;
-
           switch (this.parsedpage){
             case 'vault':
               this.lazyLoad('vault', 'ac-vault.html');
@@ -267,41 +246,8 @@
               this.lazyLoad('profile', 'ac-profile.html');          
               this.lazyLoad('home', 'ac-home.html');
               break;
-
           }
-
-
         }
-
-        // if (page == 'vault') {
-        //   this.lazyLoad('vault', 'ac-vault.html');
-        //   this.lazyLoad('web3', 'ac-web3.html');
-        //   this.lazyLoad('shh', 'ac-shh.html');             
-        //   this.lazyLoad('wallet', 'ac-wallet.html');
-        //   this.lazyLoad('profile', 'ac-profile.html');
-        // }
-        // if (page == 'home') {
-        //   this.lazyLoad('vault', 'ac-vault.html');
-        //   this.lazyLoad('web3', 'ac-web3.html');
-        //   this.lazyLoad('shh', 'ac-shh.html');             
-        //   this.lazyLoad('wallet', 'ac-wallet.html');
-        //   this.lazyLoad('profile', 'ac-profile.html');          
-        //   this.lazyLoad('home', 'ac-home.html');
-        // }
-        // if (page == 'swt') {
-        //   this.lazyLoad('vault', 'ac-vault.html');
-        //   this.lazyLoad('web3', 'ac-web3.html');
-        //   this.lazyLoad('shh', 'ac-shh.html');             
-        //   this.lazyLoad('wallet', 'ac-wallet.html');          
-        //   this.lazyLoad('swt', 'ac-swtconversion.html');
-        // }
-        // if (page == 'walletview') {
-        //   this.lazyLoad('vault', 'ac-vault.html');
-        //   this.lazyLoad('web3', 'ac-web3.html');
-        //   this.lazyLoad('shh', 'ac-shh.html');             
-        //   this.lazyLoad('wallet', 'ac-wallet.html');          
-        //   this.lazyLoad('swt', 'ac-swtconversion.html');
-        //}        
       },
 
       lazyLoad: function(elementid, filename, cb) {
@@ -323,9 +269,6 @@
             if (cb) {
               cb(null,this.$[elementid]);
             }            
-            // if (method && this.$[elementid][method]) {
-            //   this.$[elementid][method]();
-            // }
           }.bind(this),
           function() {
             console.log('Something failed!');
@@ -334,16 +277,15 @@
       },
 
       enter: function(){
-        //this.vaultstate
-        //this.$.vault.activate();
-        this.lazyLoad('vault','ac-vault.html');
-        this.transitionto('/');
-
-        
+//        debugger;
+        // this.lazyLoad('vault','ac-vault.html',function(err,element){
+        //     element.reset();
+        // });
+        //this.transitionto('/');        
+        return  this.transitionto('/intro/newuser');
       },
 
       toAppStart: function(){
-        //console.log('toAppStart');
         this.transitionto('/intro/welcome');
       },
 
@@ -396,7 +338,6 @@
       deletevault: function(){
         this.$.vault.deleteVault();
         this.toAppStart();
-//        this.transitionto('/intro/welcome');
       },
 
       toHome: function() {
