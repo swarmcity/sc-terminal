@@ -21,6 +21,7 @@
   },
   "homepage": "https://swarm.city",
   "dependencies": {
+    "bower": "^1.8.0",
     "polymer-cli": "^0.17.0"
   }
 }
