@@ -1,7 +1,7 @@
 {
   "name": "Swarm.city",
   "short_name": "Swarm.city",
-  "description": "Welcome to the Swarm City ecosystem",
+  "description": "Swarm City is the first truly decentralized peer to peer sharing economy, enabled by the SWT token, running on the Ethereum blockchain.",
   "start_url": "/",
   "display": "standalone",
   "icons": [{
