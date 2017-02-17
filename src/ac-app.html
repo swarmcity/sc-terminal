@@ -49,7 +49,7 @@
     <ac-web3 id="web3" web3="{{web3}}" keystore="[[keystore]]"></ac-web3>
     <ac-wallet
         id="wallet"
-        web3="[[web3]]"    
+        web3="[[web3]]"
         pubkey="[[account]]"
         updating="{{balanceupdating}}"
         arcbalance="{{arcbalance}}"
@@ -90,7 +90,7 @@
       on-importethwallet="toimportethwallet"
       on-importpk="toimportpk"
       on-externalpk="toexternalpk"
-      on-enter="enter"  
+      on-enter="enter"
       on-exit="toAppStart"
       on-restoreipfs="torestoreipfs"
       route="[[pageTail]]"
@@ -111,7 +111,7 @@
       on-exit="toAppStart"
       >
     </ac-vault>
- 
+
     <ac-home
       id="home"
       data-page="home"
@@ -150,8 +150,8 @@
       keystore="[[keystore]]"
       identity="[[identity]]"
       account="[[account]]"
-      lowgas="[[lowgas]]" 
-      emptygas="[[emptygas]]"      
+      lowgas="[[lowgas]]"
+      emptygas="[[emptygas]]"
       on-exit="toHome"
       on-refreshneeded="refreshwallet"
       updating="[[balanceupdating]]"
@@ -215,8 +215,8 @@
 
         if (!page){
           this.parsedpage = 'loading';
-          this.lazyLoad('web3', 'ac-web3.html');             
-          this.lazyLoad('shh', 'ac-shh.html');             
+          this.lazyLoad('web3', 'ac-web3.html');
+          this.lazyLoad('shh', 'ac-shh.html');
           this.lazyLoad('wallet', 'ac-wallet.html');
           this.lazyLoad('vault', 'ac-vault.html',function(err,element){
             element.reset();
@@ -227,23 +227,23 @@
             case 'vault':
               this.lazyLoad('vault', 'ac-vault.html');
               this.lazyLoad('web3', 'ac-web3.html');
-              this.lazyLoad('shh', 'ac-shh.html');             
+              this.lazyLoad('shh', 'ac-shh.html');
               this.lazyLoad('wallet', 'ac-wallet.html');
               this.lazyLoad('profile', 'ac-profile.html');
               break;
             case 'swt':
               this.lazyLoad('vault', 'ac-vault.html');
               this.lazyLoad('web3', 'ac-web3.html');
-              this.lazyLoad('shh', 'ac-shh.html');             
-              this.lazyLoad('wallet', 'ac-wallet.html');          
+              this.lazyLoad('shh', 'ac-shh.html');
+              this.lazyLoad('wallet', 'ac-wallet.html');
               this.lazyLoad('swt', 'ac-swtconversion.html');
               break;
             default:
               this.lazyLoad('vault', 'ac-vault.html');
               this.lazyLoad('web3', 'ac-web3.html');
-              this.lazyLoad('shh', 'ac-shh.html');             
+              this.lazyLoad('shh', 'ac-shh.html');
               this.lazyLoad('wallet', 'ac-wallet.html');
-              this.lazyLoad('profile', 'ac-profile.html');          
+              this.lazyLoad('profile', 'ac-profile.html');
               this.lazyLoad('home', 'ac-home.html');
               break;
           }
@@ -261,14 +261,14 @@
           return;
         }
         var url = this.resolveUrl(filename);
-        
+
         Polymer.Base.importHref(
           url,
           function(e) {
             console.log('LAZYLOADER --> ', elementid, 'loaded');
             if (cb) {
               cb(null,this.$[elementid]);
-            }            
+            }
           }.bind(this),
           function() {
             console.log('Something failed!');
@@ -281,7 +281,7 @@
         // this.lazyLoad('vault','ac-vault.html',function(err,element){
         //     element.reset();
         // });
-        //this.transitionto('/');        
+        //this.transitionto('/');
         return  this.transitionto('/intro/newuser');
       },
 
