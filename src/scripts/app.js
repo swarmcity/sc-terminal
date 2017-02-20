@@ -9,7 +9,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 (function(document) {
-  'use strict';
+
+  // COMMENT THIS ON LOCALHOST
+  if (location.protocol != 'https:')
+  {
+   location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+  };
+
 
 	// var app;
   // console.log(window.location.pathname);
