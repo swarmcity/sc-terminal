@@ -1,11 +1,11 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/ac-input/ac-input.html">
-<link rel="import" href="../bower_components/ac-style/ac-style.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+
 <link rel="import" href="ac-helpers.html">
 <link rel="import" href="ac-password.html">
-<link rel="import" href="ac-spinner.html">
 <link rel="import" href="sc-loader.html">
+<link rel="import" href="ac-ipfs.html">
 
 <script src="scripts/lightwallet.min.js"></script>
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
@@ -30,13 +30,6 @@
         width: 100%;
         height: 100%;
       }
-
-/*      .pascanvas {
-      width: 100%;
-      height: 100%;
-      @apply(--base-structure);
-      background-color: var(--ac-base);
-     }*/
 
      .pascanvasunderexit {
        width: 100%;
@@ -90,48 +83,8 @@
 
     .error {
       width: 100%;
-/*      box-sizing: border-box;
-      padding: 20px;*/
-
     }
 
-/*    .oops {
-      @apply(--montserrat-bold);
-    }
-
-    .paddingside {
-      box-sizing: border-box;
-      padding-left: 6vw;
-      padding-right: 6vw;
-
-    }
-
-    .flex {
-      @apply(--layout-flex);
-    }
-    .topback {
-        width: 100%;
-        background-color: var(--ac-base);
-        @apply(--layout-horizontal);
-        @apply(--layout-center-center);
-        box-sizing: border-box;
-        padding: 5vh 5vw 0px 5vw;
-        height: 8%;
-      }
-
-
-      .topback ac-icon {
-        opacity: 0.5;
-      }
-      .topback ac-button {
-        @apply(--base-shadow);
-        opacity: 0.9;
-      }
-
-      .bold {
-        @apply(--montserrat-semibold);
-
-      }*/
 
       .smaller {
         font-size: 14px;
@@ -165,12 +118,6 @@
       .pubk {
             word-break: break-all;
       }
-/*
-      .caution {
-        color:var(--ac-base);
-        background-color: var(--ac-blue);
-        padding: 5px 12px 5px 12px;
-      }*/
 
   iron-icon:hover {
     cursor: pointer;
@@ -193,10 +140,32 @@
     padding-bottom: 15vh;
   }
 
+  .backupbtn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .ipfshash {
+      width: 80%;
+    word-break: break-all;
+  }
+
+  h1 {
+        word-wrap: break-word;
+  }
+
+  .hrefpadding {
+    box-sizing:border-box;
+    padding: 15px;
+  }
+
 
     </style>
 
+<iron-media-query query="(min-width:0px) and (max-width: 420px)" query-matches="{{phoneview}}"></iron-media-query>
+
   <template>
+    <ac-ipfs id="ipfs"></ac-ipfs>
     <ac-helpers id="helpers"></ac-helpers>
     <detect-js device="{{device}}" os="{{os}}" browser="{{browser}}"></detect-js>
     <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
@@ -212,21 +181,21 @@
               <iron-icon class="grey4" icon="sc-icons:decline" on-tap="deleteVault">back</iron-icon>
           </div>
 
-          <div class="pascanvasunderexit vertic start paddingwithouttop">
+          <div class="pascanvasunderexit vertic start paddingsides">
             <div class="whitespace"></div>
-            <div class="whitespace"></div>
+          <template is="dom-if" if="{{!phoneview}}">
+              <div class="whitespace"></div>
+            </template>
             <div class="maxwidth">
-              <h1 class="bold blue">ARC-wallet as a print / pdf</h1>
+              <h1 class="bold blue">ARC-wallet<br>as a print / pdf</h1>
               <div class="whitespace"></div>
               <p class="reg grey4">Enter the private key you'll find on your ARC-wallet.</p>
             </div>
             <div class="flex"></div>
-            <!-- <ac-input id="privatekeyinput" color="yellow" id="inputpass" label="Private key" type="password" bind-value="{{privatekey::input}}" center></ac-input> -->
             <div class="totalwidth horizont end startjust maxwidth">
               <paper-input id="privatekeyinput" label="Private key" type="password" bind-value="{{privatekey::input}}"></paper-input>
               <paper-icon-button icon="sc-icons:looky" class="grey1back grey4 saveyourwidth" on-tap="pktoggle" noink>show</paper-icon-button>
             </div>
-          <!--  <ac-input id="privatekeyinut" color="yellow" id="inputpass" label="Private key" type="password" bind-value="{{privatekey}}" center></ac-input> -->
             <div class="whitespace"></div>
             <template is="dom-if" if="{{invalidpk}}">
               <p class="red bold"><span class="oops">You didn't enter a valid key.</span></p>
@@ -234,11 +203,52 @@
             <div class="totalwidth horizont center endjust">
             <paper-icon-button icon="sc-icons:arrowright" class="big whiteback shadow blue" on-tap="pkreceived" noink>next</paper-icon-button>
             </div>
-          <!--  <ac-button class="loginbtn" icon="ac-arrowright" on-tap="pkreceived" bg="btncolor" txtcolor="yellow"></ac-button> -->
-
           </div>
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
+
       </div>
       </neon-animatable>
+
+
+
+
+      <neon-animatable data-page="importethwallet">
+        <div class="total vertic centercenter">
+          <div class="topbar">
+            <span class="flex"></span>
+              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="deleteVault">back</iron-icon>
+          </div>
+
+          <div class="pascanvasunderexit vertic start paddingsides">
+            <div class="whitespace"></div>
+            <template is="dom-if" if="{{!phoneview}}">
+              <div class="whitespace"></div>
+            </template>
+            <div class="maxwidth">
+              <h1 class="bold blue">ARC-tokens<br>in an external wallet</h1>
+              <div class="whitespace"></div>
+              <p class="reg grey4">Enter the private key you'll find on your wallet.</p>
+            </div>
+            <div class="flex"></div>
+            <div class="totalwidth horizont end startjust maxwidth">
+              <paper-input id="privatekeyethinput" label="Private key" type="password" bind-value="{{privatekey::input}}"></paper-input>
+              <paper-icon-button icon="sc-icons:looky" class="grey1back grey4 saveyourwidth" on-tap="pkethtoggle" noink>show</paper-icon-button>
+            </div>
+            <div class="whitespace"></div>
+            <template is="dom-if" if="{{invalidpk}}">
+              <p class="red bold"><span class="oops">You didn't enter a valid key.</span></p>
+            </template>  
+            <div class="totalwidth horizont center endjust">
+            <paper-icon-button icon="sc-icons:arrowright" class="big whiteback shadow blue" on-tap="pkreceived" noink>next</paper-icon-button>
+            </div>
+          </div>
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
+      </div>
+      </neon-animatable>
+
+
 
       <!-- second stage in importing PK -->
       <neon-animatable data-page="importpkmakewallet">
@@ -247,25 +257,73 @@
             <span class="flex"></span>
               <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
           </div>
-          <div class="pascanvasunderexit vertic centercenter paddingsides">
-            <div class="smallio vertic centercenter">
+          <div class="pascanvasunderexit vertic start paddingsides">
+
+
              <template is="dom-if" if="{{!creatingvault}}">
-              <p class="grey2 maxwidth">A profile will be created with the private key you provided.</p>
-              <div class="whitespace"></div>
 
-              <p class="centertxt">Enter a password (min. 5 characters) and repeat.</p>
+          <div class="whitespace"></div>
+          <template is="dom-if" if="{{!phoneview}}">
               <div class="whitespace"></div>
-              <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
-            </template>
-            <template is="dom-if" if="{{creatingvault}}">
-                <sc-loader color="blue" big>Creating wallet...</sc-loader>
             </template>
 
-            </div>
+          <div class="maxwidth">
+            <h1 class="bold blue">Alright!</h1>
+            <div class="whitespace"></div>
+            <p>A profile will be created with the private key you provided. You just need a password and you're all set.</p>
           </div>
+          <div class="flex"></div>
+           <ac-password double sessionname="vaultpassword" on-password-received="createvaultfrompk"></ac-password>
+
+          </template>
+
+
+          <template is="dom-if" if="{{creatingvault}}">
+                <sc-loader color="blue" small>Creating wallet</sc-loader>
+            </template>
+          </div>
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
         </div>
       </neon-animatable>
 
+      <neon-animatable data-page="importipfs">
+        <div class="total vertic centercenter">
+          <div class="topbar">
+            <span class="flex"></span>
+              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+          </div>
+
+          <div class="pascanvasunderexit vertic start paddingsides">
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="maxwidth">
+              <h1 class="bold yellow">Restore a backup from IPFS</h1>
+              <div class="whitespace"></div>
+            </div>
+            <div class="flex"></div>
+
+        <template is="dom-if" if="{{_is(importipfsstatus,'init')}}">
+
+          <p class="reg grey4 maxwidth">Enter your IPFS-hash</p>
+          <paper-input class="" id="importipfshash" label="Your ipfs-hash" type="text" value="{{importipfshash}}"></paper-input>
+            <div class="whitespace"></div>
+
+          <paper-button on-tap="importipfshashuploadclick" class="blue lighter bigbtn shadow centertxt" noink>restore</paper-button>
+        </template>
+        <template is="dom-if" if="{{_is(importipfsstatus,'downloading')}}">
+        <sc-loader small color="blue">Downloading from IPFS</sc-loader>
+        </template>
+        <template is="dom-if" if="{{_is(importipfsstatus,'error')}}">
+        <p class="red bold">Something went wrong. {{importipfserrormessage}}</p>
+        </template>
+
+          </div>
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
+          </div>
+
+      </neon-animatable>
 
       <!-- import a keyfile -->
       <neon-animatable data-page="importfile">
@@ -277,7 +335,9 @@
 
           <div class="pascanvasunderexit vertic start paddingsides">
             <div class="whitespace"></div>
-            <div class="whitespace"></div>
+          <template is="dom-if" if="{{!phoneview}}">
+              <div class="whitespace"></div>
+            </template>
             <div class="maxwidth">
               <h1 class="bold blue">ARC-wallet as a json-file</h1>
               <div class="whitespace"></div>
@@ -287,7 +347,7 @@
  
               <template is="dom-if" if="{{pkshowpassw}}">
 
-               <p class="reg grey4">Unlock your AC-vault with its password.</p>
+               <p class="reg grey4">Unlock your ARC-wallet with its password.</p>
              </template>
 
             </div>
@@ -309,47 +369,35 @@
           </template>
 
 
-            <template is="dom-if" if="{{pkshowpassw}}">
-              <p class="grey4 semibold blueborder">{{jsonfilename}}</p>
+<!--             <template is="dom-if" if="{{pkshowpassw}}">
+              <p class="grey4 semibold blueborder">{{walletfilename}}</p>
               <div class="whitespace"></div>
               <div class="totalwidth horizont end startjust maxwidth">
-                <paper-input label="Password AC-Vault" type="password" value=""></paper-input>
-                <paper-icon-button icon="sc-icons:looky" class="grey1back grey4 saveyourwidth" on-tap="pktoggle" noink>show</paper-icon-button>
+                <paper-input id="acwalletpassw" label="Password ARC-Wallet" type="password" bind-value="{{wallletpassword}}"></paper-input>
+
+                <paper-icon-button icon="sc-icons:looky" class="grey1back grey4 saveyourwidth" on-tap="psswrdtoggle" noink>show</paper-icon-button>
               </div>
               <div class="whitespace"></div> 
               <div class="totalwidth horizont center endjust">
               <paper-icon-button icon="sc-icons:arrowright" class="big whiteback shadow blue" on-tap="pkreceived" noink>next</paper-icon-button>
               </div>
 
-            </template>
+            </template> -->
 
 
           <template is="dom-if" if="{{uploadingwallet}}">
-              <sc-loader small color="blue">uploading wallet - please wait...</sc-loader>
+              <sc-loader small color="blue">Uploading wallet</sc-loader>
           </template>
 
         </div>
+
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
+
+
       </div>
 
       </neon-animatable>
-
-
-      <!--    ***** NOT USED ANYMORE
-      unlock imported file 
-      <neon-animatable data-page="unlockimport">
-        <div class="total vertic centercenter">
-          <div class="topbar">
-            <span class="flex"></span>
-              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
-          </div>
-          <div class="pascanvasunderexit vertic centercenter paddingsides">
-            <p class="centertxt maxwidth">Unlock the AC-wallet with its password (this will also be the password for this account).</p>
-            <div class="whitespace"></div>
-            <ac-password></ac-password>
-        </div>
-      </div>
-      </neon-animatable> -->
-
 
       <neon-animatable data-page="backup">
         <div class="total vertic centercenter">
@@ -359,23 +407,67 @@
           </div>
           <div class="pascanvasunderexit vertic centercenter paddingsides">        
             <a id="downloadAnchorElem" style="display:none"></a>
-            <template is="dom-if" if="{{backup_download}}">
-              <paper-button on-tap="downloadvault" class="grey4 bigbtn lighter centertxt">Download your backup-file</paper-button>
-            </template>
-            <template is="dom-if" if="{{backup_unavailable}}">
-              <p class="bold">Oops!</p>
+            <template is="dom-if" if="{{!backup_unavailable}}">
+
+<!--             <template is="dom-if" if="{{backup_download}}"> -->
+              <paper-button on-tap="downloadvault" class="blue bigbtn lighter centertxt backupbtn" noink>Download your backup-file</paper-button>
+<!--             </template> -->
+              <!-- <p class="bold">Oops!</p>
               <div class="whitespace"></div>
               <p class="centertxt">You can not download your backup on this device/operating system.</p>
               <div class="whitespace"></div>
-              <div class="whitespace"></div>
-
-              <paper-button on-tap="backupexit" class="grey4 grey1back small shadow" noink>back to profile</paper-button>
-
+              <div class="whitespace"></div> -->
+<!--               <paper-button on-tap="backupexit" class="grey4 grey1back small shadow" noink>back to profile</paper-button> -->
             </template>
+            <div class="whitespace"></div>
+            <paper-button on-tap="vaulttoipfsroute" class="blue bigbtn lighter centertxt backupbtn" noink>Backup to IPFS</paper-button>            
           </div>
         </div>
       </div>
+      </neon-animatable>
 
+      <neon-animatable data-page="backupipfs">
+        <div class="total vertic centercenter">
+          <div class="topbar">
+            <span class="flex"></span>
+            <iron-icon class="grey4" icon="sc-icons:decline" on-tap="backupexit">back</iron-icon>
+          </div>
+          <div class="pascanvasunderexit vertic centercenter paddingsides">        
+<!--               <p class="centertxt">Warning make sure you have a strong password set on your vault before uploading it to IPFS.</p>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>        -->   
+            <template is="dom-if" if="{{_is(vaulttoipfsstatus,'init')}}">
+
+              <p class="bold centertxt">IPFS is the Distributed Web</p><br>
+            <p class="centertxt">A peer-to-peer hypermedia protocol to make the web faster, safer, and more open.</p><br>   
+            <a href="https://ipfs.io/" target="_blank" class="centertxt blue">learn more</a>   
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+
+              <paper-button on-tap="vaulttoipfs" class="blue bigbtn lighter centertxt">Backup to IPFS</paper-button>
+            </template>    
+
+            <template is="dom-if" if="{{_is(vaulttoipfsstatus,'uploading')}}">
+              <sc-loader small color="blue">Creating your ipfs-backup</sc-loader>
+            </template>   
+
+            <template is="dom-if" if="{{_is(vaulttoipfsstatus,'success')}}">
+              <p class="centertxt">Your IPFS-hash <br><span class="bold ipfshash">{{vaulttoipfshash}}</span></p>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div>
+<!--               <paper-input label="Your e-mailadres" value="{{emailadress}}"></paper-input>
+              <div class="whitespace"></div>
+              <div class="whitespace"></div> -->
+              <a href="mailto:?subject=Your%20Swarm%20City%20IPFS%20Backup&body=Your%20backup%20is%20at%20{{vaulttoipfshash}}" class="blue centertxt">Mail this hash to me</paper-button>
+            </template>   
+
+            <template is="dom-if" if="{{_is(vaulttoipfsstatus,'error')}}">
+              <p class="red">Something went wrong. Please try again later.</p>
+            </template>   
+          </div>
+        </div>
+      </div>
 
       </neon-animatable>
 
@@ -392,12 +484,32 @@
             <div class="whitespace"></div>
 
             <div class="vertic yesnobtns center">
-              <paper-button class="yesno bigbtn centertxt" on-tap="deleteVault">Yes</paper-button>
-              <paper-button class="yesno bigbtn centertxt" on-tap="toimportpk" >No</paper-button>
+              <paper-button class="yesno bigbtn centertxt lighter" on-tap="deleteVault">Yes</paper-button>
+              <paper-button class="yesno bigbtn centertxt lighter" on-tap="toimportpk" >No</paper-button>
             </div>
           </div>
         </neon-animatable>
 
+
+        <neon-animatable data-page="completeclearvault">
+        <div class="total vertic centercenter">
+          <div class="totalwidth vertic centercenter">
+            <p class="centertxt smallio grey5 bold caution">Forgot your password?</p>
+            <div class="whitespace"></div>
+            <p class="centertxt smallio">The only thing you can do, is completely remove the user from this device and start over. <br><span class="bold">This can not be undone.</span></p>
+          </div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+
+            <div class="vertic yesnobtns center">
+              <paper-button class="yesno bigbtn centertxt redback white shadow" on-tap="removevault">Remove the user from this device</paper-button>
+            <div class="minispace"></div>
+
+              <paper-button class="yesno bigbtn centertxt lighter shadow" on-tap="cancel">Cancel</paper-button>
+            </div>
+          </div>
+        </neon-animatable>
 
       <neon-animatable data-page="createnew">
         <div class="total vertic centercenter">
@@ -406,25 +518,34 @@
               <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
           </div>
 
-          <div class="pascanvasunderexit vertic start paddingwithouttop">
+          <div class="pascanvasunderexit vertic start paddingsides">
           <div class="whitespace"></div>
+          <template is="dom-if" if="{{!phoneview}}">
             <div class="whitespace"></div>
+          </template>
+
             <div class="maxwidth">
               <h1 class="bold blue">Alright!</h1>
               <div class="whitespace"></div>
-              <p>We just need a password (min. 5 characters) to create your profile.</p>
+              <p>We just need a password to create your profile.</p>
             </div>
-            <div class="flex"></div>
  
           <template is="dom-if" if="{{!creatingvault}}">
+            <div class="flex"></div>
+
             <ac-password double sessionname="vaultpassword" on-password-received="createvault"></ac-password>
           </template>
 
 
           <template is="dom-if" if="{{creatingvault}}">
+            <div class="whitespace"></div>
+            <div class="whitespace"></div>
+
                 <sc-loader color="blue" small>Creating wallet</sc-loader>
             </template>
           </div> 
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
         </div>
     </neon-animatable>
 
@@ -432,37 +553,73 @@
       <div class="total vertic centercenter">
         <div class="topbar">
           <span class="flex"></span>
-            <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+            <iron-icon class="grey4" icon="sc-icons:decline" on-tap="vaultAway">back</iron-icon>
+        </div>
+        <template is="dom-if" if="{{!tappedunlockbtn}}">
+        <div class="pascanvasunderexit vertic centercenter paddingsides">
+          <ac-password passwordlabel="Enter your password" class="height" id="newuser" sessionname="vaultpassword" on-btn-tapped="unlockBtnbool" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password> 
         </div>
 
-        <div class="pascanvasunderexit vertic centercenter paddingsides">
-          <ac-password class="height" id="newuser" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
+        </template>
+        <template is="dom-if" if="{{tappedunlockbtn}}">
+        <div class="pascanvasunderexit vertic centercenter paddingwithouttop">
+          <sc-loader small color="blue" class="blue">Unlocking</sc-loader>
         </div>
-      </div>
+        </template>
+
+      </div>    
     </neon-animatable>
 
-<!-- 
-
-  **** GAAN WE DEZE NOG DOEN?
-    <neon-animatable data-page="removeall">
-        <div class="pascanvas verticcenter paddingside">
-          <div class="verticcenter smallio resetter">
-          <p class="white centertxt bold">Can't find your password?</p>
-          <div class="whitespace"></div>
-          <p class="white centertxt smaller">Without your password, the only thing you can do is remove the current profile and start over.</p>
-
-          <div class="notundone">
-            <p class="red smaller bold">This action can not be undone!</p>
+    <neon-animatable data-page="unlockipfs">
+        <div class="total vertic centercenter">
+          <div class="topbar">
+            <span class="flex"></span>
+              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+          </div>
+          <div class="pascanvasunderexit vertic start paddingsides">
             <div class="whitespace"></div>
+            <template is="dom-if" if="{{!phoneview}}">
+              <div class="whitespace"></div>
+            </template>
 
-            <ac-button on-tap="deleteVault" txtbtn txtcolor="base" bg="red">remove profile</ac-button>
-        </div>
-        <ac-button icon="ac-arrowleft" txtcolor="white" bg="btncolor" on-tap="cancel" small>cancel</ac-button>
+            <div class="maxwidth">
+              <h1 class="bold blue">Great!</h1>
+              <div class="whitespace"></div>
+              <p>Found your user on IPFS. You need to unlock it with its password.</p>
+            </div>
+            <div class="flex"></div>
+            <ac-password id="newuser" passwordlabel="Password of your user" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
+          </div>
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
+        </div>         
+    </neon-animatable>
 
-        </div>
-      </div>
-    </neon-animatable> -->
 
+    <neon-animatable data-page="uploadunlock">
+        <div class="total vertic centercenter">
+          <div class="topbar">
+            <span class="flex"></span>
+              <iron-icon class="grey4" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+          </div>
+          <div class="pascanvasunderexit vertic start paddingsides">
+            <div class="whitespace"></div>
+            <template is="dom-if" if="{{!phoneview}}">
+              <div class="whitespace"></div>
+            </template>
+
+            <div class="maxwidth">
+              <h1 class="bold blue">Great!</h1>
+              <div class="whitespace"></div>
+              <p>Almost there. You need to unlock your wallet to do the conversion.</p>
+            </div>
+            <div class="flex"></div>
+            <ac-password id="newuser" passwordlabel="Password of your ARC-wallet" sessionname="vaultpassword" on-password-received="unlockvault" wrongpass="[[unlockpasswordwrong]]"></ac-password>
+          </div>
+          <div class="tenspace"></div>
+          <div class="tenspace"></div>
+        </div>         
+    </neon-animatable>
 
   </neon-animated-pages>
 
@@ -500,11 +657,20 @@
         currentidentity: {
           type: Object,
           notify: true
+        },
+        lastbackup: {
+          type: Number,
+          notify: true          
+        },
+        status: {
+          type: String,
+          notify: true
         }
       },
 
       observers: [
-          '_onRoutePathChanged(data.page,data)'
+          '_onRoutePathChanged(data.page,data)',
+          '_logThis(creatingvault)'
       ],
 
       _onRoutePathChanged: function(page,d) {
@@ -541,6 +707,10 @@
         this.fire('exit');
       },
 
+      vaulttoipfsroute: function(){
+        this.set('route.path', '/backupipfs');
+      },
+
       removeall: function(){
         this.set('route.path', '/removeall');
       },
@@ -554,6 +724,24 @@
           this.$.privatekeyinput.setAttribute('type','password');
         }else{
           this.$.privatekeyinput.setAttribute('type','text');
+        }
+      },
+
+      pkethtoggle: function(){
+        if (this.$.privatekeyethinput.getAttribute('type') == 'text'){
+          this.$.privatekeyethinput.setAttribute('type','password');
+        }else{
+          this.$.privatekeyethinput.setAttribute('type','text');
+        }
+      },
+
+
+      psswrdtoggle: function(){
+        var acwalletpassw = document.querySelector('#acwalletpassw');
+        if (acwalletpassw.getAttribute('type') == 'text'){
+          acwalletpassw.setAttribute('type','password');
+        }else{
+          acwalletpassw.setAttribute('type','text');
         }
       },
 
@@ -574,19 +762,33 @@
         this.entryAnimation = "slide-from-right-animation";
       },
 
-
-      activate: function(){
-        //debugger;
-        if (!this.hasVault()) {
-          return this.fire('novault');
-        };
-        if (!this.password) {
-          return this.fire('locked');
-        }
-      },
-
       uploadclick: function() {
         document.querySelector('#uploaditem').click();
+      },
+
+
+      importipfshashuploadclick: function() {
+        console.log('download IPFS hash', this.importipfshash);
+        var self= this;
+        this.importipfsstatus = 'downloading';
+        this.$.ipfs.cat(this.importipfshash, function(err, data) {
+          try{
+            data = JSON.parse(data);
+          }catch(e){
+            err= e;
+          }
+
+          if (err) {
+            self.importipfsstatus = 'error';
+            self.importipfserrormessage = 'Error downloading IPFS hash: ' + err;
+            return;
+          }
+          if (self._parseVault(data)) {
+            self.saveVault();
+            self.status = 'locked';
+            self.set('route.path', '/unlockipfs');
+          }
+        });
       },
 
       readSingleFile: function(e) {
@@ -595,22 +797,26 @@
         if (!file) {
           return;
         }
+    
         this.walletfilename = file.name;
 
         self.uploadingwallet = true;
         var reader = new FileReader();
-        reader.onload = function(e) {
-          var contents = e.target.result;
+        reader.onload = function(readere) {
+          var contents = readere.target.result;
           //self.readwallet = contents;
-          window.setTimeout(function(){
+          //window.setTimeout(function(){
             self.uploadingwallet = false;
             if (self._parseVault(contents)){
               self.saveVault();
               self.uploadingwallet = false;
               self.pkshowpassw = true;
-              // return self.fire('locked');
+              self.status = 'locked';
+              // reset file
+              e.target.value = null;
+              self.set('route.path', '/uploadunlock');
             }
-          },100);
+          //},100);
           // so we've read the vault file. It's locked.
 
         };
@@ -636,26 +842,73 @@
           this._getpwDerivedKey(function(err, pwDerivedKey) {
             this.keystore.importPrivateKey(this.privatekey, pwDerivedKey);
             this.privatekey = null;
+            this.$.privatekeyinput.value = null;
             this.$.privatekeyinput.inputvalue = null;
+            this.$.privatekeyethinput.value = null;
+            this.$.privatekeyethinput.inputvalue = null;
             this.saveVault();
             this.loadVault();
-            this.creatingvault = false;
-            this.fire('unlocked');
+            sessionStorage.setItem('vaultpassword', this.password);
+            this.status = 'unlocked';
+            this.fire('ready');
           }.bind(this));
         }.bind(this));
       },
 
-      attached: function(){
-        console.log('ac-vault attached');
-        this.exitAnimation = "slide-left-animation";
-        this.entryAnimation = "slide-from-right-animation";
-        this.creatingvault = false;
-        this.pkshowpassw = false;
-        this.uploadingwallet = false;
-        this.jsonfilename = "walletfiletjé.json"
+      ready: function(){
+     
+      },
 
+      reset: function() {
+        
+        var self=this;
+
+        this.vaulterror = null;
+        this.invalidpk = false;
+        this.pkshowpassw = false;
+        this.importipfsstatus = 'init';
+        this.tappedunlockbtn = false;
+
+        this.creatingvault = false;
+        this.uploadingwallet = false;
+        this.vaulttoipfsstatus = 'init';
+        
         this.backup_download = true;
         this.backup_unavailable = true;
+
+        this.password = sessionStorage.getItem('vaultpassword');
+        
+        if (!this.hasVault()) {
+          this.status = 'novault';
+          console.log('ac-vault: status=',this.status,'fires READY');
+          return this.fire('ready');
+        };
+        if (!this.password) {
+          this.status = 'locked';
+          console.log('ac-vault: status=',this.status,'fires READY');
+          return this.fire('ready');
+        }
+        // so we have a vault and a password... try to open it.
+        this.loadVault();
+        this.checkpassword(function(err, pwdcorrect) {
+          if (pwdcorrect) {
+            self.status = 'unlocked';
+            console.log('ac-vault: status=',self.status,'fires READY');
+            return self.fire('ready');
+          } else {
+            self.status = 'locked';
+            console.log('ac-vault: status=',self.status,'fires READY');
+            return self.fire('ready');
+          }
+        });
+
+      },
+
+
+      attached: function(){
+        console.log('ac-vault attached');
+
+        this.reset();
 
         if (this.browser.family == 'Safari'){
           this.backup_download = false;
@@ -664,6 +917,12 @@
           this.backup_unavailable = false;
         }
 
+        this.exitAnimation = "slide-left-animation";
+        this.entryAnimation = "slide-from-right-animation";
+      
+        
+       this.getvaultDownloaded();
+       
       },
 
       _currentidentity: function(){
@@ -671,6 +930,8 @@
       },
 
       unlockvault: function(e) {
+
+
         var self=this;
         self.unlockpasswordwrong = false;
         if (!this.hasVault()) {
@@ -683,13 +944,17 @@
           return;
         }
         this.loadVault();
-        this.checkpassword(function(err,pwdcorrect){
-          if (pwdcorrect){
-            self.fire('unlocked');
-          }else{
+        this.checkpassword(function(err, pwdcorrect) {
+          if (pwdcorrect) {
+            this.tappedunlockbtn =! this.tappedunlockbtn;
+
+            sessionStorage.setItem('vaultpassword',self.password);
+            self.status = 'unlocked';
+            self.fire('ready');
+          } else {
             self.unlockpasswordwrong = true;
           }
-        })
+        });
       },
 
       // checks the password. If it's correct call cb(null,true)
@@ -714,6 +979,41 @@
         dlAnchorElem.setAttribute("href", dataStr);
         dlAnchorElem.setAttribute("download", 'swarmCityVault-' + Date.now() + '.json');
         dlAnchorElem.click();
+        this.setvaultDownloaded();
+      },
+
+      setvaultDownloaded: function(){
+        var timestamp =  Date.now();
+        window.localStorage.setItem('sc-vault-downloaded',timestamp);
+        this.getvaultDownloaded();
+      },
+
+      getvaultDownloaded: function(){
+        this.lastbackup = window.localStorage.getItem('sc-vault-downloaded');
+        if (this.lastbackup === undefined){
+          debugger;
+          this.lastbackup = null;
+        }
+      },
+
+      vaulttoipfs: function(){
+          this.vaulttoipfsstatus='uploading';
+          var vaultdata = window.localStorage.getItem('sc-vault');
+          var vaultbuffer = this.$.ipfs.ipfs.Buffer(vaultdata);
+
+
+        this.$.ipfs.add(vaultbuffer, function(err, result) {
+          if (err || !result || !result[0]){
+            console.log('cannot upload avatar',err);
+            this.vaulttoipfsstatus = 'error';
+          }else{
+            console.log(err, result[0].hash);
+            this.vaulttoipfshash = result[0].hash;
+            this.vaulttoipfsstatus='success';
+            this.setvaultDownloaded();
+          }
+        }.bind(this));
+
       },
 
       // Load vault from local storage
@@ -759,9 +1059,10 @@
 
             case 1:
               this.keystore = lightwallet.keystore.deserialize(vaultdata.keystore);
-              this.currentkeystore = this.keystore;
+              this._setpasswordProvider();
+              this.set('currentkeystore',this.keystore);
               this.currentaccount = this.$.helpers.fixaddress(this.keystore.getAddresses()[0]);
-              this.currentidentity = vaultdata.identity;
+              this.set('currentidentity',vaultdata.identity);
               console.log('ac-vault -> Vault loaded. Account=', this.currentaccount);
               return true;
               break;
@@ -780,17 +1081,26 @@
       closeVault: function(){
         this.password = null;
         this.keystore = null;
-        this.currentkeystore = null;
-        this.currentidentity = null;
-        sessionStorage.removeItem('sc-password-vaultpassword');
+        this.set('currentkeystore',null);
+        this.set('currentidentity',null);
+        sessionStorage.removeItem('vaultpassword');
+      },
+
+      removevault: function(){
+        this.deleteVault();
       },
 
       deleteVault: function(){
+        //debugger;
         this.privatekey = null;
         this.$.privatekeyinput.inputvalue = null;
+        this.$.privatekeyethinput.inputvalue = null;
         this.closeVault();
         window.localStorage.removeItem('sc-vault');
+        window.localStorage.removeItem('sc-vault-downloaded');
+        this.reset();
         return this.fire('novault');
+
       },
 
       importPrivateKey: function(pk) {
@@ -825,11 +1135,13 @@
 
       createvault: function(e){
         this.password = e.detail.password;
-        this.creatingvault = true;
+        var self = this;
         this.createVault(1,function(){
-          this.creatingvault = false;
-          this.fire('unlocked');
-        }.bind(this));
+          // self.creatingvault = false;
+          self.status = 'unlocked';
+          self.fire('ready');
+        });
+        this.creatingvault = true;
       },
 
       _is: function(a, b) {
@@ -853,13 +1165,12 @@
             throw new Error(err);
           }
           self.keystore = ks;
-
+          self._setpasswordProvider();
+          
           if (amountofaccounts==0){
-
             self.currentidentity = self._creatBlankIdentity();
             self.saveVault();
             self.loadVault();
-
             if (fn) {
               fn();
             }
@@ -867,17 +1178,13 @@
 
           }else{
             self.generateNewAddress(1,function() {
-
               self.currentidentity = self._creatBlankIdentity();
-
               self.saveVault();
               self.loadVault();
-
               if (fn) {
                 fn();
               }
               return;
-
             });
           }
 
@@ -888,12 +1195,26 @@
         return({
           version: 1,
           username: 'nickname',
-          avatarhash: 'QmRjHCtrTCMbK8PfptY41dLKZvoGiX8pNC94BCesSzpSed'
+          avatarhash: 'Qme5k7WUAoo5JwySiYGfhm4umvhUCTqVKPw2yfP7jhiqPT'
         });
       },
 
       _password: function(){
         this.pwDerivedKey = null;
+        this._setpasswordProvider();
+        console.log('ac-vault -> new password assigned.');
+      },
+
+      _setpasswordProvider: function() {
+        if (!this.password || !this.keystore){
+          return;
+        }
+        var self=this;
+        this.set('keystore.passwordProvider', function(callback) {
+          console.log('ac-vault -> passwordProvider : signing tx');
+          callback(null, self.password);
+        });
+        console.log('ac-vault -> new passwordProvider set.');
       },
 
       _getpwDerivedKey: function(cb){
@@ -903,11 +1224,13 @@
         if (!this.password){
           throw new Error('no password set');
         }
+        console.log('ac-vault -> generating new pwDerivedKey');
         var self=this;
         self.keystore.keyFromPassword(self.password, function(err, pwDerivedKey) {
             if (err){
               return cb(err);
             }
+            console.log('ac-vault -> new pwDerivedKey set. Ready to sign transactions');
             self.pwDerivedKey = pwDerivedKey;
             cb(null,pwDerivedKey);
           });
@@ -924,12 +1247,25 @@
         });
       },
 
+      vaultAway: function(){
+        this.set('route.path', '/completeclearvault');
+      },
+
       _currentAccount: function(){
         var addr = this.keystore.getAddresses();
         if (addr.length>0){
           this.currentaccount = self.fixaddress(addr[0]);
         }
+      },
+
+
+      // unlockBtnbool: function(){
+      // },
+
+      _logThis: function(){
+        // console.log("is die vault nu eig creating????",this.creatingvault);
       }
+
     });
   </script>
 </dom-module>

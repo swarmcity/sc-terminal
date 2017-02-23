@@ -54,102 +54,125 @@
 
 
   </style>
-<!-- <div class$="{{sizeview}}"> -->
-    <!-- app-location binds with the URL and produces a route for
-    app-route elements to consume. -->
+    <platinum-https-redirect></platinum-https-redirect>
     <app-location route="{{route}}" use-hash-as-path></app-location>
-    <ac-sizeview sizeview="{{sizeview}}"></ac-sizeview>
+    <app-route route="[[route]]" pattern="/:page" data="{{routedata}}" tail="{{pageTail}}"></app-route>
+    <ac-web3 id="web3" web3="{{web3}}" keystore="[[keystore]]"></ac-web3>
+    <ac-wallet
+        id="wallet"
+        web3="[[web3]]"
+        pubkey="[[account]]"
+        updating="{{balanceupdating}}"
+        arcbalance="{{arcbalance}}"
+        swtbalance="{{swtbalance}}"
+        ethbalance="{{ethbalance}}"
+        status="{{walletstatus}}"
+        lowgas="{{lowgas}}"
+        emptygas="{{emptygas}}"
+        on-ready="checkready"
+        >
+    </ac-wallet>
 
-    <!-- app-routes parse route paths based on the their `pattern`.
-    Parameters are extracted into the `data` object. The rest of the path that
-    comes after the `pattern` is put into the `tail` object, which can be
-    passed to the `route` property of downstream app-routes. -->
-    <app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{pageTail}}"></app-route>
-<!--     <app-route route="{{route}}" pattern="/vault" data="{{data}}" tail="{{vaultTail}}"></app-route>
- -->    <!--     <app-route route="{{route}}" pattern="/video" tail="{{videoTail}}" active="{{videoPageActive}}"></app-route>
-  -->
+  <neon-animated-pages attr-for-selected="data-page" selected="[[parsedpage]]">
 
-  <ac-config web3host="{{web3host}}"></ac-config>
-
-  <ac-web3 host="{{web3host}}" web3="{{web3}}" keystore="[[keystore]]"></ac-web3>
-
-  <neon-animated-pages id="homepages" attr-for-selected="data-page" selected="[[data.page]]">
+    <sc-loadview
+        data-page="loading"
+        msg="">
+    </sc-loadview>
 
     <ac-swtconversion
       data-page="swt"
+      id="swt"
       route="[[pageTail]]"
       keystore="[[keystore]]"
       web3="[[web3]]"
       account="[[account]]"
-      on-exit="toHome"
+      on-exit="logout"
+      on-success="toHome"
+      on-converted="converted"
       >
     </ac-swtconversion>
 
     <ac-intro
+      id="intro"
       data-page="intro"
       on-newvault="createNewVault"
       on-importfile="toimportfile"
+      on-importethwallet="toimportethwallet"
       on-importpk="toimportpk"
       on-externalpk="toexternalpk"
-      on-enter="enter"  
+      on-enter="enter"
+      on-exit="toAppStart"
+      on-restoreipfs="torestoreipfs"
       route="[[pageTail]]"
-      sizeview="{{sizeview}}"
       >
     </ac-intro>
 
     <ac-vault
-      id="thevault"
+      id="vault"
       data-page="vault"
       route="[[pageTail]]"
       currentkeystore="{{keystore}}"
       currentidentity="{{identity}}"
       currentaccount="{{account}}"
-      on-unlocked="vaultUnlocked"
-      on-locked="vaultLocked"
-      on-novault="noVault"
+      lastbackup="{{lastbackup}}"
+      on-ready="checkready"
+      status="{{vaultstatus}}"
       on-backupexit="toProfile"
-      sizeview="{{sizeview}}"
-      on-exit="reset"
+      on-exit="toAppStart"
       >
     </ac-vault>
 
+
+
     <ac-home
+      id="home"
       data-page="home"
       keystore="[[keystore]]"
       identity="[[identity]]"
+      lastbackup=[[lastbackup]]
       web3="[[web3]]"
       pubkey="[[account]]"
+      swtbalance="[[swtbalance]]"
+      ethbalance="[[ethbalance]]"
+      balanceupdating="[[balanceupdating]]"
       on-to-profile="toProfile"
       on-to-walletview="toWalletview"
-
       on-to-hashtaglist="toHashtaglist"
-
       on-to-hashtag="toHashtag"
-      sizeview="{{sizeview}}">
+      >
     </ac-home>
+
+
 
 
     <ac-profile
       data-page="profile"
       id="profile"
       identity="[[identity]]"
+      lastbackup=[[lastbackup]]
       pubkey="[[account]]"
       on-exit="toHome"
       on-identity-update="saveIdentity"
       on-backup="toBackup"
       on-logout="logout"
       on-deletevault="deletevault"
-      sizeview="{{sizeview}}">
+      >
     </ac-profile>
 
     <ac-walletview
       data-page="walletview"
       id="walletview"
+      web3="[[web3]]"
       keystore="[[keystore]]"
       identity="[[identity]]"
       account="[[account]]"
+      lowgas="[[lowgas]]"
+      emptygas="[[emptygas]]"
       on-exit="toHome"
-      sizeview="{{sizeview}}">
+      on-refreshneeded="refreshwallet"
+      updating="[[balanceupdating]]"
+      swtbalance="[[swtbalance]]">
     </ac-walletview>
 
 <!--     <sc-hashtaglist
@@ -216,39 +239,125 @@
       is: 'ac-app',
 
       properties: {
-
-        sizeview: {
-          type: String
-         },
       },
 
       observers: [
-        '_onRoutePathChanged(route.path)'
+        '_onRoutePathChanged(route.path)',
+        '_onRouteDataChanged(routedata.page)'
       ],
+
+      checkready: function(e) {
+        if (!this.vaultstatus) {
+          return;
+        }
+
+        if (this.vaultstatus == 'locked') {
+          // TODO this is a patch for when we uploaded a JSON file. Should be part of larger router...
+          if (this.route.path != '/vault/importfile' ){
+            return this.transitionto('/vault/unlock');
+          }
+        }
+
+        if (this.vaultstatus == 'unlocked') {
+          if (!this.walletstatus){
+            return;
+          }
+          if (this.walletstatus == 'ready'){
+            // no NOW we can check ARC/SWT balance
+            if (this.arcbalance>0){
+              console.log('having SRC balance -> to convert');
+              return this.transitionto('/swt/intro');
+            }else{
+              console.log('no SRC balance -> head home');
+              return this.transitionto('/home');
+            }
+          }
+        }
+
+        if (this.vaultstatus == 'novault') {
+          return  this.transitionto('/intro/welcome');
+        }
+
+      },
 
       _onRoutePathChanged: function(path) {
          console.log('ac-app -> _onRoutePathChanged',this.route,this.pageTail);
          // We need to check if we have a passwd in sessionstorage.
       },
 
+      _onRouteDataChanged: function(page,oldpage) {
+
+         console.log('ac-app -> _onRouteDataChanged',oldpage,'->',page);
+
+        if (!page){
+          this.parsedpage = 'loading';
+          this.lazyLoad('web3', 'ac-web3.html');
+          this.lazyLoad('shh', 'ac-shh.html');
+          this.lazyLoad('wallet', 'ac-wallet.html');
+          this.lazyLoad('vault', 'ac-vault.html',function(err,element){
+            // element.reset();
+          });
+        }else{
+          this.parsedpage = page;
+          switch (this.parsedpage){
+            case 'vault':
+              this.lazyLoad('vault', 'ac-vault.html');
+              this.lazyLoad('web3', 'ac-web3.html');
+              this.lazyLoad('shh', 'ac-shh.html');
+              this.lazyLoad('wallet', 'ac-wallet.html');
+              this.lazyLoad('profile', 'ac-profile.html');
+              break;
+            case 'swt':
+              this.lazyLoad('vault', 'ac-vault.html');
+              this.lazyLoad('web3', 'ac-web3.html');
+              this.lazyLoad('shh', 'ac-shh.html');
+              this.lazyLoad('wallet', 'ac-wallet.html');
+              this.lazyLoad('swt', 'ac-swtconversion.html');
+              break;
+            default:
+              this.lazyLoad('vault', 'ac-vault.html');
+              this.lazyLoad('web3', 'ac-web3.html');
+              this.lazyLoad('shh', 'ac-shh.html');
+              this.lazyLoad('wallet', 'ac-wallet.html');
+              this.lazyLoad('profile', 'ac-profile.html');
+              this.lazyLoad('home', 'ac-home.html');
+              break;
+          }
+        }
+      },
+
+      lazyLoad: function(elementid, filename, cb) {
+
+        if (Polymer.isInstance(this.$[elementid])) {
+          if (cb) {
+            cb(null,this.$[elementid]);
+            //} && this.$[elementid][method]) {
+            //this.$[elementid][method]();
+          }
+          return;
+        }
+        var url = this.resolveUrl(filename);
+
+        Polymer.Base.importHref(
+          url,
+          function(e) {
+            console.log('LAZYLOADER --> ', elementid, 'loaded');
+            if (cb) {
+              cb(null,this.$[elementid]);
+            }
+          }.bind(this),
+          function() {
+            console.log('Something failed!');
+          }, true
+        );
+      },
+
       enter: function(){
-        this.$.thevault.activate();
+        return  this.transitionto('/intro/newuser');
       },
 
-      reset: function(){
+      toAppStart: function(){
         this.transitionto('/intro/welcome');
-      },
-
-      vaultUnlocked: function(){
-        this.transitionto('/home');
-      },
-
-      vaultLocked: function(){
-        this.transitionto('/vault/unlock');
-      },
-
-      noVault: function(){
-        this.transitionto('/intro/newuser');
       },
 
       createNewVault: function(){
@@ -259,6 +368,10 @@
         this.transitionto('/vault/importpk');
       },
 
+      torestoreipfs: function(){
+        this.transitionto('/vault/importipfs');
+      },
+
       toexternalpk: function(){
         this.transitionto('/vault/externalpk');
       },
@@ -266,6 +379,10 @@
 
       toimportfile: function(){
         this.transitionto('/vault/importfile');
+      },
+
+      toimportethwallet: function(){
+        this.transitionto('/vault/importethwallet');
       },
 
       transitionto: function(target){
@@ -294,15 +411,11 @@
 
       deletevault: function(){
         this.$.thevault.deleteVault();
-        this.transitionto('/intro/welcome');
+        this.toAppStart();
       },
 
       toHome: function() {
         this.transitionto('/home');
-      },
-
-      toItemdetail: function() {
-        this.transitionto('/itemdetail');
       },
 
       toBackup: function() {
@@ -316,6 +429,28 @@
         }.bind(this));
       },
 
+      toWalletview: function() {
+        this.transitionto('/walletview');
+      },
+
+      saveIdentity: function(e) {
+        this.identity = e.detail;
+        this.$.thevault.saveVault();
+      },
+
+
+      refreshwallet: function(){
+        this.$.wallet.updatebalances();
+      },
+
+      converted: function(){
+        this.$.wallet.updatebalances();
+      },
+
+
+      toItemdetail: function() {
+        this.transitionto('/itemdetail');
+      },
       toHashtaglist: function() {
         this.transitionto('/hashtaglist');
       },
@@ -332,19 +467,10 @@
         this.transitionto('/newitem');
       },
 
-      toWalletview: function() {
-        this.transitionto('/walletview');
-      },
-
       toMakedeal: function() {
         this.transitionto('/makedeal');
       },
 
-
-      saveIdentity: function(e) {
-        this.identity = e.detail;
-        this.$.thevault.saveVault();
-      },
 
     });
   </script>

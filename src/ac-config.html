@@ -9,7 +9,15 @@
           type: Object,
           notify: true
         },
+        ipfsgateway: {
+          type: String,
+          notify: true
+        },
         web3host: {
+          type: String,
+          notify:true
+        },
+        shhhost: {
           type: String,
           notify:true
         },
@@ -27,6 +35,7 @@
         },
       },
 
+      
       ready: function(){
       
         var environment = 'livenet';
@@ -50,20 +59,27 @@
           case 'livenet':
             
             this.set('ipfs', {
-              host: 'ipfs.swarm.city',
-              protocol: 'https'
+              host: 'ipfsapi.swarm.city',
+              protocol: 'https',
+              port : 443
             });
 
-            this.web3host = 'https://mainnet.infura.io/Z7tCSntEyYR7Fm0b4VdY';
+            this.ipfsgateway = 'https://ipfs.swarm.city/ipfs/';
+
+            this.web3host = 'https://eth.swarm.city/';            
+            this.shhhost = 'https://eth.swarm.city/';            
             this.etherscanroot = 'https://etherscan.io/';
             this.tokencontractaddress = '0xAc709FcB44a43c35F0DA4e3163b117A17F3770f5';
-            this.swtconversioncontractaddress = '0x2389EcfB574c308F2321C72c7fE4833689150Be6'; // TODO : replace with actual later on
+            this.swtconversioncontractaddress = '0x69e5da6904f73dfa845648e1991ad1dcc780f874';
+            this.swttokencontractaddress = '0xb9e7f8568e08d5659f5d29c4997173d84cdf2607';
             this.set('config', {
               ipfs: this.ipfs,
               web3host: this.web3host,
+              shhhost: this.shhhost,
               etherscanroot: this.etherscanroot,
               tokencontractaddress: this.tokencontractaddress,
-              swtconversioncontractaddress: this.swtconversioncontractaddress
+              swtconversioncontractaddress: this.swtconversioncontractaddress,
+              swttokencontractaddress: this.swttokencontractaddress
             });
 
             break;
