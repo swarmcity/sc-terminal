@@ -2,21 +2,16 @@
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-
-<!-- <link rel="import" href="../bower_components/ac-style/ac-style.html">
-<link rel="import" href="../bower_components/ac-button/ac-button.html">
-<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
-<link rel="import" href="../bower_components/ac-input/ac-input.html"> -->
-
 <link rel="import" href="../bower_components/sc-style/sc-style.html">
 <link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
-
 <link rel="import" href="ac-sizeview.html">
 <link rel="import" href="ac-avatar.html">
 <link rel="import" href="ac-ipfs.html">
 <link rel="import" href="ac-shortcode.html">
-<link rel="import" href="ac-spinner.html">
+<link rel="import" href="sc-spinner.html">
 <link rel="import" href="ac-preferences.html">
 
 <link rel="stylesheet" href="../bower_components/Croppie/croppie.css" />
@@ -85,7 +80,7 @@
     padding: 0vh 0px 0px 0px;
     @apply(--layout-vertical);
     @apply(--layout-center-center);
-    border-bottom: 2px dotted rgba(255,255,255,0.05);
+    border-bottom: 2px dotted rgba(0,0,0,0.05);
   }
 
 
@@ -146,14 +141,11 @@
 
   .pubkey {
     margin-top: 6px;
-    @apply(--layout-horizontal);
-    @apply(--layout-center-center);
   }
   .pubkey p {
     font-size: 13px;
     line-height: 15px;
     @apply(--montserrat-reg);
-    color: var(--sc-grey2);
     text-align: center;
   } 
 
@@ -161,13 +153,17 @@
     width: 60px;
   }
   .pubhidden p {
-    @apply(--ac-font-nowrap);
+    color: var(--sc-grey2);
+
+    @apply(--sc-font-nowrap);
   }
   .pubshown {
     width: 70%;
   }
   .pubshown p {
     word-break: break-all;
+    color: var(--sc-grey3);
+
   }
 
   paper-button.logoutbtn {
@@ -292,11 +288,54 @@ min-width: 120px;
     border-bottom: 2px dotted rgba(0,0,0,0.05);
   }
 
-  .totalbox {
-    position: fixed;
-    top: 0;
-/*    border: 1px solid red;*/
-/*    height: 50%;*/
+  .edit {
+    min-height: 360px;
+    width: 250px;
+  }
+
+  .warning {
+    width: 90%;
+    background-color: var(--sc-blue);
+/*    border: 1px dashed var(--sc-blue);*/
+    box-sizing:border-box;
+    padding: 38px;
+
+    @apply(--layout-vertical);
+    @apply(--layout-start);
+    @apply(--layout-start-justified);
+    margin-bottom: 10vh;
+
+  }
+
+
+    .warningsign {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 3px solid var(--sc-white);
+      opacity: 0.5;
+      margin-bottom: 20px;
+    }
+
+    .warningsign p {
+            font-size: 24px;
+
+    }
+
+
+  .youneedto {
+    font-size: 22px;
+    line-height: 24px;
+  }
+
+  .disapp {
+    opacity: 0.5;
+  }
+
+  #croppie {
+    width: 250px;
+    height: 250px;
+
   }
 
 
@@ -321,7 +360,7 @@ min-width: 120px;
     @apply(--layout-vertical);
     @apply(--layout-center-center);
     box-sizing:border-box;
-    padding-bottom: 6vh;
+    padding-bottom: 0vh;
 
   }
   .usernameinput {
@@ -336,6 +375,21 @@ min-width: 120px;
 
   }
 
+
+  .warning {
+    width: 80%;
+    border: 2px dashed var(--sc-blue);
+    box-sizing:border-box;
+    padding: 30px 30px 40px 30px;
+
+    @apply(--layout-vertical);
+    @apply(--layout-center-center);
+
+    margin-bottom: 20px;
+
+  }
+
+
     }
 
 
@@ -346,9 +400,9 @@ min-width: 120px;
 
     <ac-ipfs id="ipfs"></ac-ipfs>
 
-    <div class="total">
-      <!-- <div class="total totalbox whiteback" id="totalbox"></div> -->
- 
+    <div class="total darkerer" id="totalbox">
+
+
 
     <div class="topbar">
       <span class="flex"></span>
@@ -359,7 +413,23 @@ min-width: 120px;
       <neon-animated-pages selected="{{datastate}}" attr-for-selected="data-state" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
 
         <neon-animatable data-state="view">
-        <div class="totalwidth vertical centercenter view">
+        <div class="totalwidth vertic centercenter view">
+          <template is="dom-if" if="{{!lastbackup}}">
+            <div class="whitespace"></div>
+            <div class="warning">
+              <div class="warningsign vertic centercenter"><p class="bold white">!</p></div>
+              <p class="white bold youneedto">Did you backup your profile yet?</p>
+              <div class="minispace"></div>
+              <div class="minispace"></div>
+              <p class="white reg">This app is fully decentralized, so there is no central party that keeps your account information. This means that when you remove the user from this device, the only way to recover it is with a backup you have to create. The <span class="bold">backup</span> together with <span class="bold">your password</span> will give you permanent control of your tokens.</p>
+              <div class="whitespace"></div>
+              <paper-button class="bold shadow white lighter" on-tap="backupvault">Create a backup</paper-button>
+              <div class="whitespace"></div>
+
+              <p class="small bold white disapp">This message will disappear when you create your backup.</p>
+            </div>
+          </template>
+
 
           <div class="totalwidth toppart">
 
@@ -368,7 +438,7 @@ min-width: 120px;
 
               <template is="dom-if" if="{{avatarloading}}">
               <div class="avatarloading">
-                <ac-spinner color="blue" small></ac-spinner>
+                <sc-spinner color="blue" small></sc-spinner>
               </div>
               </template>
 
@@ -379,13 +449,12 @@ min-width: 120px;
               mode="imgonly"
               size="big"
               ></ac-avatar>
-
-                <input type="file" class="hidden" id="avatarupload" on-change="avatarChange"/>
+                <input type="file" accept="image/*" class="hidden" id="avatarupload" on-change="avatarChange"/>
                 <paper-icon-button icon="sc-icons:upload" class="blueback white uploadicon" id="uploadbtn"></paper-icon-button>
               </div>
             </div>
-            <div class="profileusername" id="usernameinputtotal">
-              <paper-input label="username" value="{{newusername}}" on-change="usernameChange" class="bolder usernameinput" id="usernameinput">{{newusername}}</paper-input>
+            <div class="profileusername">
+              <paper-input label="username" value="{{newusername}}" on-change="usernameChange" class="usernameinput" id="usernameinput">{{newusername}}</paper-input>
               <iron-collapse id="collapse" opened="{{datachanged}}">
                 <div class="whitespace"></div>
 
@@ -404,8 +473,6 @@ min-width: 120px;
 <!--             <div class="flex">
             </div> -->
 
-            <paper-button class="darkerer blue bold logoutbtn" on-tap="logout" noink id="logoutbtn">Log out</paper-button>
-
           </div>
 
           <div class="profilecontent" id="profilecontent">
@@ -415,8 +482,11 @@ min-width: 120px;
             <div class="whitespace"></div>
             <div class="whitespace"></div> -->
 
+
+<!--           <template is="dom-if" if="{{warningread}}"> -->
             <div class="whitespace"></div>
-          <paper-button class="whiteback bold downbtns" on-tap="backupvault" noink>Create backup</paper-button>
+            <paper-button class="whiteback bold downbtns" on-tap="backupvault" noink>Create backup</paper-button>
+<!--           </template> -->
 
           <template is="dom-if" if="{{itemshow}}">
             <paper-button class="whiteback bold downbtns" on-tap="collapseMe" id="deletemyvault" noink>Delete this user</paper-button>
@@ -431,7 +501,7 @@ min-width: 120px;
               </div>
 
               <div class="vertic centercenter">
-                <p class="bold red centertxt">You're about to remove this user. <br>This can not be undone.</p>
+                <p class="bold red centertxt">You're about to remove the complete useraccount of this device. <br><br>This can not be undone.</p>
                 <div class="whitespace"></div>
                 <paper-button class="redback white bold" on-tap="deletevault">continue</paper-button>
                 <div class="whitespace"></div>
@@ -442,13 +512,18 @@ min-width: 120px;
             </iron-collapse>
 
           </div>
+          <div class="fivespace"></div>
+
+            <paper-button class="darkerer blue bold logoutbtn" on-tap="logout" noink>Log out</paper-button>
+          <div class="fivespace"></div>
+
         </div>
 
       </neon-animatable>
 
-      <!-- <neon-animatable data-state="edit">
-        <div class="profilepic">
-          <div class="profilepicinner">
+      <neon-animatable data-state="edit">
+        <div class="profilepic vertic centercenter">
+          <div class="profilepicinner edit">
             <div id="croppie"></div>
             <div class="croppiecontrols totalwidth horizont centercenter">
               <p class="blue small bold txtshadow">Scroll to zoom</p>
@@ -464,7 +539,7 @@ min-width: 120px;
         </div>
 
 
-      </neon-animatable> -->
+      </neon-animatable>
     </neon-animated-pages>
   </div>
 
@@ -487,6 +562,10 @@ min-width: 120px;
 
       pubkey: {
         type: String
+      },
+
+      lastbackup: {
+        type: Number,
       },
 
       pubwhat: {
@@ -516,8 +595,7 @@ min-width: 120px;
         type: Object,
         value: function() {
           return {
-            'hero': this.$.currentavatar,
-            'hero2': this.$.usernameinput
+            'hero': this.$.currentavatar
           }
         }
       },
@@ -531,65 +609,27 @@ min-width: 120px;
         type: Object,
         value: function() {
           return {
-            'entry': [
-            // {
-            //   name: 'slide-from-bottom-animation',
-            //   node:this.$.profilecontent,
-            //   toPage: this,
-            //   timing: {
-            //     duration: 1000
-            //   }
-            // },
-            {
-              name: 'fade-in-animation',
-              node:this.$.uploadbtn,
-              toPage: this,
-              timing: {
-                delay: 575,
-                duration: 125
-              }
-            },{
+            'entry': [{
               name: 'fade-in-animation',
               node:this.$.profilecontent,
               toPage: this,
               timing: {
-                duration: 125
+                duration: 200
               }
-            }, {
+            },{
               name: 'fade-in-animation',
-              node:this.$.usernameinputtotal,
+              node:this.$.uploadbtn,
               toPage: this,
               timing: {
-                duration: 125
-                }
-            }, {
-              name: 'fade-in-animation',
-              node:this.$.logoutbtn,
-              toPage: this,
-              timing: {
-                duration: 125
+                duration: 200
               }
             }, {
               name: 'hero-animation',
               id: 'hero',
               toPage: this,
               timing: {
-                  duration: 600
-                }
-              // }, {
-              // name: 'hero-animation',
-              // id: 'hero2',
-              // toPage: this,
-              // timing: {
-              //     duration: 200
-              //   }
-              // }, {
-              // name: 'hero-animation',
-              // id: 'hero3',
-              // toPage: this,
-              // timing: {
-              //     duration: 200
-              // }
+                  duration: 200
+              }
             }],
 
             'exit': [{
@@ -597,57 +637,29 @@ min-width: 120px;
               node:this.$.profilecontent,
               fromPage: this,
               timing: {
-                duration: 125
+                duration: 200
               }
             },{
               name: 'fade-out-animation',
               node:this.$.uploadbtn,
               toPage: this,
               timing: {
-                duration: 125
+                duration: 200
               }
             },{
               name: 'fade-out-animation',
-              node:this.$.usernameinputtotal,
+              node:this.$.totalbox,
               toPage: this,
               timing: {
-                duration: 125
+                duration: 200
               }
-            },{
-              name: 'fade-out-animation',
-              node:this.$.logoutbtn,
-              toPage: this,
-              timing: {
-                duration: 125
-              }
-            // },{
-            //   name: 'slide-up-animation',
-            //   node:this.$.totalbox,
-            //   toPage: this,
-            //   timing: {
-            //     duration: 200
-            //   }
             }, {
               name: 'hero-animation',
               id: 'hero',
               fromPage: this,
               timing: {
                   duration: 200
-                }
-              // }, {
-              // name: 'hero-animation',
-              // id: 'hero2',
-              // fromPage: this,
-              // timing: {
-              //     duration: 200
-              //   }
-              // }, {
-              // name: 'hero-animation',
-              // id: 'hero3',
-              // fromPage: this,
-              // timing: {
-              //     duration: 200
-              // }
+              }
               }]
             }
           },
@@ -664,6 +676,7 @@ min-width: 120px;
       this.itemshow = true;
       var colly = document.getElementById('deletemyvaultcollapser');
       colly.closed = true;
+
     },
 
     init: function(cb){

@@ -1,27 +1,16 @@
+
+
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animation.html">
-
-<!-- <link rel="import" href="../bower_components/ac-style/ac-style.html">
-<link rel="import" href="../bower_components/ac-button/ac-button.html">
-<link rel="import" href="../bower_components/ac-icon/ac-icon.html">
-<link rel="import" href="../bower_components/ac-input/ac-input.html"> -->
-
 <link rel="import" href="../bower_components/sc-style/sc-style.html">
 <link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
 <link rel="import" href="ac-sizeview.html">
-<link rel="import" href="ac-wallet.html">
 <link rel="import" href="ac-shortcode.html">
 <link rel="import" href="ac-tokensend.html">
 <link rel="import" href="ac-tokenreceive.html">
 <link rel="import" href="ac-log.html">
-
-<!--
-<link rel="import" href="ac-tokentransfer.html">
-<link rel="import" href="ac-spinner.html">
-<link rel="import" href="ac-avatar.html">
-<link rel="import" href="ac-ipfsupload.html">
-<link rel="import" href="ac-ipfs.html"> -->
+<link rel="import" href="sc-spinner.html">
 
 <dom-module id="ac-walletview">
 <link rel="import" href="../bower_components/sc-style/sc-style.css" type="css">
@@ -33,16 +22,33 @@
     display: block;
     width: 100%;
     height: 100%;
+    background-color: var(--sc-grey1);
   }
 
-  .total {
+/*  .total {
     display: block;
     overflow-y: scroll;
   }
+*/
 
+  .initbtns {
+    width: 100%;
+    @apply(--layout-vertical);
+    @apply(--layout-start);
+    @apply(--layout-start-justified);
+    border-top: 2px dotted rgba(0,0,0,0.05);
+    box-sizing:border-box;
+    padding-top: 5vh;
+
+  }
 
   .balancebox {
     height: 25vh;
+    @apply(--layout-vertical);
+    @apply(--layout-start);
+    @apply(--layout-center-justified);
+    box-sizing:border-box;
+    padding-left: 10vw;
   }
 
   #walletcontent {
@@ -53,77 +59,100 @@
   }
 
 
+  @media all and (min-width: 0) and (max-width: 500px) { 
+
+    .balancebox {
+      height: 25vh;
+      @apply(--layout-vertical);
+      @apply(--layout-center-center);
+      box-sizing:border-box;
+      padding-left: 0vw;
+      width: 100%;
+    }
+
+    .initbtns {
+      width: 100%;
+      @apply(--layout-vertical);
+      @apply(--layout-center);
+      @apply(--layout-start-justified);
+    }
+  }
+
   </style>
 
 
 
-  <div class="total">
+  <div class="total vertic start startjust">
 
     <div class="topbar">
       <span class="flex"></span>
       <iron-icon class="grey3" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
     </div>
 
-      <div class="balancebox vertic centercenter">
-        <div id="balance">
-          <template is="dom-if" if="{{!balanceupdating}}">
-            <div class$="arcbalance flex" on-tap="monitorBalance">
+
+      <div id="balance" class="balancebox">
+
+          <!-- <template is="dom-if" if="{{!balanceupdating}}"> -->
+            <div class="arcbalance" on-tap="monitorBalance">
               <ac-balance
               refcur="EUR"
-              arcbalance="[[arcbalance]]"
+              swtbalance="[[swtbalance]]"
               on-refresh="monitorBalance"
               wereinwallet
               ></ac-balance>
-            </div>
-          </template>
 
-          <template is="dom-if" if="{{balanceupdating}}">
-            <div class$="arcbalance {{arcalign}}">
-              <ac-spinner big></ac-spinner>
+<!--
+<template is="dom-if" if="{{lowgas}}">
+You are low on gas.
+</template>
+
+<template is="dom-if" if="{{emptygas}}">
+You are out of gas.
+</template>
+-->
+
             </div>
-          </template>
-        </div>
+
+          <!-- </template> -->
+
+<!--           <template is="dom-if" if="{{balanceupdating}}">
+            <div class$="arcbalance {{arcalign}}">
+              <sc-spinner big></sc-spinner>
+            </div>
+          </template> -->
       </div>
       <div class="whitespace"></div>
-      <div id="walletcontent">
-        <div class$="initbtns {{align}}">
+        <div class="initbtns flex grey1back" id="walletcontent">
+        <template is="dom-if" if="{{sendshown}}">
           <ac-tokensend
+            web3="[[web3]]"
             account="[[account]]"
             identity="[[identity]]"
             on-activated="hideReceivebutton"
             on-deactivated="showReceivebutton"
+            on-tokenssent="refreshbalance"
             on-addlog="receivelog"
+            swtbalance="[[swtbalance]]"
+            on-tokenssent="refreshbalance"
             sizeview="{{sizeview}}">
           </ac-tokensend>
-
-        <ac-tokenreceive
-          account="[[account]]"
-          identity="[[identity]]"
-          keystore="[[keystore]]"
-        ></ac-tokenreceive>
+        </template>
+        <template is="dom-if" if="{{receiveshown}}">
+          <ac-tokenreceive
+            web3="[[web3]]"
+            account="[[account]]"
+            identity="[[identity]]"
+            keystore="[[keystore]]"
+            on-activated="hideSendbutton"
+            on-deactivated="showSendbutton"
+            on-tokensreceived="refreshbalance"
+          ></ac-tokenreceive>
+        </template>
         </div>
+      <div class="whitespace"></div>
 
-      <ac-wallet
-        id="wallet"
-        keystore="[[keystore]]"
-        pubkey="[[account]]"
-        updating="{{balanceupdating}}"
-        arcbalance="{{arcbalance}}"
-        ethbalance="{{ethbalance}}">
-      </ac-wallet>
-
-      <div class="whitespace"></div>
-      <div class="whitespace"></div>
-      <div class="whitespace"></div>
-      <div class="whitespace"></div>
-      <div class="whitespace"></div>
-      <div class="whitespace"></div>
-      <ac-log id="log" account="[[account]]"></ac-log>
+<!--         <ac-log id="log" account="[[account]]"></ac-log> -->
       </div>
-
-
-
-  </div>
 
 
 
@@ -140,20 +169,23 @@
         type: Object,
          //observer: '_keystore',
       },
-      // sizeview: {
-      //   type: String,
-      //   observer: '_sizeview'
-      // },
-
-      // arcalign: {
-      //   type: String,
-      // },
-
+      web3: {
+        type: Object
+      },
+      swtbalance: {
+        type: Number, 
+         observer: '_swtbalance',
+      },
+      lowgas: {
+        type: Boolean
+      },
+      emptygas: {
+        type: Boolean
+      },
       account: {
         type: String,
         observer: '_account'
       },
-
       sharedElements: {
         type: Object,
         value: function() {
@@ -172,8 +204,8 @@
               node:this.$.walletcontent,
               toPage: this,
               timing: {
-                duration: 350,
-                delay: 500
+                duration: 250,
+                delay: 100
               }
             }, {
               name: 'hero-animation',
@@ -189,7 +221,7 @@
               node:this.$.walletcontent,
               fromPage: this,
               timing: {
-                  duration: 150,
+                duration: 150,
                 delay: 0
 
               }
@@ -216,14 +248,19 @@
         '_checkSize(sizeview)'
       ],
 
+    refreshbalance: function(){
+//      debugger;
+      this.fire('refreshneeded');
+    },
+
     _account: function(){
-      if (this.account){
-        this.$.wallet.updateBalance();
-      }
+    //   if (this.account){
+    //     this.$.wallet.updateBalance();
+    //   }
     },
 
     monitorBalance: function(){
-      this.$.wallet.monitorBalance();
+      //this.$.wallet.monitorBalance();
     },
 
     receivelog: function(logdetails){
@@ -232,6 +269,8 @@
 
 
     ready: function() {
+      this.receiveshown = true;
+      this.sendshown = true;
     },
 
     attached: function(){
@@ -270,6 +309,25 @@
     exit: function(){
       this.fire('exit');
     },
+
+    _swtbalance: function(){
+    },
+
+    hideReceivebutton: function(){
+      this.receiveshown = false;
+    },
+
+    showReceivebutton: function(){
+      this.receiveshown = true;
+    },
+
+    hideSendbutton: function(){
+      this.sendshown = false;
+    },
+
+    showSendbutton: function(){
+      this.sendshown = true;
+    }
 
   });
 </script>
