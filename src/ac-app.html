@@ -19,7 +19,7 @@
 <link rel="import" href="sc-hashtag.html">
 <link rel="import" href="sc-itemdetail.html">
 <link rel="import" href="sc-newitem.html">
-<link rel="import" href="sc-makedeal.html">
+<link rel="import" href="sc-deal.html">
 
 
 <dom-module id="ac-app">
@@ -204,7 +204,7 @@
       on-back="backtoHashtag"
       on-exit="toHome"
       on-to-hashtag="toHashtag"
-      on-to-makedeal="toMakedeal"
+      on-to-deal="toDeal"
       currenthasht="{{currenthasht}}">
     </sc-itemdetail>
 
@@ -222,14 +222,15 @@
 
 
 
-    <sc-makedeal
-      data-page="makedeal"
+    <sc-deal
+      data-page="deal"
       identity="[[identity]]"
       pubkey="[[account]]"
       on-back="backtoHashtag"
       on-exit="toHome"
-      on-to-hashtag="toHashtag">
-    </sc-makedeal>
+      on-to-hashtag="toHashtag"
+      >
+    </sc-deal>
 
 </neon-animated-pages>
 </template>
@@ -396,7 +397,7 @@
 
       attached: function() {
          this.transitionto('/intro/welcome');
-          //this.$.thevault.activate();
+          //this.$.vault.activate();
           //console.log("OP APP...............",this.sizeview);
       },
 
@@ -405,12 +406,12 @@
       },
 
       logout: function() {
-        this.$.thevault.closeVault();
+        this.$.vault.closeVault();
         this.transitionto('/vault/unlock');
       },
 
       deletevault: function(){
-        this.$.thevault.deleteVault();
+        this.$.vault.deleteVault();
         this.toAppStart();
       },
 
@@ -435,7 +436,7 @@
 
       saveIdentity: function(e) {
         this.identity = e.detail;
-        this.$.thevault.saveVault();
+        this.$.vault.saveVault();
       },
 
 
@@ -467,8 +468,8 @@
         this.transitionto('/newitem');
       },
 
-      toMakedeal: function() {
-        this.transitionto('/makedeal');
+      toDeal: function() {
+        this.transitionto('/deal');
       },
 
 

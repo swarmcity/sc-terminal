@@ -1,0 +1,330 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../bower_components/sc-style/sc-style.html">
+<link rel="import" href="../bower_components/sc-iconset/sc-iconset.html">
+
+<link rel="import" href="sc-hashtagitem.html">
+
+
+<dom-module id="sc-deal">
+<link rel="import" href="../bower_components/sc-style/sc-style.css" type="css">
+
+  <!-- Defines the element's style and local DOM -->
+  <template>
+    <style>
+    :host {
+      display: block;
+      margin: 0px;
+      padding: 0px;
+      width: 100vw;
+      height: 100vh;
+      @apply(--base-structure);
+    }
+
+  .fullheight {
+    height: 100%;
+  }
+
+  .topbar {
+    transition: all 0.25s linear;
+  }
+
+  .topbar ac-button {
+    @apply(--base-shadow);
+    opacity: 0.9;
+  }
+
+  neon-animated-pages {
+    height: 92%;
+  }
+
+
+  .other-avatar {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .other-avatar img {
+    width: 100%;
+    height: 100%;
+  }
+
+
+  @media all and (min-width: 0) and (max-width: 420px) { 
+  }
+
+
+
+
+
+  </style>
+
+    <div class="topbar">
+      <span class="flex"></span>
+      <iron-icon class="grey3" icon="sc-icons:decline" on-tap="exit">back</iron-icon>
+    </div>
+
+    <neon-animated-pages id="dealpgs" attr-for-selected="data-page" selected="[[data.page]]" entry-animation="{{entryAnimationintro}}" exit-animation="{{exitAnimationintro}}">
+
+      <neon-animatable data-page="init">
+      <div id="dealcontent" class="totalwidth paddingwithouttop">
+
+        <div class="horizontal centercenter totalwidth">
+
+          <div class="vertic centercenter">
+            <div class="avatar-box">
+            <ac-avatar
+              id="currentavatar"
+              identity="{{identity}}"
+              pubkey="{{account}}"
+              mode="imgonly"
+              size="medium">
+            </ac-avatar>
+            </div>
+            <ac-avatar
+            identity="[[identity]]"
+            pubkey="[[pubkey]]"
+            mode="txtonly"
+            id="avatarusername"
+            class="ac-username">
+            </ac-avatar>
+          </div>
+
+          <div class="vertic centercenter">
+            <div class="other-avatar">
+              <img src="">
+            </div>
+            <p class="bold grey4">Other username</p>
+          </div>
+
+
+        </div>
+
+      </div>
+    </neon-animatable>
+    </neon-animated-pages>
+
+
+
+</template>
+
+<script>
+  Polymer({
+    is: 'sc-deal',
+
+    behaviors: [
+      Polymer.NeonSharedElementAnimatableBehavior
+    ],
+
+    properties: {
+   
+     route: {
+        type: Object,
+        //notify: true
+      },
+     
+      sharedElements: {
+        type: Object,
+        value: function() {
+          return {
+            'hero': this.$.currentavatar,
+            'balance': this.$.balancebox
+          }
+        }
+      },
+
+    
+      animationConfig: {
+        type: Object,
+        value: function() {
+          return {
+            'entry': [{
+              name: 'slide-from-bottom-animation',
+              node:this.$.dealcontent,
+              toPage: this,
+              timing: {
+                duration: 700
+              }
+            },{
+              name: 'fade-in-animation',
+              node:this.$.backbtn,
+              fromPage: this,
+              timing: {
+                duration: 125
+              }
+
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                  duration: 600
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'balance',
+              toPage: this,
+              timing: {
+                  duration: 600
+              }
+            }],
+
+            'exit': [{
+              name: 'slide-down-animation',
+              node:this.$.dealcontent,
+              fromPage: this,
+              timing: {
+                duration: 700
+              }
+
+            },{
+              name: 'fade-out-animation',
+              node:this.$.backbtn,
+              fromPage: this,
+              timing: {
+                duration: 125
+              }
+
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 600
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'balance',
+              fromPage: this,
+              timing: {
+                  duration: 600
+              }
+              }]
+            }
+          },
+        }
+
+      },
+
+    observers: [
+          '_onRoutePathChanged(data.page)'
+        ],
+
+    ready: function() {
+      this.$.dealpgs.selected = 'init';
+      console.log("SOOOOOOOOOO what is it????",this.$.dealpgs.selected);
+    },
+
+      _onRoutePathChanged: function(page,oldpage) {
+        // console.log('ac-deal _onRoutePathChanged',oldpage,'->',page);
+        // switch (page) {
+        //   case 'welcome':
+        //     this.topbarbg = "yellowback";
+        //     break;
+        //   case 'first':
+        //     this.topbarbg = "blueback";
+        //     break;
+        //   default:
+        //     this.topbarbg = "";
+        //     break;
+        // }
+      },
+
+      attached: function() {
+        console.log('ac-intro attached');
+        this.exitAnimationintro = "slide-left-animation";
+        this.entryAnimationintro = "slide-from-right-animation";
+      },
+
+    // back: function(){
+    //   this.fire('exit');
+    // },
+
+    exit: function(){
+
+      this.sharedElements = {
+            'hero': this.$.currentavatar,
+            'balance': this.$.balancebox
+        };
+
+      this.animationConfig = {
+           'entry': [{
+              name: 'slide-from-bottom-animation',
+              node:this.$.dealcontent,
+              toPage: this,
+              timing: {
+                duration: 700
+              }
+            },{
+              name: 'fade-in-animation',
+              node:this.$.backbtn,
+              fromPage: this,
+              timing: {
+                duration: 125
+              }
+
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              toPage: this,
+              timing: {
+                  duration: 600
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'balance',
+              toPage: this,
+              timing: {
+                  duration: 600
+              }
+            }],
+
+            'exit': [{
+              name: 'fade-out-animation',
+              node:this.$.dealcontent,
+              fromPage: this,
+              timing: {
+                duration: 125
+              }
+
+            },{
+              name: 'fade-out-animation',
+              node:this.$.backbtn,
+              fromPage: this,
+              timing: {
+                duration: 125
+              }
+
+            }, {
+              name: 'hero-animation',
+              id: 'hero',
+              fromPage: this,
+              timing: {
+                  duration: 600
+              }
+            }, {
+              name: 'hero-animation',
+              id: 'balance',
+              fromPage: this,
+              timing: {
+                  duration: 600
+              }
+              }]
+        };
+
+      this.fire('exit');
+    },
+
+
+  });
+</script>
+
+</dom-module>

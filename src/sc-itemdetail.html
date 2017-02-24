@@ -555,7 +555,7 @@
                   </div>
                   <div class="minispace"></div>
                   <div class="totalwidth horizont center endjust">
-                    <paper-icon-button icon="sc-icons:arrowright" class="medium blueback white" on-tap="toMakedeal"></paper-icon-button>
+                    <paper-icon-button icon="sc-icons:arrowright" class="medium blueback white" on-tap="toDeal"></paper-icon-button>
                   </div>
                 </div>
 
@@ -714,8 +714,8 @@
       ];
 
       this.loadingreply = true;
-      this.youareowner = true;
-      // UNTILL HERE
+      this.youareowner = false;
+      // UNTILL f
 
 
       this.replystate = 'init';
@@ -867,7 +867,7 @@
     },
 
 
-  toMakedeal: function(){
+  toDeal: function(){
       // this.sharedElements = {
       //       'hero': this.$.currentavatar,
       //       'balance': this.$.balancebox
@@ -938,7 +938,7 @@
       //         }]
       //   };
 
-      this.fire('to-makedeal');
+      this.fire('to-deal');
     },
 
 
