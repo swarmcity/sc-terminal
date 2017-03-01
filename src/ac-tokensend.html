@@ -405,7 +405,7 @@ Author : Stefaan Ponnet
                 <div suffix>SWT</div>
               </paper-input>
 
-              <paper-input class="sendinputter" type="number" label="Shortcode receiver" value="{{pincode}}">
+              <paper-input class="sendinputter" type="text" label="Shortcode receiver or public key" value="{{pincode}}">
               </paper-input>              
             <div class="whitespace"></div>
             <div class="confirmbtns">
@@ -415,6 +415,33 @@ Author : Stefaan Ponnet
             <div class="whitespace"></div>
             <div class="whitespace"></div>
           </template>
+
+
+          <template is="dom-if" if="{{_is(sendcoinstate,'sendtowallet_confirm')}}">
+            <!-- done -->
+            <div class="announce">
+              <div class="item totalwidth">
+                <p class="topmsg grey4 hairline">You're sending <span class="ultralight">{{amount}} SWT</span> to
+                </p>
+                <div class="receiver">
+                  <div class="receiverusername">
+                    <p class="bold">{{sendtowallet_account}}</p>
+                  </div>
+                </div>
+                <div class="confirmbtns">
+                  <iron-icon icon="sc-icons:decline" class="grey4 medium" on-tap="closetokensendcollapser">decline</iron-icon>
+                  <paper-icon-button icon="sc-icons:v" class="blue whiteback shadow big" on-tap="sendtowallet_tosendcoins"></paper-icon-button>
+                </div>
+                <div class="whitespace"></div>    
+              </div>
+
+            <div class="whitespace"></div>
+
+            </div>
+          </template>
+
+
+
 
           <template is="dom-if" if="{{_is(sendcoinstate,'balancelow')}}">
             <div class="announce">
@@ -496,7 +523,7 @@ Author : Stefaan Ponnet
                 <div class="minispace"></div>
                 <div class="minispace"></div>
 
-              <p class="reg">This could take a few moments. Don't close your browser.</p>
+              <p class="reg">This could take a few moments. Don't close this screen.</p>
                 <div class="minispace"></div>
                 <div class="minispace"></div>
                 <div class="minispace"></div>
@@ -518,12 +545,19 @@ Author : Stefaan Ponnet
                 <p class="topmsg grey4 hairline">You have successfully sent <span class="ultralight">{{amount}} SWT </span> to
                 </p>
                 <div class="receiver">
-                  <div class="receiveravatar">
-                    <img src="{{receiver.avatarurl}}"></div>
-                  <div class="receiverusername">
-                    <p class="bold">{{receiver.username}}</p>
-                    <p class="pubkey grey3 small">{{receiver.account}}</p>
-                  </div>
+                  <template is="dom-if" if="{{sendtowallet_account}}">
+                    <div class="receiverusername">
+                      <p class="bold">{{sendtowallet_account}}</p>
+                    </div>                  
+                  </template>
+                  <template is="dom-if" if="{{!sendtowallet_account}}">
+                    <div class="receiveravatar">
+                      <img src="{{receiver.avatarurl}}"></div>
+                    <div class="receiverusername">
+                      <p class="bold">{{receiver.username}}</p>
+                      <p class="pubkey grey3 small">{{receiver.account}}</p>
+                    </div>
+                  </template>
                 </div>
               <template is="dom-if" if="{{phoneview}}">
                 <div class="whitespace"></div>
@@ -735,9 +769,15 @@ Author : Stefaan Ponnet
         if (amount.greaterThan(this.swtbalance)){
           this.sendcoinstate = 'balancelow';
           return;
-        }else{
-//          console.log('amount=',amount.toString(10),'balance=',this.swtbalance.toString(10));
+        }        
+ 
+        // if the input is a pincode - take another path
+        if (this.web3.isAddress(this.pincode)){
+          this.sendtowallet_account = this.pincode;
+          this.sendcoinstate = 'sendtowallet_confirm';
+          return;
         }
+
 
         if (!this.pincode || this.pincode.length !== 5){
           console.log('pincode too short.');
@@ -784,8 +824,26 @@ Author : Stefaan Ponnet
     },
 
     closetokensendcollapser: function() {
+        delete this.receiver;
+        this.amount = '';
+        this.pincode = '';
+        delete this.sendtowallet_account;
         this.sendcoinstate= 'init';
         this.fire('deactivated');
+    },
+
+    sendtowallet_tosendcoins: function(){
+      var self = this;
+      this.transfer(this.amount * 1e18, this.$.helpers.fixaddress(self.sendtowallet_account), function(err, result) {
+
+        if (err) {
+          console.log('tx in error...');
+          self.sendcoinstate = 'transfererror';
+          self.transfererrormessage = self.$.helpers.translateEthErrors(err);
+        } else {
+          self.sendcoinstate = 'sent';
+        }
+      });
     },
 
 
@@ -815,11 +873,14 @@ Author : Stefaan Ponnet
             console.log(err, result);
             console.log('waiting for TX to happen');
             self.currenttxhash = result;
-            self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
-              'command': 'waitfortx',
-              'txhash': result,
-            }));   
 
+            // if sending token to a pubkey, no whisper data is found.
+            if (self.receiver && self.receiver.from){
+              self.$.whisper.whisperpost(self.receiver.from, JSON.stringify({
+                'command': 'waitfortx',
+                'txhash': result,
+              }));                 
+            }
             self.waitTx(result, function(success) {
               console.log('TX mined!');
               self.fire('tokenssent');
