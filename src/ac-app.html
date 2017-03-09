@@ -92,10 +92,12 @@
       on-importethwallet="toimportethwallet"
       on-importpk="toimportpk"
       on-externalpk="toexternalpk"
+      on-vaultlocked="toUnlockVault"
       on-enter="enter"
       on-exit="toAppStart"
       on-restoreipfs="torestoreipfs"
       route="[[pageTail]]"
+      vaultstatus="[[vaultstatus]]"
       >
     </ac-intro>
 
@@ -207,7 +209,6 @@
         }
 
       },
-
       _onRoutePathChanged: function(path,oldpath) {
       },
 
@@ -316,6 +317,10 @@
         this.transitionto('/vault/importethwallet');
       },
 
+      toUnlockVault: function(){
+        this.transitionto('/vault/unlock');
+      },
+
       transitionto: function(target){
         console.log('ac-app -> transitionTo',target);
         this.set('route.path',target);
@@ -333,8 +338,10 @@
       },
 
       logout: function() {
+        
         this.$.vault.closeVault();
-        this.transitionto('/vault/unlock');
+//        this.transitionto('/vault/unlock');
+        this.transitionto('/intro/welcome');
       },
 
       deletevault: function(){

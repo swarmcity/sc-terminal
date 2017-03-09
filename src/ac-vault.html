@@ -686,6 +686,9 @@
             break;
           case 'unlock':
           case 'removeall':
+          case 'unlockipfs':
+          case 'importipfs':
+          case 'newuser':
 
             break;
           default:
@@ -786,7 +789,7 @@
           if (self._parseVault(data)) {
             self.saveVault();
             self.status = 'locked';
-            self.set('route.path', '/unlockipfs');
+            self.set('route.path', '/unlock');
           }
         });
       },
@@ -1084,10 +1087,12 @@
         this.set('currentkeystore',null);
         this.set('currentidentity',null);
         sessionStorage.removeItem('vaultpassword');
+        this.set('status','locked');
       },
 
       removevault: function(){
         this.deleteVault();
+        this.set('status','novault');
       },
 
       deleteVault: function(){

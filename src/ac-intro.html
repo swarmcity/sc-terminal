@@ -602,6 +602,10 @@
           type: Object,
           //notify: true
         },
+        vaultstatus: {
+          type: String,
+          observer: '_vaultstatus'
+        }
       },
 
       observers: [
@@ -610,6 +614,7 @@
 
       _onRoutePathChanged: function(page,oldpage) {
         console.log('ac-intro _onRoutePathChanged',oldpage,'->',page);
+        //debugger;
         switch (page) {
           case 'welcome':
             this.topbarbg = "yellowback";
@@ -617,15 +622,29 @@
           case 'first':
             this.topbarbg = "blueback";
             break;
+          case 'newuser':
+            this.topbarbg = ""; 
+            if(this.vaultstatus=="locked"){
+              this.fire('vaultlocked');
+            }
+            break;
           default:
             this.topbarbg = "";
             break;
         }
       },
+
+      _vaultstatus: function(newval,oldval){
+        // if(this.vaultstatus=="locked"){
+        //   this.fire('vaultlocked');
+        // }
+      },
+
       attached: function() {
         console.log('ac-intro attached');
         this.exitAnimationintro = "slide-left-animation";
         this.entryAnimationintro = "slide-from-right-animation";
+        
       },
 
       exit: function(){
