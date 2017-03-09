@@ -4,7 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [0.1.0]
+### Added
+- Logout flow improved
+
+### Bugs fixed
+- IPFS restore fixed (https://github.com/swarmcity/sc-boardwalk/issues/78)
+
+## [0.0.2]
 ### Added
 - token exchange
 
