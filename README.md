@@ -1,3 +1,9 @@
+# NOTE
+This release is finished. This version is now being integrated in Boardwalk :
+https://github.com/swarmcity/sc-boardwalk
+
+Please check that repo for following further development of swarm.city
+
 # Swarm City Terminal
 
 The Swarm City Terminal is the starting point of the user journey in Swarm City. The Swarm City Terminal will be the main entry screen into the Swarm City ecosystem and will be the browser for the hashtags ( starting with #ridesharing ). It provides the Swarm City citizens the possibility to create and manage a basic profile and exchange SWT tokens in a wallet.
@@ -40,5 +46,3 @@ The user can transfer SWT tokens straight from any other wallet into the SWT ter
 A user that opens the app has the option upload a backup or sync with another device.
 The user can upload the json file and enter the password to import the user account.
 The user can also choose to sync two devices. To do so, the user needs the device where the terminal is already active (device A) and the new device that he wants to sync to (new device). The user is asked to get the new device and device A ready. On the new device, the user is asked to enter a shortcode to sync. The user gets this shortcode on device A in his profile view. When the shortcode is entered on the new device, a dialogue pops up on device A asking for permission to sync the account on a new device. If permission is granted, the user account is imported on the new device.
-
-![Minion](https://ipfs.io/ipfs/QmcsLDtyyg5yWYS3J4FgLzudnaMAqMDCoH1VryT6P9ErMG =600x400)
