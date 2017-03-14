@@ -1,8 +1,10 @@
 # NOTE
-This release is finished. This version is now being integrated in Boardwalk :
+
+**This release is finished. This version is now being integrated in Boardwalk.
+Please check that repo for following further development of swarm.city**
+
 https://github.com/swarmcity/sc-boardwalk
 
-Please check that repo for following further development of swarm.city
 
 # Swarm City Terminal
 
